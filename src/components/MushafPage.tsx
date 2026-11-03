@@ -1,29 +1,61 @@
-// Medine Mushafı'nın tek bir sayfası: gerçek satır düzeni, satıra dokununca o satır okunur,
-// okunan kelime ve satır renkle vurgulanır.
-import React, { memo, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text as RNText, View } from 'react-native';
+// Medine Mushafı'nın tek bir sayfası, basılı mushaf görünümünde: altın çift çerçeve, köşe
+// süsleri, üstte sure adı ve cüz, altta sayfa numarası. Satırlar iki kenara tam yaslanır;
+// yazı boyutu, sayfanın en uzun satırı ekran genişliğine tam oturacak şekilde ölçülerek bulunur.
+//
+// Yazı boyutu kademeleri:
+//   1 = Mushaf  — sayfanın tamamı ekranda, satırlar mushaftaki gibi
+//   2 = Büyük   — her mushaf satırı kendi bloğunda, yazı ~1.4 kat, sayfa aşağı kayar
+//   3 = Çok büyük — yazı ~1.8 kat
+// Her kademede bir satıra dokunmak o mushaf satırını okutur.
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text as RNText, View } from 'react-native';
+import Svg, { Circle, G, Path, Rect } from 'react-native-svg';
 import { Text } from './Text';
 import { colors, fonts } from '../theme';
 import { Chapter, ensurePageFont, getPage, pageFontFamily, QPage, QWord } from '../lib/quran';
+import type { MushafSize } from '../lib/prefs';
 
 const BISMILLAH = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-const toArabicDigits = (n: number) => String(n).replace(/\d/g, (c) => '٠١٢٣٤٥٦٧٨٩'[Number(c)]);
+const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+const toArabicDigits = (n: number) => String(n).replace(/\d/g, (c) => AR_DIGITS[Number(c)]);
+const SIZE_SCALE: Record<MushafSize, number> = { 1: 1, 2: 1.4, 3: 1.8 };
+
+// Ölçü düzeni (çerçeve kalınlıkları ve boşluklar)
+const OUTER = 6; // ekran kenarı ile çerçeve arası
+const FRAME1 = 2; // dış altın çizgi
+const FRAME_GAP = 3; // iki çizgi arası
+const FRAME2 = 1; // iç yeşil çizgi
+const PAD_X = 8;
+const PAD_Y = 14; // üst/alt etiketlere yer
+const F0 = 20; // ölçüm için temel yazı boyutu
+const WORD_GAP = 0.06; // kelimeler arası en küçük boşluk (yazı boyutuna oranla)
+
+/** Ölçülen doğal satır genişlikleri (F0 boyutunda), sayfa + yazı tipi durumuna göre önbellekte. */
+const measureCache = new Map<string, Record<number, number>>();
 
 type Props = {
   page: number;
   width: number;
   height: number;
+  size: MushafSize;
   chapters: Chapter[];
   activeWordId: number | null;
   activeLine: number | null;
   onLinePress: (page: number, line: number, words: QWord[]) => void;
 };
 
-function MushafPageInner({ page, width, height, chapters, activeWordId, activeLine, onLinePress }: Props) {
+type FontState = 'loading' | 'ready' | 'failed';
+
+function MushafPageInner({ page, width, height, size, chapters, activeWordId, activeLine, onLinePress }: Props) {
   const [data, setData] = useState<QPage | null>(null);
-  const [fontReady, setFontReady] = useState(false);
+  const [fontState, setFontState] = useState<FontState>('loading');
   const [error, setError] = useState(false);
   const [retry, setRetry] = useState(0);
+  const cacheKey = `${page}:${fontState}`;
+  const [widths, setWidths] = useState<Record<number, number> | null>(() => measureCache.get(cacheKey) ?? null);
+  const pending = useRef<Record<number, number>>({});
+  const scrollRef = useRef<ScrollView>(null);
+  const lineY = useRef<Record<number, number>>({});
 
   useEffect(() => {
     let alive = true;
@@ -32,18 +64,45 @@ function MushafPageInner({ page, width, height, chapters, activeWordId, activeLi
       .then((d) => alive && setData(d))
       .catch(() => alive && setError(true));
     ensurePageFont(page)
-      .then(() => alive && setFontReady(true))
-      .catch(() => alive && setFontReady(false));
+      .then(() => alive && setFontState('ready'))
+      .catch(() => alive && setFontState('failed'));
     return () => {
       alive = false;
     };
   }, [page, retry]);
 
-  const innerW = width - 24;
-  const lineCount = data?.lineCount ?? 15;
-  // Satır yüksekliği ekrana sığacak şekilde; yazı boyutu satır genişliğine göre.
-  const lineH = Math.min((height - 16) / 15, innerW / 9.2);
-  const fontSize = Math.min(innerW / 15.2, lineH * 0.62);
+  // Yazı tipi değişince yeniden ölç
+  useEffect(() => {
+    pending.current = {};
+    setWidths(measureCache.get(cacheKey) ?? null);
+  }, [cacheKey]);
+
+  const byLine = useMemo(() => {
+    const m = new Map<number, QWord[]>();
+    data?.words.forEach((w) => {
+      const arr = m.get(w.line) ?? [];
+      arr.push(w);
+      m.set(w.line, arr);
+    });
+    return m;
+  }, [data]);
+
+  const lineOfWord = useMemo(() => {
+    const m = new Map<number, number>();
+    data?.words.forEach((w) => m.set(w.id, w.line));
+    return m;
+  }, [data]);
+
+  // Büyük yazıda okunan satır görünür kalsın
+  const activeLineNow = activeLine ?? (activeWordId != null ? lineOfWord.get(activeWordId) ?? null : null);
+  useEffect(() => {
+    if (size === 1 || activeLineNow == null) return;
+    const y = lineY.current[activeLineNow];
+    if (y != null) scrollRef.current?.scrollTo({ y: Math.max(0, y - 60), animated: true });
+  }, [activeLineNow, size]);
+
+  const innerW = width - 2 * (OUTER + FRAME1 + FRAME_GAP + FRAME2 + PAD_X);
+  const innerH = height - 2 * (OUTER + FRAME1 + FRAME_GAP + FRAME2 + PAD_Y);
 
   if (error) {
     return (
@@ -55,83 +114,239 @@ function MushafPageInner({ page, width, height, chapters, activeWordId, activeLi
       </View>
     );
   }
-  if (!data) {
+
+  const lineCount = data?.lineCount ?? 15;
+  const centeredPage = page <= 2;
+  const useQcf = fontState === 'ready';
+  const wordText = (w: QWord) => (useQcf ? w.code : w.text);
+  const wordFont = (fontSize: number) =>
+    useQcf ? { fontFamily: pageFontFamily(page), fontSize } : { fontFamily: fonts.arabic, fontSize: fontSize * 0.9 };
+
+  const ready = data && fontState !== 'loading';
+  const measuring = ready && !widths;
+
+  // ---- Ölçüm: her satır doğal genişliğinde, görünmez çizilir
+  if (!ready || measuring) {
+    const onLine = (line: number) => (e: LayoutChangeEvent) => {
+      pending.current[line] = e.nativeEvent.layout.width;
+      if (Object.keys(pending.current).length >= byLine.size) {
+        const result = { ...pending.current };
+        measureCache.set(cacheKey, result);
+        setWidths(result);
+      }
+    };
     return (
-      <View style={[st.center, { width, height }]}>
-        <ActivityIndicator color={colors.green} />
+      <View style={{ width, height }}>
+        <Frame width={width} height={height} />
+        <View style={[StyleSheet.absoluteFill, st.center]}>
+          <ActivityIndicator color={colors.green} />
+        </View>
+        {measuring && (
+          <View style={st.measureBox} pointerEvents="none">
+            {Array.from(byLine.entries()).map(([line, words]) => (
+              <View key={line} onLayout={onLine(line)} style={[st.measureLine, { columnGap: F0 * WORD_GAP }]}>
+                {words.map((w) => (
+                  <RNText key={w.id} allowFontScaling={false} style={[wordFont(F0), st.word]}>
+                    {w.isEnd ? endMark(w.verse) : wordText(w)}
+                  </RNText>
+                ))}
+              </View>
+            ))}
+          </View>
+        )}
       </View>
     );
   }
 
-  const byLine = new Map<number, QWord[]>();
-  data.words.forEach((w) => {
-    const arr = byLine.get(w.line) ?? [];
-    arr.push(w);
-    byLine.set(w.line, arr);
-  });
-  const centered = page <= 2;
-  const lines = Array.from({ length: lineCount }, (_, i) => i + 1);
+  const widest = Math.max(1, ...Object.values(widths!));
+  const fitFont = (F0 * innerW) / widest * 0.985;
+  const chapterOf = (id: number) => chapters.find((c) => c.id === id);
+  const firstCh = chapterOf(data!.firstChapter);
 
+  // ---- 1. kademe: tam sayfa mushaf
+  if (size === 1) {
+    const lineH = innerH / 15;
+    const fontSize = Math.min(fitFont, lineH / 1.4);
+    const gap = fontSize * WORD_GAP;
+    return (
+      <View style={{ width, height }}>
+        <Frame width={width} height={height} topRight={firstCh?.nameAr} topLeft={`الجزء ${toArabicDigits(data!.juz)}`} page={page} />
+        <View style={[st.content, { justifyContent: centeredPage ? 'center' : 'flex-start' }]}>
+          {Array.from({ length: lineCount }, (_, i) => i + 1).map((line) => {
+            const header = data!.headers.find((h) => h.line === line);
+            if (header) return <HeaderLine key={line} kind={header.kind} chapter={chapterOf(header.chapter)} height={lineH} />;
+            const words = byLine.get(line);
+            if (!words) return centeredPage ? null : <View key={line} style={{ height: lineH }} />;
+            const short = centeredPage || (widths![line] ?? widest) < widest * 0.72;
+            return (
+              <Pressable
+                key={line}
+                accessibilityRole="button"
+                accessibilityLabel={`${line}. satırı dinle`}
+                onPress={() => onLinePress(page, line, data!.words)}
+                style={({ pressed }) => [
+                  st.line,
+                  { height: lineH, columnGap: gap, justifyContent: short ? 'center' : 'space-between' },
+                  (activeLineNow === line || pressed) && st.lineActive,
+                ]}
+              >
+                {words.map((w) => (
+                  <Word key={w.id} w={w} text={wordText(w)} style={wordFont(fontSize)} endSize={fontSize} active={w.id === activeWordId} />
+                ))}
+              </Pressable>
+            );
+          })}
+        </View>
+      </View>
+    );
+  }
+
+  // ---- 2–3. kademe: büyük yazı, satır blokları, dikey kaydırma
+  const fontSize = Math.min(fitFont, innerH / 15 / 1.4) * SIZE_SCALE[size];
+  const gap = fontSize * 0.16;
   return (
-    <View style={[st.page, { width, height, justifyContent: centered ? 'center' : 'flex-start' }]}>
-      {lines.map((line) => {
-        const header = data.headers.find((h) => h.line === line);
-        if (header) {
-          const ch = chapters.find((c) => c.id === header.chapter);
+    <View style={{ width, height }}>
+      <Frame width={width} height={height} topRight={firstCh?.nameAr} topLeft={`الجزء ${toArabicDigits(data!.juz)}`} page={page} />
+      <ScrollView ref={scrollRef} style={st.content} contentContainerStyle={{ paddingBottom: 12 }} showsVerticalScrollIndicator={false}>
+        {Array.from({ length: lineCount }, (_, i) => i + 1).map((line) => {
+          const header = data!.headers.find((h) => h.line === line);
+          if (header)
+            return (
+              <View key={line} onLayout={(e) => (lineY.current[line] = e.nativeEvent.layout.y)}>
+                <HeaderLine kind={header.kind} chapter={chapterOf(header.chapter)} height={fontSize * 1.9} />
+              </View>
+            );
+          const words = byLine.get(line);
+          if (!words) return null;
           return (
-            <View key={line} style={[st.lineBox, { height: lineH }]}>
-              {header.kind === 'surah' ? (
-                <View style={st.surahBox}>
-                  <RNText style={[st.surahAr, { fontSize: lineH * 0.42 }]}>{`سُورَةُ ${ch?.nameAr ?? ''}`}</RNText>
-                  <RNText style={[st.surahTr, { fontSize: Math.max(10, lineH * 0.24) }]}>{ch ? `${ch.id}. ${ch.nameTr}` : ''}</RNText>
-                </View>
-              ) : (
-                <RNText style={[st.bismillah, { fontSize: lineH * 0.45 }]}>{BISMILLAH}</RNText>
-              )}
-            </View>
+            <Pressable
+              key={line}
+              onLayout={(e) => (lineY.current[line] = e.nativeEvent.layout.y)}
+              accessibilityRole="button"
+              accessibilityLabel={`${line}. satırı dinle`}
+              onPress={() => onLinePress(page, line, data!.words)}
+              style={({ pressed }) => [
+                st.bigLine,
+                { columnGap: gap, rowGap: fontSize * 0.1, paddingVertical: fontSize * 0.3, justifyContent: centeredPage ? 'center' : 'flex-start' },
+                (activeLineNow === line || pressed) && st.lineActive,
+              ]}
+            >
+              {words.map((w) => (
+                <Word key={w.id} w={w} text={wordText(w)} style={wordFont(fontSize)} endSize={fontSize} active={w.id === activeWordId} />
+              ))}
+            </Pressable>
           );
-        }
-        const words = byLine.get(line);
-        if (!words) return centered ? null : <View key={line} style={{ height: lineH }} />;
-        const isActiveLine = activeLine === line;
-        return (
-          <Pressable
-            key={line}
-            accessibilityRole="button"
-            accessibilityLabel={`${line}. satırı dinle`}
-            onPress={() => onLinePress(page, line, data.words)}
-            style={({ pressed }) => [
-              st.lineBox,
-              { height: lineH, justifyContent: centered ? 'center' : 'space-between' },
-              (isActiveLine || pressed) && st.lineActive,
-            ]}
-          >
-            {words.map((w) => {
-              const active = w.id === activeWordId;
-              if (w.isEnd) {
-                return (
-                  <RNText key={w.id} style={[st.end, { fontSize: fontSize * 0.78 }, active && st.wordActive]}>
-                    {`﴿${toArabicDigits(w.verse)}﴾`}
-                  </RNText>
-                );
-              }
-              return (
-                <RNText
-                  key={w.id}
-                  allowFontScaling={false}
-                  style={[
-                    fontReady ? { fontFamily: pageFontFamily(page), fontSize } : { fontFamily: fonts.arabic, fontSize: fontSize * 0.9 },
-                    st.word,
-                    active && st.wordActive,
-                  ]}
-                >
-                  {fontReady ? w.code : w.text}
-                </RNText>
-              );
-            })}
-          </Pressable>
-        );
-      })}
+        })}
+      </ScrollView>
+    </View>
+  );
+}
+
+function endMark(verse: number) {
+  return `﴿${toArabicDigits(verse)}﴾`;
+}
+
+const Word = memo(function Word({ w, text, style, endSize, active }: { w: QWord; text: string; style: object; endSize: number; active: boolean }) {
+  if (w.isEnd) {
+    return (
+      <RNText allowFontScaling={false} style={[st.end, { fontSize: endSize * 0.8, lineHeight: endSize * 1.5 }, active && st.wordActive]}>
+        {endMark(w.verse)}
+      </RNText>
+    );
+  }
+  return (
+    <RNText allowFontScaling={false} style={[style, st.word, active && st.wordActive]}>
+      {text}
+    </RNText>
+  );
+});
+
+/** Sure başlığı (süslü bant) ya da besmele satırı */
+function HeaderLine({ kind, chapter, height }: { kind: 'surah' | 'bismillah'; chapter?: Chapter; height: number }) {
+  if (kind === 'bismillah') {
+    return (
+      <View style={[st.headerRow, { height }]}>
+        <RNText allowFontScaling={false} style={[st.bismillah, { fontSize: height * 0.5, lineHeight: height * 0.95 }]} numberOfLines={1}>
+          {BISMILLAH}
+        </RNText>
+      </View>
+    );
+  }
+  const bandH = height * 0.82;
+  return (
+    <View style={[st.headerRow, { height }]}>
+      <View style={[st.band, { height: bandH, borderRadius: bandH / 2 }]}>
+        <View style={[st.bandInner, { borderRadius: bandH / 2 - 3 }]}>
+          <Ornament size={bandH * 0.62} />
+          <View style={st.bandCenter}>
+            <RNText allowFontScaling={false} numberOfLines={1} style={[st.bandAr, { fontSize: bandH * 0.46, lineHeight: bandH * 0.86 }]}>
+              {`سُورَةُ ${chapter?.nameAr ?? ''}`}
+            </RNText>
+          </View>
+          {chapter ? (
+            <RNText allowFontScaling={false} numberOfLines={1} style={[st.bandTr, { fontSize: Math.max(9, bandH * 0.24) }]}>
+              {`${chapter.id}. ${chapter.nameTr}`}
+            </RNText>
+          ) : (
+            <Ornament size={bandH * 0.62} />
+          )}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function Ornament({ size }: { size: number }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 100 100">
+      <G fill="none" stroke={colors.gold} strokeWidth={6}>
+        <Rect x={22} y={22} width={56} height={56} />
+        <Rect x={22} y={22} width={56} height={56} transform="rotate(45 50 50)" />
+      </G>
+      <Circle cx={50} cy={50} r={10} fill={colors.green} />
+    </Svg>
+  );
+}
+
+/** Sayfa çerçevesi: altın çift çizgi, köşe süsleri, üst etiketler ve sayfa numarası. */
+function Frame({ width, height, topRight, topLeft, page }: { width: number; height: number; topRight?: string; topLeft?: string; page?: number }) {
+  const corner = 16;
+  return (
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill, { padding: OUTER }]}>
+      <View style={st.frameOuter}>
+        <View style={st.frameInner} />
+      </View>
+      {[
+        { top: OUTER - 5, left: OUTER - 5 },
+        { top: OUTER - 5, right: OUTER - 5 },
+        { bottom: OUTER - 5, left: OUTER - 5 },
+        { bottom: OUTER - 5, right: OUTER - 5 },
+      ].map((pos, i) => (
+        <View key={i} style={[st.corner, pos, { width: corner, height: corner }]}>
+          <Svg width={corner} height={corner} viewBox="0 0 100 100">
+            <Rect x={18} y={18} width={64} height={64} fill={colors.paper} stroke={colors.gold} strokeWidth={9} transform="rotate(45 50 50)" />
+            <Circle cx={50} cy={50} r={14} fill={colors.green} />
+          </Svg>
+        </View>
+      ))}
+      {topRight ? (
+        <View style={[st.labelBox, { top: OUTER - 2, right: OUTER + 26 }]}>
+          <RNText allowFontScaling={false} style={st.labelAr}>{topRight}</RNText>
+        </View>
+      ) : null}
+      {topLeft ? (
+        <View style={[st.labelBox, { top: OUTER - 2, left: OUTER + 26 }]}>
+          <RNText allowFontScaling={false} style={st.labelAr}>{topLeft}</RNText>
+        </View>
+      ) : null}
+      {page ? (
+        <View style={[st.pageNo, { bottom: OUTER - 8, left: width / 2 - 20 }]}>
+          <Svg width={40} height={22} viewBox="0 0 40 22" style={StyleSheet.absoluteFill}>
+            <Path d="M4 11 L11 3 H29 L36 11 L29 19 H11 Z" fill={colors.paper} stroke={colors.gold} strokeWidth={1.4} />
+          </Svg>
+          <RNText allowFontScaling={false} style={st.pageNoText}>{toArabicDigits(page)}</RNText>
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -139,27 +354,53 @@ function MushafPageInner({ page, width, height, chapters, activeWordId, activeLi
 export const MushafPage = memo(MushafPageInner);
 
 const st = StyleSheet.create({
-  page: { paddingHorizontal: 12, paddingVertical: 8 },
   center: { alignItems: 'center', justifyContent: 'center', gap: 12, padding: 24 },
   msg: { fontFamily: fonts.body, fontSize: 15, color: colors.muted, textAlign: 'center' },
   retry: { minHeight: 44, paddingHorizontal: 18, borderRadius: 12, backgroundColor: colors.green, justifyContent: 'center' },
   retryText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.paper },
-  lineBox: { flexDirection: 'row-reverse', alignItems: 'center', borderRadius: 8, overflow: 'hidden' },
-  lineActive: { backgroundColor: 'rgba(226,194,122,0.28)' },
-  word: { color: colors.ink, includeFontPadding: false },
-  wordActive: { color: colors.green, backgroundColor: 'rgba(24,88,60,0.12)', borderRadius: 4 },
-  end: { fontFamily: fonts.arabic, color: colors.gold },
-  surahBox: {
-    flex: 1,
-    height: '88%',
-    borderWidth: 1,
-    borderColor: colors.gold,
-    borderRadius: 8,
-    backgroundColor: colors.card,
-    alignItems: 'center',
-    justifyContent: 'center',
+  measureBox: { position: 'absolute', left: 0, top: 0, width: 4000, opacity: 0, alignItems: 'flex-start' },
+  measureLine: { flexDirection: 'row-reverse', alignSelf: 'flex-start' },
+  content: {
+    position: 'absolute',
+    left: OUTER + FRAME1 + FRAME_GAP + FRAME2 + PAD_X,
+    right: OUTER + FRAME1 + FRAME_GAP + FRAME2 + PAD_X,
+    top: OUTER + FRAME1 + FRAME_GAP + FRAME2 + PAD_Y,
+    bottom: OUTER + FRAME1 + FRAME_GAP + FRAME2 + PAD_Y,
   },
-  surahAr: { fontFamily: fonts.arabicBold, color: colors.green },
-  surahTr: { fontFamily: fonts.bodySemi, color: colors.goldText, marginTop: -4 },
-  bismillah: { flex: 1, textAlign: 'center', fontFamily: fonts.arabic, color: colors.green },
+  line: { flexDirection: 'row-reverse', alignItems: 'center', borderRadius: 6 },
+  bigLine: {
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    borderRadius: 8,
+    paddingHorizontal: 4,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: 'rgba(168,118,40,0.35)',
+  },
+  lineActive: { backgroundColor: 'rgba(226,194,122,0.30)' },
+  word: { color: colors.ink, includeFontPadding: false },
+  wordActive: { color: colors.green, backgroundColor: 'rgba(24,88,60,0.13)', borderRadius: 4 },
+  end: { fontFamily: fonts.arabic, color: colors.gold, includeFontPadding: false },
+  headerRow: { alignItems: 'center', justifyContent: 'center' },
+  band: { alignSelf: 'stretch', borderWidth: 1.5, borderColor: colors.gold, backgroundColor: '#F6EBCF', padding: 2 },
+  bandInner: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 0.75,
+    borderColor: colors.green,
+    paddingHorizontal: 8,
+  },
+  bandCenter: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
+  bandAr: { fontFamily: fonts.arabicBold, color: colors.green, textAlign: 'center' },
+  bandTr: { fontFamily: fonts.bodySemi, color: colors.goldText, maxWidth: '30%' },
+  bismillah: { fontFamily: fonts.arabic, color: colors.green, textAlign: 'center' },
+  frameOuter: { flex: 1, borderWidth: FRAME1, borderColor: colors.gold, borderRadius: 6, padding: FRAME_GAP, backgroundColor: '#FBF6EA' },
+  frameInner: { flex: 1, borderWidth: FRAME2, borderColor: colors.green, borderRadius: 3 },
+  corner: { position: 'absolute' },
+  labelBox: { position: 'absolute', backgroundColor: '#FBF6EA', paddingHorizontal: 6, height: 14, justifyContent: 'center' },
+  labelAr: { fontFamily: fonts.arabic, fontSize: 11, lineHeight: 14, color: colors.goldText },
+  pageNo: { position: 'absolute', width: 40, height: 22, alignItems: 'center', justifyContent: 'center' },
+  pageNoText: { fontFamily: fonts.arabicBold, fontSize: 12, lineHeight: 16, color: colors.green },
 });

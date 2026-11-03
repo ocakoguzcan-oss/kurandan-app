@@ -3,6 +3,7 @@
 // Her şey ilk açılışta indirilir ve cihazda saklanır; sonraki açılışlar internetsiz çalışır.
 import * as Font from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SURE_ADLARI } from '../data/sureler';
 
 const API = 'https://api.quran.com/api/v4';
 const FONT_URL = (page: number) => `https://verses.quran.foundation/fonts/quran/hafs/v2/ttf/p${page}.ttf`;
@@ -78,11 +79,11 @@ async function getJson(url: string) {
 }
 
 export function getChapters(): Promise<Chapter[]> {
-  return cached('quran.chapters.v1', async () => {
+  return cached('quran.chapters.v2', async () => {
     const json = await getJson(`${API}/chapters?language=tr`);
     return (json.chapters as any[]).map((c) => ({
       id: c.id,
-      nameTr: c.name_simple,
+      nameTr: SURE_ADLARI[c.id - 1] ?? c.name_simple,
       nameAr: c.name_arabic,
       pages: c.pages as [number, number],
       verses: c.verses_count,

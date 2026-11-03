@@ -10,6 +10,8 @@ import { colors, fonts } from '../../src/theme';
 import { ATTRIBUTION, Chapter, getChapters, JUZ_START_PAGES, juzOfPage, prefetchPages, QWord, TOTAL_PAGES, getPage } from '../../src/lib/quran';
 import { quranPlayer, PlayerState } from '../../src/lib/quranPlayer';
 import { loadHatim, markPageRead, resetHatim, setGoal, setLastPage, useHatim } from '../../src/lib/hatim';
+import { MushafSize, setPrefs, usePrefs } from '../../src/lib/prefs';
+import { normalizeTr } from '../../src/data/sureler';
 
 const PAGES = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
 const GOALS = [1, 2, 5, 10, 20];
@@ -23,7 +25,9 @@ function usePlayer(): PlayerState {
 
 export default function Kuran() {
   const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
+  const { mushafSize } = usePrefs();
+  const [pageH, setPageH] = useState(0);
   const params = useLocalSearchParams<{ sayfa?: string }>();
   const hatim = useHatim();
   const player = usePlayer();
@@ -35,9 +39,6 @@ export default function Kuran() {
   const [hatimOpen, setHatimOpen] = useState(false);
   const [ready, setReady] = useState(false);
 
-  const headerH = 88;
-  const footerH = 96;
-  const pageH = height - insets.top - insets.bottom - headerH - footerH - 52; // 52: sekme çubuğu
 
   useEffect(() => {
     getChapters().then(setChapters).catch(() => {});
@@ -111,25 +112,26 @@ export default function Kuran() {
 
   return (
     <View style={[st.root, { paddingTop: insets.top + 8 }]}>
-      <View style={[st.header, { height: headerH }]}>
+      <View style={st.header}>
         <View style={st.headRow}>
           <Pressable accessibilityRole="button" accessibilityLabel="Sure ve cüz seç" onPress={() => setPicker(true)} style={st.titleBtn}>
             <Text style={st.title} numberOfLines={1}>{chapter ? `${chapter.nameTr} Suresi` : "Kur'an-ı Kerim"}</Text>
             <Text style={st.sub}>{`Cüz ${juzOfPage(page)} · Sayfa ${page} ▾`}</Text>
           </Pressable>
+          <SizeButton size={mushafSize} onPress={() => setPrefs({ mushafSize: ((mushafSize % 3) + 1) as MushafSize })} />
           <Pressable accessibilityRole="button" accessibilityLabel="Hatim takibi" onPress={() => setHatimOpen(true)} style={st.hatimBtn}>
             <Text style={st.hatimPct}>{`%${hatimPct}`}</Text>
-            <Text style={st.hatimLabel}>Hatim</Text>
+            <Text style={st.hatimLabel}>{`${hatim.todayPages.length}/${hatim.goal} bugün`}</Text>
           </Pressable>
         </View>
         <View style={st.progress}>
           <View style={[st.progressFill, { width: `${Math.max(2, hatimPct)}%` }]} />
         </View>
-        <Text style={st.today}>{`Bugün ${hatim.todayPages.length}/${hatim.goal} sayfa`}</Text>
       </View>
 
-      {!ready ? (
-        <View style={{ height: pageH, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1 }} onLayout={(e) => setPageH(Math.floor(e.nativeEvent.layout.height))}>
+      {!ready || pageH === 0 ? (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator color={colors.green} />
         </View>
       ) : (
@@ -141,6 +143,7 @@ export default function Kuran() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         keyExtractor={(p) => String(p)}
+        extraData={`${mushafSize}:${player.mode}:${player.page}:${player.line}:${player.wordId}:${chapters.length}:${pageH}`}
         initialScrollIndex={page - 1}
         initialNumToRender={1}
         maxToRenderPerBatch={2}
@@ -160,6 +163,7 @@ export default function Kuran() {
               page={item}
               width={width}
               height={pageH}
+              size={mushafSize}
               chapters={chapters}
               activeWordId={player.page === item ? player.wordId : null}
               activeLine={player.page === item && player.mode === 'line' ? player.line : null}
@@ -171,8 +175,9 @@ export default function Kuran() {
         onScrollToIndexFailed={(info) => setTimeout(() => listRef.current?.scrollToIndex({ index: info.index, animated: false }), 200)}
       />
       )}
+      </View>
 
-      <View style={[st.footer, { height: footerH }]}>
+      <View style={st.footer}>
         <Pressable accessibilityRole="button" accessibilityLabel="Önceki sayfa" onPress={() => goTo(page - 1)} style={st.navBtn} disabled={page <= 1}>
           <Text style={st.navText}>‹ Önceki</Text>
         </Pressable>
@@ -243,12 +248,36 @@ export default function Kuran() {
   );
 }
 
+const SIZE_LABELS: Record<MushafSize, string> = { 1: 'Mushaf görünümü', 2: 'Büyük yazı', 3: 'Çok büyük yazı' };
+
+/** 3 kademeli yazı boyutu tuşu: her dokunuşta bir sonraki kademeye geçer. */
+function SizeButton({ size, onPress }: { size: MushafSize; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Yazı boyutu: ${SIZE_LABELS[size]}. Değiştirmek için dokunun.`}
+      onPress={onPress}
+      style={st.sizeBtn}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 1 }}>
+        <Text style={[st.sizeA, { fontSize: 13 }]}>A</Text>
+        <Text style={[st.sizeA, { fontSize: 19 }]}>A</Text>
+      </View>
+      <View style={st.sizeDots}>
+        {[1, 2, 3].map((n) => (
+          <View key={n} style={[st.sizeDot, n <= size && st.sizeDotOn]} />
+        ))}
+      </View>
+    </Pressable>
+  );
+}
+
 function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean; chapters: Chapter[]; onClose: () => void; onPick: (page: number) => void }) {
   const insets = useSafeAreaInsets();
   const [q, setQ] = useState('');
   const list = useMemo(() => {
-    const n = q.trim().toLocaleLowerCase('tr');
-    return n ? chapters.filter((c) => c.nameTr.toLocaleLowerCase('tr').includes(n) || String(c.id) === n) : chapters;
+    const n = normalizeTr(q.trim());
+    return n ? chapters.filter((c) => normalizeTr(c.nameTr).includes(n) || String(c.id) === n) : chapters;
   }, [q, chapters]);
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -299,21 +328,26 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
 
 const st = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.paper },
-  header: { paddingHorizontal: 20, gap: 6 },
+  header: { paddingHorizontal: 16, gap: 6, paddingBottom: 4 },
   headRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
   titleBtn: { flexShrink: 1, minHeight: 44, justifyContent: 'center' },
-  title: { fontFamily: fonts.display, fontSize: 22, color: colors.green },
+  title: { fontFamily: fonts.display, fontSize: 20, color: colors.green },
   sub: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.goldText },
+  sizeBtn: { width: 52, minHeight: 44, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center', gap: 3 },
+  sizeA: { fontFamily: fonts.bodyBold, color: colors.green, lineHeight: 22 },
+  sizeDots: { flexDirection: 'row', gap: 3 },
+  sizeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.cardBorder },
+  sizeDotOn: { backgroundColor: colors.gold },
   hatimBtn: { minWidth: 64, minHeight: 44, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
   hatimPct: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.green },
   hatimLabel: { fontFamily: fonts.body, fontSize: 11, color: colors.muted },
-  progress: { height: 6, borderRadius: 3, backgroundColor: colors.cardBorder, overflow: 'hidden' },
-  progressFill: { height: 6, backgroundColor: colors.gold },
+  progress: { height: 4, borderRadius: 2, backgroundColor: colors.cardBorder, overflow: 'hidden' },
+  progressFill: { height: 4, backgroundColor: colors.gold },
   today: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  footer: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, borderTopWidth: 1, borderTopColor: colors.cardBorder, backgroundColor: colors.card },
+  footer: { height: 78, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, borderTopWidth: 1, borderTopColor: colors.cardBorder, backgroundColor: colors.card },
   navBtn: { width: 84, minHeight: 48, justifyContent: 'center' },
   navText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
-  play: { width: 60, height: 60, borderRadius: 30, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
+  play: { width: 54, height: 54, borderRadius: 27, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
   status: { fontFamily: fonts.body, fontSize: 11, color: colors.muted, textAlign: 'center' },
   sheetBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.35)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: colors.paper, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, gap: 12 },

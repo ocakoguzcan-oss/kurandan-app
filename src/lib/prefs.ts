@@ -2,10 +2,11 @@
 import { useSyncExternalStore } from 'react';
 import { load, save } from './storage';
 
-export type Prefs = { largeText: boolean; permissionIntroShown: boolean };
+export type MushafSize = 1 | 2 | 3;
+export type Prefs = { largeText: boolean; permissionIntroShown: boolean; mushafSize: MushafSize };
 
 const KEY = 'kurandan.prefs.v1';
-const initial: Prefs = { largeText: false, permissionIntroShown: false };
+const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1 };
 let state: Prefs = initial;
 let loaded = false;
 const listeners = new Set<() => void>();
