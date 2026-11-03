@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Kurandan",
-    "slug": "kurandan-app",
+    "slug": "kurandanapp",
     "scheme": "kurandan",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,7 +19,10 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Namaz vakitlerini ve kıble yönünü bulunduğunuz yere göre hesaplamak için konumunuz kullanılır.",
         "NSPhotoLibraryAddUsageDescription": "Cuma görselini galerinize kaydetmek için izin gerekir.",
-        "LSApplicationQueriesSchemes": ["instagram", "instagram-stories"],
+        "LSApplicationQueriesSchemes": [
+          "instagram",
+          "instagram-stories"
+        ],
         "ITSAppUsesNonExemptEncryption": false
       }
     },
@@ -71,7 +74,17 @@
     },
     "extra": {
       "reelsApiUrl": "",
-      "facebookAppId": ""
+      "facebookAppId": "",
+      "eas": {
+        "projectId": "bb04fc89-875e-494a-b400-e32a0922aff6"
+      }
+    },
+    "owner": "kurandanai",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/bb04fc89-875e-494a-b400-e32a0922aff6"
     }
   }
 }

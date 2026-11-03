@@ -1,0 +1,14 @@
+# main dalına her gönderimde uygulamanın JS sürümünü EAS Update ile yayınlar.
+# Yayın, Expo Go'da ve ileride mağaza sürümünde "main" kanalından açılır.
+name: Expo Go'ya yayınla
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  update:
+    name: Güncellemeyi yayınla
+    type: update
+    params:
+      channel: main
