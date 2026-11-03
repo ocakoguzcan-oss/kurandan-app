@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Alert, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Constants from 'expo-constants';
 import * as Sharing from 'expo-sharing';
-import * as MediaLibrary from 'expo-media-library';
+import * as MediaLibrary from 'expo-media-library/legacy';
 import { captureRef } from 'react-native-view-shot';
 import { Screen, Button, Eyebrow } from '../src/components/ui';
 import { IconInstagram } from '../src/components/Icons';
