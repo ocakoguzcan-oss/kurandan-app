@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Text } from './Text';
 import { ILLER, Il } from '../data/iller';
 import { colors, fonts } from '../theme';
 
-const norm = (s: string) => s.toLocaleLowerCase('tr').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ı/g, 'i');
+const norm = (s: string) => s.toLocaleLowerCase('tr').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0131/g, 'i');
 
 /** Aranabilir 81 il listesi. */
 export function IlPicker({ selected, onSelect, header }: { selected?: number; onSelect: (il: Il) => void; header?: React.ReactElement }) {

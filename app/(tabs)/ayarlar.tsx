@@ -1,18 +1,46 @@
-import React, { useMemo } from 'react';
-import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '../../src/components/Text';
+import { router, useFocusEffect } from 'expo-router';
 import { Screen, Card, Eyebrow, Toggle } from '../../src/components/ui';
 import { colors, fonts } from '../../src/theme';
 import { useApp } from '../../src/context/AppContext';
 import { formatTime, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
-import { LEAD_OPTIONS } from '../../src/lib/notifications';
+import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus } from '../../src/lib/notifications';
+import { setPrefs, usePrefs } from '../../src/lib/prefs';
+import { EZAN_KAYDI_HAZIR } from '../../src/config';
 
 export default function Ayarlar() {
   const { place, reminders, setReminders } = useApp();
   const times = useMemo(() => getPrayerTimes(new Date(), place.lat, place.lng), [place.lat, place.lng]);
+  const prefs = usePrefs();
+  const [perm, setPerm] = useState<PermissionStatus | null>(null);
+  useFocusEffect(
+    useCallback(() => {
+      getPermissionStatus().then((p) => setPerm(p.status));
+    }, [])
+  );
 
   return (
-    <Screen title="Vakit Hatırlatma" back={false}>
+    <Screen title="Ayarlar" back={false}>
+      {perm && perm !== 'granted' && (
+        <Pressable accessibilityRole="button" onPress={() => router.push('/izin')} style={st.permBanner}>
+          <Text style={st.permTitle}>Bildirim izni kapalı</Text>
+          <Text style={st.permBody}>Ezan bildirimleri gelmiyor. Nasıl açacağınızı adım adım göstermek için dokunun.</Text>
+        </Pressable>
+      )}
+
+      <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
+        <View style={st.row}>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>Büyük yazı</Text>
+            <Text style={st.sub}>Uygulamadaki tüm yazıları büyütür</Text>
+          </View>
+          <Toggle label="Büyük yazı" value={prefs.largeText} onChange={(v) => setPrefs({ largeText: v })} />
+        </View>
+      </Card>
+
+      <Eyebrow>Vakit hatırlatmaları</Eyebrow>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {VAKIT_KEYS.map((k, i) => (
           <View key={k} style={[st.row, i < VAKIT_KEYS.length - 1 && st.divider]}>
@@ -52,6 +80,23 @@ export default function Ayarlar() {
       <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>Ezan sesiyle bildir</Text>
+            <Text style={st.sub}>
+              {reminders.leadMin === 0 ? 'Vakit girince ezan okunur' : 'Ezan yalnızca “Vaktinde” seçiliyken okunur'}
+              {EZAN_KAYDI_HAZIR ? '' : ' · ezan kaydı yakında'}
+            </Text>
+          </View>
+          <Toggle label="Ezan sesiyle bildir" value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
+        </View>
+        <View style={[st.row, st.divider]}>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>Kandil ve dini günler</Text>
+            <Text style={st.sub}>Bir gün önce ve o gün hatırlat</Text>
+          </View>
+          <Toggle label="Kandil ve dini gün hatırlatması" value={reminders.diniGunler} onChange={(v) => setReminders({ ...reminders, diniGunler: v })} />
+        </View>
+        <View style={[st.row, st.divider]}>
+          <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>Cuma hatırlatması</Text>
             <Text style={st.sub}>Cuma sabahı 09:00 · story görseli hazır</Text>
           </View>
@@ -61,9 +106,9 @@ export default function Ayarlar() {
           <Text style={st.name}>Konum</Text>
           <Text style={st.link} numberOfLines={1}>{`${place.label} ›`}</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={() => Linking.openSettings()} style={st.row}>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/izin')} style={st.row}>
           <Text style={st.name}>Bildirim izinleri</Text>
-          <Text style={st.link}>Ayarları aç ›</Text>
+          <Text style={st.link}>{perm === 'granted' ? 'Açık ›' : 'Nasıl açılır ›'}</Text>
         </Pressable>
       </Card>
 
@@ -75,6 +120,9 @@ export default function Ayarlar() {
 }
 
 const st = StyleSheet.create({
+  permBanner: { backgroundColor: '#FBEBD3', borderWidth: 1, borderColor: colors.gold, borderRadius: 16, padding: 14, gap: 4 },
+  permTitle: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.goldText },
+  permBody: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, color: colors.ink },
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 56, paddingVertical: 8, gap: 12 },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   name: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },

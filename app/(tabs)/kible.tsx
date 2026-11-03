@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Linking, Platform, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import * as Location from 'expo-location';
 import * as Haptics from 'expo-haptics';
 import Svg, { Circle, G, Line, Path, Rect, Text as SvgText } from 'react-native-svg';

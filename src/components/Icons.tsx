@@ -46,6 +46,12 @@ export const IconMoon = ({ size = 22, color = colors.green, strokeWidth = 1.8 }:
 export const IconAlarm = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
   <Svg {...base(size, color, strokeWidth)}><Circle cx={12} cy={13} r={8} /><Path d="M12 9v4l2.5 2M5 3 2 6M19 3l3 3" /></Svg>
 );
+export const IconBook = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}><Path d="M12 6.5C10 5 7 4.5 3 5v13c4-.5 7 0 9 1.5 2-1.5 5-2 9-1.5V5c-4-.5-7 0-9 1.5z" /><Path d="M12 6.5v13" /></Svg>
+);
+export const IconCalendar = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}><Rect x={3.5} y={5} width={17} height={15.5} rx={2.5} /><Path d="M3.5 10h17M8 3v4M16 3v4" /><Path d="M15 14.5a2.3 2.3 0 1 1-2.6-2.6 1.8 1.8 0 0 0 2.6 2.6z" /></Svg>
+);
 export const IconBell = ({ size = 20, color = colors.green, strokeWidth = 1.8 }: P) => (
   <Svg {...base(size, color, strokeWidth)}><Path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></Svg>
 );

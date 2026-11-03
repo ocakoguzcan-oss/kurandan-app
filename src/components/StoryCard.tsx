@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { Text } from './Text';
 import Svg, { G, Rect } from 'react-native-svg';
 import { CumaAyet, StoryTheme } from '../data/cuma';
 import { fonts } from '../theme';

@@ -64,12 +64,20 @@ assets/                Logo, uygulama ikonu, açılış ekranı
 | Renkler, yazı tipleri | `src/theme.ts` |
 | Yeni yılın Ramazan tarihi | `src/lib/hijri.ts` → `RAMAZANLAR` (Diyanet takvimi açıklanınca bir satır ekleyin) |
 | Instagram profil adresi | `app/(tabs)/reels.tsx` → `PROFILE_URL` |
+| Kandil ve dini günler | `src/data/diniGunler.ts` (Diyanet takvimi açıklanınca ekleyin) |
+| Ezan kaydı | `assets/sounds/ezan.wav` dosyasını değiştirin (WAV, en fazla 30 sn), sonra `src/config.ts` → `EZAN_KAYDI_HAZIR = true` |
 
 > **Önemli:** `src/data/dualar.ts` içindeki Arapça metinleri, okunuşları ve mealleri yayından önce bir hocaya kontrol ettirin.
 
 ---
 
-## 3. Vakitler nasıl hesaplanıyor?
+## 3. Kur'an-ı Kerim sekmesi
+
+Medine Mushafı'nın 604 sayfası gerçek satır düzeniyle gösterilir; sayfalar ilk açılışta indirilir, sonra cihazda saklanır. Bir satıra dokununca yalnızca o satır, Play ile sayfa okunur; sayfa bitince çevirme sesiyle bir sonraki sayfadan kesintisiz devam eder. Okunan kelime renkle vurgulanır. Tilavet: Mahmud Halil el-Husarî.
+
+Veri, font ve sesler Quran Foundation'dan (quran.com) gelir; uygulamada kaynak belirtilir. Kullanım koşulları gereği bir **Quran Foundation Developer Console** hesabı açın: https://api-docs.quran.foundation/docs/quickstart
+
+## 4. Vakitler nasıl hesaplanıyor?
 
 Vakitler internet olmadan, cihazda Diyanet İşleri Başkanlığı yöntemiyle hesaplanır (imsak 18°, yatsı 17°, temkinler: güneş −7, öğle +5, ikindi +4, akşam +7 dk). Kasım 2026 İstanbul verisiyle karşılaştırıldığında 18 vakitten 15'i birebir aynı, kalanlarda 1 dakika fark var. Diyanet ilçe bazında kendi koordinatlarını kullandığı için ilçelerde 1–2 dakika fark çıkabilir.
 

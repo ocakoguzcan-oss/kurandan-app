@@ -17,7 +17,10 @@
           "instagram",
           "instagram-stories"
         ],
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -48,6 +51,12 @@
           "backgroundColor": "#F3ECDC"
         }
       ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false
+        }
+      ],
       "expo-font",
       "expo-video",
       [
@@ -60,7 +69,10 @@
         "expo-notifications",
         {
           "icon": "./assets/notification-icon.png",
-          "color": "#18583C"
+          "color": "#18583C",
+          "sounds": [
+            "./assets/sounds/ezan.wav"
+          ]
         }
       ],
       [

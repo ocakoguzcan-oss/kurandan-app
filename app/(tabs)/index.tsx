@@ -1,24 +1,33 @@
-import React, { useMemo } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import { Link, router } from 'expo-router';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 import { Screen, Card, Eyebrow, RoundButton } from '../../src/components/ui';
-import { IconAlarm, IconBell, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
+import { IconBell, IconBook, IconCalendar, IconCheck, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
 import { colors, fonts, radius } from '../../src/theme';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
 import { duaForDate } from '../../src/data/dualar';
+import { upcomingDiniGunler } from '../../src/data/diniGunler';
+import { useHatim } from '../../src/lib/hatim';
+import { countDay, dayKey as namazDayKey, useNamaz } from '../../src/lib/namazTakip';
+import { getPermissionStatus } from '../../src/lib/notifications';
+import { loadPrefs } from '../../src/lib/prefs';
+import { TOTAL_PAGES } from '../../src/lib/quran';
 
 const AYLAR = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
 
 const FEATURES = [
+  { href: '/kuran', label: "Kur'an-ı Kerim", Icon: IconBook },
   { href: '/kible', label: 'Kıble', Icon: IconCompass },
   { href: '/zikir', label: 'Zikirmatik', Icon: IconTasbih },
+  { href: '/namaz-takip', label: 'Namaz Takibi', Icon: IconCheck },
+  { href: '/imsakiye', label: 'İmsakiye', Icon: IconMoon },
+  { href: '/dini-gunler', label: 'Dini Günler', Icon: IconCalendar },
   { href: '/cuma', label: 'Cuma Story', Icon: IconStory },
   { href: '/reels', label: 'Reels', Icon: IconReels },
-  { href: '/imsakiye', label: 'İmsakiye', Icon: IconMoon },
-  { href: '/ayarlar', label: 'Hatırlatma', Icon: IconAlarm },
 ] as const;
 
 export default function Home() {
@@ -31,6 +40,19 @@ export default function Home() {
   const { dua } = useMemo(() => duaForDate(now), [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
   const hijri = useMemo(() => formatHijriAr(toHijri(now)), [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
   const rDay = ramazanDay(now);
+  const hatim = useHatim();
+  const namaz = useNamaz();
+  const kildim = countDay(namaz, namazDayKey(now));
+  const nextGun = useMemo(() => upcomingDiniGunler(now)[0], [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // İlk açılışta bildirim izni yoksa animasyonlu anlatımı bir kez göster.
+  useEffect(() => {
+    Promise.all([loadPrefs(), getPermissionStatus()])
+      .then(([prefs, perm]) => {
+        if (!prefs.permissionIntroShown && perm.status !== 'granted') router.push('/izin');
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <Screen>
@@ -98,12 +120,46 @@ export default function Home() {
         </Pressable>
       </Link>
 
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={`Kur'an-ı Kerim, kaldığınız yer sayfa ${hatim.lastPage}`}
+          onPress={() => router.push({ pathname: '/kuran', params: { sayfa: String(hatim.lastPage) } })}
+          style={[st.mini, { flex: 1.2 }]}
+        >
+          <Eyebrow>Kaldığınız yer</Eyebrow>
+          <Text style={st.miniBig}>{`Sayfa ${hatim.lastPage}`}</Text>
+          <View style={st.miniBar}>
+            <View style={[st.miniFill, { width: `${Math.max(3, (hatim.read.length / TOTAL_PAGES) * 100)}%` }]} />
+          </View>
+          <Text style={st.muted}>{`Bugün ${hatim.todayPages.length}/${hatim.goal} sayfa`}</Text>
+        </Pressable>
+        <Pressable accessibilityRole="link" onPress={() => router.push('/namaz-takip')} style={[st.mini, { flex: 1 }]}>
+          <Eyebrow>Bugün kıldım</Eyebrow>
+          <Text style={st.miniBig}>{`${kildim} / 5`}</Text>
+          <Text style={st.muted}>Vakitleri işaretle</Text>
+        </Pressable>
+      </View>
+
+      {nextGun && (
+        <Pressable accessibilityRole="link" onPress={() => router.push('/dini-gunler')}>
+          <Card style={st.gunCard}>
+            <IconMoon size={24} />
+            <View style={{ flex: 1 }}>
+              <Text style={st.gunName}>{nextGun.name}</Text>
+              <Text style={st.muted}>{nextGun.daysLeft === 0 ? (nextGun.kind === 'kandil' ? 'Bu gece' : 'Bugün') : `${nextGun.daysLeft} gün kaldı`}</Text>
+            </View>
+            <Text style={st.gunMore}>Tümü ›</Text>
+          </Card>
+        </Pressable>
+      )}
+
       <View style={st.grid}>
         {FEATURES.map(({ href, label, Icon }) => (
           <Link key={href} href={href} asChild>
             <Pressable accessibilityRole="link" style={st.tile}>
-              <Icon size={26} />
-              <Text style={st.tileLabel}>{label}</Text>
+              <Icon size={26} color={colors.green} />
+              <Text style={st.tileLabel} numberOfLines={2}>{label}</Text>
             </Pressable>
           </Link>
         ))}
@@ -138,17 +194,25 @@ const st = StyleSheet.create({
   muted: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
   duaAr: { fontFamily: fonts.arabic, fontSize: 20, lineHeight: 34, color: colors.green, textAlign: 'right', writingDirection: 'rtl' },
   duaTr: { fontFamily: fonts.body, fontSize: 13, lineHeight: 20, color: colors.inkSoft },
+  mini: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, padding: 14, gap: 4 },
+  miniBig: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.green },
+  miniBar: { height: 5, borderRadius: 3, backgroundColor: colors.cardBorder, overflow: 'hidden', marginVertical: 2 },
+  miniFill: { height: 5, backgroundColor: colors.gold },
+  gunCard: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12 },
+  gunName: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
+  gunMore: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   tile: {
-    width: '31.5%',
+    width: '22%',
     flexGrow: 1,
     backgroundColor: colors.card,
     borderWidth: 1,
     borderColor: colors.cardBorder,
     borderRadius: 18,
-    paddingVertical: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 4,
     alignItems: 'center',
     gap: 8,
   },
-  tileLabel: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.ink },
+  tileLabel: { fontFamily: fonts.bodySemi, fontSize: 12, lineHeight: 15, color: colors.ink, textAlign: 'center' },
 });

@@ -63,6 +63,10 @@ export default function RootLayout() {
           <Stack.Screen name="cuma" />
           <Stack.Screen name="imsakiye" />
           <Stack.Screen name="konum" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="izin" options={{ presentation: 'fullScreenModal' }} />
+          <Stack.Screen name="ezan" />
+          <Stack.Screen name="namaz-takip" />
+          <Stack.Screen name="dini-gunler" />
         </Stack>
       </AppProvider>
     </SafeAreaProvider>

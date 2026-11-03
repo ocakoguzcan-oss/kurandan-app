@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Share, StyleSheet, Text, View } from 'react-native';
+import { Share, StyleSheet, View } from 'react-native';
+import { Text } from '../src/components/Text';
 import { Screen, Button, Eyebrow } from '../src/components/ui';
 import { IconBookmark, IconShare, StarOrnament } from '../src/components/Icons';
 import { colors, fonts, radius } from '../src/theme';
