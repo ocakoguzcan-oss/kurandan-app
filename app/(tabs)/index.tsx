@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { Link, router } from 'expo-router';
@@ -13,8 +13,7 @@ import { duaForDate } from '../../src/data/dualar';
 import { upcomingDiniGunler } from '../../src/data/diniGunler';
 import { useHatim } from '../../src/lib/hatim';
 import { countDay, dayKey as namazDayKey, useNamaz } from '../../src/lib/namazTakip';
-import { getPermissionStatus } from '../../src/lib/notifications';
-import { loadPrefs } from '../../src/lib/prefs';
+import { useTour, useTourTarget } from '../../src/tour/Tour';
 import { TOTAL_PAGES } from '../../src/lib/quran';
 
 const AYLAR = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
@@ -45,21 +44,20 @@ export default function Home() {
   const kildim = countDay(namaz, namazDayKey(now));
   const nextGun = useMemo(() => upcomingDiniGunler(now)[0], [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // İlk açılışta bildirim izni yoksa animasyonlu anlatımı bir kez göster.
-  useEffect(() => {
-    Promise.all([loadPrefs(), getPermissionStatus()])
-      .then(([prefs, perm]) => {
-        if (!prefs.permissionIntroShown && perm.status !== 'granted') router.push('/izin');
-      })
-      .catch(() => {});
-  }, []);
+  const tour = useTour();
+  const tPlace = useTourTarget('place');
+  const tHero = useTourTarget('hero');
+  const tDua = useTourTarget('dua');
+  const tTrackers = useTourTarget('trackers');
+  const tGun = useTourTarget('dinigun');
+  const tGrid = useTourTarget('grid');
 
   return (
-    <Screen>
+    <Screen scrollRef={tour.scroll.ref} onScroll={tour.scroll.onScroll}>
       <View style={st.top}>
         <View style={st.topLeft}>
           <Image source={require('../../assets/logo.png')} style={st.logo} accessibilityLabel="Kurandan.ai logosu" />
-          <View style={{ flexShrink: 1 }}>
+          <View ref={tPlace} collapsable={false} style={{ flexShrink: 1 }}>
             <Text style={st.greet}>Selâmün aleyküm</Text>
             <Pressable accessibilityRole="button" accessibilityLabel="Konumu değiştir" onPress={() => router.push('/konum')} style={st.placeRow}>
               <Text style={st.place} numberOfLines={1}>{place.label}</Text>
@@ -72,7 +70,7 @@ export default function Home() {
         </RoundButton>
       </View>
 
-      <View style={st.hero}>
+      <View ref={tHero} collapsable={false} style={st.hero}>
         <Svg width={160} height={160} viewBox="0 0 100 100" style={st.heroStar}>
           <G fill="none" stroke={colors.goldLight} strokeWidth={2}>
             <Rect x={22} y={22} width={56} height={56} />
@@ -107,6 +105,7 @@ export default function Home() {
         </View>
       </View>
 
+      <View ref={tDua} collapsable={false}>
       <Link href="/dua" asChild>
         <Pressable accessibilityRole="link">
           <Card style={{ gap: 8 }}>
@@ -119,8 +118,9 @@ export default function Home() {
           </Card>
         </Pressable>
       </Link>
+      </View>
 
-      <View style={{ flexDirection: 'row', gap: 10 }}>
+      <View ref={tTrackers} collapsable={false} style={{ flexDirection: 'row', gap: 10 }}>
         <Pressable
           accessibilityRole="link"
           accessibilityLabel={`Kur'an-ı Kerim, kaldığınız yer sayfa ${hatim.lastPage}`}
@@ -142,6 +142,7 @@ export default function Home() {
       </View>
 
       {nextGun && (
+        <View ref={tGun} collapsable={false}>
         <Pressable accessibilityRole="link" onPress={() => router.push('/dini-gunler')}>
           <Card style={st.gunCard}>
             <IconMoon size={24} />
@@ -152,9 +153,10 @@ export default function Home() {
             <Text style={st.gunMore}>Tümü ›</Text>
           </Card>
         </Pressable>
+        </View>
       )}
 
-      <View style={st.grid}>
+      <View ref={tGrid} collapsable={false} style={st.grid}>
         {FEATURES.map(({ href, label, Icon }) => (
           <Link key={href} href={href} asChild>
             <Pressable accessibilityRole="link" style={st.tile}>

@@ -8,17 +8,22 @@ import { Button, s as ui } from '../src/components/ui';
 import { IconPin } from '../src/components/Icons';
 import { colors, fonts } from '../src/theme';
 import { useApp } from '../src/context/AppContext';
+import { useTour } from '../src/tour/Tour';
 
 export default function KonumScreen() {
   const insets = useSafeAreaInsets();
   const { place, setIl, locateWithGps } = useApp();
   const [busy, setBusy] = useState(false);
+  const tour = useTour();
 
   const gps = async () => {
     setBusy(true);
     try {
       const ok = await locateWithGps();
-      if (ok) router.back();
+      if (ok) {
+        tour.cityChosen();
+        router.back();
+      }
       else Alert.alert('Konum izni verilmedi', 'Listeden ilinizi seçebilirsiniz.');
     } catch {
       Alert.alert('Konum alınamadı', 'Lütfen listeden ilinizi seçin.');
@@ -33,6 +38,7 @@ export default function KonumScreen() {
         selected={place.source === 'il' ? place.ilPlaka : undefined}
         onSelect={(il) => {
           setIl(il);
+          tour.cityChosen();
           router.back();
         }}
         header={

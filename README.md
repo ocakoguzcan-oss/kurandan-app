@@ -64,6 +64,7 @@ assets/                Logo, uygulama ikonu, açılış ekranı
 | Renkler, yazı tipleri | `src/theme.ts` |
 | Yeni yılın Ramazan tarihi | `src/lib/hijri.ts` → `RAMAZANLAR` (Diyanet takvimi açıklanınca bir satır ekleyin) |
 | Instagram profil adresi | `app/(tabs)/reels.tsx` → `PROFILE_URL` |
+| İlk açılış tanıtımındaki yazılar | `src/tour/Tour.tsx` → `STEPS` |
 | Kandil ve dini günler | `src/data/diniGunler.ts` (Diyanet takvimi açıklanınca ekleyin) |
 | Ezan kaydı | `assets/sounds/ezan.wav` dosyasını değiştirin (WAV, en fazla 30 sn), sonra `src/config.ts` → `EZAN_KAYDI_HAZIR = true` |
 

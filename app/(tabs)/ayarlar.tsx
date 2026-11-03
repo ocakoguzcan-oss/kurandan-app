@@ -9,11 +9,13 @@ import { formatTime, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/l
 import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus } from '../../src/lib/notifications';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { EZAN_KAYDI_HAZIR } from '../../src/config';
+import { useTour } from '../../src/tour/Tour';
 
 export default function Ayarlar() {
   const { place, reminders, setReminders } = useApp();
   const times = useMemo(() => getPrayerTimes(new Date(), place.lat, place.lng), [place.lat, place.lng]);
   const prefs = usePrefs();
+  const tour = useTour();
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
   useFocusEffect(
     useCallback(() => {
@@ -106,9 +108,13 @@ export default function Ayarlar() {
           <Text style={st.name}>Konum</Text>
           <Text style={st.link} numberOfLines={1}>{`${place.label} ›`}</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={() => router.push('/izin')} style={st.row}>
-          <Text style={st.name}>Bildirim izinleri</Text>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/izin')} style={[st.row, st.divider]}>
+          <Text style={st.name}>İzinler</Text>
           <Text style={st.link}>{perm === 'granted' ? 'Açık ›' : 'Nasıl açılır ›'}</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={tour.restart} style={st.row}>
+          <Text style={st.name}>Tanıtımı tekrar izle</Text>
+          <Text style={st.link}>Başlat ›</Text>
         </Pressable>
       </Card>
 

@@ -3,10 +3,12 @@ import { useSyncExternalStore } from 'react';
 import { load, save } from './storage';
 
 export type MushafSize = 1 | 2 | 3;
-export type Prefs = { largeText: boolean; permissionIntroShown: boolean; mushafSize: MushafSize };
+/** İlk açılış akışı: şehir seçimi → izinler → bölüm tanıtımı → bitti */
+export type OnboardingPhase = 'city' | 'perm' | 'sections' | 'done';
+export type Prefs = { largeText: boolean; permissionIntroShown: boolean; mushafSize: MushafSize; onboarding: OnboardingPhase };
 
 const KEY = 'kurandan.prefs.v1';
-const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1 };
+const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1, onboarding: 'city' };
 let state: Prefs = initial;
 let loaded = false;
 const listeners = new Set<() => void>();

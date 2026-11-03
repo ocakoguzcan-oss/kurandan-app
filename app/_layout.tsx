@@ -15,6 +15,7 @@ import {
   PlusJakartaSans_700Bold,
 } from '@expo-google-fonts/plus-jakarta-sans';
 import { AppProvider } from '../src/context/AppContext';
+import { TourProvider } from '../src/tour/Tour';
 import { colors } from '../src/theme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -57,6 +58,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <AppProvider>
         <StatusBar style="dark" />
+        <TourProvider>
         <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="dua" />
@@ -68,6 +70,7 @@ export default function RootLayout() {
           <Stack.Screen name="namaz-takip" />
           <Stack.Screen name="dini-gunler" />
         </Stack>
+        </TourProvider>
       </AppProvider>
     </SafeAreaProvider>
   );

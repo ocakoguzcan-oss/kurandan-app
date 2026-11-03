@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, ScrollView, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { Text } from './Text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -13,6 +13,8 @@ export function Screen({
   scroll = true,
   children,
   contentStyle,
+  scrollRef,
+  onScroll,
 }: {
   title?: string;
   back?: boolean;
@@ -20,6 +22,8 @@ export function Screen({
   scroll?: boolean;
   children: React.ReactNode;
   contentStyle?: StyleProp<ViewStyle>;
+  scrollRef?: React.Ref<ScrollView>;
+  onScroll?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }) {
   const insets = useSafeAreaInsets();
   const header = title ? (
@@ -51,7 +55,7 @@ export function Screen({
     );
   }
   return (
-    <ScrollView style={s.root} contentContainerStyle={[pad, s.scrollContent, contentStyle]}>
+    <ScrollView ref={scrollRef} onScroll={onScroll} scrollEventThrottle={32} style={s.root} contentContainerStyle={[pad, s.scrollContent, contentStyle]}>
       {header}
       {children}
     </ScrollView>

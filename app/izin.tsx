@@ -1,101 +1,168 @@
-// Bildirim izni için adım adım, animasyonlu anlatım. Yaşlı kullanıcılar için büyük yazı ve
-// tek bir büyük düğme; sistem penceresinde nereye dokunulacağı parmak animasyonuyla gösterilir.
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, AppState, Easing, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
+// Tüm izinler tek ekranda, tek düğmeyle: bildirim (ezan), konum (kıble ve vakit), fotoğraflar
+// (Cuma görselini kaydetmek). Yaşlı kullanıcılar için büyük yazı; sistem penceresinde nereye
+// dokunulacağı parmak animasyonuyla gösterilir. İzin reddedilirse Ayarlar'dan açma anlatılır.
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, AppState, Easing, Linking, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Location from 'expo-location';
+import * as MediaLibrary from 'expo-media-library/legacy';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import { Text } from '../src/components/Text';
 import { colors, fonts } from '../src/theme';
-import { IconBell, IconCheck } from '../src/components/Icons';
+import { IconBell, IconCheck, IconCompass, IconStory } from '../src/components/Icons';
 import { getPermissionStatus, requestPermission } from '../src/lib/notifications';
-import { setPrefs } from '../src/lib/prefs';
+import { setPrefs, usePrefs } from '../src/lib/prefs';
 import { useApp } from '../src/context/AppContext';
+import { useTour } from '../src/tour/Tour';
 
 type Step = 'anlat' | 'ayarlar' | 'tamam';
+type Perm = 'granted' | 'denied' | 'undetermined';
+type PermKey = 'bildirim' | 'konum' | 'foto';
+type PermState = Record<PermKey, { status: Perm; canAsk: boolean }>;
+
+const PERMS: { key: PermKey; title: string; why: string; Icon: typeof IconBell }[] = [
+  { key: 'bildirim', title: 'Bildirimler', why: 'Vakit girince ezan sesiyle haber verelim', Icon: IconBell },
+  { key: 'konum', title: 'Konum', why: 'Kıble yönü ve bulunduğunuz yerin vakitleri', Icon: IconCompass },
+  { key: 'foto', title: 'Fotoğraflar', why: 'Cuma görselini galerinize kaydedebilmek için', Icon: IconStory },
+];
+
+const norm = (granted: boolean, status: string): Perm => (granted ? 'granted' : status === 'undetermined' ? 'undetermined' : 'denied');
+
+async function readAll(): Promise<PermState> {
+  const [n, l, f] = await Promise.all([
+    getPermissionStatus().catch(() => ({ status: 'undetermined' as Perm, canAskAgain: true })),
+    Location.getForegroundPermissionsAsync().catch(() => null),
+    MediaLibrary.getPermissionsAsync(true).catch(() => null),
+  ]);
+  return {
+    bildirim: { status: n.status, canAsk: n.canAskAgain },
+    konum: l ? { status: norm(l.granted, l.status), canAsk: l.canAskAgain } : { status: 'undetermined', canAsk: true },
+    foto: f ? { status: norm(f.granted, f.status), canAsk: f.canAskAgain } : { status: 'undetermined', canAsk: true },
+  };
+}
 
 export default function IzinScreen() {
   const insets = useSafeAreaInsets();
   const { reminders, setReminders } = useApp();
+  const tour = useTour();
+  const onboarding = usePrefs().onboarding === 'perm';
   const [step, setStep] = useState<Step>('anlat');
+  const [perms, setPerms] = useState<PermState | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const refresh = useCallback(async (afterAsk = false) => {
+    const p = await readAll();
+    setPerms(p);
+    const all = PERMS.every((x) => p[x.key].status === 'granted');
+    if (all) {
+      setStep('tamam');
+      setReminders({ ...reminders }); // hatırlatmaları hemen kur
+    } else if (afterAsk || PERMS.some((x) => p[x.key].status === 'denied' && !p[x.key].canAsk)) {
+      setStep(PERMS.some((x) => p[x.key].status !== 'granted' && !p[x.key].canAsk) ? 'ayarlar' : 'anlat');
+    }
+    if (p.bildirim.status === 'granted') setReminders({ ...reminders });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reminders]);
 
   useEffect(() => {
     setPrefs({ permissionIntroShown: true });
-    getPermissionStatus().then((p) => {
-      if (p.status === 'granted') setStep('tamam');
-      else if (p.status === 'denied') setStep('ayarlar');
-    });
-    // Ayarlardan geri dönülünce izni tekrar kontrol et
-    const sub = AppState.addEventListener('change', (s) => {
-      if (s === 'active')
-        getPermissionStatus().then((p) => {
-          if (p.status === 'granted') {
-            setStep('tamam');
-            setReminders({ ...reminders }); // hatırlatmaları hemen kur
-          }
-        });
-    });
+    refresh();
+    // Ayarlardan geri dönülünce izinleri tekrar kontrol et
+    const sub = AppState.addEventListener('change', (s) => s === 'active' && refresh());
     return () => sub.remove();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const ask = async () => {
-    const ok = await requestPermission();
-    if (ok) {
-      setStep('tamam');
-      setReminders({ ...reminders });
-    } else setStep('ayarlar');
+  const askAll = async () => {
+    setBusy(true);
+    try {
+      const p = perms ?? (await readAll());
+      if (p.bildirim.status !== 'granted' && p.bildirim.canAsk) await requestPermission().catch(() => false);
+      if (p.konum.status !== 'granted' && p.konum.canAsk) await Location.requestForegroundPermissionsAsync().catch(() => null);
+      if (p.foto.status !== 'granted' && p.foto.canAsk) await MediaLibrary.requestPermissionsAsync(true).catch(() => null);
+    } finally {
+      setBusy(false);
+      refresh(true);
+    }
   };
 
-  const close = () => (router.canGoBack() ? router.back() : router.replace('/'));
+  const close = () => {
+    tour.permissionsDone();
+    router.canGoBack() ? router.back() : router.replace('/');
+  };
+
+  const missing = perms ? PERMS.filter((x) => perms[x.key].status !== 'granted') : [];
 
   return (
-    <View style={[st.root, { paddingTop: insets.top + 16, paddingBottom: insets.bottom + 20 }]}>
+    <View style={[st.root, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 }]}>
       {step === 'anlat' && (
-        <>
+        <ScrollView contentContainerStyle={{ gap: 16 }} showsVerticalScrollIndicator={false}>
           <View style={st.top}>
             <PulsingBell />
-            <Text style={st.h1}>Ezan vaktini kaçırmayın</Text>
-            <Text style={st.lead}>Namaz vakti girdiğinde telefonunuz ezan sesiyle haber versin.</Text>
+            <Text style={st.h1}>Birkaç izin gerekiyor</Text>
+            <Text style={st.lead}>Uygulamanın tüm bölümlerinin çalışması için bir kez izin vermeniz yeterli.</Text>
+          </View>
+          <View style={st.permList}>
+            {PERMS.map(({ key, title, why, Icon }) => {
+              const ok = perms?.[key].status === 'granted';
+              return (
+                <View key={key} style={st.permRow}>
+                  <View style={st.permIcon}>
+                    <Icon size={24} color={colors.green} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={st.permTitle}>{title}</Text>
+                    <Text style={st.permWhy}>{why}</Text>
+                  </View>
+                  {ok && (
+                    <View style={st.permOk}>
+                      <IconCheck size={18} color={colors.paper} strokeWidth={3} />
+                    </View>
+                  )}
+                </View>
+              );
+            })}
           </View>
           <AlertDemo />
           <View style={st.steps}>
-            <StepRow n={1} text="Aşağıdaki yeşil Devam düğmesine dokunun." />
-            <StepRow n={2} text="Çıkan pencerede “İzin Ver”e dokunun." />
+            <StepRow n={1} text="Aşağıdaki yeşil “İzin ver” düğmesine dokunun." />
+            <StepRow n={2} text="Çıkan her pencerede “İzin Ver”e dokunun." />
+            <StepRow n={3} text="Konum sorulursa “Uygulamayı Kullanırken İzin Ver”i seçin." />
           </View>
-          <BigButton label="Devam" onPress={ask} />
+          <BigButton label={busy ? 'Bekleyin…' : 'İzin ver'} onPress={askAll} />
           <Pressable accessibilityRole="button" onPress={close} style={st.later}>
             <Text style={st.laterText}>Daha sonra</Text>
           </Pressable>
-        </>
+        </ScrollView>
       )}
 
       {step === 'ayarlar' && (
-        <>
+        <ScrollView contentContainerStyle={{ gap: 18 }} showsVerticalScrollIndicator={false}>
           <View style={st.top}>
-            <Text style={st.h1}>İzni Ayarlar’dan açalım</Text>
-            <Text style={st.lead}>İzin verilmemiş. Telefonunuzun Ayarlar’ından birkaç dokunuşla açabilirsiniz.</Text>
+            <Text style={st.h1}>İzinleri Ayarlar’dan açalım</Text>
+            <Text style={st.lead}>{`Şu izinler kapalı: ${missing.map((m) => m.title).join(', ')}. Telefonunuzun Ayarlar’ından birkaç dokunuşla açabilirsiniz.`}</Text>
           </View>
           <SettingsDemo />
           <View style={st.steps}>
-            <StepRow n={1} text="Aşağıdaki Ayarları Aç düğmesine dokunun." />
-            <StepRow n={2} text={Platform.OS === 'ios' ? '“Bildirimler”e dokunun.' : '“Bildirimler”e dokunun.'} />
-            <StepRow n={3} text="“Bildirimlere İzin Ver” anahtarını açın, sonra uygulamaya geri dönün." />
+            <StepRow n={1} text="Aşağıdaki “Ayarları Aç” düğmesine dokunun." />
+            <StepRow n={2} text={`Açılan sayfada ${missing.map((m) => `“${m.title}”`).join(', ')} satırına dokunun.`} />
+            <StepRow n={3} text={Platform.OS === 'ios' ? 'İzni açın (konum için “Uygulamayı Kullanırken”), sonra uygulamaya geri dönün.' : 'İzni açın, sonra uygulamaya geri dönün.'} />
           </View>
           <BigButton label="Ayarları Aç" onPress={() => Linking.openSettings()} />
           <Pressable accessibilityRole="button" onPress={close} style={st.later}>
             <Text style={st.laterText}>Daha sonra</Text>
           </Pressable>
-        </>
+        </ScrollView>
       )}
 
       {step === 'tamam' && (
         <View style={[st.top, { flex: 1, justifyContent: 'center' }]}>
           <SuccessCheck />
           <Text style={st.h1}>Teşekkürler!</Text>
-          <Text style={st.lead}>Namaz vakitlerinde size haber vereceğiz. Ayarlar sekmesinden istediğiniz vakitleri seçebilirsiniz.</Text>
+          <Text style={st.lead}>{onboarding ? 'Her şey hazır. Şimdi size uygulamayı kısaca tanıtalım.' : 'Her şey hazır. Ezan vakitlerinde size haber vereceğiz.'}</Text>
           <View style={{ height: 24 }} />
-          <BigButton label="Tamam" onPress={close} />
+          <BigButton label={onboarding ? 'Devam' : 'Tamam'} onPress={close} />
         </View>
       )}
     </View>
@@ -205,7 +272,7 @@ function SettingsDemo() {
   const rows = [
     { label: 'Ayarlar', o: hl(0.05, 0.25) },
     { label: 'Kurandan', o: hl(0.27, 0.47) },
-    { label: 'Bildirimler', o: hl(0.49, 0.69) },
+    { label: 'Bildirimler · Konum · Fotoğraflar', o: hl(0.49, 0.69) },
   ];
   return (
     <View style={st.settings} accessible accessibilityLabel="Örnek: Ayarlar, Kurandan, Bildirimler ve izin anahtarını açma">
@@ -219,7 +286,7 @@ function SettingsDemo() {
       ))}
       <View style={[st.setRow, { borderBottomWidth: 0 }]}>
         <Text style={st.setNo}>4</Text>
-        <Text style={[st.setLabel, { flex: 1 }]}>Bildirimlere İzin Ver</Text>
+        <Text style={[st.setLabel, { flex: 1 }]}>İzin Ver</Text>
         <View style={st.track}>
           <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: '#34C759', borderRadius: 16, opacity: trackOn }]} />
           <Animated.View style={[st.knob, { transform: [{ translateX: knob }] }]} />
@@ -243,6 +310,12 @@ function SuccessCheck() {
 
 const st = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.paper, paddingHorizontal: 22, gap: 18 },
+  permList: { backgroundColor: colors.card, borderRadius: 18, borderWidth: 1, borderColor: colors.cardBorder, paddingHorizontal: 14 },
+  permRow: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 68, borderBottomWidth: 1, borderBottomColor: colors.divider },
+  permIcon: { width: 44, height: 44, borderRadius: 22, backgroundColor: colors.greenTint, alignItems: 'center', justifyContent: 'center' },
+  permTitle: { fontFamily: fonts.bodyBold, fontSize: 18, color: colors.ink },
+  permWhy: { fontFamily: fonts.body, fontSize: 15, lineHeight: 21, color: colors.muted },
+  permOk: { width: 30, height: 30, borderRadius: 15, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
   top: { alignItems: 'center', gap: 10 },
   bell: { width: 88, height: 88, borderRadius: 44, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
   h1: { fontFamily: fonts.displayBold, fontSize: 28, color: colors.green, textAlign: 'center' },
