@@ -55,7 +55,8 @@
       [
         "expo-audio",
         {
-          "microphonePermission": false
+          "microphonePermission": false,
+          "enableBackgroundPlayback": true
         }
       ],
       "expo-font",
@@ -107,7 +108,9 @@
       "eas": {
         "projectId": "bb04fc89-875e-494a-b400-e32a0922aff6"
       },
-      "supportsRTL": true
+      "supportsRTL": true,
+      "revenuecatIosKey": "BURAYA_REVENUECAT_IOS_ANAHTARI",
+      "revenuecatAndroidKey": "BURAYA_REVENUECAT_ANDROID_ANAHTARI"
     },
     "owner": "kurandanai",
     "runtimeVersion": {

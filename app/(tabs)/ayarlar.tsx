@@ -11,6 +11,7 @@ import { countryName } from '../../src/data/world';
 import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus } from '../../src/lib/notifications';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
+import { usePremium } from '../../src/lib/premium';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -19,6 +20,7 @@ export default function Ayarlar() {
   const lang = getLang();
   const prefs = usePrefs();
   const tour = useTour();
+  const premium = usePremium();
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
   useFocusEffect(
     useCallback(() => {
@@ -106,6 +108,13 @@ export default function Ayarlar() {
           </View>
           <Toggle label={t('Cuma hatırlatması')} value={reminders.cuma} onChange={(v) => setReminders({ ...reminders, cuma: v })} />
         </View>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/kilit-ekrani')} style={[st.row, st.divider]}>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>{t('Kilit ekranında Kur’an dinleme')}</Text>
+            <Text style={st.sub}>{t('Telefon kilitliyken tilavet devam eder')}</Text>
+          </View>
+          <Text style={st.link}>{premium.owned ? t('Açık ›') : premium.price ? `${premium.price} ›` : t('Aç ›')}</Text>
+        </Pressable>
         <Pressable accessibilityRole="button" onPress={() => router.push('/konum')} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 0 }}>
             <Text style={st.name}>{t('Konum')}</Text>

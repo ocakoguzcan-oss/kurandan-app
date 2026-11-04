@@ -131,7 +131,11 @@ Meta, Story paylaşımı için bir **Facebook App ID** ister. 4. adımda açtı�
 Yeni yerel paket, izin, ikon ya da SDK değişikliğinde önce `app.json` → `version` artırılır, sonra "App Store sürümü" çalıştırılır.
 Gizlilik ve destek sayfaları `docs/` klasöründedir (GitHub Pages ile yayınlanır).
 
-## 7. Mağazalarda yayınlama
+## 7. Uygulama içi satın alma: Kilit ekranında dinleme
+
+Ücretsiz sürümde ekran kilitlenince ya da başka uygulamaya geçince tilavet durur. Tek seferlik “Kilit ekranında dinleme” (0,99 USD) satın alınınca okuma arka planda sürer, kilit ekranında sure adı ve durdur/başlat görünür. Kod: `src/lib/premium.ts` (RevenueCat), ekran: `app/kilit-ekrani.tsx`. Kurulum adımları `premium.ts` başındadır; anahtarlar `app.json` → `extra.revenuecatIosKey` / `revenuecatAndroidKey`. Yeni derleme gerektirir (Expo Go'da gerçek satın alma yapılamaz).
+
+## 8. Mağazalarda yayınlama
 
 Gerekenler: [Apple Developer Program](https://developer.apple.com/programs/) üyeliği (yıllık ücretli) ve [Google Play Console](https://play.google.com/console) hesabı (tek seferlik ücret).
 

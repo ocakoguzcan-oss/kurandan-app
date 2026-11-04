@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, Text as RNText, Modal, Pressable, ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, AppState, FlatList, Text as RNText, Modal, Pressable, ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { Text } from '../../src/components/Text';
 import { Button, Card, Chip, Eyebrow } from '../../src/components/ui';
@@ -12,6 +12,7 @@ import { quranPlayer, PlayerState } from '../../src/lib/quranPlayer';
 import { loadHatim, markPageRead, resetHatim, setGoal, setLastPage, useHatim } from '../../src/lib/hatim';
 import { MushafSize, setPrefs, usePrefs } from '../../src/lib/prefs';
 import { normalizeTr } from '../../src/data/sureler';
+import { usePremium } from '../../src/lib/premium';
 import { t, tx } from '../../src/i18n';
 
 const PAGES = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
@@ -44,6 +45,18 @@ export default function Kuran() {
   useEffect(() => {
     getChapters().then(setChapters).catch(() => {});
   }, []);
+
+  // Ücretsiz sürümde ekran kilitlenince okuma durur; geri dönünce "kilit ekranında dinle" önerilir
+  const premium = usePremium();
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (s) => {
+      if (s === 'active' && quranPlayer.stoppedByLock) {
+        quranPlayer.stoppedByLock = false;
+        if (!premium.owned) setTimeout(() => router.push('/kilit-ekrani'), 400);
+      }
+    });
+    return () => sub.remove();
+  }, [premium.owned]);
 
   // Kaldığınız sayfayı yükle; liste o sayfadan açılır.
   useEffect(() => {
@@ -243,7 +256,15 @@ export default function Kuran() {
           <Text style={st.arrowText}>›</Text>
         </Pressable>
         </View>
-        <Text style={st.status} numberOfLines={1}>{status}</Text>
+        {playing && !premium.owned ? (
+          <Pressable accessibilityRole="button" onPress={() => router.push('/kilit-ekrani')} hitSlop={8}>
+            <Text style={[st.status, { color: colors.green, fontFamily: fonts.bodySemi }]} numberOfLines={1}>
+              {t('🔒 Ekran kilitlenince durur · Kilitliyken dinle ›')}
+            </Text>
+          </Pressable>
+        ) : (
+          <Text style={st.status} numberOfLines={1}>{status}</Text>
+        )}
       </View>
 
       <SurahPicker

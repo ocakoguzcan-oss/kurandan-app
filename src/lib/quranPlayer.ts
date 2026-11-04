@@ -1,8 +1,13 @@
 // Tilavet oynatıcısı: satır satır ya da sayfa sayfa okur, okunan kelimeyi bildirir,
 // sürekli modda sayfa bitince çevirme sesi çalıp sonraki sayfadan devam eder.
+// Ekran kilitlenince / uygulamadan çıkınca: "Kilit ekranında dinleme" satın alındıysa okuma sürer
+// ve kilit ekranında kontroller görünür; alınmadıysa okuma durur (kalınan yer saklanır).
+import { AppState } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { buildChunks, Chunk, getChapterAudio, getPage, prefetchPages, QWord, TOTAL_PAGES } from './quran';
+import { buildChunks, chapterName, Chunk, getChapterAudio, getChapters, getPage, prefetchPages, QWord, TOTAL_PAGES } from './quran';
+import { isPremium } from './premium';
+import { t } from '../i18n';
 
 export type PlayerMode = 'idle' | 'line' | 'word' | 'page';
 export type PlayerState = {
@@ -17,6 +22,8 @@ type Listener = (s: PlayerState) => void;
 
 const TICK_MS = 80;
 const KEEP_AWAKE_TAG = 'kurandan-tilavet';
+const RECITER = 'Mahmud Halil el-Husarî';
+const ARTWORK = 'https://raw.githubusercontent.com/ocakoguzcan-oss/kurandan-app/main/assets/icon.png';
 
 class QuranPlayer {
   private player: AudioPlayer | null = null;
@@ -30,6 +37,22 @@ class QuranPlayer {
   /** Durdur'a basıldığında kalınan yer: Play'e tekrar basınca buradan devam edilir. */
   resume: { page: number; line: number } | null = null;
   private lineById = new Map<number, number>();
+  private lockScreen = false;
+  /** Ücretsiz sürümde ekran kilitlendiği için durduysa (Kur'an ekranı satın alma önerir) */
+  stoppedByLock = false;
+
+  constructor() {
+    AppState.addEventListener('change', (s) => {
+      if (s === 'background' && this.state.mode !== 'idle' && !isPremium()) {
+        this.stoppedByLock = this.state.mode === 'page';
+        this.stop();
+      }
+    });
+  }
+
+  private get inBackground() {
+    return AppState.currentState !== 'active';
+  }
 
   subscribe(l: Listener) {
     this.listeners.add(l);
@@ -50,7 +73,8 @@ class QuranPlayer {
   }
 
   private async ensurePlayer(url: string) {
-    await setAudioModeAsync({ playsInSilentMode: true, shouldPlayInBackground: true }).catch(() => {});
+    // Kilit ekranı kontrolleri için başka uygulamaların sesiyle karışmamalı
+    await setAudioModeAsync({ playsInSilentMode: true, shouldPlayInBackground: isPremium(), interruptionMode: 'doNotMix' }).catch(() => {});
     if (!this.player) {
       this.player = createAudioPlayer({ uri: url });
       this.currentUrl = url;
@@ -103,7 +127,15 @@ class QuranPlayer {
           // Dosya erken biterse ya da takılırsa sonsuza dek beklememek için
           stalled = Math.abs(ms - last) < 1 && !p.playing ? stalled + 1 : 0;
           last = ms;
-          if (ms >= c.endMs - 30 || stalled > 40) {
+          const atEnd = p.duration > 0 && ms >= p.duration * 1000 - 400;
+          if (ms >= c.endMs - 30 || (stalled > 40 && atEnd)) {
+            this.stopTimer();
+            resolve(true);
+          } else if (stalled > 25 && !p.isBuffering && this.state.mode === 'page' && this.lockScreen) {
+            // Kilit ekranından duraklatıldı: okumayı bitir, kalınan yer saklı
+            this.stopTimer();
+            resolve(false);
+          } else if (stalled > 150) {
             this.stopTimer();
             resolve(true);
           }
@@ -171,14 +203,18 @@ class QuranPlayer {
         const chunks = await buildChunks(words, true);
         if (token !== this.token) break;
         this.set({ loading: false });
+        this.showOnLockScreen(pg.firstChapter, current);
         ok = await this.playChunks(chunks, token);
       } catch {
         ok = false;
       }
       if (!ok || token !== this.token) break;
       if (current >= TOTAL_PAGES) break;
-      this.player?.pause();
-      await this.playFlip();
+      // Ekran kapalıyken sesi kesmeden devam et (çevirme sesi yalnız ekran açıkken)
+      if (!this.inBackground) {
+        this.player?.pause();
+        await this.playFlip();
+      }
       if (token !== this.token) break;
       current += 1;
       startLine = 1;
@@ -193,8 +229,37 @@ class QuranPlayer {
     this.finish();
   }
 
+  /** Satın alındıysa kilit ekranında sure adı, sayfa ve okuyan görünür. */
+  private async showOnLockScreen(chapter: number, page: number) {
+    if (!isPremium() || !this.player) return;
+    let title = t('Sayfa {n}', { n: page });
+    try {
+      const ch = (await getChapters()).find((c) => c.id === chapter);
+      if (ch) title = `${t('{sure} Suresi', { sure: chapterName(ch) })} · ${title}`;
+    } catch {
+      // sure adı alınamazsa yalnız sayfa
+    }
+    const meta = { title, artist: RECITER, albumTitle: t("Kur'an-ı Kerim"), artworkUrl: ARTWORK };
+    try {
+      if (!this.lockScreen) {
+        this.player.setActiveForLockScreen(true, meta, { showSeekForward: false, showSeekBackward: false });
+        this.lockScreen = true;
+      } else this.player.updateLockScreenMetadata(meta);
+    } catch {
+      // eski derlemede kilit ekranı desteği yoksa sessizce geç
+    }
+  }
+
   private finish() {
     this.stopTimer();
+    if (this.lockScreen) {
+      try {
+        this.player?.clearLockScreenControls();
+      } catch {
+        // yok say
+      }
+      this.lockScreen = false;
+    }
     this.player?.pause();
     deactivateKeepAwake(KEEP_AWAKE_TAG);
     this.set({ mode: 'idle', loading: false, line: null, wordId: null });
