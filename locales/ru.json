@@ -1,6 +1,8 @@
 {
-  "CFBundleDisplayName": "Kurandan",
-  "NSLocationWhenInUseUsageDescription": "Ваше местоположение используется для расчёта времени намаза и направления киблы.",
-  "NSPhotoLibraryAddUsageDescription": "Разрешение нужно, чтобы сохранять картинки для сторис в галерею.",
-  "NSPhotoLibraryUsageDescription": "Доступ к галерее позволяет поставить своё фото фоном для сторис."
+  "ios": {
+    "CFBundleDisplayName": "Kurandan",
+    "NSLocationWhenInUseUsageDescription": "Ваше местоположение используется для расчёта времени намаза и направления киблы.",
+    "NSPhotoLibraryAddUsageDescription": "Разрешение нужно, чтобы сохранять картинки для сторис в галерею.",
+    "NSPhotoLibraryUsageDescription": "Доступ к галерее позволяет поставить своё фото фоном для сторис."
+  }
 }
