@@ -58,8 +58,8 @@ assets/                Logo, uygulama ikonu, açılış ekranı
 
 | Ne | Nerede |
 |---|---|
-| Dua eklemek / düzeltmek | `src/data/dualar.ts` |
-| Cuma story ayetleri, renk şablonları | `src/data/cuma.ts` |
+| Dua eklemek / düzeltmek | `content/dualar.json` — GitHub'da düzenlenince **uygulama güncellemesi olmadan** herkese gelir (en geç 6 saat) |
+| Story sözleri, ayetler, renkler, desenler | `src/data/story.ts` |
 | Zikir listesi ve hedef sayılar | `src/data/zikirler.ts` |
 | Renkler, yazı tipleri | `src/theme.ts` |
 | Yeni yılın Ramazan tarihi | `src/lib/hijri.ts` → `RAMAZANLAR` (Diyanet takvimi açıklanınca bir satır ekleyin) |

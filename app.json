@@ -82,14 +82,22 @@
           "isAccessMediaLocationEnabled": false
         }
       ],
-      "./plugins/withInstagramQueries.js"
+      "./plugins/withInstagramQueries.js",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Story görselinin arka planına fotoğraf koyabilmeniz için galerinize erişim gerekir.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false
     },
     "extra": {
       "reelsApiUrl": "https://kurandan-app-server.vercel.app",
-      "facebookAppId": "",
+      "facebookAppId": "2376501199962705",
       "eas": {
         "projectId": "bb04fc89-875e-494a-b400-e32a0922aff6"
       }

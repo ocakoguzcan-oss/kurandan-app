@@ -9,7 +9,7 @@ import { colors, fonts, radius } from '../../src/theme';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
-import { duaForDate } from '../../src/data/dualar';
+import { duaForDate, useDualar } from '../../src/lib/dualar';
 import { upcomingDiniGunler } from '../../src/data/diniGunler';
 import { useHatim } from '../../src/lib/hatim';
 import { countDay, dayKey as namazDayKey, useNamaz } from '../../src/lib/namazTakip';
@@ -25,7 +25,7 @@ const FEATURES = [
   { href: '/namaz-takip', label: 'Namaz Takibi', Icon: IconCheck },
   { href: '/imsakiye', label: 'İmsakiye', Icon: IconMoon },
   { href: '/dini-gunler', label: 'Dini Günler', Icon: IconCalendar },
-  { href: '/cuma', label: 'Cuma Story', Icon: IconStory },
+  { href: '/cuma', label: 'Story Hazırla', Icon: IconStory },
   { href: '/reels', label: 'Reels', Icon: IconReels },
 ] as const;
 
@@ -36,7 +36,8 @@ export default function Home() {
 
   const times = useMemo(() => getPrayerTimes(now, place.lat, place.lng), [dayKey, place.lat, place.lng]); // eslint-disable-line react-hooks/exhaustive-deps
   const next = getNextPrayer(now, place.lat, place.lng);
-  const { dua } = useMemo(() => duaForDate(now), [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const duaLib = useDualar();
+  const dua = useMemo(() => duaForDate(now, duaLib.dualar), [dayKey, duaLib]); // eslint-disable-line react-hooks/exhaustive-deps
   const hijri = useMemo(() => formatHijriAr(toHijri(now)), [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
   const rDay = ramazanDay(now);
   const hatim = useHatim();
@@ -113,6 +114,7 @@ export default function Home() {
               <Eyebrow>Günün duası</Eyebrow>
               <Text style={st.muted}>{dua.kaynak}</Text>
             </View>
+            <Text style={st.duaNe} numberOfLines={2}>{dua.neIcin}</Text>
             <Text style={st.duaAr} numberOfLines={2}>{dua.arabic}</Text>
             <Text style={st.duaTr} numberOfLines={2}>{dua.meal}</Text>
           </Card>
@@ -197,6 +199,7 @@ const st = StyleSheet.create({
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   muted: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
   duaAr: { fontFamily: fonts.arabic, fontSize: 20, lineHeight: 34, color: colors.green, textAlign: 'right', writingDirection: 'rtl' },
+  duaNe: { fontFamily: fonts.bodySemi, fontSize: 13, lineHeight: 18, color: colors.goldText },
   duaTr: { fontFamily: fonts.body, fontSize: 13, lineHeight: 20, color: colors.inkSoft },
   mini: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, padding: 14, gap: 4 },
   miniBig: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.green },

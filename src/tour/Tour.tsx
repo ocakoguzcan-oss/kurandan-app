@@ -35,7 +35,7 @@ type Step = { title: string; text: string; target?: string; tab?: number };
 const TAB_COUNT = 6;
 const STEPS: Step[] = [
   { target: 'hero', title: 'Namaz vakitleri', text: 'Sıradaki vakit ve kalan süre burada. Altında bugünün bütün vakitleri yazar.' },
-  { target: 'dua', title: 'Günün duası', text: 'Her gün Kur’an’dan yeni bir dua. Dokununca okunuşu, anlamı ve paylaşma düğmesi açılır.' },
+  { target: 'dua', title: 'Günün duası', text: 'Her gün yeni bir dua ve ne için okunduğu. Dokununca aile, sağlık, rızık, nazar gibi kategorilerdeki bütün dualar açılır; Instagram story olarak paylaşabilirsiniz.' },
   { target: 'trackers', title: 'Hatim ve namaz takibi', text: 'Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.' },
   { target: 'dinigun', title: 'Kandil ve dini günler', text: 'Yaklaşan kandil ve bayramlar. Bir gün önceden size hatırlatırız.' },
   { target: 'tile-kuran', title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra ya da kelimeye dokunup dinleyin, ▶ ile sayfa sayfa okutun. “Meal” ile her ayetin Türkçesi altında görünür.' },
@@ -44,7 +44,7 @@ const STEPS: Step[] = [
   { target: 'tile-namaz-takip', title: 'Namaz Takibi', text: 'Kıldığınız vakitleri işaretleyin; haftalık çizelgenizi ve kaza namazlarınızı takip edin.' },
   { target: 'tile-imsakiye', title: 'İmsakiye', text: 'Ramazan’da 81 ilin sahur ve iftar vakitleri, iftara geri sayım.' },
   { target: 'tile-dini-gunler', title: 'Dini Günler', text: 'Kandil ve bayram tarihleri, kaç gün kaldığı. Bir gün önce hatırlatılır.' },
-  { target: 'tile-cuma', title: 'Cuma Story', text: 'Cuma günleri Instagram hikâyenizde paylaşacağınız hazır görsel. Rengini ve ayetini seçebilirsiniz.' },
+  { target: 'tile-cuma', title: 'Story Hazırla', text: 'Cuma, kandil ve bayramlarda Instagram hikâyenize hazır görsel. Söz, ayet ya da kendi yazınızı seçin; renk, desen ya da kendi fotoğrafınızla süsleyin.' },
   { target: 'tile-reels', title: 'Reels', text: 'Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.' },
   { tab: 5, title: 'Ayarlar', text: 'Ezan bildirimleri, büyük yazı ve konum ayarları. Bu tanıtımı da buradan tekrar izleyebilirsiniz.' },
 ];

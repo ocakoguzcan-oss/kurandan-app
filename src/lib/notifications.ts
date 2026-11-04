@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES, VakitKey, formatTime } from './prayerTimes';
-import { nextFriday } from '../data/cuma';
+import { nextFriday } from '../data/story';
 import { upcomingDiniGunler } from '../data/diniGunler';
 
 export type ReminderSettings = {
