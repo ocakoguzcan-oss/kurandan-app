@@ -8,6 +8,7 @@ import { IconReset } from '../../src/components/Icons';
 import { colors, fonts } from '../../src/theme';
 import { ZIKIRLER } from '../../src/data/zikirler';
 import { load, save, KEYS } from '../../src/lib/storage';
+import { t } from '../../src/i18n';
 
 type ZikirState = { sel: string; counts: Record<string, number>; day: string; total: number; rounds: number };
 
@@ -46,36 +47,36 @@ export default function Zikirmatik() {
   };
 
   const reset = () =>
-    Alert.alert('Sayaç sıfırlansın mı?', `${zikir.name} sayımı 0'a dönecek.`, [
-      { text: 'Vazgeç', style: 'cancel' },
-      { text: 'Sıfırla', style: 'destructive', onPress: () => update({ ...st, counts: { ...st.counts, [zikir.id]: 0 } }) },
+    Alert.alert(t('Sayaç sıfırlansın mı?'), t("{zikir} sayımı 0'a dönecek.", { zikir: t(zikir.name) }), [
+      { text: t('Vazgeç'), style: 'cancel' },
+      { text: t('Sıfırla'), style: 'destructive', onPress: () => update({ ...st, counts: { ...st.counts, [zikir.id]: 0 } }) },
     ]);
 
   return (
     <Screen
-      title="Zikirmatik"
+      title={t('Zikirmatik')}
       back={false}
       scroll={false}
       contentStyle={{ paddingHorizontal: 20, gap: 18 }}
       right={
-        <RoundButton label="Sayacı sıfırla" onPress={reset}>
+        <RoundButton label={t('Sayacı sıfırla')} onPress={reset}>
           <IconReset />
         </RoundButton>
       }
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }} style={{ flexGrow: 0 }}>
         {ZIKIRLER.map((z) => (
-          <Chip key={z.id} label={z.name} selected={z.id === st.sel} onPress={() => update({ ...st, sel: z.id })} />
+          <Chip key={z.id} label={t(z.name)} selected={z.id === st.sel} onPress={() => update({ ...st, sel: z.id })} />
         ))}
       </ScrollView>
 
       <View style={s.center}>
         <Text style={s.ar}>{zikir.arabic}</Text>
-        <Text style={s.meaning}>{zikir.meaning}</Text>
+        <Text style={s.meaning}>{t(zikir.meaning)}</Text>
       </View>
 
       <View style={[s.center, { flex: 1, justifyContent: 'center' }]}>
-        <Pressable accessibilityRole="button" accessibilityLabel={`${zikir.name} say. Şu an ${count}`} onPress={tap} style={s.counter}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('{zikir} say. Şu an {n}', { zikir: t(zikir.name), n: count })} onPress={tap} style={s.counter}>
           <Svg width={280} height={280} viewBox="0 0 280 280" style={StyleSheet.absoluteFill}>
             <Circle cx={140} cy={140} r={R} fill={colors.card} stroke={colors.cardBorder} strokeWidth={10} />
             <Circle
@@ -99,15 +100,15 @@ export default function Zikirmatik() {
 
       <View style={{ flexDirection: 'row', gap: 10 }}>
         <Card style={s.stat}>
-          <Text style={s.statLabel}>Bugün toplam</Text>
+          <Text style={s.statLabel}>{t('Bugün toplam')}</Text>
           <Text style={s.statVal}>{st.total}</Text>
         </Card>
         <Card style={s.stat}>
-          <Text style={s.statLabel}>Tamamlanan tur</Text>
+          <Text style={s.statLabel}>{t('Tamamlanan tur')}</Text>
           <Text style={s.statVal}>{st.rounds}</Text>
         </Card>
       </View>
-      <Text style={s.hint}>Daireye dokunun · hedefe ulaşınca titreşir</Text>
+      <Text style={s.hint}>{t('Daireye dokunun · hedefe ulaşınca titreşir')}</Text>
     </Screen>
   );
 }

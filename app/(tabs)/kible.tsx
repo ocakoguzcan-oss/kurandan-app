@@ -9,9 +9,11 @@ import { IconCheck } from '../../src/components/Icons';
 import { colors, fonts, radius } from '../../src/theme';
 import { useApp } from '../../src/context/AppContext';
 import { distanceToKaaba, qiblaDirection } from '../../src/lib/prayerTimes';
+import { t, tx } from '../../src/i18n';
+import { formatNumber } from '../../src/i18n/format';
 
-const YONLER = ['Kuzey', 'Kuzeydoğu', 'Doğu', 'Güneydoğu', 'Güney', 'Güneybatı', 'Batı', 'Kuzeybatı'];
-const yon = (deg: number) => YONLER[Math.round(deg / 45) % 8];
+const YONLER = [tx('Kuzey'), tx('Kuzeydoğu'), tx('Doğu'), tx('Güneydoğu'), tx('Güney'), tx('Güneybatı'), tx('Batı'), tx('Kuzeybatı')];
+const yon = (deg: number) => t(YONLER[Math.round(deg / 45) % 8]);
 
 export default function Kible() {
   const { place } = useApp();
@@ -51,22 +53,22 @@ export default function Kible() {
   const dialRotation = heading == null ? 0 : -heading;
 
   let status: string;
-  if (Platform.OS === 'web') status = 'Pusula yalnızca telefonda çalışır. Ok, kuzeye göre Kâbe yönünü gösterir.';
-  else if (denied) status = 'Pusula için konum izni gerekli. Ayarlardan izin verebilirsiniz.';
-  else if (heading == null) status = 'Pusula hazırlanıyor…';
-  else if (aligned) status = 'Kıbleye yöneldiniz. Telefonu düz tutun, mıknatıslardan uzak durun.';
-  else status = `${Math.abs(Math.round(diff!))}° ${diff! > 0 ? 'sağa' : 'sola'} dönün.`;
+  if (Platform.OS === 'web') status = t('Pusula yalnızca telefonda çalışır. Ok, kuzeye göre Kâbe yönünü gösterir.');
+  else if (denied) status = t('Pusula için konum izni gerekli. Ayarlardan izin verebilirsiniz.');
+  else if (heading == null) status = t('Pusula hazırlanıyor…');
+  else if (aligned) status = t('Kıbleye yöneldiniz. Telefonu düz tutun, mıknatıslardan uzak durun.');
+  else status = diff! > 0 ? t('{n}° sağa dönün.', { n: Math.abs(Math.round(diff!)) }) : t('{n}° sola dönün.', { n: Math.abs(Math.round(diff!)) });
 
   return (
-    <Screen title="Kıble" back={false}>
+    <Screen title={t('Kıble')} back={false}>
       <View style={st.center}>
-        <Text style={st.muted}>Kâbe yönü</Text>
+        <Text style={st.muted}>{t('Kâbe yönü')}</Text>
         <Text style={st.deg}>{Math.round(qibla)}°</Text>
-        <Text style={st.muted}>{`${yon(qibla)} · Kâbe'ye ${Math.round(km).toLocaleString('tr-TR')} km`}</Text>
+        <Text style={st.muted}>{t("{yon} · Kâbe'ye {km} km", { yon: yon(qibla), km: formatNumber(Math.round(km)) })}</Text>
       </View>
 
       <View style={st.center}>
-        <Svg width={320} height={320} viewBox="0 0 320 320" accessibilityLabel="Kıble pusulası">
+        <Svg width={320} height={320} viewBox="0 0 320 320" accessibilityLabel={t('Kıble pusulası')}>
           <G transform={`rotate(${dialRotation} 160 160)`}>
             <Circle cx={160} cy={160} r={152} fill={colors.card} stroke={aligned ? colors.green : colors.gold} strokeWidth={aligned ? 4 : 2} />
             <Circle cx={160} cy={160} r={142} fill="none" stroke={colors.cardBorder} strokeWidth={1} />
@@ -80,10 +82,10 @@ export default function Kible() {
               })}
             </G>
             {[
-              { t: 'K', x: 160, y: 58, c: '#9A3A2A' },
-              { t: 'G', x: 160, y: 274, c: colors.muted },
-              { t: 'D', x: 268, y: 165, c: colors.muted },
-              { t: 'B', x: 52, y: 165, c: colors.muted },
+              { t: t('K'), x: 160, y: 58, c: '#9A3A2A' },
+              { t: t('G'), x: 160, y: 274, c: colors.muted },
+              { t: t('D'), x: 268, y: 165, c: colors.muted },
+              { t: t('B'), x: 52, y: 165, c: colors.muted },
             ].map((l) => (
               <SvgText key={l.t} x={l.x} y={l.y} fill={l.c} fontFamily={fonts.bodyBold} fontSize={15} textAnchor="middle">
                 {l.t}
@@ -110,12 +112,12 @@ export default function Kible() {
       </View>
 
       {Platform.OS !== 'web' && heading != null && accuracy < 2 && (
-        <Text style={st.warn}>Pusula hassasiyeti düşük. Telefonu havada 8 çizer gibi birkaç kez hareket ettirin.</Text>
+        <Text style={st.warn}>{t('Pusula hassasiyeti düşük. Telefonu havada 8 çizer gibi birkaç kez hareket ettirin.')}</Text>
       )}
 
       <Button
         variant="secondary"
-        label="Haritada göster"
+        label={t('Haritada göster')}
         onPress={() => Linking.openURL(`https://www.google.com/maps/dir/?api=1&origin=${place.lat},${place.lng}&destination=21.4225,39.8262`)}
       />
     </Screen>

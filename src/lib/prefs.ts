@@ -1,10 +1,12 @@
 // Görünüm tercihleri (büyük yazı modu, izin ekranının gösterilip gösterilmediği).
 import { useSyncExternalStore } from 'react';
 import { load, save } from './storage';
+import type { Lang } from '../i18n';
+import type { AsrSchool, MethodId } from './prayerTimes';
 
 export type MushafSize = 1 | 2 | 3;
-/** İlk açılış akışı: şehir seçimi → izinler → bölüm tanıtımı → bitti */
-export type OnboardingPhase = 'city' | 'perm' | 'sections' | 'done';
+/** İlk açılış akışı: dil → şehir seçimi → izinler → bölüm tanıtımı → bitti */
+export type OnboardingPhase = 'lang' | 'city' | 'perm' | 'sections' | 'done';
 export type TapMode = 'line' | 'word';
 export type Prefs = {
   largeText: boolean;
@@ -13,12 +15,17 @@ export type Prefs = {
   onboarding: OnboardingPhase;
   /** Kur'an'da dokununca satır mı kelime mi okunsun */
   mushafTap: TapMode;
-  /** Satırların altında Türkçe meal */
+  /** Satırların altında meal */
   mushafMeal: boolean;
+  /** Uygulama dili; boşsa cihaz dili */
+  lang?: Lang;
+  /** Vakit hesaplama yöntemi; boşsa ülkeye göre otomatik */
+  method?: MethodId;
+  asr?: AsrSchool;
 };
 
 const KEY = 'kurandan.prefs.v1';
-const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1, onboarding: 'city', mushafTap: 'line', mushafMeal: false };
+const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1, onboarding: 'lang', mushafTap: 'line', mushafMeal: false };
 let state: Prefs = initial;
 let loaded = false;
 const listeners = new Set<() => void>();

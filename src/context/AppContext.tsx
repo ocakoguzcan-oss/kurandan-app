@@ -1,14 +1,26 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import * as Location from 'expo-location';
-import { DEFAULT_IL, ILLER, Il, nearestIl } from '../data/iller';
+import { DEFAULT_IL, ILLER, Il } from '../data/iller';
+import { City, nearestCity } from '../data/world';
 import { load, save, KEYS } from '../lib/storage';
 import { DEFAULT_REMINDERS, ReminderSettings, rescheduleAll } from '../lib/notifications';
+import { CalcOptions, defaultAsr, defaultMethod } from '../lib/prayerTimes';
+import { deviceTimeZone, hasTz } from '../lib/tz';
+import { usePrefs } from '../lib/prefs';
+import { getLang } from '../i18n';
 
 export type Place = {
   source: 'gps' | 'il';
   lat: number;
   lng: number;
-  ilPlaka: number;
+  /** Ülke kodu (ISO, ör. TR, DE) */
+  country: string;
+  /** IANA saat dilimi; vakitler bu saatle gösterilir */
+  tz: string;
+  /** Listeden seçildiyse şehir kimliği (src/data/world.ts) */
+  cityId?: string;
+  /** Türkiye'de il plakası (imsakiye için) */
+  ilPlaka?: number;
   label: string; // ekranda görünen ad
 };
 
@@ -16,13 +28,28 @@ const defaultPlace: Place = {
   source: 'il',
   lat: DEFAULT_IL.lat,
   lng: DEFAULT_IL.lng,
+  country: 'TR',
+  tz: 'Europe/Istanbul',
+  cityId: `TR:${DEFAULT_IL.plaka}`,
   ilPlaka: DEFAULT_IL.plaka,
   label: DEFAULT_IL.ad,
 };
 
+/** Eski sürümde kaydedilen konum (yalnız Türkiye) */
+function migrate(p: Partial<Place>): Place {
+  if (p.country && p.tz) return p as Place;
+  return { ...defaultPlace, ...p, country: 'TR', tz: 'Europe/Istanbul', cityId: p.ilPlaka ? `TR:${p.ilPlaka}` : undefined } as Place;
+}
+
 type Ctx = {
   place: Place;
   ready: boolean;
+  /** Vakit hesabı: şehrin saat dilimi + yöntem (ayardan ya da ülkeye göre) */
+  calc: Required<Pick<CalcOptions, 'tz' | 'method' | 'asr'>>;
+  /** Ayarlarda seçilmediyse ülkeye göre otomatik yöntem kullanılıyor mu */
+  methodAuto: boolean;
+  setCity: (c: City) => void;
+  /** Eski ekranlar için: Türkiye ili seç */
   setIl: (il: Il) => void;
   locateWithGps: () => Promise<boolean>;
   reminders: ReminderSettings;
@@ -39,10 +66,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async () => {
       const [p, r] = await Promise.all([
-        load<Place>(KEYS.location, defaultPlace),
+        load<Partial<Place>>(KEYS.location, defaultPlace),
         load<ReminderSettings>(KEYS.reminders, DEFAULT_REMINDERS),
       ]);
-      setPlace(p);
+      setPlace(migrate(p));
       setRemindersState({ ...DEFAULT_REMINDERS, ...r, enabled: { ...DEFAULT_REMINDERS.enabled, ...r.enabled } });
       setReady(true);
       // Konum GPS'ten seçildiyse açılışta sessizce yenile.
@@ -51,11 +78,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Konum ya da ayarlar değişince 7 günlük hatırlatmaları yeniden kur.
+  const prefs = usePrefs();
+  const lang = getLang();
+  const methodAuto = !prefs.method;
+  const method = prefs.method ?? defaultMethod(place.country, lang);
+  const asr = prefs.asr ?? defaultAsr(place.country, lang);
+  const calc = useMemo(() => ({ tz: place.tz, method, asr }), [place.tz, method, asr]);
+
+  // Konum, yöntem ya da ayarlar değişince 7 günlük hatırlatmaları yeniden kur.
   useEffect(() => {
     if (!ready) return;
-    rescheduleAll(reminders, place.lat, place.lng, place.label).catch(() => {});
-  }, [ready, reminders, place.lat, place.lng, place.label]);
+    rescheduleAll(reminders, place.lat, place.lng, place.label, calc).catch(() => {});
+  }, [ready, reminders, place.lat, place.lng, place.label, calc]);
 
   const updatePlace = useCallback((p: Place) => {
     setPlace(p);
@@ -68,16 +102,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (!perm.granted) return false;
       const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
       const { latitude: lat, longitude: lng } = pos.coords;
-      const il = nearestIl(lat, lng);
-      let label = il.ad;
+      let country: string | undefined;
+      let geoCity: string | undefined;
+      let district: string | undefined;
       try {
         const [geo] = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lng });
-        const district = geo?.subregion || geo?.district || geo?.city;
-        if (district && district !== il.ad) label = `${il.ad}, ${district}`;
+        country = geo?.isoCountryCode?.toUpperCase() || undefined;
+        geoCity = geo?.city || geo?.region || undefined;
+        district = geo?.subregion || geo?.district || undefined;
       } catch {
-        // Adres çözülemezse il adı yeterli.
+        // Adres çözülemezse en yakın şehir yeterli.
       }
-      updatePlace({ source: 'gps', lat, lng, ilPlaka: il.plaka, label });
+      const near = nearestCity(lat, lng, country);
+      country = country ?? near.country;
+      let label: string;
+      if (country === 'TR') {
+        label = district && district !== near.name ? `${near.name}, ${district}` : near.name;
+      } else {
+        label = geoCity ?? near.name;
+      }
+      // Kullanıcı fiilen oradadır: cihazın saat dilimi en doğrusudur.
+      const dev = deviceTimeZone();
+      const tz = hasTz(dev) ? dev : near.tz;
+      updatePlace({ source: 'gps', lat, lng, country, tz, ilPlaka: near.plaka, cityId: near.id, label });
       return true;
     },
     [updatePlace]
@@ -87,7 +134,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     () => ({
       place,
       ready,
-      setIl: (il: Il) => updatePlace({ source: 'il', lat: il.lat, lng: il.lng, ilPlaka: il.plaka, label: il.ad }),
+      calc,
+      methodAuto,
+      setCity: (c: City) =>
+        updatePlace({ source: 'il', lat: c.lat, lng: c.lng, country: c.country, tz: c.tz, cityId: c.id, ilPlaka: c.plaka, label: c.name }),
+      setIl: (il: Il) =>
+        updatePlace({ source: 'il', lat: il.lat, lng: il.lng, country: 'TR', tz: 'Europe/Istanbul', cityId: `TR:${il.plaka}`, ilPlaka: il.plaka, label: il.ad }),
       locateWithGps: () => refreshGps(true),
       reminders,
       setReminders: (r: ReminderSettings) => {
@@ -95,7 +147,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         save(KEYS.reminders, r);
       },
     }),
-    [place, ready, reminders, refreshGps, updatePlace]
+    [place, ready, calc, methodAuto, reminders, refreshGps, updatePlace]
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
@@ -103,7 +155,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
 export function useApp(): Ctx {
   const ctx = useContext(AppCtx);
-  if (!ctx) throw new Error('useApp, AppProvider içinde kullanılmalı');
+  if (!ctx) throw new Error('useApp must be used inside AppProvider');
   return ctx;
 }
 

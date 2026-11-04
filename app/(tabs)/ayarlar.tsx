@@ -5,15 +5,19 @@ import { router, useFocusEffect } from 'expo-router';
 import { Screen, Card, Eyebrow, Toggle } from '../../src/components/ui';
 import { colors, fonts } from '../../src/theme';
 import { useApp } from '../../src/context/AppContext';
-import { formatTime, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
+import { formatTime, getPrayerTimes, METHODS, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
+import { utcLabel } from '../../src/lib/tz';
+import { countryName } from '../../src/data/world';
 import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus } from '../../src/lib/notifications';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { EZAN_KAYDI_HAZIR } from '../../src/config';
 import { useTour } from '../../src/tour/Tour';
+import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
-  const { place, reminders, setReminders } = useApp();
-  const times = useMemo(() => getPrayerTimes(new Date(), place.lat, place.lng), [place.lat, place.lng]);
+  const { place, reminders, setReminders, calc, methodAuto } = useApp();
+  const times = useMemo(() => getPrayerTimes(new Date(), place.lat, place.lng, calc), [place.lat, place.lng, calc]);
+  const lang = getLang();
   const prefs = usePrefs();
   const tour = useTour();
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
@@ -24,34 +28,34 @@ export default function Ayarlar() {
   );
 
   return (
-    <Screen title="Ayarlar" back={false}>
+    <Screen title={t('Ayarlar')} back={false}>
       {perm && perm !== 'granted' && (
         <Pressable accessibilityRole="button" onPress={() => router.push('/izin')} style={st.permBanner}>
-          <Text style={st.permTitle}>Bildirim izni kapalı</Text>
-          <Text style={st.permBody}>Ezan bildirimleri gelmiyor. Nasıl açacağınızı adım adım göstermek için dokunun.</Text>
+          <Text style={st.permTitle}>{t('Bildirim izni kapalı')}</Text>
+          <Text style={st.permBody}>{t('Ezan bildirimleri gelmiyor. Nasıl açacağınızı adım adım göstermek için dokunun.')}</Text>
         </Pressable>
       )}
 
       <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
         <View style={st.row}>
           <View style={{ flexShrink: 1 }}>
-            <Text style={st.name}>Büyük yazı</Text>
-            <Text style={st.sub}>Uygulamadaki tüm yazıları büyütür</Text>
+            <Text style={st.name}>{t('Büyük yazı')}</Text>
+            <Text style={st.sub}>{t('Uygulamadaki tüm yazıları büyütür')}</Text>
           </View>
-          <Toggle label="Büyük yazı" value={prefs.largeText} onChange={(v) => setPrefs({ largeText: v })} />
+          <Toggle label={t('Büyük yazı')} value={prefs.largeText} onChange={(v) => setPrefs({ largeText: v })} />
         </View>
       </Card>
 
-      <Eyebrow>Vakit hatırlatmaları</Eyebrow>
+      <Eyebrow>{t('Vakit hatırlatmaları')}</Eyebrow>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {VAKIT_KEYS.map((k, i) => (
           <View key={k} style={[st.row, i < VAKIT_KEYS.length - 1 && st.divider]}>
             <View>
-              <Text style={st.name}>{VAKIT_NAMES[k]}</Text>
-              <Text style={st.sub}>{`${formatTime(times[k])} · ${reminders.enabled[k] ? 'açık' : 'kapalı'}`}</Text>
+              <Text style={st.name}>{t(VAKIT_NAMES[k])}</Text>
+              <Text style={st.sub}>{`${formatTime(times[k], calc.tz)} · ${reminders.enabled[k] ? t('açık') : t('kapalı')}`}</Text>
             </View>
             <Toggle
-              label={`${VAKIT_NAMES[k]} hatırlatması`}
+              label={t('{vakit} hatırlatması', { vakit: t(VAKIT_NAMES[k]) })}
               value={reminders.enabled[k]}
               onChange={(v) => setReminders({ ...reminders, enabled: { ...reminders.enabled, [k]: v } })}
             />
@@ -60,7 +64,7 @@ export default function Ayarlar() {
       </Card>
 
       <View style={{ gap: 8 }}>
-        <Eyebrow>Ne zaman hatırlatılsın?</Eyebrow>
+        <Eyebrow>{t('Ne zaman hatırlatılsın?')}</Eyebrow>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           {LEAD_OPTIONS.map((m) => {
             const on = reminders.leadMin === m;
@@ -72,7 +76,7 @@ export default function Ayarlar() {
                 onPress={() => setReminders({ ...reminders, leadMin: m })}
                 style={[st.lead, on ? st.leadOn : st.leadOff]}
               >
-                <Text style={[st.leadText, { color: on ? colors.paper : colors.green }]}>{m === 0 ? 'Vaktinde' : `${m} dk`}</Text>
+                <Text style={[st.leadText, { color: on ? colors.paper : colors.green }]}>{m === 0 ? t('Vaktinde') : t('{n} dk', { n: m })}</Text>
               </Pressable>
             );
           })}
@@ -82,44 +86,60 @@ export default function Ayarlar() {
       <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
-            <Text style={st.name}>Ezan sesiyle bildir</Text>
+            <Text style={st.name}>{t('Ezan sesiyle bildir')}</Text>
             <Text style={st.sub}>
-              {reminders.leadMin === 0 ? 'Vakit girince ezan okunur' : 'Ezan yalnızca “Vaktinde” seçiliyken okunur'}
-              {EZAN_KAYDI_HAZIR ? '' : ' · ezan kaydı yakında'}
+              {reminders.leadMin === 0 ? t('Vakit girince ezan okunur') : t('Ezan yalnızca “Vaktinde” seçiliyken okunur')}
+              {EZAN_KAYDI_HAZIR ? '' : t(' · ezan kaydı yakında')}
             </Text>
           </View>
-          <Toggle label="Ezan sesiyle bildir" value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
+          <Toggle label={t('Ezan sesiyle bildir')} value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
         </View>
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
-            <Text style={st.name}>Kandil ve dini günler</Text>
-            <Text style={st.sub}>Bir gün önce ve o gün hatırlat</Text>
+            <Text style={st.name}>{t('Kandil ve dini günler')}</Text>
+            <Text style={st.sub}>{t('Bir gün önce ve o gün hatırlat')}</Text>
           </View>
-          <Toggle label="Kandil ve dini gün hatırlatması" value={reminders.diniGunler} onChange={(v) => setReminders({ ...reminders, diniGunler: v })} />
+          <Toggle label={t('Kandil ve dini gün hatırlatması')} value={reminders.diniGunler} onChange={(v) => setReminders({ ...reminders, diniGunler: v })} />
         </View>
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
-            <Text style={st.name}>Cuma hatırlatması</Text>
-            <Text style={st.sub}>Cuma sabahı 09:00 · story görseli hazır</Text>
+            <Text style={st.name}>{t('Cuma hatırlatması')}</Text>
+            <Text style={st.sub}>{t('Cuma sabahı 09:00 · story görseli hazır')}</Text>
           </View>
-          <Toggle label="Cuma hatırlatması" value={reminders.cuma} onChange={(v) => setReminders({ ...reminders, cuma: v })} />
+          <Toggle label={t('Cuma hatırlatması')} value={reminders.cuma} onChange={(v) => setReminders({ ...reminders, cuma: v })} />
         </View>
         <Pressable accessibilityRole="button" onPress={() => router.push('/konum')} style={[st.row, st.divider]}>
-          <Text style={st.name}>Konum</Text>
+          <View style={{ flexShrink: 0 }}>
+            <Text style={st.name}>{t('Konum')}</Text>
+            <Text style={st.sub}>{`${countryName(place.country, lang)} · ${utcLabel(place.tz)}`}</Text>
+          </View>
           <Text style={st.link} numberOfLines={1}>{`${place.label} ›`}</Text>
         </Pressable>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/vakit-yontemi')} style={[st.row, st.divider]}>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>{t('Vakit hesaplama yöntemi')}</Text>
+            <Text style={st.sub} numberOfLines={2}>
+              {`${METHODS[calc.method].name}${calc.asr === 'hanafi' ? ` · ${t('İkindi: Hanefî')}` : ''}${methodAuto ? ` · ${t('otomatik')}` : ''}`}
+            </Text>
+          </View>
+          <Text style={st.link}>{t('Değiştir ›')}</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/dil')} style={[st.row, st.divider]}>
+          <Text style={st.name}>{t('Dil')}</Text>
+          <Text style={st.link}>{`${LANGS.find((l) => l.code === lang)?.name ?? ''} ›`}</Text>
+        </Pressable>
         <Pressable accessibilityRole="button" onPress={() => router.push('/izin')} style={[st.row, st.divider]}>
-          <Text style={st.name}>İzinler</Text>
-          <Text style={st.link}>{perm === 'granted' ? 'Açık ›' : 'Nasıl açılır ›'}</Text>
+          <Text style={st.name}>{t('İzinler')}</Text>
+          <Text style={st.link}>{perm === 'granted' ? t('Açık ›') : t('Nasıl açılır ›')}</Text>
         </Pressable>
         <Pressable accessibilityRole="button" onPress={tour.restart} style={st.row}>
-          <Text style={st.name}>Tanıtımı tekrar izle</Text>
-          <Text style={st.link}>Başlat ›</Text>
+          <Text style={st.name}>{t('Tanıtımı tekrar izle')}</Text>
+          <Text style={st.link}>{t('Başlat ›')}</Text>
         </Pressable>
       </Card>
 
       <Text style={st.note}>
-        Hatırlatmalar önümüzdeki 7 gün için kurulur ve uygulamayı her açtığınızda yenilenir. Bir haftadan uzun süre açmazsanız uygulamayı bir kez açmanız yeterli.
+        {t('Hatırlatmalar önümüzdeki 7 gün için kurulur ve uygulamayı her açtığınızda yenilenir. Bir haftadan uzun süre açmazsanız uygulamayı bir kez açmanız yeterli.')}
       </Text>
     </Screen>
   );

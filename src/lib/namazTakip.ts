@@ -1,14 +1,15 @@
 // Namaz takip çizelgesi: günlük beş vakit işaretleme ve kaza namazı sayacı.
 import { useSyncExternalStore } from 'react';
 import { load, save } from './storage';
+import { tx } from '../i18n';
 
 export const FARZLAR = [
-  { key: 'sabah', name: 'Sabah' },
-  { key: 'ogle', name: 'Öğle' },
-  { key: 'ikindi', name: 'İkindi' },
-  { key: 'aksam', name: 'Akşam' },
-  { key: 'yatsi', name: 'Yatsı' },
-  { key: 'vitir', name: 'Vitir' },
+  { key: 'sabah', name: tx('Sabah') },
+  { key: 'ogle', name: tx('Öğle') },
+  { key: 'ikindi', name: tx('İkindi') },
+  { key: 'aksam', name: tx('Akşam') },
+  { key: 'yatsi', name: tx('Yatsı') },
+  { key: 'vitir', name: tx('Vitir') },
 ] as const;
 export type FarzKey = (typeof FARZLAR)[number]['key'];
 export const GUNLUK_VAKITLER: FarzKey[] = ['sabah', 'ogle', 'ikindi', 'aksam', 'yatsi'];

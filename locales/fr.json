@@ -1,0 +1,6 @@
+{
+  "CFBundleDisplayName": "Kurandan",
+  "NSLocationWhenInUseUsageDescription": "Votre position sert à calculer les horaires de prière et la direction de la qibla là où vous êtes.",
+  "NSPhotoLibraryAddUsageDescription": "L’autorisation est nécessaire pour enregistrer les images de story dans votre galerie.",
+  "NSPhotoLibraryUsageDescription": "L’accès à la galerie permet d’utiliser votre photo comme fond de story."
+}

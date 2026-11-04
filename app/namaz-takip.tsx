@@ -6,8 +6,9 @@ import { Screen, Card, Eyebrow } from '../src/components/ui';
 import { IconCheck } from '../src/components/Icons';
 import { colors, fonts } from '../src/theme';
 import { changeKaza, countDay, dayKey, FARZLAR, GUNLUK_VAKITLER, toggleVakit, useNamaz } from '../src/lib/namazTakip';
+import { t } from '../src/i18n';
+import { formatWeekday } from '../src/i18n/format';
 
-const GUN_KISA = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
 
 export default function NamazTakip() {
   const s = useNamaz();
@@ -19,8 +20,8 @@ export default function NamazTakip() {
   const kazaTotal = Object.values(s.kaza).reduce((a, b) => a + b, 0);
 
   return (
-    <Screen title="Namaz Takibi">
-      <Eyebrow>Bugün kıldıklarım</Eyebrow>
+    <Screen title={t('Namaz Takibi')}>
+      <Eyebrow>{t('Bugün kıldıklarım')}</Eyebrow>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {FARZLAR.map((f, i) => {
           const on = !!done[f.key];
@@ -29,21 +30,21 @@ export default function NamazTakip() {
               key={f.key}
               accessibilityRole="checkbox"
               accessibilityState={{ checked: on }}
-              accessibilityLabel={`${f.name} namazı`}
+              accessibilityLabel={t('{vakit} namazı', { vakit: t(f.name) })}
               onPress={() => {
                 Haptics.selectionAsync().catch(() => {});
                 toggleVakit(todayKey, f.key);
               }}
               style={[st.row, i < FARZLAR.length - 1 && st.divider]}
             >
-              <Text style={st.name}>{f.name}</Text>
+              <Text style={st.name}>{t(f.name)}</Text>
               <View style={[st.box, on ? st.boxOn : st.boxOff]}>{on && <IconCheck size={22} color={colors.paper} strokeWidth={3} />}</View>
             </Pressable>
           );
         })}
       </Card>
 
-      <Eyebrow>Son 7 gün</Eyebrow>
+      <Eyebrow>{t('Son 7 gün')}</Eyebrow>
       <Card style={{ gap: 12 }}>
         <View style={st.weekRow}>
           {week.map((d) => {
@@ -55,25 +56,25 @@ export default function NamazTakip() {
                   <View style={[st.bar, { height: `${(n / GUNLUK_VAKITLER.length) * 100}%`, backgroundColor: full ? colors.green : colors.gold }]} />
                 </View>
                 <Text style={st.dayN}>{n}</Text>
-                <Text style={[st.dayL, dayKey(d) === todayKey && { color: colors.green, fontFamily: fonts.bodyBold }]}>{GUN_KISA[d.getDay()]}</Text>
+                <Text style={[st.dayL, dayKey(d) === todayKey && { color: colors.green, fontFamily: fonts.bodyBold }]}>{formatWeekday(d, true)}</Text>
               </View>
             );
           })}
         </View>
-        <Text style={st.muted}>{`Bu hafta ${weekTotal} / 35 vakit kılındı`}</Text>
+        <Text style={st.muted}>{t('Bu hafta {a} / {b} vakit kılındı', { a: weekTotal, b: 35 })}</Text>
       </Card>
 
-      <Eyebrow>Kaza namazlarım</Eyebrow>
+      <Eyebrow>{t('Kaza namazlarım')}</Eyebrow>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {FARZLAR.map((f, i) => (
           <View key={f.key} style={[st.row, i < FARZLAR.length - 1 && st.divider]}>
-            <Text style={st.name}>{f.name}</Text>
+            <Text style={st.name}>{t(f.name)}</Text>
             <View style={st.counter}>
-              <Pressable accessibilityRole="button" accessibilityLabel={`${f.name} kazası bir azalt (kıldım)`} onPress={() => changeKaza(f.key, -1)} style={st.cBtn}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t('{vakit} kazası bir azalt (kıldım)', { vakit: t(f.name) })} onPress={() => changeKaza(f.key, -1)} style={st.cBtn}>
                 <Text style={st.cBtnText}>−</Text>
               </Pressable>
               <Text style={st.cVal}>{s.kaza[f.key] ?? 0}</Text>
-              <Pressable accessibilityRole="button" accessibilityLabel={`${f.name} kazası bir artır`} onPress={() => changeKaza(f.key, 1)} style={st.cBtn}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t('{vakit} kazası bir artır', { vakit: t(f.name) })} onPress={() => changeKaza(f.key, 1)} style={st.cBtn}>
                 <Text style={st.cBtnText}>+</Text>
               </Pressable>
             </View>
@@ -82,9 +83,9 @@ export default function NamazTakip() {
       </Card>
       <Pressable
         accessibilityRole="button"
-        onPress={() => Alert.alert('Kaza namazı', 'Borcunuzu + ile ekleyin. Her kıldığınız kaza namazında − ile bir azaltın.')}
+        onPress={() => Alert.alert(t('Kaza namazı'), t('Borcunuzu + ile ekleyin. Her kıldığınız kaza namazında − ile bir azaltın.'))}
       >
-        <Text style={st.muted}>{`Toplam kaza borcu: ${kazaTotal} · Nasıl kullanılır?`}</Text>
+        <Text style={st.muted}>{t('Toplam kaza borcu: {n} · Nasıl kullanılır?', { n: kazaTotal })}</Text>
       </Pressable>
     </Screen>
   );

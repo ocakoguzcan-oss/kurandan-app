@@ -2,7 +2,9 @@
 
 Expo (React Native) ile yazılmış iOS + Android uygulaması.
 
-**Özellikler:** namaz vakitleri ve geri sayım · kıble pusulası · günün duası · zikirmatik · Cuma Instagram story görseli · Instagram Reels akışı · Ramazan imsakiyesi (81 il) · vakit hatırlatma bildirimleri.
+**Özellikler:** namaz vakitleri ve geri sayım · kıble pusulası · günün duası · zikirmatik · Cuma Instagram story görseli · Instagram Reels akışı · Ramazan imsakiyesi · vakit hatırlatma bildirimleri.
+
+**Tüm dünya için:** 225 ülke ve 7.000'i aşkın şehir (Türkiye'de 81 il), her şehrin kendi saat dilimi ve yaz/kış saati, ülkeye göre otomatik vakit yöntemi. **6 dil:** Türkçe, English, Deutsch, العربية (tam sağdan sola), Français, Русский.
 
 ---
 
@@ -26,7 +28,7 @@ npx expo run:android      # Android Studio kurulu olmalı
 npx expo run:ios          # Mac + Xcode gerekir
 ```
 
-Vakit hesaplamasını kontrol etmek için: `TZ=Europe/Istanbul npm run test:vakit`
+Vakit hesaplamasını kontrol etmek için: `npm run test:vakit` (İstanbul'u Diyanet verisiyle karşılaştırır, 13 dünya şehrini sıra ve saat dilimi açısından dener)
 
 ---
 
@@ -67,9 +69,13 @@ assets/                Logo, uygulama ikonu, açılış ekranı
 | Instagram profil adresi | `app/(tabs)/reels.tsx` → `PROFILE_URL` |
 | İlk açılış tanıtımındaki yazılar | `src/tour/Tour.tsx` → `STEPS` |
 | Kandil ve dini günler | `src/data/diniGunler.ts` (Diyanet takvimi açıklanınca ekleyin) |
+| Arayüz çevirileri | `src/i18n/en.json`, `de.json`, `ar.json`, `fr.json`, `ru.json` — anahtar Türkçe metnin kendisidir. Yeni metin ekleyince `python3 scripts/ceviri-kontrol.py` eksikleri listeler |
+| Dua çevirileri | `content/dualar.json` → her duanın `ceviri` alanı (anlam, ne için okunur, kaynak). Arapçada anlam gösterilmez |
+| Kâbe yolu çevirileri | `content/kabe-yolu.<dil>.json` (ör. `kabe-yolu.en.json`) |
+| Ülke / şehir / saat dilimi verisi | `src/data/world/` — `scripts/dunya-verisi.py` ile üretilir (Natural Earth tabanlı city-timezones, MIT; ülke adları Unicode CLDR; saat dilimleri IANA 2025–2040) |
 | Ezan kaydı | `assets/sounds/ezan.wav` dosyasını değiştirin (WAV, en fazla 30 sn), sonra `src/config.ts` → `EZAN_KAYDI_HAZIR = true` |
 
-> **Önemli:** `src/data/dualar.ts` içindeki Arapça metinleri, okunuşları ve mealleri yayından önce bir hocaya kontrol ettirin.
+> **Önemli:** `content/dualar.json` içindeki Arapça metinleri, okunuşları ve mealleri yayından önce bir hocaya kontrol ettirin. Diğer dillerdeki çeviriler (arayüz, dua anlamları, story sözleri, Kâbe yolu) yapay zekâyla hazırlandı; yayından önce her dili ana dili o olan birine okutun.
 
 ---
 
@@ -81,7 +87,11 @@ Veri, font ve sesler Quran Foundation'dan (quran.com) gelir; uygulamada kaynak b
 
 ## 4. Vakitler nasıl hesaplanıyor?
 
-Vakitler internet olmadan, cihazda Diyanet İşleri Başkanlığı yöntemiyle hesaplanır (imsak 18°, yatsı 17°, temkinler: güneş −7, öğle +5, ikindi +4, akşam +7 dk). Kasım 2026 İstanbul verisiyle karşılaştırıldığında 18 vakitten 15'i birebir aynı, kalanlarda 1 dakika fark var. Diyanet ilçe bazında kendi koordinatlarını kullandığı için ilçelerde 1–2 dakika fark çıkabilir.
+Vakitler internet olmadan cihazda hesaplanır ve **seçilen şehrin saatiyle** gösterilir (telefon İstanbul saatindeyken Berlin seçilirse Berlin saati; yaz/kış saati geçişleri dahil). Bildirimler de doğru ana kurulur.
+
+**Yöntem ülkeye göre otomatik seçilir** (Ayarlar → Vakit hesaplama yöntemi'nden değiştirilebilir): uygulama Türkçeyse her ülkede Diyanet; değilse Suudi Arabistan Ümmü'l-Kurâ, Mısır ve Levant Mısır Genel Survey, Pakistan/Hindistan/Bangladeş Karaçi (ikindi Hanefî), ABD/Kanada ISNA, Fransa UOIF, Rusya ДУМ, Körfez ülkeleri kendi kurumları, Malezya JAKIM, Endonezya Kemenag, İran Tahran, diğerleri Muslim World League. Kuzey ülkelerinde yazın imsak/yatsı açısı oluşmadığında gecenin açıya orantılı bölümü kullanılır.
+
+Türkiye'de Diyanet İşleri Başkanlığı yöntemi (imsak 18°, yatsı 17°, temkinler: güneş −7, öğle +5, ikindi +4, akşam +7 dk). Kasım 2026 İstanbul verisiyle karşılaştırıldığında 18 vakitten 15'i birebir aynı, kalanlarda 1 dakika fark var. Diyanet ilçe bazında kendi koordinatlarını kullandığı için ilçelerde 1–2 dakika fark çıkabilir.
 
 Hicri tarih aritmetik yöntemle hesaplanır ve Diyanet takviminden ±1 gün sapabilir. Ramazan günleri ise Diyanet'in ilan ettiği tarihlere sabitlenmiştir (1448: 8 Şubat – 8 Mart 2027).
 

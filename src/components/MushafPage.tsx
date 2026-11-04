@@ -12,8 +12,9 @@ import { ActivityIndicator, LayoutChangeEvent, Pressable, ScrollView, StyleSheet
 import Svg, { Circle, G, Path, Rect } from 'react-native-svg';
 import { Text } from './Text';
 import { colors, fonts } from '../theme';
-import { Chapter, ensurePageFont, getPage, pageFontFamily, QPage, QWord } from '../lib/quran';
+import { Chapter, chapterName, ensurePageFont, getPage, pageFontFamily, QPage, QWord } from '../lib/quran';
 import type { MushafSize } from '../lib/prefs';
+import { t, isRTL } from '../i18n';
 
 const BISMILLAH = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
 const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
@@ -112,9 +113,9 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
   if (error) {
     return (
       <View style={[st.center, { width, height }]}>
-        <Text style={st.msg}>Sayfa yüklenemedi. İnternet bağlantınızı kontrol edin.</Text>
+        <Text style={st.msg}>{t('Sayfa yüklenemedi. İnternet bağlantınızı kontrol edin.')}</Text>
         <Pressable accessibilityRole="button" onPress={() => setRetry(retry + 1)} style={st.retry}>
-          <Text style={st.retryText}>Tekrar dene</Text>
+          <Text style={st.retryText}>{t('Tekrar dene')}</Text>
         </Pressable>
       </View>
     );
@@ -175,7 +176,7 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
       <Pressable
         key={w.id}
         accessibilityRole="button"
-        accessibilityLabel="Bu kelimeyi dinle"
+        accessibilityLabel={t('Bu kelimeyi dinle')}
         onPress={() => onWordPress(page, w)}
         hitSlop={4}
         style={({ pressed }) => pressed && st.wordPressed}
@@ -204,7 +205,7 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
               <Pressable
                 key={line}
                 accessibilityRole="button"
-                accessibilityLabel={`${line}. satırı dinle`}
+                accessibilityLabel={t('{n}. satırı dinle', { n: line })}
                 onPress={() => onLinePress(page, line, data!.words)}
                 style={({ pressed }) => [
                   st.line,
@@ -247,7 +248,7 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
             <View key={line} style={st.lineBlock} onLayout={(e) => (lineY.current[line] = e.nativeEvent.layout.y)}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={`${line}. satırı dinle`}
+              accessibilityLabel={t('{n}. satırı dinle', { n: line })}
               onPress={() => onLinePress(page, line, data!.words)}
               style={({ pressed }) => [
                 st.bigLine,
@@ -314,7 +315,7 @@ function HeaderLine({ kind, chapter, height }: { kind: 'surah' | 'bismillah'; ch
           </View>
           {chapter ? (
             <RNText allowFontScaling={false} numberOfLines={1} style={[st.bandTr, { fontSize: Math.max(9, bandH * 0.24) }]}>
-              {`${chapter.id}. ${chapter.nameTr}`}
+              {isRTL() ? String(chapter.id) : `${chapter.id}. ${chapterName(chapter)}`}
             </RNText>
           ) : (
             <Ornament size={bandH * 0.62} />

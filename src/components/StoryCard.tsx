@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text as RNText, View } from 'react-native';
 import Svg, { Circle, Defs, G, Line, LinearGradient, Path, Polygon, Rect, Stop } from 'react-native-svg';
 import { Desen, Palet, YaziTipi } from '../data/story';
 import { fonts } from '../theme';
+import { getLang, LOCALE } from '../i18n';
 
 export const STORY_W = 270;
 export const STORY_H = 480;
@@ -92,7 +93,7 @@ export const StoryCard = forwardRef<View, StoryProps>((p, ref) => {
           {p.kaynak ? `“${p.body}”` : p.body}
         </RNText>
         {p.kaynak ? (
-          <RNText allowFontScaling={false} style={[st.kaynak, { color: accent }]}>{p.kaynak.toLocaleUpperCase('tr')}</RNText>
+          <RNText allowFontScaling={false} style={[st.kaynak, { color: accent }]}>{p.kaynak.toLocaleUpperCase(LOCALE[getLang()])}</RNText>
         ) : null}
       </View>
 

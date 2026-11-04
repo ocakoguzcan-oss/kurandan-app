@@ -11,6 +11,15 @@ import { Screen, Card, Chip, Eyebrow } from '../src/components/ui';
 import { colors, fonts, radius } from '../src/theme';
 import { useRemoteJson } from '../src/lib/remoteJson';
 import bundled from '../content/kabe-yolu.json';
+import { getLang, t, tx } from '../src/i18n';
+import en from '../content/kabe-yolu.en.json';
+import de from '../content/kabe-yolu.de.json';
+import ar from '../content/kabe-yolu.ar.json';
+import fr from '../content/kabe-yolu.fr.json';
+import ru from '../content/kabe-yolu.ru.json';
+
+// Her dilin kendi dosyası: content/kabe-yolu.json (Türkçe), content/kabe-yolu.en.json …
+const BUNDLED = { tr: bundled, en, de, ar, fr, ru } as Record<string, unknown>;
 
 type Durak = { ad: string; lat: number; lng: number; tur: 'sehir' | 'sinir' | 'havalimani' | 'hedef'; detay: string };
 type Guzergah = { id: string; ad: string; mesafe: string; sure: string; duraklar: Durak[] };
@@ -32,9 +41,9 @@ type Veri = {
 type ModId = keyof Veri['modlar'];
 
 const MODLAR: { id: ModId; ad: string }[] = [
-  { id: 'araba', ad: 'Araba' },
-  { id: 'otobus', ad: 'Otobüs' },
-  { id: 'ucak', ad: 'Uçak' },
+  { id: 'araba', ad: tx('Araba') },
+  { id: 'otobus', ad: tx('Otobüs') },
+  { id: 'ucak', ad: tx('Uçak') },
 ];
 
 const isValid = (x: unknown): x is Veri => {
@@ -116,7 +125,8 @@ function SketchMap({ line, visible, duraklar, focus, onPress }: { line: LL[]; vi
 const DOT: Record<Durak['tur'], string> = { sehir: colors.green, sinir: '#C8553D', havalimani: '#1B5E9E', hedef: colors.gold };
 
 export default function KabeYolu() {
-  const veri = useRemoteJson<Veri>('kabe-yolu.json', bundled as Veri, isValid);
+  const lang = getLang();
+  const veri = useRemoteJson<Veri>(lang === 'tr' ? 'kabe-yolu.json' : `kabe-yolu.${lang}.json`, BUNDLED[lang] as Veri, isValid);
   const [mod, setMod] = useState<ModId>('araba');
   const [gIdx, setGIdx] = useState(0);
   const [focus, setFocus] = useState<number | null>(null);
@@ -155,7 +165,7 @@ export default function KabeYolu() {
   const reachedStops = g.duraklar.filter((d) => visible.some((p) => Math.abs(p.latitude - d.lat) < 1e-6 && Math.abs(p.longitude - d.lng) < 1e-6));
 
   return (
-    <Screen title="Kâbe'ye Nasıl Gidilir?">
+    <Screen title={t('Kâbe\'ye Nasıl Gidilir?')}>
       <View style={st.segWrap}>
         <View style={st.seg} accessibilityRole="tablist">
           {MODLAR.map((x) => {
@@ -171,7 +181,7 @@ export default function KabeYolu() {
                 }}
                 style={[st.segBtn, on && st.segOn]}
               >
-                <Text style={[st.segText, on && st.segTextOn]}>{x.ad}</Text>
+                <Text style={[st.segText, on && st.segTextOn]}>{t(x.ad)}</Text>
               </Pressable>
             );
           })}
@@ -208,10 +218,10 @@ export default function KabeYolu() {
         </MapView>
         )}
         <Pressable accessibilityRole="button" onPress={() => setRun((r) => r + 1)} style={st.replay}>
-          <Text style={st.replayText}>↻ Yolu tekrar çiz</Text>
+          <Text style={st.replayText}>{t('↻ Yolu tekrar çiz')}</Text>
         </Pressable>
       </View>
-      <Text style={st.mapNote}>Harita temsilîdir; çizgi ana durakları birleştirir, gerçek yol biraz farklı olabilir.</Text>
+      <Text style={st.mapNote}>{t('Harita temsilîdir; çizgi ana durakları birleştirir, gerçek yol biraz farklı olabilir.')}</Text>
 
       {m.guzergahlar.length > 1 && (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
@@ -223,11 +233,11 @@ export default function KabeYolu() {
 
       <View style={st.facts}>
         <View style={st.fact}>
-          <Text style={st.factLabel}>Mesafe</Text>
+          <Text style={st.factLabel}>{t('Mesafe')}</Text>
           <Text style={st.factVal}>{g.mesafe}</Text>
         </View>
         <View style={st.fact}>
-          <Text style={st.factLabel}>Süre</Text>
+          <Text style={st.factLabel}>{t('Süre')}</Text>
           <Text style={st.factVal}>{g.sure}</Text>
         </View>
       </View>
@@ -235,12 +245,12 @@ export default function KabeYolu() {
       <Text style={st.ozet}>{m.ozet}</Text>
       {!!m.uyari && (
         <View style={st.warn}>
-          <Text style={st.warnTitle}>Dikkat</Text>
+          <Text style={st.warnTitle}>{t('Dikkat')}</Text>
           <Text style={st.warnText}>{m.uyari}</Text>
         </View>
       )}
 
-      <Eyebrow>Adım adım güzergâh</Eyebrow>
+      <Eyebrow>{t('Adım adım güzergâh')}</Eyebrow>
       <View style={st.timeline}>
         {g.duraklar.map((d, i) => (
           <Pressable key={`${g.id}-${i}`} accessibilityRole="button" onPress={() => focusOn(i)} style={[st.stop, focus === i && st.stopOn]}>
@@ -250,14 +260,14 @@ export default function KabeYolu() {
             </View>
             <View style={{ flex: 1, paddingBottom: 14 }}>
               <Text style={st.stopName}>{d.ad}</Text>
-              {d.tur === 'sinir' && <Text style={st.badge}>Sınır kapısı</Text>}
+              {d.tur === 'sinir' && <Text style={st.badge}>{t('Sınır kapısı')}</Text>}
               {!!d.detay && <Text style={st.stopDetail}>{d.detay}</Text>}
             </View>
           </Pressable>
         ))}
       </View>
 
-      <Eyebrow>Gerekli belgeler</Eyebrow>
+      <Eyebrow>{t('Gerekli belgeler')}</Eyebrow>
       <Card style={{ gap: 8 }}>
         {m.belgeler.map((b, i) => (
           <View key={i} style={st.li}>
@@ -269,7 +279,7 @@ export default function KabeYolu() {
 
       {m.firmalar.length > 0 && (
         <>
-          <Eyebrow>{mod === 'ucak' ? 'Havayolları ve tren' : 'Firmalar'}</Eyebrow>
+          <Eyebrow>{mod === 'ucak' ? t('Havayolları ve tren') : t('Firmalar')}</Eyebrow>
           <View style={st.firmWrap}>
             {m.firmalar.map((f) => (
               <Pressable key={f.url} accessibilityRole="link" onPress={() => Linking.openURL(f.url)} style={st.firm}>
@@ -280,31 +290,31 @@ export default function KabeYolu() {
         </>
       )}
 
-      <Eyebrow>İpuçları</Eyebrow>
+      <Eyebrow>{t('İpuçları')}</Eyebrow>
       <Card style={{ gap: 8 }}>
-        {m.ipuclari.map((t, i) => (
+        {m.ipuclari.map((x, i) => (
           <View key={i} style={st.li}>
             <Text style={st.check}>•</Text>
-            <Text style={st.liText}>{t}</Text>
+            <Text style={st.liText}>{x}</Text>
           </View>
         ))}
       </Card>
 
-      <Eyebrow>Umre mi, hac mı?</Eyebrow>
+      <Eyebrow>{t('Umre mi, hac mı?')}</Eyebrow>
       <Card style={{ gap: 8 }}>
-        {veri.genel.umreHac.map((t, i) => (
-          <Text key={i} style={st.liText}>{t}</Text>
+        {veri.genel.umreHac.map((x, i) => (
+          <Text key={i} style={st.liText}>{x}</Text>
         ))}
       </Card>
 
-      <Eyebrow>Vize ve umre izni</Eyebrow>
+      <Eyebrow>{t('Vize ve umre izni')}</Eyebrow>
       <Card style={{ gap: 8 }}>
-        {veri.genel.vize.map((t, i) => (
-          <Text key={i} style={st.liText}>{t}</Text>
+        {veri.genel.vize.map((x, i) => (
+          <Text key={i} style={st.liText}>{x}</Text>
         ))}
       </Card>
 
-      <Eyebrow>Resmî kaynaklar</Eyebrow>
+      <Eyebrow>{t('Resmî kaynaklar')}</Eyebrow>
       <View style={st.firmWrap}>
         {veri.genel.kaynaklar.map((k) => (
           <Pressable key={k.url} accessibilityRole="link" onPress={() => Linking.openURL(k.url)} style={st.firm}>
@@ -312,7 +322,7 @@ export default function KabeYolu() {
           </Pressable>
         ))}
       </View>
-      <Text style={st.mapNote}>{`Bilgiler ${veri.guncelleme.split('-').reverse().join('.')} tarihinde güncellendi. Kurallar ve sınır kapıları değişebilir; yola çıkmadan resmî kaynaklardan teyit edin.`}</Text>
+      <Text style={st.mapNote}>{t('Bilgiler {tarih} tarihinde güncellendi. Kurallar ve sınır kapıları değişebilir; yola çıkmadan resmî kaynaklardan teyit edin.', { tarih: veri.guncelleme.split('-').reverse().join('.') })}</Text>
     </Screen>
   );
 }

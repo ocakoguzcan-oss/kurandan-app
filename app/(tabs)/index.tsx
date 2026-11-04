@@ -9,41 +9,46 @@ import { colors, fonts, radius } from '../../src/theme';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
-import { duaForDate, useDualar } from '../../src/lib/dualar';
+import { t, tx } from '../../src/i18n';
+import { formatDay } from '../../src/i18n/format';
+import { ymdIn, ymdToLocalDate } from '../../src/lib/tz';
+import { duaForDate, duaText, useDualar } from '../../src/lib/dualar';
 import { upcomingDiniGunler } from '../../src/data/diniGunler';
 import { useHatim } from '../../src/lib/hatim';
 import { countDay, dayKey as namazDayKey, useNamaz } from '../../src/lib/namazTakip';
 import { useTour, useTourTarget } from '../../src/tour/Tour';
 import { TOTAL_PAGES } from '../../src/lib/quran';
 
-const AYLAR = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-
 const FEATURES = [
-  { href: '/kuran', label: "Kur'an-ı Kerim", Icon: IconBook },
-  { href: '/kible', label: 'Kıble', Icon: IconCompass },
-  { href: '/zikir', label: 'Zikirmatik', Icon: IconTasbih },
-  { href: '/namaz-takip', label: 'Namaz Takibi', Icon: IconCheck },
-  { href: '/imsakiye', label: 'İmsakiye', Icon: IconMoon },
-  { href: '/dini-gunler', label: 'Dini Günler', Icon: IconCalendar },
-  { href: '/cuma', label: 'Story Hazırla', Icon: IconStory },
-  { href: '/reels', label: 'Reels', Icon: IconReels },
+  { href: '/kuran', label: tx("Kur'an-ı Kerim"), Icon: IconBook },
+  { href: '/kible', label: tx('Kıble'), Icon: IconCompass },
+  { href: '/zikir', label: tx('Zikirmatik'), Icon: IconTasbih },
+  { href: '/namaz-takip', label: tx('Namaz Takibi'), Icon: IconCheck },
+  { href: '/imsakiye', label: tx('İmsakiye'), Icon: IconMoon },
+  { href: '/dini-gunler', label: tx('Dini Günler'), Icon: IconCalendar },
+  { href: '/cuma', label: tx('Story Hazırla'), Icon: IconStory },
+  { href: '/reels', label: tx('Reels'), Icon: IconReels },
 ] as const;
 
 export default function Home() {
-  const { place } = useApp();
+  const { place, calc } = useApp();
   const now = useNow(1000);
-  const dayKey = now.toDateString();
+  // Şehrin takvim günü (seçili şehir başka saat dilimindeyse cihazın günü değil)
+  const ymd = ymdIn(now, calc.tz);
+  const dayKey = `${ymd.y}-${ymd.m}-${ymd.d}`;
+  const localDay = useMemo(() => ymdToLocalDate(ymd), [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const times = useMemo(() => getPrayerTimes(now, place.lat, place.lng), [dayKey, place.lat, place.lng]); // eslint-disable-line react-hooks/exhaustive-deps
-  const next = getNextPrayer(now, place.lat, place.lng);
+  const times = useMemo(() => getPrayerTimes(ymd, place.lat, place.lng, calc), [dayKey, place.lat, place.lng, calc]); // eslint-disable-line react-hooks/exhaustive-deps
+  const next = getNextPrayer(now, place.lat, place.lng, calc);
   const duaLib = useDualar();
-  const dua = useMemo(() => duaForDate(now, duaLib.dualar), [dayKey, duaLib]); // eslint-disable-line react-hooks/exhaustive-deps
-  const hijri = useMemo(() => formatHijriAr(toHijri(now)), [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
-  const rDay = ramazanDay(now);
+  const dua = useMemo(() => duaForDate(localDay, duaLib.dualar), [localDay, duaLib]);
+  const duaTr = duaText(dua);
+  const hijri = useMemo(() => formatHijriAr(toHijri(localDay)), [localDay]);
+  const rDay = ramazanDay(localDay);
   const hatim = useHatim();
   const namaz = useNamaz();
-  const kildim = countDay(namaz, namazDayKey(now));
-  const nextGun = useMemo(() => upcomingDiniGunler(now)[0], [dayKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const kildim = countDay(namaz, namazDayKey(localDay));
+  const nextGun = useMemo(() => upcomingDiniGunler(localDay)[0], [localDay]);
 
   const tour = useTour();
   const tPlace = useTourTarget('place');
@@ -58,16 +63,16 @@ export default function Home() {
     <Screen scrollRef={tour.scroll.ref} onScroll={tour.scroll.onScroll}>
       <View style={st.top}>
         <View style={st.topLeft}>
-          <Image source={require('../../assets/logo.png')} style={st.logo} accessibilityLabel="Kurandan.ai logosu" />
+          <Image source={require('../../assets/logo.png')} style={st.logo} accessibilityLabel={t('Kurandan.ai logosu')} />
           <View ref={tPlace} collapsable={false} style={{ flexShrink: 1 }}>
-            <Text style={st.greet}>Selâmün aleyküm</Text>
-            <Pressable accessibilityRole="button" accessibilityLabel="Konumu değiştir" onPress={() => router.push('/konum')} style={st.placeRow}>
+            <Text style={st.greet}>{t('Selâmün aleyküm')}</Text>
+            <Pressable accessibilityRole="button" accessibilityLabel={t('Konumu değiştir')} onPress={() => router.push('/konum')} style={st.placeRow}>
               <Text style={st.place} numberOfLines={1}>{place.label}</Text>
               <IconPin size={16} />
             </Pressable>
           </View>
         </View>
-        <RoundButton label="Bildirim ayarları" onPress={() => router.push('/ayarlar')}>
+        <RoundButton label={t('Bildirim ayarları')} onPress={() => router.push('/ayarlar')}>
           <IconBell />
         </RoundButton>
       </View>
@@ -82,25 +87,25 @@ export default function Home() {
         </Svg>
         <View style={st.heroHead}>
           <View>
-            <Text style={st.heroEyebrow}>{rDay ? `Ramazan ${rDay}. gün · sıradaki vakit` : 'Sıradaki vakit'}</Text>
-            <Text style={st.heroName}>{VAKIT_NAMES[next.key]}</Text>
+            <Text style={st.heroEyebrow}>{rDay ? t('Ramazan {n}. gün · sıradaki vakit', { n: rDay }) : t('Sıradaki vakit')}</Text>
+            <Text style={st.heroName}>{t(VAKIT_NAMES[next.key])}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={st.heroDate}>{`${now.getDate()} ${AYLAR[now.getMonth()]} ${now.getFullYear()}`}</Text>
+            <Text style={st.heroDate}>{formatDay(ymd)}</Text>
             <Text style={st.heroHijri}>{hijri}</Text>
           </View>
         </View>
         <View style={st.countRow}>
           <Text style={st.count}>{formatCountdown(next.time.getTime() - now.getTime())}</Text>
-          <Text style={st.countSub}>kaldı · {formatTime(next.time)}</Text>
+          <Text style={st.countSub}>{t('kaldı · {saat}', { saat: formatTime(next.time, calc.tz) })}</Text>
         </View>
         <View style={st.timesRow}>
           {VAKIT_KEYS.map((k) => {
             const active = k === next.key && times[k].getTime() === next.time.getTime();
             return (
               <View key={k} style={[st.timeCell, active && st.timeCellOn]}>
-                <Text style={[st.timeLabel, active && { color: colors.green, fontFamily: fonts.bodySemi }]}>{VAKIT_NAMES[k]}</Text>
-                <Text style={[st.timeVal, active && { color: colors.green, fontFamily: fonts.bodyBold }]}>{formatTime(times[k])}</Text>
+                <Text style={[st.timeLabel, active && { color: colors.green, fontFamily: fonts.bodySemi }]}>{t(VAKIT_NAMES[k])}</Text>
+                <Text style={[st.timeVal, active && { color: colors.green, fontFamily: fonts.bodyBold }]}>{formatTime(times[k], calc.tz)}</Text>
               </View>
             );
           })}
@@ -112,12 +117,12 @@ export default function Home() {
         <Pressable accessibilityRole="link">
           <Card style={{ gap: 8 }}>
             <View style={st.rowBetween}>
-              <Eyebrow>Günün duası</Eyebrow>
-              <Text style={st.muted}>{dua.kaynak}</Text>
+              <Eyebrow>{t('Günün duası')}</Eyebrow>
+              <Text style={st.muted}>{duaTr.kaynak}</Text>
             </View>
-            <Text style={st.duaNe} numberOfLines={2}>{dua.neIcin}</Text>
+            <Text style={st.duaNe} numberOfLines={2}>{duaTr.neIcin}</Text>
             <Text style={st.duaAr} numberOfLines={2}>{dua.arabic}</Text>
-            <Text style={st.duaTr} numberOfLines={2}>{dua.meal}</Text>
+            <Text style={st.duaTr} numberOfLines={2}>{duaTr.meal}</Text>
           </Card>
         </Pressable>
       </Link>
@@ -126,21 +131,21 @@ export default function Home() {
       <View ref={tTrackers} collapsable={false} style={{ flexDirection: 'row', gap: 10 }}>
         <Pressable
           accessibilityRole="link"
-          accessibilityLabel={`Kur'an-ı Kerim, kaldığınız yer sayfa ${hatim.lastPage}`}
+          accessibilityLabel={t("Kur'an-ı Kerim, kaldığınız yer sayfa {n}", { n: hatim.lastPage })}
           onPress={() => router.push({ pathname: '/kuran', params: { sayfa: String(hatim.lastPage) } })}
           style={[st.mini, { flex: 1.2 }]}
         >
-          <Eyebrow>Kaldığınız yer</Eyebrow>
-          <Text style={st.miniBig}>{`Sayfa ${hatim.lastPage}`}</Text>
+          <Eyebrow>{t('Kaldığınız yer')}</Eyebrow>
+          <Text style={st.miniBig}>{t('Sayfa {n}', { n: hatim.lastPage })}</Text>
           <View style={st.miniBar}>
             <View style={[st.miniFill, { width: `${Math.max(3, (hatim.read.length / TOTAL_PAGES) * 100)}%` }]} />
           </View>
-          <Text style={st.muted}>{`Bugün ${hatim.todayPages.length}/${hatim.goal} sayfa`}</Text>
+          <Text style={st.muted}>{t('Bugün {a}/{b} sayfa', { a: hatim.todayPages.length, b: hatim.goal })}</Text>
         </Pressable>
         <Pressable accessibilityRole="link" onPress={() => router.push('/namaz-takip')} style={[st.mini, { flex: 1 }]}>
-          <Eyebrow>Bugün kıldım</Eyebrow>
+          <Eyebrow>{t('Bugün kıldım')}</Eyebrow>
           <Text style={st.miniBig}>{`${kildim} / 5`}</Text>
-          <Text style={st.muted}>Vakitleri işaretle</Text>
+          <Text style={st.muted}>{t('Vakitleri işaretle')}</Text>
         </Pressable>
       </View>
 
@@ -150,10 +155,10 @@ export default function Home() {
           <Card style={st.gunCard}>
             <IconMoon size={24} />
             <View style={{ flex: 1 }}>
-              <Text style={st.gunName}>{nextGun.name}</Text>
-              <Text style={st.muted}>{nextGun.daysLeft === 0 ? (nextGun.kind === 'kandil' ? 'Bu gece' : 'Bugün') : `${nextGun.daysLeft} gün kaldı`}</Text>
+              <Text style={st.gunName}>{t(nextGun.name)}</Text>
+              <Text style={st.muted}>{nextGun.daysLeft === 0 ? (nextGun.kind === 'kandil' ? t('Bu gece') : t('Bugün')) : t('{n} gün kaldı', { n: nextGun.daysLeft })}</Text>
             </View>
-            <Text style={st.gunMore}>Tümü ›</Text>
+            <Text style={st.gunMore}>{t('Tümü ›')}</Text>
           </Card>
         </Pressable>
         </View>
@@ -164,10 +169,10 @@ export default function Home() {
           <Card style={st.gunCard}>
             <IconKaaba />
             <View style={{ flex: 1 }}>
-              <Text style={st.gunName}>Kâbe'ye Nasıl Gidilir?</Text>
-              <Text style={st.muted}>Araba · Otobüs · Uçak — güzergâh, sınır kapıları, vize</Text>
+              <Text style={st.gunName}>{t("Kâbe'ye Nasıl Gidilir?")}</Text>
+              <Text style={st.muted}>{t('Araba · Otobüs · Uçak — güzergâh, sınır kapıları, vize')}</Text>
             </View>
-            <Text style={st.gunMore}>Aç ›</Text>
+            <Text style={st.gunMore}>{t('Aç ›')}</Text>
           </Card>
         </Pressable>
       </View>
@@ -178,7 +183,7 @@ export default function Home() {
             <Link href={href} asChild>
               <Pressable accessibilityRole="link" style={st.tileInner}>
                 <Icon size={26} color={colors.green} />
-                <Text style={st.tileLabel} numberOfLines={2}>{label}</Text>
+                <Text style={st.tileLabel} numberOfLines={2}>{t(label)}</Text>
               </Pressable>
             </Link>
           </View>

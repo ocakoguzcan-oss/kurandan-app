@@ -6,9 +6,14 @@ import { IconMoon, StarOrnament } from '../src/components/Icons';
 import { colors, fonts } from '../src/theme';
 import { upcomingDiniGunler } from '../src/data/diniGunler';
 import { useApp } from '../src/context/AppContext';
+import { t } from '../src/i18n';
+import { formatDay, formatWeekday } from '../src/i18n/format';
 
-const AYLAR = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-const GUNLER = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+type G = ReturnType<typeof upcomingDiniGunler>[number];
+const dateLine = (g: G) => {
+  const base = `${formatDay(g.day)}, ${formatWeekday(g.day)}`;
+  return g.kind === 'kandil' ? t('{tarih} gecesi', { tarih: base }) : base;
+};
 
 export default function DiniGunler() {
   const list = upcomingDiniGunler();
@@ -16,33 +21,33 @@ export default function DiniGunler() {
   const next = list[0];
 
   return (
-    <Screen title="Dini Günler">
+    <Screen title={t('Dini Günler')}>
       {next && (
         <View style={st.hero}>
-          <Text style={st.heroEyebrow}>Sıradaki</Text>
-          <Text style={st.heroName}>{next.name}</Text>
-          <Text style={st.heroDays}>{next.daysLeft === 0 ? (next.kind === 'kandil' ? 'Bu gece' : 'Bugün') : `${next.daysLeft} gün kaldı`}</Text>
-          <Text style={st.heroDate}>{`${next.day.getDate()} ${AYLAR[next.day.getMonth()]} ${next.day.getFullYear()}, ${GUNLER[next.day.getDay()]}${next.kind === 'kandil' ? ' gecesi' : ''}`}</Text>
+          <Text style={st.heroEyebrow}>{t('Sıradaki')}</Text>
+          <Text style={st.heroName}>{t(next.name)}</Text>
+          <Text style={st.heroDays}>{next.daysLeft === 0 ? (next.kind === 'kandil' ? t('Bu gece') : t('Bugün')) : t('{n} gün kaldı', { n: next.daysLeft })}</Text>
+          <Text style={st.heroDate}>{dateLine(next)}</Text>
         </View>
       )}
       {list.slice(1).map((g) => (
         <Card key={g.date + g.name} style={st.row}>
           <View style={st.icon}>{g.kind === 'kandil' ? <IconMoon size={22} /> : <StarOrnament size={26} />}</View>
           <View style={{ flex: 1 }}>
-            <Text style={st.name}>{g.name}</Text>
+            <Text style={st.name}>{t(g.name)}</Text>
             <Text style={st.date}>
-              {`${g.day.getDate()} ${AYLAR[g.day.getMonth()]} ${g.day.getFullYear()}, ${GUNLER[g.day.getDay()]}${g.kind === 'kandil' ? ' gecesi' : ''}${g.note ? ` · ${g.note}` : ''}`}
+              {`${dateLine(g)}${g.note ? ` · ${t(g.note)}` : ''}`}
             </Text>
           </View>
-          <Text style={st.days}>{`${g.daysLeft} gün`}</Text>
+          <Text style={st.days}>{t('{n} gün', { n: g.daysLeft })}</Text>
         </Card>
       ))}
       <Text style={st.note}>
         {reminders.diniGunler
-          ? 'Bir gün önce akşam 20:00’de ve o gün 10:00’da hatırlatılır. Ayarlar sekmesinden kapatabilirsiniz.'
-          : 'Hatırlatmalar kapalı. Ayarlar sekmesinden açabilirsiniz.'}
+          ? t('Bir gün önce akşam 20:00’de ve o gün 10:00’da hatırlatılır. Ayarlar sekmesinden kapatabilirsiniz.')
+          : t('Hatırlatmalar kapalı. Ayarlar sekmesinden açabilirsiniz.')}
       </Text>
-      <Text style={st.note}>Tarihler Diyanet İşleri Başkanlığı takvimine göredir.</Text>
+      <Text style={st.note}>{t('Tarihler Diyanet İşleri Başkanlığı takvimine göredir.')}</Text>
     </Screen>
   );
 }

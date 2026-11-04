@@ -1,0 +1,507 @@
+{
+  "surum": 1,
+  "guncelleme": "2026-11-04",
+  "genel": {
+    "umreHac": [
+      "Zur Umra kann heute jeder selbstständig reisen: Mit dem saudischen Touristen-E-Visum oder einem Umra-Visum einreisen und die Umra-Genehmigung in Mekka kostenlos über die Nusuk-App erhalten. Ein Reiseveranstalter ist nicht Pflicht.",
+      "Der Hadsch ist von der Türkei aus nur über die Diyanet-Verlosung und von der Diyanet lizenzierte Veranstalter möglich; individuell geht es nicht. In anderen Ländern läuft der Hadsch über die nationale Hadsch-Stelle oder Nusuk Hajj.",
+      "Frauen über 18 dürfen ohne Mahram die Umra verrichten; Minderjährige müssen mit Eltern oder Vormund reisen."
+    ],
+    "vize": [
+      "Touristen-E-Visum: über visa.visitsaudi.com, ca. 535 SAR inkl. Krankenversicherung. 1 Jahr gültig, mehrfache Einreise, bis zu 90 Tage pro Aufenthalt.",
+      "Umra-Genehmigung: nach der Einreise kostenlos über die Nusuk-App. In der Hadsch-Saison (Frühsommer) kann die Einreise nach Mekka mit Touristenvisum eingeschränkt sein.",
+      "Ihr Reisepass muss mindestens 6 Monate gültig sein."
+    ],
+    "kaynaklar": [
+      {
+        "ad": "Offizielle saudische Visa-Seite",
+        "url": "https://visa.visitsaudi.com"
+      },
+      {
+        "ad": "Nusuk (Umra-Genehmigung und Termine)",
+        "url": "https://www.nusuk.sa"
+      },
+      {
+        "ad": "Reisewarnungen des türkischen Außenministeriums",
+        "url": "https://www.mfa.gov.tr"
+      },
+      {
+        "ad": "Diyanet Hadsch- und Umra-Dienste",
+        "url": "https://hacumre.diyanet.gov.tr"
+      }
+    ]
+  },
+  "modlar": {
+    "araba": {
+      "baslik": "Mit dem eigenen Auto (ab Türkei)",
+      "ozet": "Der Landweg ist wieder möglich, seit die nach 2011 jahrelang gesperrte Syrien-Route offen ist. Am kürzesten über Syrien und Jordanien; alternativ über Irak und Jordanien.",
+      "uyari": "Grenzübergänge auf der Strecke können aus Sicherheitsgründen plötzlich schließen (z. B. Nasib zwischen Syrien und Jordanien am 27. Oktober 2026, am 28. Oktober wieder geöffnet). Prüfen Sie vor der Abfahrt unbedingt Reisewarnungen und den aktuellen Status.",
+      "guzergahlar": [
+        {
+          "id": "suriye",
+          "ad": "Syrien – Jordanien (am kürzesten)",
+          "mesafe": "≈ 3.300 km",
+          "sure": "4–6 Tage",
+          "duraklar": [
+            {
+              "ad": "Istanbul",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Start der Reise. Empfohlen: höchstens 8–10 Stunden Fahrt pro Tag."
+            },
+            {
+              "ad": "Ankara",
+              "lat": 39.9334,
+              "lng": 32.8597,
+              "tur": "sehir",
+              "detay": "Weiter über die Autobahn nach Süden."
+            },
+            {
+              "ad": "Adana",
+              "lat": 37.0,
+              "lng": 35.3213,
+              "tur": "sehir",
+              "detay": "Letzte Großstadt vor Hatay; guter Halt für die Fahrzeugwartung."
+            },
+            {
+              "ad": "Grenzübergang Cilvegözü (Hatay, Reyhanlı)",
+              "lat": 36.24,
+              "lng": 36.57,
+              "tur": "sinir",
+              "detay": "Ausreise aus der Türkei und Einreise nach Syrien. Das syrische Visum gibt es an der Grenze (2025: einfache Einreise 50 USD); die türkische Ausreisegebühr wird separat bezahlt."
+            },
+            {
+              "ad": "Aleppo",
+              "lat": 36.2021,
+              "lng": 37.1343,
+              "tur": "sehir",
+              "detay": "In Syrien über die Autobahn M5 nach Süden."
+            },
+            {
+              "ad": "Homs",
+              "lat": 34.7324,
+              "lng": 36.7137,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Damaskus",
+              "lat": 33.5138,
+              "lng": 36.2765,
+              "tur": "sehir",
+              "detay": "Große Stadt, gut für Pause und Übernachtung."
+            },
+            {
+              "ad": "Grenzübergang Nasib (Syrien) – Dschaber (Jordanien)",
+              "lat": 32.55,
+              "lng": 36.2,
+              "tur": "sinir",
+              "detay": "Einreise nach Jordanien. Türkische Staatsbürger brauchen bis 90 Tage kein Visum. Die jordanische Kfz-Versicherung wird an der Grenze abgeschlossen."
+            },
+            {
+              "ad": "Amman",
+              "lat": 31.9454,
+              "lng": 35.9284,
+              "tur": "sehir",
+              "detay": "Hauptstadt Jordaniens; über den Desert Highway nach Süden."
+            },
+            {
+              "ad": "Ma'an",
+              "lat": 30.1962,
+              "lng": 35.7341,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Grenzübergang Mudawwara (Jordanien) – Halat Ammar (Saudi-Arabien)",
+              "lat": 29.25,
+              "lng": 36.03,
+              "tur": "sinir",
+              "detay": "Einreise nach Saudi-Arabien. Einer der Hauptübergänge für Hadsch- und Umra-Gruppen. Die Pflichtversicherung (Manafith) für Fahrzeuge mit ausländischem Kennzeichen gibt es an der Grenze."
+            },
+            {
+              "ad": "Tabuk",
+              "lat": 28.3835,
+              "lng": 36.5662,
+              "tur": "sehir",
+              "detay": "Die Stadt des Tabuk-Feldzugs."
+            },
+            {
+              "ad": "Medina",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "sehir",
+              "detay": "Prophetenmoschee. Wer die Umra von Medina aus beginnt, legt den Ihram am Miqat Dhul-Hulaifa an."
+            },
+            {
+              "ad": "Mekka",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "Al-Masdschid al-Haram und die Kaaba. Holen Sie Ihre Umra-Genehmigung in der Nusuk-App."
+            }
+          ]
+        },
+        {
+          "id": "irak",
+          "ad": "Irak – Jordanien",
+          "mesafe": "≈ 4.000–4.500 km",
+          "sure": "6–9 Tage",
+          "duraklar": [
+            {
+              "ad": "Istanbul",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Gaziantep",
+              "lat": 37.0662,
+              "lng": 37.3833,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Şanlıurfa",
+              "lat": 37.1591,
+              "lng": 38.7969,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Grenzübergang Habur (Şırnak, Silopi)",
+              "lat": 37.14,
+              "lng": 42.38,
+              "tur": "sinir",
+              "detay": "Einreise in den Irak. Das irakische Bundesvisum muss vorher beantragt werden; an der Grenze gibt es keins."
+            },
+            {
+              "ad": "Erbil",
+              "lat": 36.19,
+              "lng": 44.01,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Bagdad",
+              "lat": 33.3152,
+              "lng": 44.3661,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Ramadi",
+              "lat": 33.42,
+              "lng": 43.3,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Rutba",
+              "lat": 33.04,
+              "lng": 40.28,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Grenzübergang Trebil (Irak) – Karama (Jordanien)",
+              "lat": 32.9,
+              "lng": 38.95,
+              "tur": "sinir",
+              "detay": "Einreise nach Jordanien. Für türkische Staatsbürger kein Visum."
+            },
+            {
+              "ad": "Azraq",
+              "lat": 31.83,
+              "lng": 36.82,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Grenzübergang al-Umari (Jordanien) – al-Haditha (Saudi-Arabien)",
+              "lat": 31.5,
+              "lng": 37.1,
+              "tur": "sinir",
+              "detay": "Einer der wichtigsten Landübergänge Saudi-Arabiens. Die Pflicht-Kfz-Versicherung (Manafith) gibt es an der Grenze."
+            },
+            {
+              "ad": "al-Qurayyat",
+              "lat": 31.33,
+              "lng": 37.34,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "al-Dschauf (Sakaka)",
+              "lat": 29.97,
+              "lng": 40.21,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Hail",
+              "lat": 27.52,
+              "lng": 41.69,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Medina",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Mekka",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": ""
+            }
+          ]
+        }
+      ],
+      "belgeler": [
+        "Reisepass (mind. 6 Monate gültig)",
+        "Internationaler Führerschein (vom TTOK) und Ihr eigener Führerschein",
+        "Fahrzeugschein und Eigentumsnachweis",
+        "Vorübergehendes Einfuhrdokument: Triptik / Carnet de Passage (vom TTOK)",
+        "Saudisches Touristen-E-Visum oder Umra-Visum",
+        "Visa der Transitländer (Syrien an der Grenze; irakisches Bundesvisum vorab)",
+        "Kfz-Versicherung für jedes Land: Die Grüne Karte gilt nicht in Syrien, Irak, Jordanien und Saudi-Arabien; Versicherung an den Grenzen",
+        "Krankenversicherung; eine Meningitis-Impfung kann verlangt werden, vorher prüfen"
+      ],
+      "ipuclari": [
+        "Mit mindestens zwei Fahrern reisen; Nachtfahrten vermeiden.",
+        "Vor der Abfahrt Reifen, Öl und Bremsen prüfen lassen; Ersatzreifen, Wagenheber, Abschleppseil und Verbandkasten mitnehmen.",
+        "Geschätztes Budget hin und zurück inkl. Kraftstoff, Gebühren, Unterkunft und Essen: ca. 1.400–3.000 USD pro Person/Fahrzeug (Schätzung 2026)."
+      ],
+      "firmalar": []
+    },
+    "otobus": {
+      "baslik": "Mit dem Bus (Umra-Rundreise auf dem Landweg ab Türkei)",
+      "ozet": "Es gibt keinen regulären Linienbus von der Türkei nach Mekka; Busreisen laufen über Veranstalter von Umra-Touren auf dem Landweg. Sie führen über Syrien und Jordanien, besuchen historische Hidschas-Stationen und erreichen Mekka in etwa 9 Tagen.",
+      "uyari": "Landtouren hängen davon ab, dass die Syrien-Route offen ist. Fragen Sie vor der Buchung nach der Diyanet-Umra-Lizenz des Veranstalters und dem aktuellen Stand der Route.",
+      "guzergahlar": [
+        {
+          "id": "hicaz",
+          "ad": "Hidschas-Route",
+          "mesafe": "≈ 3.500 km",
+          "sure": "≈ 9 Tage",
+          "duraklar": [
+            {
+              "ad": "Istanbul",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Treffpunkt der Gruppe."
+            },
+            {
+              "ad": "Grenzübergang Cilvegözü",
+              "lat": 36.24,
+              "lng": 36.57,
+              "tur": "sinir",
+              "detay": "Einreise nach Syrien; Visa und Formalitäten übernimmt meist der Veranstalter."
+            },
+            {
+              "ad": "Damaskus",
+              "lat": 33.5138,
+              "lng": 36.2765,
+              "tur": "sehir",
+              "detay": "Besuch der Umayyaden-Moschee und historischer Stätten."
+            },
+            {
+              "ad": "Grenzübergang Nasib – Dschaber",
+              "lat": 32.55,
+              "lng": 36.2,
+              "tur": "sinir",
+              "detay": "Einreise nach Jordanien."
+            },
+            {
+              "ad": "Amman",
+              "lat": 31.9454,
+              "lng": 35.9284,
+              "tur": "sehir",
+              "detay": "Ein Besuch des türkischen Gefallenenfriedhofs in Salt ist möglich."
+            },
+            {
+              "ad": "Wadi Rum",
+              "lat": 29.57,
+              "lng": 35.42,
+              "tur": "sehir",
+              "detay": "Station der Hidschasbahn."
+            },
+            {
+              "ad": "Akaba",
+              "lat": 29.53,
+              "lng": 35.01,
+              "tur": "sehir",
+              "detay": "Südspitze Jordaniens; von hier nach Saudi-Arabien."
+            },
+            {
+              "ad": "Mada'in Salih / al-Ula",
+              "lat": 26.61,
+              "lng": 37.92,
+              "tur": "sehir",
+              "detay": "Historische Hidschas-Stationen."
+            },
+            {
+              "ad": "Tabuk",
+              "lat": 28.3835,
+              "lng": 36.5662,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Chaibar",
+              "lat": 25.7,
+              "lng": 39.29,
+              "tur": "sehir",
+              "detay": "Festung Chaibar."
+            },
+            {
+              "ad": "Medina",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "sehir",
+              "detay": "Besuch der Prophetenmoschee; Ihram am Miqat Dhul-Hulaifa."
+            },
+            {
+              "ad": "Mekka",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "Umra."
+            }
+          ]
+        }
+      ],
+      "belgeler": [
+        "Reisepass (mind. 6 Monate gültig)",
+        "Saudisches Visum (meist vom Veranstalter)",
+        "Visa der Transitländer (meist vom Veranstalter)",
+        "Krankenversicherung; eine Meningitis-Impfung kann verlangt werden"
+      ],
+      "ipuclari": [
+        "Fragen Sie, ob der Veranstalter eine Diyanet-Lizenz für Umra-Reisen hat, und lassen Sie Route, Unterkunft und Rückreise schriftlich im Vertrag festhalten.",
+        "Es gibt auch kombinierte Touren mit Rückflug; das verkürzt die Reise."
+      ],
+      "firmalar": [
+        {
+          "ad": "Diyanet-Liste lizenzierter Umra-Veranstalter",
+          "url": "https://hacumre.diyanet.gov.tr"
+        }
+      ]
+    },
+    "ucak": {
+      "baslik": "Mit dem Flugzeug",
+      "ozet": "Der schnellste und üblichste Weg. Von Istanbul und Ankara gibt es täglich Direktflüge nach Dschidda und Medina (ca. 3,5 Stunden). Aus Ihrem Land: Direktflüge nach Dschidda (JED) oder Medina (MED) prüfen – die Schritte nach der Ankunft sind gleich.",
+      "uyari": "",
+      "guzergahlar": [
+        {
+          "id": "cidde",
+          "ad": "Über Dschidda",
+          "mesafe": "≈ 2.400 km",
+          "sure": "≈ 3 Std. 45 Min. Flug",
+          "duraklar": [
+            {
+              "ad": "Flughafen Istanbul (IST) / Sabiha Gökçen (SAW)",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Ab IST: Turkish Airlines, Saudia, flynas, flyadeal; ab SAW: Pegasus, AJet, flynas, flyadeal. Über 100 Direktflüge pro Woche."
+            },
+            {
+              "ad": "Dschidda – Flughafen König Abdulaziz (JED)",
+              "lat": 21.6796,
+              "lng": 39.1565,
+              "tur": "havalimani",
+              "detay": "Wer direkt nach Mekka reist, legt den Ihram im Flugzeug vor dem Miqat an; die Crew sagt es meist an."
+            },
+            {
+              "ad": "Mekka",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "Vom Flughafen mit dem Haramain-Schnellzug ≈30 Min. (Economy ≈75 SAR) oder per Taxi (≈150–200 SAR)."
+            }
+          ]
+        },
+        {
+          "id": "medine",
+          "ad": "Über Medina",
+          "mesafe": "≈ 2.100 km",
+          "sure": "≈ 3 Std. 25 Min. Flug",
+          "duraklar": [
+            {
+              "ad": "Istanbul (IST / SAW)",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Ab IST: Turkish Airlines und Saudia; ab SAW: Pegasus, AJet, flynas, flyadeal."
+            },
+            {
+              "ad": "Medina – Flughafen Prinz Mohammed bin Abdulaziz (MED)",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "havalimani",
+              "detay": "Sie können zuerst Medina besuchen und dann am Miqat Dhul-Hulaifa den Ihram für die Umra anlegen."
+            },
+            {
+              "ad": "Mekka",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "Von Medina mit dem Haramain-Schnellzug ≈2 Std. (Economy ≈150–200 SAR) oder per Bus in 5–6 Std."
+            }
+          ]
+        }
+      ],
+      "belgeler": [
+        "Reisepass (mind. 6 Monate gültig)",
+        "Saudisches Touristen-E-Visum oder Umra-Visum (vor dem Flug)",
+        "Flugticket und Unterkunftsangaben",
+        "Umra-Genehmigung: nach der Ankunft über die Nusuk-App"
+      ],
+      "ipuclari": [
+        "Auch ab Ankara gibt es Direktflüge nach Dschidda und Medina.",
+        "Ticketpreise schwanken stark je nach Saison; Ramadan und Sommerferien sind am teuersten.",
+        "Hinflug nach Medina, Rückflug ab Dschidda – mit dem Haramain-Zug spart das Zeit."
+      ],
+      "firmalar": [
+        {
+          "ad": "Turkish Airlines",
+          "url": "https://www.turkishairlines.com"
+        },
+        {
+          "ad": "Pegasus",
+          "url": "https://www.flypgs.com"
+        },
+        {
+          "ad": "AJet",
+          "url": "https://ajet.com"
+        },
+        {
+          "ad": "Saudia",
+          "url": "https://www.saudia.com"
+        },
+        {
+          "ad": "flynas",
+          "url": "https://www.flynas.com"
+        },
+        {
+          "ad": "flyadeal",
+          "url": "https://www.flyadeal.com"
+        },
+        {
+          "ad": "Haramain-Schnellbahn",
+          "url": "https://sar.hhr.sa"
+        }
+      ]
+    }
+  },
+  "not": "Wird diese Datei auf GitHub aktualisiert, erreichen die Infos alle ohne App-Update. Grenzübergänge und Visaregeln können sich ändern; regelmäßig prüfen."
+}

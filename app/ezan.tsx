@@ -7,23 +7,28 @@ import { Text } from '../src/components/Text';
 import { Screen, Button, Card } from '../src/components/ui';
 import { colors, fonts } from '../src/theme';
 import { EZAN_KAYDI_HAZIR } from '../src/config';
+import { VAKIT_NAMES, VakitKey } from '../src/lib/prayerTimes';
+import { t, tx, isRTL } from '../src/i18n';
 
 const SOZLER: { ar: string; tr: string; meal: string; tekrar: number; sabah?: boolean }[] = [
-  { ar: 'اَللّٰهُ أَكْبَرُ', tr: 'Allâhu ekber', meal: 'Allah en büyüktür', tekrar: 4 },
-  { ar: 'أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ', tr: 'Eşhedü en lâ ilâhe illallâh', meal: 'Şahitlik ederim ki Allah’tan başka ilah yoktur', tekrar: 2 },
-  { ar: 'أَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللّٰهِ', tr: 'Eşhedü enne Muhammeden Resûlullâh', meal: 'Şahitlik ederim ki Muhammed Allah’ın elçisidir', tekrar: 2 },
-  { ar: 'حَيَّ عَلَى الصَّلَاةِ', tr: 'Hayye ale’s-salâh', meal: 'Haydi namaza', tekrar: 2 },
-  { ar: 'حَيَّ عَلَى الْفَلَاحِ', tr: 'Hayye ale’l-felâh', meal: 'Haydi kurtuluşa', tekrar: 2 },
-  { ar: 'اَلصَّلَاةُ خَيْرٌ مِنَ النَّوْمِ', tr: 'Es-salâtü hayrun mine’n-nevm', meal: 'Namaz uykudan hayırlıdır (sabah ezanında)', tekrar: 2, sabah: true },
-  { ar: 'اَللّٰهُ أَكْبَرُ', tr: 'Allâhu ekber', meal: 'Allah en büyüktür', tekrar: 2 },
-  { ar: 'لَا إِلٰهَ إِلَّا اللّٰهُ', tr: 'Lâ ilâhe illallâh', meal: 'Allah’tan başka ilah yoktur', tekrar: 1 },
+  { ar: 'اَللّٰهُ أَكْبَرُ', tr: 'Allâhu ekber', meal: tx('Allah en büyüktür'), tekrar: 4 },
+  { ar: 'أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ', tr: 'Eşhedü en lâ ilâhe illallâh', meal: tx('Şahitlik ederim ki Allah’tan başka ilah yoktur'), tekrar: 2 },
+  { ar: 'أَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللّٰهِ', tr: 'Eşhedü enne Muhammeden Resûlullâh', meal: tx('Şahitlik ederim ki Muhammed Allah’ın elçisidir'), tekrar: 2 },
+  { ar: 'حَيَّ عَلَى الصَّلَاةِ', tr: 'Hayye ale’s-salâh', meal: tx('Haydi namaza'), tekrar: 2 },
+  { ar: 'حَيَّ عَلَى الْفَلَاحِ', tr: 'Hayye ale’l-felâh', meal: tx('Haydi kurtuluşa'), tekrar: 2 },
+  { ar: 'اَلصَّلَاةُ خَيْرٌ مِنَ النَّوْمِ', tr: 'Es-salâtü hayrun mine’n-nevm', meal: tx('Namaz uykudan hayırlıdır (sabah ezanında)'), tekrar: 2, sabah: true },
+  { ar: 'اَللّٰهُ أَكْبَرُ', tr: 'Allâhu ekber', meal: tx('Allah en büyüktür'), tekrar: 2 },
+  { ar: 'لَا إِلٰهَ إِلَّا اللّٰهُ', tr: 'Lâ ilâhe illallâh', meal: tx('Allah’tan başka ilah yoktur'), tekrar: 1 },
 ];
 
 export default function EzanScreen() {
   const { vakit } = useLocalSearchParams<{ vakit?: string }>();
   const playerRef = useRef<AudioPlayer | null>(null);
   const [playing, setPlaying] = useState(false);
-  const isSabah = vakit === 'İmsak';
+  // Bildirim vakit anahtarını (imsak, ogle…) gönderir; eski bildirimler Türkçe adı gönderiyordu.
+  const key = (Object.keys(VAKIT_NAMES) as VakitKey[]).find((k) => k === vakit || VAKIT_NAMES[k] === vakit);
+  const isSabah = key === 'imsak';
+  const vakitAd = key ? t(VAKIT_NAMES[key]) : undefined;
 
   useEffect(() => {
     return () => {
@@ -48,12 +53,12 @@ export default function EzanScreen() {
   };
 
   return (
-    <Screen title={vakit ? `${vakit} ezanı` : 'Ezan'}>
+    <Screen title={vakitAd ? t('{vakit} ezanı', { vakit: vakitAd }) : t('Ezan')}>
       {EZAN_KAYDI_HAZIR ? (
-        <Button label={playing ? 'Durdur' : 'Ezanı dinle'} onPress={toggle} />
+        <Button label={playing ? t('Durdur') : t('Ezanı dinle')} onPress={toggle} />
       ) : (
         <Card>
-          <Text style={st.note}>Ezan kaydı yakında eklenecek. Şimdilik ezanın sözlerini ve anlamını okuyabilirsiniz.</Text>
+          <Text style={st.note}>{t('Ezan kaydı yakında eklenecek. Şimdilik ezanın sözlerini ve anlamını okuyabilirsiniz.')}</Text>
         </Card>
       )}
       {SOZLER.filter((s) => !s.sabah || isSabah).map((s, i) => (
@@ -62,8 +67,8 @@ export default function EzanScreen() {
             <Text style={st.times}>{`${s.tekrar}×`}</Text>
             <Text style={st.ar}>{s.ar}</Text>
           </View>
-          <Text style={st.tr}>{s.tr}</Text>
-          <Text style={st.meal}>{s.meal}</Text>
+          {!isRTL() && <Text style={st.tr}>{s.tr}</Text>}
+          {!isRTL() && <Text style={st.meal}>{t(s.meal)}</Text>}
         </Card>
       ))}
     </Screen>

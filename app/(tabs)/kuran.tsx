@@ -7,11 +7,12 @@ import { Text } from '../../src/components/Text';
 import { Button, Card, Chip, Eyebrow } from '../../src/components/ui';
 import { MushafPage } from '../../src/components/MushafPage';
 import { colors, fonts } from '../../src/theme';
-import { ATTRIBUTION, Chapter, getChapters, JUZ_START_PAGES, juzOfPage, prefetchPages, QWord, TOTAL_PAGES, getPage } from '../../src/lib/quran';
+import { attribution, Chapter, chapterName, getChapters, hasMeal, JUZ_START_PAGES, juzOfPage, prefetchPages, QWord, TOTAL_PAGES, getPage } from '../../src/lib/quran';
 import { quranPlayer, PlayerState } from '../../src/lib/quranPlayer';
 import { loadHatim, markPageRead, resetHatim, setGoal, setLastPage, useHatim } from '../../src/lib/hatim';
 import { MushafSize, setPrefs, usePrefs } from '../../src/lib/prefs';
 import { normalizeTr } from '../../src/data/sureler';
+import { t, tx } from '../../src/i18n';
 
 const PAGES = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
 const GOALS = [1, 2, 5, 10, 20];
@@ -108,24 +109,24 @@ export default function Kuran() {
   const hatimPct = Math.round((hatim.read.length / TOTAL_PAGES) * 100);
   const playing = player.mode === 'page';
 
-  let status = mushafTap === 'word' ? 'Bir kelimeye dokunun, telaffuzunu dinleyin.' : 'Bir satıra dokunun, yalnızca o satır okunsun.';
-  if (player.loading) status = 'Tilavet hazırlanıyor…';
-  else if (player.mode === 'line') status = `${player.line}. satır okunuyor`;
-  else if (player.mode === 'word') status = 'Kelime okunuyor';
-  else if (playing) status = `Sayfa ${player.page} okunuyor · durdurana kadar devam eder`;
+  let status = mushafTap === 'word' ? t('Bir kelimeye dokunun, telaffuzunu dinleyin.') : t('Bir satıra dokunun, yalnızca o satır okunsun.');
+  if (player.loading) status = t('Tilavet hazırlanıyor…');
+  else if (player.mode === 'line') status = t('{n}. satır okunuyor', { n: player.line });
+  else if (player.mode === 'word') status = t('Kelime okunuyor');
+  else if (playing) status = t('Sayfa {n} okunuyor · durdurana kadar devam eder', { n: player.page });
 
   return (
-    <View style={[st.root, { paddingTop: insets.top + 8 }]}>
+    <View style={[st.root, { paddingTop: insets.top + 8, direction: 'ltr' }]}>
       <View style={st.header}>
         <View style={st.headRow}>
-          <Pressable accessibilityRole="button" accessibilityLabel="Sure ve cüz seç" onPress={() => setPicker(true)} style={st.titleBtn}>
-            <Text style={st.title} numberOfLines={1}>{chapter ? `${chapter.nameTr} Suresi` : "Kur'an-ı Kerim"}</Text>
-            <Text style={st.sub}>{`Cüz ${juzOfPage(page)} · Sayfa ${page} ▾`}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('Sure ve cüz seç')} onPress={() => setPicker(true)} style={st.titleBtn}>
+            <Text style={st.title} numberOfLines={1}>{chapter ? t('{sure} Suresi', { sure: chapterName(chapter) }) : t("Kur'an-ı Kerim")}</Text>
+            <Text style={st.sub}>{`${t('Cüz {n}', { n: juzOfPage(page) })} · ${t('Sayfa {n}', { n: page })} ▾`}</Text>
           </Pressable>
           <SizeButton size={mushafSize} onPress={() => setPrefs({ mushafSize: ((mushafSize % 3) + 1) as MushafSize })} />
-          <Pressable accessibilityRole="button" accessibilityLabel="Hatim takibi" onPress={() => setHatimOpen(true)} style={st.hatimBtn}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('Hatim takibi')} onPress={() => setHatimOpen(true)} style={st.hatimBtn}>
             <Text style={st.hatimPct}>{`%${hatimPct}`}</Text>
-            <Text style={st.hatimLabel}>{`${hatim.todayPages.length}/${hatim.goal} bugün`}</Text>
+            <Text style={st.hatimLabel}>{t('{a}/{b} bugün', { a: hatim.todayPages.length, b: hatim.goal })}</Text>
           </Pressable>
         </View>
         <View style={st.progress}>
@@ -169,7 +170,7 @@ export default function Kuran() {
               height={pageH}
               size={mushafSize}
               tapMode={mushafTap}
-              showMeal={mushafMeal}
+              showMeal={mushafMeal && hasMeal()}
               onWordPress={onWordPress}
               chapters={chapters}
               activeWordId={player.page === item ? player.wordId : null}
@@ -186,7 +187,7 @@ export default function Kuran() {
 
       <View style={st.footer}>
         <View style={st.footRow}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Önceki sayfa" onPress={() => goTo(page - 1)} style={st.arrow} disabled={page <= 1}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('Önceki sayfa')} onPress={() => goTo(page - 1)} style={st.arrow} disabled={page <= 1}>
           <Text style={st.arrowText}>‹</Text>
         </Pressable>
         <View style={st.seg} accessibilityRole="radiogroup">
@@ -197,18 +198,18 @@ export default function Kuran() {
                 key={m}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: on }}
-                accessibilityLabel={m === 'line' ? 'Dokununca satır okunsun' : 'Dokununca kelime okunsun'}
+                accessibilityLabel={m === 'line' ? t('Dokununca satır okunsun') : t('Dokununca kelime okunsun')}
                 onPress={() => setPrefs({ mushafTap: m })}
                 style={[st.segBtn, on && st.segOn]}
               >
-                <Text style={[st.segText, on && st.segTextOn]}>{m === 'line' ? 'Satır' : 'Kelime'}</Text>
+                <Text style={[st.segText, on && st.segTextOn]}>{m === 'line' ? t('Satır') : t('Kelime')}</Text>
               </Pressable>
             );
           })}
         </View>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={playing ? 'Durdur' : 'Sayfayı okut'}
+            accessibilityLabel={playing ? t('Durdur') : t('Sayfayı okut')}
             onPress={togglePlay}
             style={st.play}
           >
@@ -227,16 +228,18 @@ export default function Kuran() {
               </Svg>
             )}
           </Pressable>
-        <Pressable
-          accessibilityRole="switch"
-          accessibilityState={{ checked: mushafMeal }}
-          accessibilityLabel="Türkçe meal"
-          onPress={() => setPrefs({ mushafMeal: !mushafMeal })}
-          style={[st.mealBtn, mushafMeal && st.segOn]}
-        >
-          <Text style={[st.segText, mushafMeal && st.segTextOn]}>Meal</Text>
-        </Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel="Sonraki sayfa" onPress={() => goTo(page + 1)} style={st.arrow} disabled={page >= TOTAL_PAGES}>
+        {hasMeal() && (
+          <Pressable
+            accessibilityRole="switch"
+            accessibilityState={{ checked: mushafMeal }}
+            accessibilityLabel={t('Meal')}
+            onPress={() => setPrefs({ mushafMeal: !mushafMeal })}
+            style={[st.mealBtn, mushafMeal && st.segOn]}
+          >
+            <Text style={[st.segText, mushafMeal && st.segTextOn]}>{t('Meal')}</Text>
+          </Pressable>
+        )}
+        <Pressable accessibilityRole="button" accessibilityLabel={t('Sonraki sayfa')} onPress={() => goTo(page + 1)} style={st.arrow} disabled={page >= TOTAL_PAGES}>
           <Text style={st.arrowText}>›</Text>
         </Pressable>
         </View>
@@ -257,23 +260,23 @@ export default function Kuran() {
       <Modal visible={hatimOpen} animationType="slide" transparent onRequestClose={() => setHatimOpen(false)}>
         <View style={st.sheetBackdrop}>
           <View style={[st.sheet, { paddingBottom: insets.bottom + 20 }]}>
-            <Text style={st.sheetTitle}>Hatim takibi</Text>
+            <Text style={st.sheetTitle}>{t('Hatim takibi')}</Text>
             <Card style={{ gap: 6 }}>
               <Text style={st.big}>{`%${hatimPct}`}</Text>
-              <Text style={st.muted}>{`Bu hatimde ${hatim.read.length} / ${TOTAL_PAGES} sayfa okundu`}</Text>
-              <Text style={st.muted}>{`Tamamlanan hatim: ${hatim.completed}`}</Text>
-              <Text style={st.muted}>{`Kaldığınız yer: Sayfa ${hatim.lastPage}`}</Text>
+              <Text style={st.muted}>{t('Bu hatimde {a} / {b} sayfa okundu', { a: hatim.read.length, b: TOTAL_PAGES })}</Text>
+              <Text style={st.muted}>{t('Tamamlanan hatim: {n}', { n: hatim.completed })}</Text>
+              <Text style={st.muted}>{t('Kaldığınız yer: Sayfa {n}', { n: hatim.lastPage })}</Text>
             </Card>
-            <Eyebrow>Günlük hedef</Eyebrow>
+            <Eyebrow>{t('Günlük hedef')}</Eyebrow>
             <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
               {GOALS.map((g) => (
-                <Chip key={g} label={g === 20 ? '20 sayfa (1 cüz)' : `${g} sayfa`} selected={hatim.goal === g} onPress={() => setGoal(g)} />
+                <Chip key={g} label={g === 20 ? t('20 sayfa (1 cüz)') : t('{n} sayfa', { n: g })} selected={hatim.goal === g} onPress={() => setGoal(g)} />
               ))}
             </View>
-            <Text style={st.muted}>Bir sayfada 20 saniye kalınca ya da sayfa sonuna kadar dinlenince okundu sayılır.</Text>
-            <Button variant="secondary" label="Yeni hatime başla" onPress={resetHatim} />
-            <Text style={st.attrib}>{ATTRIBUTION}</Text>
-            <Button label="Kapat" onPress={() => setHatimOpen(false)} />
+            <Text style={st.muted}>{t('Bir sayfada 20 saniye kalınca ya da sayfa sonuna kadar dinlenince okundu sayılır.')}</Text>
+            <Button variant="secondary" label={t('Yeni hatime başla')} onPress={resetHatim} />
+            <Text style={st.attrib}>{attribution()}</Text>
+            <Button label={t('Kapat')} onPress={() => setHatimOpen(false)} />
           </View>
         </View>
       </Modal>
@@ -281,14 +284,14 @@ export default function Kuran() {
   );
 }
 
-const SIZE_LABELS: Record<MushafSize, string> = { 1: 'Mushaf görünümü', 2: 'Büyük yazı', 3: 'Çok büyük yazı' };
+const SIZE_LABELS: Record<MushafSize, string> = { 1: tx('Mushaf görünümü'), 2: tx('Büyük yazı'), 3: tx('Çok büyük yazı') };
 
 /** 3 kademeli yazı boyutu tuşu: her dokunuşta bir sonraki kademeye geçer. */
 function SizeButton({ size, onPress }: { size: MushafSize; onPress: () => void }) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Yazı boyutu: ${SIZE_LABELS[size]}. Değiştirmek için dokunun.`}
+      accessibilityLabel={t('Yazı boyutu: {boyut}. Değiştirmek için dokunun.', { boyut: t(SIZE_LABELS[size]) })}
       onPress={onPress}
       style={st.sizeBtn}
     >
@@ -297,7 +300,7 @@ function SizeButton({ size, onPress }: { size: MushafSize; onPress: () => void }
           <RNText allowFontScaling={false} style={[st.sizeA, { fontSize: 12 }]}>A</RNText>
           <RNText allowFontScaling={false} style={[st.sizeA, { fontSize: 18 }]}>A</RNText>
         </View>
-        <RNText allowFontScaling={false} style={st.sizeLabel}>{size === 3 ? 'Yazı\nKüçült' : 'Yazı\nBüyüt'}</RNText>
+        <RNText allowFontScaling={false} style={st.sizeLabel}>{size === 3 ? t('Yazı\nKüçült') : t('Yazı\nBüyüt')}</RNText>
       </View>
       <View style={st.sizeDots}>
         {[1, 2, 3].map((n) => (
@@ -313,7 +316,7 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
   const [q, setQ] = useState('');
   const list = useMemo(() => {
     const n = normalizeTr(q.trim());
-    return n ? chapters.filter((c) => normalizeTr(c.nameTr).includes(n) || String(c.id) === n) : chapters;
+    return n ? chapters.filter((c) => (normalizeTr(c.nameTr).includes(n) || normalizeTr(c.nameSimple ?? '').includes(n) || c.nameAr.includes(q.trim())) || String(c.id) === n) : chapters;
   }, [q, chapters]);
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -326,21 +329,21 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
           ListHeaderComponent={
             <View style={{ gap: 12, marginBottom: 8 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={st.title}>Sure ve cüz</Text>
-                <Button variant="text" label="Kapat" onPress={onClose} />
+                <Text style={st.title}>{t('Sure ve cüz')}</Text>
+                <Button variant="text" label={t('Kapat')} onPress={onClose} />
               </View>
-              <Eyebrow>Cüz</Eyebrow>
+              <Eyebrow>{t('Cüz')}</Eyebrow>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
                 {JUZ_START_PAGES.map((p, i) => (
-                  <Chip key={p} label={`${i + 1}. cüz`} selected={false} onPress={() => onPick(p)} />
+                  <Chip key={p} label={t('{n}. cüz', { n: i + 1 })} selected={false} onPress={() => onPick(p)} />
                 ))}
               </ScrollView>
               <TextInput
                 value={q}
                 onChangeText={setQ}
-                placeholder="Sure ara (ör. Yasin ya da 36)"
+                placeholder={t('Sure ara (ör. Yasin ya da 36)')}
                 placeholderTextColor={colors.muted}
-                accessibilityLabel="Sure ara"
+                accessibilityLabel={t('Sure ara')}
                 style={st.search}
               />
               {chapters.length === 0 && <ActivityIndicator color={colors.green} />}
@@ -350,8 +353,8 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
             <Pressable accessibilityRole="button" onPress={() => onPick(item.pages[0])} style={st.surahRow}>
               <Text style={st.surahNo}>{item.id}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={st.surahName}>{item.nameTr}</Text>
-                <Text style={st.muted}>{`${item.verses} ayet · Sayfa ${item.pages[0]}`}</Text>
+                <Text style={st.surahName}>{chapterName(item)}</Text>
+                <Text style={st.muted}>{`${t('{n} ayet', { n: item.verses })} · ${t('Sayfa {n}', { n: item.pages[0] })}`}</Text>
               </View>
               <Text style={st.surahAr}>{item.nameAr}</Text>
             </Pressable>

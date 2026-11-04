@@ -1,5 +1,6 @@
 import Constants from 'expo-constants';
 import { load, save, KEYS } from './storage';
+import { tx } from '../i18n';
 
 export type Reel = {
   id: string;
@@ -14,11 +15,11 @@ export type ReelCategory = 'tumu' | 'kuran' | 'siyer' | 'ibadet' | 'aile';
 
 // Kategoriler, Instagram açıklamasındaki etiketlere göre (ör. #kuran, #hadis) belirlenir.
 export const REEL_CATEGORIES: { id: ReelCategory; label: string; tags: string[] }[] = [
-  { id: 'tumu', label: 'Tümü', tags: [] },
-  { id: 'kuran', label: 'Kur’an', tags: ['kuran', 'kurankerim', 'ayet', 'ayetelkursi', 'ayetelkürsi', 'fatiha', 'fatihasuresi', 'sure'] },
-  { id: 'siyer', label: 'Hadis & Siyer', tags: ['hadis', 'peygamberimiz', 'hzmuhammed', 'sünnet', 'salavat', 'şefaat', 'sonvasiyet', 'hzhatice'] },
-  { id: 'ibadet', label: 'İbadet', tags: ['namaz', 'sabahnamazı', 'hac', 'umre', 'tavaf', 'kabe', 'ihram', 'dua', 'tövbe', 'zikir'] },
-  { id: 'aile', label: 'Aile', tags: ['evlilik', 'hayırlıeş', 'nasip'] },
+  { id: 'tumu', label: tx('Tümü'), tags: [] },
+  { id: 'kuran', label: tx('Kur’an'), tags: ['kuran', 'kurankerim', 'ayet', 'ayetelkursi', 'ayetelkürsi', 'fatiha', 'fatihasuresi', 'sure'] },
+  { id: 'siyer', label: tx('Hadis & Siyer'), tags: ['hadis', 'peygamberimiz', 'hzmuhammed', 'sünnet', 'salavat', 'şefaat', 'sonvasiyet', 'hzhatice'] },
+  { id: 'ibadet', label: tx('İbadet'), tags: ['namaz', 'sabahnamazı', 'hac', 'umre', 'tavaf', 'kabe', 'ihram', 'dua', 'tövbe', 'zikir'] },
+  { id: 'aile', label: tx('Aile'), tags: ['evlilik', 'hayırlıeş', 'nasip'] },
 ];
 
 /** Açıklamadaki etiketler (küçük harf, # olmadan). "#kurandanai" "#kuran" sayılmaz. */

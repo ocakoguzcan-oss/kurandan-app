@@ -1,570 +1,1938 @@
 {
- "surum": 1,
- "guncelleme": "2026-11-04",
- "kategoriler": [
-  {
-   "id": "ahiret",
-   "ad": "Dünya & Ahiret",
-   "aciklama": "Dünya ve ahiret iyiliği, kabul ve sebat için"
-  },
-  {
-   "id": "aile",
-   "ad": "Aile & Evlilik",
-   "aciklama": "Eş, yuva ve evlilik için"
-  },
-  {
-   "id": "evlat",
-   "ad": "Anne-Baba & Evlat",
-   "aciklama": "Anne-baba ve hayırlı evlat için"
-  },
-  {
-   "id": "saglik",
-   "ad": "Sağlık & Şifa",
-   "aciklama": "Hastalıkta ve afiyet için"
-  },
-  {
-   "id": "rizik",
-   "ad": "Rızık & Bereket",
-   "aciklama": "Helal rızık, geçim ve borç için"
-  },
-  {
-   "id": "nazar",
-   "ad": "Nazar & Korunma",
-   "aciklama": "Nazar, kötülük ve şeytandan korunmak için"
-  },
-  {
-   "id": "huzur",
-   "ad": "Sıkıntı & Huzur",
-   "aciklama": "Dertli, kaygılı ve sıkıntılı anlarda"
-  },
-  {
-   "id": "tovbe",
-   "ad": "Tövbe & Af",
-   "aciklama": "Bağışlanma dilemek için"
-  },
-  {
-   "id": "gunluk",
-   "ad": "Günlük Dualar",
-   "aciklama": "Sabah-akşam, yatarken, yemekte, yolda"
-  }
- ],
- "dualar": [
-  {
-   "id": "bakara-201",
-   "kategoriler": [
-    "ahiret"
-   ],
-   "neIcin": "Dünya ve ahiretin iyiliğini istemek için; tavafta ve her namazdan sonra sıkça okunur.",
-   "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
-   "okunus": "Rabbenâ âtinâ fid-dünyâ haseneten ve fil-âhirati haseneten ve kınâ azâben-nâr.",
-   "meal": "Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver ve bizi ateş azabından koru.",
-   "kaynak": "Bakara Suresi, 201"
-  },
-  {
-   "id": "bakara-127",
-   "kategoriler": [
-    "ahiret"
-   ],
-   "neIcin": "Yaptığımız ibadet ve iyiliklerin kabulü için. Hz. İbrahim ile Hz. İsmail Kâbe'yi inşa ederken böyle dua ettiler.",
-   "arabic": "رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ",
-   "okunus": "Rabbenâ tekabbel minnâ inneke entes-semîul-alîm.",
-   "meal": "Rabbimiz! Bizden kabul buyur. Şüphesiz sen hakkıyla işitensin, bilensin.",
-   "kaynak": "Bakara Suresi, 127"
-  },
-  {
-   "id": "aliimran-8",
-   "kategoriler": [
-    "ahiret"
-   ],
-   "neIcin": "İmanda sebat ve doğru yoldan ayrılmamak için.",
-   "arabic": "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً إِنَّكَ أَنْتَ الْوَهَّابُ",
-   "okunus": "Rabbenâ lâ tuziğ kulûbenâ ba‘de iz hedeytenâ ve heb lenâ min ledünke rahmeh, inneke entel-vehhâb.",
-   "meal": "Rabbimiz! Bizi doğru yola ilettikten sonra kalplerimizi kaydırma. Bize katından rahmet bağışla. Şüphesiz sen çok bağışlayansın.",
-   "kaynak": "Âl-i İmrân Suresi, 8"
-  },
-  {
-   "id": "kalp-sebat",
-   "kategoriler": [
-    "ahiret"
-   ],
-   "neIcin": "Kalbin iman üzere sabit kalması için. Peygamberimiz bu duayı çok sık okurdu.",
-   "arabic": "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
-   "okunus": "Yâ mukallibel-kulûb, sebbit kalbî alâ dînik.",
-   "meal": "Ey kalpleri halden hâle çeviren Allah'ım! Kalbimi dinin üzere sabit kıl.",
-   "kaynak": "Tirmizî, Kader 7"
-  },
-  {
-   "id": "bakara-286",
-   "kategoriler": [
-    "ahiret",
-    "tovbe"
-   ],
-   "neIcin": "Unutma ve hatalarımızdan dolayı sorumlu tutulmamak için; yatsıdan sonra okunması tavsiye edilir.",
-   "arabic": "رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا",
-   "okunus": "Rabbenâ lâ tüâhiznâ in nesînâ ev ahta’nâ.",
-   "meal": "Rabbimiz! Unutur veya hataya düşersek bizi sorumlu tutma.",
-   "kaynak": "Bakara Suresi, 286"
-  },
-  {
-   "id": "furkan-74",
-   "kategoriler": [
-    "aile",
-    "evlat"
-   ],
-   "neIcin": "Eşimiz ve çocuklarımız göz aydınlığımız olsun diye; hayırlı bir yuva için.",
-   "arabic": "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
-   "okunus": "Rabbenâ heb lenâ min ezvâcinâ ve zürriyyâtinâ kurrate a‘yünin vec‘alnâ lil-müttekîne imâmâ.",
-   "meal": "Rabbimiz! Eşlerimizi ve çocuklarımızı bize göz aydınlığı kıl ve bizi takva sahiplerine önder eyle.",
-   "kaynak": "Furkân Suresi, 74"
-  },
-  {
-   "id": "evlilik-tebrik",
-   "kategoriler": [
-    "aile"
-   ],
-   "neIcin": "Yeni evlenenleri tebrik ederken okunur. Peygamberimiz evlenenlere böyle dua ederdi.",
-   "arabic": "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ",
-   "okunus": "Bârakallâhu leke ve bâreke aleyke ve cemea beynekumâ fî hayr.",
-   "meal": "Allah sana bereket versin, üzerine bereket yağdırsın ve sizi hayırda bir araya getirsin.",
-   "kaynak": "Ebû Dâvûd, Nikâh 37; Tirmizî, Nikâh 7"
-  },
-  {
-   "id": "isra-24",
-   "kategoriler": [
-    "evlat",
-    "aile"
-   ],
-   "neIcin": "Anne ve babamız için; hayatta olsunlar ya da olmasınlar.",
-   "arabic": "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
-   "okunus": "Rabbirhamhumâ kemâ rabbeyânî sağîrâ.",
-   "meal": "Rabbim! Küçüklüğümde onlar beni nasıl yetiştirdilerse, sen de onlara öyle merhamet et.",
-   "kaynak": "İsrâ Suresi, 24"
-  },
-  {
-   "id": "ibrahim-41",
-   "kategoriler": [
-    "evlat",
-    "tovbe"
-   ],
-   "neIcin": "Kendimiz, anne-babamız ve bütün müminlerin bağışlanması için; namazlarda Rabbenâ dualarında okunur.",
-   "arabic": "رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ",
-   "okunus": "Rabbenağfirlî ve li-vâlideyye ve lil-mü’minîne yevme yekûmul-hisâb.",
-   "meal": "Rabbimiz! Hesap gününde beni, anne babamı ve bütün müminleri bağışla.",
-   "kaynak": "İbrâhîm Suresi, 41"
-  },
-  {
-   "id": "ibrahim-40",
-   "kategoriler": [
-    "evlat",
-    "aile",
-    "gunluk"
-   ],
-   "neIcin": "Kendimizin ve çocuklarımızın namazı devamlı kılması için.",
-   "arabic": "رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ",
-   "okunus": "Rabbic‘alnî mukîmes-salâti ve min zürriyyetî, Rabbenâ ve tekabbel duâ.",
-   "meal": "Rabbim! Beni ve soyumdan gelecekleri namazı devamlı kılanlardan eyle. Rabbimiz! Duamı kabul et.",
-   "kaynak": "İbrâhîm Suresi, 40"
-  },
-  {
-   "id": "aliimran-38",
-   "kategoriler": [
-    "evlat"
-   ],
-   "neIcin": "Hayırlı evlat isteyenler için; Hz. Zekeriyya'nın duası.",
-   "arabic": "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ",
-   "okunus": "Rabbi heb lî min ledünke zurriyyeten tayyibeh, inneke semîud-duâ.",
-   "meal": "Rabbim! Bana katından temiz bir nesil bağışla. Şüphesiz sen duayı hakkıyla işitensin.",
-   "kaynak": "Âl-i İmrân Suresi, 38"
-  },
-  {
-   "id": "enbiya-89",
-   "kategoriler": [
-    "evlat"
-   ],
-   "neIcin": "Evlat hasretiyle dua edenler için; Hz. Zekeriyya'nın duası.",
-   "arabic": "رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ",
-   "okunus": "Rabbi lâ tezernî ferden ve ente hayrul-vârisîn.",
-   "meal": "Rabbim! Beni tek başıma bırakma. Sen varislerin en hayırlısısın.",
-   "kaynak": "Enbiyâ Suresi, 89"
-  },
-  {
-   "id": "ahkaf-15",
-   "kategoriler": [
-    "evlat",
-    "aile"
-   ],
-   "neIcin": "Nimetlere şükür, anne-baba ve çocuklarımızın salihliği için.",
-   "arabic": "رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ وَأَصْلِحْ لِي فِي ذُرِّيَّتِي إِنِّي تُبْتُ إِلَيْكَ وَإِنِّي مِنَ الْمُسْلِمِينَ",
-   "okunus": "Rabbi evzi‘nî en eşkura ni‘metekelletî en‘amte aleyye ve alâ vâlideyye ve en a‘mele sâlihan terdâhu ve aslih lî fî zürriyyetî, innî tübtü ileyke ve innî minel-müslimîn.",
-   "meal": "Rabbim! Bana ve anne babama verdiğin nimete şükretmemi ve razı olacağın salih amel işlememi sağla. Soyumu da salih kıl. Şüphesiz ben sana döndüm ve ben Müslümanlardanım.",
-   "kaynak": "Ahkâf Suresi, 15"
-  },
-  {
-   "id": "hasta-sifa",
-   "kategoriler": [
-    "saglik"
-   ],
-   "neIcin": "Hasta ziyaretinde ya da hastalanan birine şifa dilerken okunur. Peygamberimiz hastaya elini sürerek böyle dua ederdi.",
-   "arabic": "أَذْهِبِ الْبَأْسَ رَبَّ النَّاسِ اشْفِ أَنْتَ الشَّافِي لَا شِفَاءَ إِلَّا شِفَاؤُكَ شِفَاءً لَا يُغَادِرُ سَقَمًا",
-   "okunus": "Ezhibil-be’se Rabben-nâs, işfi enteş-şâfî, lâ şifâe illâ şifâuk, şifâen lâ yuğâdiru sekamâ.",
-   "meal": "Ey insanların Rabbi! Sıkıntıyı gider, şifa ver; şifa veren sensin. Senin şifandan başka şifa yoktur. Hiçbir hastalık bırakmayan bir şifa ver.",
-   "kaynak": "Buhârî, Merdâ 20; Müslim, Selâm 46"
-  },
-  {
-   "id": "beden-afiyet",
-   "kategoriler": [
-    "saglik",
-    "gunluk"
-   ],
-   "neIcin": "Bedenin, kulağın ve gözün sağlığı için; sabah ve akşam üçer kez okunur.",
-   "arabic": "اللَّهُمَّ عَافِنِي فِي بَدَنِي اللَّهُمَّ عَافِنِي فِي سَمْعِي اللَّهُمَّ عَافِنِي فِي بَصَرِي",
-   "okunus": "Allâhumme âfinî fî bedenî, Allâhumme âfinî fî sem‘î, Allâhumme âfinî fî basarî.",
-   "meal": "Allah'ım! Bedenime afiyet ver. Allah'ım! Kulağıma afiyet ver. Allah'ım! Gözüme afiyet ver.",
-   "kaynak": "Ebû Dâvûd, Edeb 101"
-  },
-  {
-   "id": "enbiya-83",
-   "kategoriler": [
-    "saglik",
-    "huzur"
-   ],
-   "neIcin": "Hastalık ve dert içinde sabırla Allah'a sığınmak için; Hz. Eyyûb'un duası.",
-   "arabic": "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنْتَ أَرْحَمُ الرَّاحِمِينَ",
-   "okunus": "Ennî messeniyed-durru ve ente erhamur-râhimîn.",
-   "meal": "Başıma bu dert geldi. Sen ise merhametlilerin en merhametlisisin.",
-   "kaynak": "Enbiyâ Suresi, 83"
-  },
-  {
-   "id": "afiyet",
-   "kategoriler": [
-    "saglik",
-    "ahiret"
-   ],
-   "neIcin": "Dünyada ve ahirette afiyet istemek için. Peygamberimiz Allah'tan en çok istenecek şeyin afiyet olduğunu bildirdi.",
-   "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ",
-   "okunus": "Allâhumme innî es’elükel-âfiyete fid-dünyâ vel-âhira.",
-   "meal": "Allah'ım! Senden dünyada ve ahirette afiyet dilerim.",
-   "kaynak": "İbn Mâce, Dua 5"
-  },
-  {
-   "id": "rizik-tayyib",
-   "kategoriler": [
-    "rizik",
-    "gunluk"
-   ],
-   "neIcin": "Faydalı ilim, helal rızık ve kabul olunan amel için; sabah namazından sonra okunur.",
-   "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
-   "okunus": "Allâhumme innî es’elüke ilmen nâfian ve rizkan tayyiben ve amelen mütekabbelâ.",
-   "meal": "Allah'ım! Senden faydalı ilim, helal ve temiz rızık ve kabul olunmuş amel dilerim.",
-   "kaynak": "İbn Mâce, İkâmet 32"
-  },
-  {
-   "id": "borc-gecim",
-   "kategoriler": [
-    "rizik"
-   ],
-   "neIcin": "Borçtan kurtulmak ve kimseye muhtaç olmamak için. Peygamberimiz borçlu birine bu duayı öğretti.",
-   "arabic": "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ",
-   "okunus": "Allâhummekfinî bi halâlike an harâmike ve ağninî bi fadlike ammen sivâk.",
-   "meal": "Allah'ım! Helalinle beni haramından koru ve lütfunla beni senden başkasına muhtaç etme.",
-   "kaynak": "Tirmizî, Daavât 110"
-  },
-  {
-   "id": "kasas-24",
-   "kategoriler": [
-    "rizik",
-    "huzur"
-   ],
-   "neIcin": "İhtiyaç ve darlık anında, iş ve rızık beklerken; Hz. Mûsâ'nın duası.",
-   "arabic": "رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ",
-   "okunus": "Rabbi innî limâ enzelte ileyye min hayrin fakîr.",
-   "meal": "Rabbim! Bana indireceğin her hayra muhtacım.",
-   "kaynak": "Kasas Suresi, 24"
-  },
-  {
-   "id": "maide-114",
-   "kategoriler": [
-    "rizik"
-   ],
-   "neIcin": "Bereketli ve bol rızık istemek için.",
-   "arabic": "وَارْزُقْنَا وَأَنْتَ خَيْرُ الرَّازِقِينَ",
-   "okunus": "Verzuknâ ve ente hayrur-râzikîn.",
-   "meal": "Bizi rızıklandır. Sen rızık verenlerin en hayırlısısın.",
-   "kaynak": "Mâide Suresi, 114"
-  },
-  {
-   "id": "felak",
-   "kategoriler": [
-    "nazar"
-   ],
-   "neIcin": "Nazar, haset, büyü ve her türlü kötülükten korunmak için; sabah-akşam ve yatmadan önce okunur.",
-   "arabic": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
-   "okunus": "Kul eûzü bi rabbil-felak. Min şerri mâ halak. Ve min şerri ğâsikın izâ vekab. Ve min şerrin-neffâsâti fil-ukad. Ve min şerri hâsidin izâ hased.",
-   "meal": "De ki: Yarattığı şeylerin kötülüğünden, karanlığı çöktüğü zaman gecenin kötülüğünden, düğümlere üfleyenlerin kötülüğünden ve haset ettiği zaman hasetçinin kötülüğünden, sabahın Rabbine sığınırım.",
-   "kaynak": "Felak Suresi"
-  },
-  {
-   "id": "nas",
-   "kategoriler": [
-    "nazar"
-   ],
-   "neIcin": "Vesvese ve kötülüklerden korunmak için; Felak ile birlikte okunur.",
-   "arabic": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ",
-   "okunus": "Kul eûzü bi rabbin-nâs. Melikin-nâs. İlâhin-nâs. Min şerril-vesvâsil-hannâs. Ellezî yuvesvisu fî sudûrin-nâs. Minel-cinneti ven-nâs.",
-   "meal": "De ki: İnsanların Rabbine, insanların Melikine, insanların İlahına; insanların gönüllerine vesvese veren, cinlerden ve insanlardan olan sinsi vesvesecinin kötülüğünden sığınırım.",
-   "kaynak": "Nâs Suresi"
-  },
-  {
-   "id": "nazar-kelimat",
-   "kategoriler": [
-    "nazar",
-    "gunluk"
-   ],
-   "neIcin": "Nazar ve zararlı her şeyden korunmak için. Peygamberimiz torunları Hz. Hasan ve Hz. Hüseyin için böyle dua ederdi.",
-   "arabic": "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ",
-   "okunus": "Eûzü bi kelimâtillâhit-tâmmeti min külli şeytânin ve hâmmetin ve min külli aynin lâmmeh.",
-   "meal": "Her şeytandan, zararlı her şeyden ve değen her kötü gözden Allah'ın eksiksiz kelimelerine sığınırım.",
-   "kaynak": "Buhârî, Enbiyâ 10 (çocuklar için: “U‘îzuke…” diye okunur)"
-  },
-  {
-   "id": "masallah",
-   "kategoriler": [
-    "nazar"
-   ],
-   "neIcin": "Beğendiğimiz bir şeye nazarımız değmesin diye söylenir.",
-   "arabic": "مَا شَاءَ اللَّهُ لَا قُوَّةَ إِلَّا بِاللَّهِ",
-   "okunus": "Mâşâallâh, lâ kuvvete illâ billâh.",
-   "meal": "Allah dilemiştir. Allah'ın yardımı olmadan hiçbir güç yoktur.",
-   "kaynak": "Kehf Suresi, 39"
-  },
-  {
-   "id": "kalem-51",
-   "kategoriler": [
-    "nazar"
-   ],
-   "neIcin": "Halk arasında nazara karşı okunan ayetler (Ve in yekâd).",
-   "arabic": "وَإِنْ يَكَادُ الَّذِينَ كَفَرُوا لَيُزْلِقُونَكَ بِأَبْصَارِهِمْ لَمَّا سَمِعُوا الذِّكْرَ وَيَقُولُونَ إِنَّهُ لَمَجْنُونٌ ۝ وَمَا هُوَ إِلَّا ذِكْرٌ لِلْعَالَمِينَ",
-   "okunus": "Ve in yekâdullezîne keferû le yuzlikûneke bi ebsârihim lemmâ semiuz-zikra ve yekûlûne innehû le mecnûn. Ve mâ huve illâ zikrun lil-âlemîn.",
-   "meal": "İnkâr edenler Kur'an'ı duydukları zaman neredeyse seni gözleriyle devirecekler ve “O mutlaka bir delidir” diyorlar. Oysa o, âlemler için ancak bir öğüttür.",
-   "kaynak": "Kalem Suresi, 51-52"
-  },
-  {
-   "id": "bismillahillezi",
-   "kategoriler": [
-    "nazar",
-    "gunluk"
-   ],
-   "neIcin": "Gün boyu her türlü zarardan korunmak için; sabah ve akşam üçer kez okunur.",
-   "arabic": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
-   "okunus": "Bismillâhillezî lâ yedurru measmihî şey’ün fil-ardı ve lâ fis-semâi ve huves-semîul-alîm.",
-   "meal": "İsmi anıldığında yerde ve gökte hiçbir şeyin zarar veremediği Allah'ın adıyla. O hakkıyla işitendir, bilendir.",
-   "kaynak": "Ebû Dâvûd, Edeb 101; Tirmizî, Daavât 13"
-  },
-  {
-   "id": "muminun-97",
-   "kategoriler": [
-    "nazar"
-   ],
-   "neIcin": "Şeytanın kışkırtmalarından ve öfkeden korunmak için.",
-   "arabic": "رَبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ ۝ وَأَعُوذُ بِكَ رَبِّ أَنْ يَحْضُرُونِ",
-   "okunus": "Rabbi eûzü bike min hemezâtiş-şeyâtîn. Ve eûzü bike Rabbi en yahdurûn.",
-   "meal": "Rabbim! Şeytanların kışkırtmalarından sana sığınırım. Onların yanımda bulunmalarından da sana sığınırım Rabbim.",
-   "kaynak": "Mü’minûn Suresi, 97-98"
-  },
-  {
-   "id": "hem-hazen",
-   "kategoriler": [
-    "huzur",
-    "rizik"
-   ],
-   "neIcin": "Kaygı, üzüntü, tembellik ve borç yükünden kurtulmak için. Peygamberimiz bu duayı çok okurdu.",
-   "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ وَالْبُخْلِ وَالْجُبْنِ وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
-   "okunus": "Allâhumme innî eûzü bike minel-hemmi vel-hazen, vel-aczi vel-kesel, vel-buhli vel-cübn, ve dalaid-deyni ve ğalebetir-ricâl.",
-   "meal": "Allah'ım! Kaygıdan ve üzüntüden, acizlikten ve tembellikten, cimrilikten ve korkaklıktan, borç yükünden ve insanların baskısından sana sığınırım.",
-   "kaynak": "Buhârî, Daavât 36"
-  },
-  {
-   "id": "ya-hayyu",
-   "kategoriler": [
-    "huzur"
-   ],
-   "neIcin": "Sıkıntı ve darlık anında Allah'ın rahmetine sığınmak için.",
-   "arabic": "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ",
-   "okunus": "Yâ Hayyu yâ Kayyûm, bi rahmetike esteğîs.",
-   "meal": "Ey diri olan, her şeyi ayakta tutan Allah'ım! Senin rahmetinle yardım dilerim.",
-   "kaynak": "Tirmizî, Daavât 91"
-  },
-  {
-   "id": "hasbiyallah",
-   "kategoriler": [
-    "huzur"
-   ],
-   "neIcin": "Allah'a tevekkül etmek ve kalbi huzura erdirmek için; sabah-akşam yedi kez okunması tavsiye edilir.",
-   "arabic": "حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
-   "okunus": "Hasbiyallâhu lâ ilâhe illâ hû, aleyhi tevekkeltü ve hüve rabbül-arşil-azîm.",
-   "meal": "Allah bana yeter. O'ndan başka ilah yoktur. Ben yalnız O'na tevekkül ettim. O, büyük Arş'ın Rabbidir.",
-   "kaynak": "Tevbe Suresi, 129"
-  },
-  {
-   "id": "hasbunallah",
-   "kategoriler": [
-    "huzur"
-   ],
-   "neIcin": "Korku ve endişe anında Allah'a dayanmak için.",
-   "arabic": "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
-   "okunus": "Hasbunallâhu ve ni‘mel-vekîl.",
-   "meal": "Allah bize yeter. O ne güzel vekildir.",
-   "kaynak": "Âl-i İmrân Suresi, 173"
-  },
-  {
-   "id": "taha-25",
-   "kategoriler": [
-    "huzur",
-    "gunluk"
-   ],
-   "neIcin": "Bir işe, sınava ya da zor bir konuşmaya başlarken; Hz. Mûsâ'nın duası.",
-   "arabic": "رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي ۝ وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي ۝ يَفْقَهُوا قَوْلِي",
-   "okunus": "Rabbişrah lî sadrî. Ve yessir lî emrî. Vahlul ukdeten min lisânî. Yefkahû kavlî.",
-   "meal": "Rabbim! Göğsümü genişlet. İşimi kolaylaştır. Dilimdeki düğümü çöz ki sözümü anlasınlar.",
-   "kaynak": "Tâhâ Suresi, 25-28"
-  },
-  {
-   "id": "enbiya-87",
-   "kategoriler": [
-    "huzur",
-    "tovbe"
-   ],
-   "neIcin": "Sıkıntıdan kurtulmak ve hatalardan dönmek için; Hz. Yûnus'un balığın karnındaki duası.",
-   "arabic": "لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
-   "okunus": "Lâ ilâhe illâ ente sübhâneke innî küntü minez-zâlimîn.",
-   "meal": "Senden başka ilah yoktur. Seni tenzih ederim. Gerçekten ben kendine yazık edenlerden oldum.",
-   "kaynak": "Enbiyâ Suresi, 87"
-  },
-  {
-   "id": "seyyidul-istigfar",
-   "kategoriler": [
-    "tovbe",
-    "gunluk"
-   ],
-   "neIcin": "Bağışlanma dualarının en üstünü; sabah ve akşam okunur.",
-   "arabic": "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
-   "okunus": "Allâhumme ente Rabbî, lâ ilâhe illâ ente, halaktenî ve ene abdük, ve ene alâ ahdike ve va‘dike mesteta‘tü, eûzü bike min şerri mâ sana‘tü, ebûu leke bi ni‘metike aleyye ve ebûu leke bi zenbî fağfir lî, fe innehû lâ yağfiruz-zünûbe illâ ente.",
-   "meal": "Allah'ım! Sen benim Rabbimsin. Senden başka ilah yoktur. Beni sen yarattın, ben senin kulunum. Gücüm yettiğince sana verdiğim söz ve ahdin üzerindeyim. Yaptıklarımın kötülüğünden sana sığınırım. Bana verdiğin nimetleri ve günahlarımı itiraf ediyorum. Beni bağışla; çünkü günahları ancak sen bağışlarsın.",
-   "kaynak": "Buhârî, Daavât 2"
-  },
-  {
-   "id": "afuvvun",
-   "kategoriler": [
-    "tovbe"
-   ],
-   "neIcin": "Af dilemek için; Peygamberimiz Kadir Gecesi'nde bu duanın okunmasını tavsiye etti.",
-   "arabic": "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
-   "okunus": "Allâhumme inneke afuvvun tuhibbul-afve fa‘fu annî.",
-   "meal": "Allah'ım! Sen affedicisin, affetmeyi seversin; beni de affet.",
-   "kaynak": "Tirmizî, Daavât 84"
-  },
-  {
-   "id": "araf-23",
-   "kategoriler": [
-    "tovbe"
-   ],
-   "neIcin": "Hata ettiğimizde pişmanlıkla dönmek için; Hz. Âdem ile Hz. Havva'nın duası.",
-   "arabic": "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",
-   "okunus": "Rabbenâ zalemnâ enfusenâ ve in lem tağfir lenâ ve terhamnâ le nekûnenne minel-hâsirîn.",
-   "meal": "Rabbimiz! Biz kendimize zulmettik. Eğer bizi bağışlamaz ve bize merhamet etmezsen mutlaka kaybedenlerden oluruz.",
-   "kaynak": "A‘râf Suresi, 23"
-  },
-  {
-   "id": "muminun-118",
-   "kategoriler": [
-    "tovbe"
-   ],
-   "neIcin": "Bağışlanma ve rahmet dilemek için.",
-   "arabic": "رَبِّ اغْفِرْ وَارْحَمْ وَأَنْتَ خَيْرُ الرَّاحِمِينَ",
-   "okunus": "Rabbiğfir verham ve ente hayrur-râhimîn.",
-   "meal": "Rabbim! Bağışla, merhamet et. Sen merhamet edenlerin en hayırlısısın.",
-   "kaynak": "Mü’minûn Suresi, 118"
-  },
-  {
-   "id": "taha-114",
-   "kategoriler": [
-    "gunluk"
-   ],
-   "neIcin": "Ders çalışırken, okurken ve öğrenirken.",
-   "arabic": "رَبِّ زِدْنِي عِلْمًا",
-   "okunus": "Rabbi zidnî ilmâ.",
-   "meal": "Rabbim! İlmimi artır.",
-   "kaynak": "Tâhâ Suresi, 114"
-  },
-  {
-   "id": "kehf-10",
-   "kategoriler": [
-    "huzur",
-    "ahiret"
-   ],
-   "neIcin": "Bir işte doğru yolu bulmak ve rahmet dilemek için; Ashâb-ı Kehf'in duası.",
-   "arabic": "رَبَّنَا آتِنَا مِنْ لَدُنْكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا",
-   "okunus": "Rabbenâ âtinâ min ledünke rahmeten ve heyyi’ lenâ min emrinâ raşedâ.",
-   "meal": "Rabbimiz! Bize katından bir rahmet ver ve işimizde bize doğruyu bulmayı kolaylaştır.",
-   "kaynak": "Kehf Suresi, 10"
-  },
-  {
-   "id": "evden-cikarken",
-   "kategoriler": [
-    "gunluk",
-    "nazar"
-   ],
-   "neIcin": "Evden çıkarken okunur.",
-   "arabic": "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
-   "okunus": "Bismillâhi, tevekkeltü alallâh, lâ havle ve lâ kuvvete illâ billâh.",
-   "meal": "Allah'ın adıyla. Allah'a tevekkül ettim. Güç ve kuvvet ancak Allah'tandır.",
-   "kaynak": "Ebû Dâvûd, Edeb 103; Tirmizî, Daavât 34"
-  },
-  {
-   "id": "yatarken",
-   "kategoriler": [
-    "gunluk"
-   ],
-   "neIcin": "Yatarken okunur.",
-   "arabic": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
-   "okunus": "Bismike Allâhumme emûtu ve ahyâ.",
-   "meal": "Allah'ım! Senin adınla ölür ve dirilirim.",
-   "kaynak": "Buhârî, Daavât 7"
-  },
-  {
-   "id": "uyaninca",
-   "kategoriler": [
-    "gunluk"
-   ],
-   "neIcin": "Uykudan uyanınca okunur.",
-   "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
-   "okunus": "Elhamdü lillâhillezî ahyânâ ba‘de mâ emâtenâ ve ileyhin-nüşûr.",
-   "meal": "Bizi öldürdükten sonra dirilten Allah'a hamdolsun. Dönüş O'nadır.",
-   "kaynak": "Buhârî, Daavât 7"
-  },
-  {
-   "id": "yemekten-sonra",
-   "kategoriler": [
-    "gunluk",
-    "rizik"
-   ],
-   "neIcin": "Yemekten sonra okunur.",
-   "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَٰذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",
-   "okunus": "Elhamdü lillâhillezî et‘amenî hâzâ ve rezekanîhi min ğayri havlin minnî ve lâ kuvveh.",
-   "meal": "Bana bu yemeği yediren ve benim hiçbir gücüm ve kuvvetim olmadan onu bana rızık olarak veren Allah'a hamdolsun.",
-   "kaynak": "Ebû Dâvûd, Libâs 1; Tirmizî, Daavât 56"
-  },
-  {
-   "id": "yolculuk",
-   "kategoriler": [
-    "gunluk"
-   ],
-   "neIcin": "Bir araca binip yolculuğa çıkarken okunur.",
-   "arabic": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ ۝ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنْقَلِبُونَ",
-   "okunus": "Sübhânellezî sahhara lenâ hâzâ ve mâ kunnâ lehû mukrinîn. Ve innâ ilâ rabbinâ le munkalibûn.",
-   "meal": "Bunu bizim hizmetimize veren Allah'ı tenzih ederiz; yoksa biz buna güç yetiremezdik. Şüphesiz biz Rabbimize döneceğiz.",
-   "kaynak": "Zuhruf Suresi, 13-14"
-  }
- ],
- "not": "Bu dosyaya eklenen dualar uygulama güncellemesi olmadan herkese gelir. Yeni dua eklerken bir hocaya kontrol ettirin."
+  "surum": 2,
+  "guncelleme": "2026-11-04",
+  "kategoriler": [
+    {
+      "id": "ahiret",
+      "ad": "Dünya & Ahiret",
+      "aciklama": "Dünya ve ahiret iyiliği, kabul ve sebat için",
+      "ceviri": {
+        "en": {
+          "ad": "This World & Hereafter",
+          "aciklama": "For the good of both worlds, acceptance and steadfastness"
+        },
+        "de": {
+          "ad": "Diesseits & Jenseits",
+          "aciklama": "Für das Gute in beiden Welten, Annahme und Standhaftigkeit"
+        },
+        "fr": {
+          "ad": "Ici-bas & au-delà",
+          "aciklama": "Pour le bien des deux mondes, l’acceptation et la constance"
+        },
+        "ru": {
+          "ad": "Этот мир и вечный",
+          "aciklama": "О благе обоих миров, принятии и стойкости"
+        },
+        "ar": {
+          "ad": "الدنيا والآخرة",
+          "aciklama": "لخير الدارين والقبول والثبات"
+        }
+      }
+    },
+    {
+      "id": "aile",
+      "ad": "Aile & Evlilik",
+      "aciklama": "Eş, yuva ve evlilik için",
+      "ceviri": {
+        "en": {
+          "ad": "Family & Marriage",
+          "aciklama": "For spouses, home and marriage"
+        },
+        "de": {
+          "ad": "Familie & Ehe",
+          "aciklama": "Für Ehepartner, Zuhause und Ehe"
+        },
+        "fr": {
+          "ad": "Famille & mariage",
+          "aciklama": "Pour le conjoint, le foyer et le mariage"
+        },
+        "ru": {
+          "ad": "Семья и брак",
+          "aciklama": "О супругах, доме и браке"
+        },
+        "ar": {
+          "ad": "الأسرة والزواج",
+          "aciklama": "للزوج والبيت والزواج"
+        }
+      }
+    },
+    {
+      "id": "evlat",
+      "ad": "Anne-Baba & Evlat",
+      "aciklama": "Anne-baba ve hayırlı evlat için",
+      "ceviri": {
+        "en": {
+          "ad": "Parents & Children",
+          "aciklama": "For parents and righteous children"
+        },
+        "de": {
+          "ad": "Eltern & Kinder",
+          "aciklama": "Für Eltern und rechtschaffene Kinder"
+        },
+        "fr": {
+          "ad": "Parents & enfants",
+          "aciklama": "Pour les parents et une descendance pieuse"
+        },
+        "ru": {
+          "ad": "Родители и дети",
+          "aciklama": "О родителях и праведных детях"
+        },
+        "ar": {
+          "ad": "الوالدان والذرية",
+          "aciklama": "للوالدين والذرية الصالحة"
+        }
+      }
+    },
+    {
+      "id": "saglik",
+      "ad": "Sağlık & Şifa",
+      "aciklama": "Hastalıkta ve afiyet için",
+      "ceviri": {
+        "en": {
+          "ad": "Health & Healing",
+          "aciklama": "In illness and for well-being"
+        },
+        "de": {
+          "ad": "Gesundheit & Heilung",
+          "aciklama": "In Krankheit und für Wohlergehen"
+        },
+        "fr": {
+          "ad": "Santé & guérison",
+          "aciklama": "Dans la maladie et pour le bien-être"
+        },
+        "ru": {
+          "ad": "Здоровье и исцеление",
+          "aciklama": "В болезни и о благополучии"
+        },
+        "ar": {
+          "ad": "الصحة والشفاء",
+          "aciklama": "في المرض ولطلب العافية"
+        }
+      }
+    },
+    {
+      "id": "rizik",
+      "ad": "Rızık & Bereket",
+      "aciklama": "Helal rızık, geçim ve borç için",
+      "ceviri": {
+        "en": {
+          "ad": "Provision & Blessing",
+          "aciklama": "For lawful provision, livelihood and debt"
+        },
+        "de": {
+          "ad": "Versorgung & Segen",
+          "aciklama": "Für erlaubten Lebensunterhalt und gegen Schulden"
+        },
+        "fr": {
+          "ad": "Subsistance & baraka",
+          "aciklama": "Pour une subsistance licite, le gagne-pain et les dettes"
+        },
+        "ru": {
+          "ad": "Удел и благодать",
+          "aciklama": "О дозволенном уделе, пропитании и долгах"
+        },
+        "ar": {
+          "ad": "الرزق والبركة",
+          "aciklama": "للرزق الحلال والمعيشة والدَّين"
+        }
+      }
+    },
+    {
+      "id": "nazar",
+      "ad": "Nazar & Korunma",
+      "aciklama": "Nazar, kötülük ve şeytandan korunmak için",
+      "ceviri": {
+        "en": {
+          "ad": "Evil Eye & Protection",
+          "aciklama": "Protection from the evil eye, harm and Satan"
+        },
+        "de": {
+          "ad": "Böser Blick & Schutz",
+          "aciklama": "Schutz vor bösem Blick, Übel und Satan"
+        },
+        "fr": {
+          "ad": "Mauvais œil & protection",
+          "aciklama": "Protection contre le mauvais œil, le mal et Satan"
+        },
+        "ru": {
+          "ad": "Сглаз и защита",
+          "aciklama": "Защита от сглаза, зла и шайтана"
+        },
+        "ar": {
+          "ad": "العين والتحصين",
+          "aciklama": "للتحصن من العين والشر والشيطان"
+        }
+      }
+    },
+    {
+      "id": "huzur",
+      "ad": "Sıkıntı & Huzur",
+      "aciklama": "Dertli, kaygılı ve sıkıntılı anlarda",
+      "ceviri": {
+        "en": {
+          "ad": "Distress & Peace",
+          "aciklama": "In times of worry, anxiety and hardship"
+        },
+        "de": {
+          "ad": "Kummer & Ruhe",
+          "aciklama": "In Zeiten von Sorge, Angst und Not"
+        },
+        "fr": {
+          "ad": "Détresse & sérénité",
+          "aciklama": "Dans le souci, l’angoisse et l’épreuve"
+        },
+        "ru": {
+          "ad": "Тревога и покой",
+          "aciklama": "В минуты горя, тревоги и трудностей"
+        },
+        "ar": {
+          "ad": "الكرب والطمأنينة",
+          "aciklama": "في أوقات الهم والقلق والضيق"
+        }
+      }
+    },
+    {
+      "id": "tovbe",
+      "ad": "Tövbe & Af",
+      "aciklama": "Bağışlanma dilemek için",
+      "ceviri": {
+        "en": {
+          "ad": "Repentance & Forgiveness",
+          "aciklama": "To ask for forgiveness"
+        },
+        "de": {
+          "ad": "Reue & Vergebung",
+          "aciklama": "Um Vergebung zu bitten"
+        },
+        "fr": {
+          "ad": "Repentir & pardon",
+          "aciklama": "Pour demander pardon"
+        },
+        "ru": {
+          "ad": "Покаяние и прощение",
+          "aciklama": "О прощении"
+        },
+        "ar": {
+          "ad": "التوبة والعفو",
+          "aciklama": "لطلب المغفرة"
+        }
+      }
+    },
+    {
+      "id": "gunluk",
+      "ad": "Günlük Dualar",
+      "aciklama": "Sabah-akşam, yatarken, yemekte, yolda",
+      "ceviri": {
+        "en": {
+          "ad": "Daily Supplications",
+          "aciklama": "Morning and evening, at bedtime, at meals, on the road"
+        },
+        "de": {
+          "ad": "Tägliche Bittgebete",
+          "aciklama": "Morgens und abends, beim Schlafen, Essen, unterwegs"
+        },
+        "fr": {
+          "ad": "Invocations quotidiennes",
+          "aciklama": "Matin et soir, au coucher, aux repas, en route"
+        },
+        "ru": {
+          "ad": "Ежедневные мольбы",
+          "aciklama": "Утром и вечером, перед сном, за едой, в пути"
+        },
+        "ar": {
+          "ad": "أدعية يومية",
+          "aciklama": "الصباح والمساء والنوم والطعام والسفر"
+        }
+      }
+    }
+  ],
+  "dualar": [
+    {
+      "id": "bakara-201",
+      "kategoriler": [
+        "ahiret"
+      ],
+      "neIcin": "Dünya ve ahiretin iyiliğini istemek için; tavafta ve her namazdan sonra sıkça okunur.",
+      "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+      "okunus": "Rabbenâ âtinâ fid-dünyâ haseneten ve fil-âhirati haseneten ve kınâ azâben-nâr.",
+      "meal": "Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver ve bizi ateş azabından koru.",
+      "kaynak": "Bakara Suresi, 201",
+      "ceviri": {
+        "en": {
+          "neIcin": "To ask for the good of this world and the Hereafter; often recited during tawaf and after every prayer.",
+          "meal": "Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.",
+          "kaynak": "Al-Baqarah 2:201"
+        },
+        "de": {
+          "neIcin": "Um das Gute im Diesseits und Jenseits zu erbitten; oft beim Tawaf und nach jedem Gebet gesprochen.",
+          "meal": "Unser Herr, gib uns im Diesseits Gutes und im Jenseits Gutes und bewahre uns vor der Strafe des Feuers.",
+          "kaynak": "Sure al-Baqara 2:201"
+        },
+        "fr": {
+          "neIcin": "Pour demander le bien de ce monde et de l’au-delà ; souvent récitée pendant le tawaf et après chaque prière.",
+          "meal": "Seigneur, accorde-nous une belle part ici-bas et une belle part dans l’au-delà, et préserve-nous du châtiment du Feu.",
+          "kaynak": "Sourate Al-Baqara 2:201"
+        },
+        "ru": {
+          "neIcin": "Чтобы просить блага в этом мире и в вечном; часто читают во время тавафа и после каждой молитвы.",
+          "meal": "Господь наш! Даруй нам в этом мире добро и в Последней жизни добро и защити нас от мучений в Огне.",
+          "kaynak": "Сура «аль-Бакара» 2:201"
+        },
+        "ar": {
+          "neIcin": "لطلب خير الدنيا والآخرة؛ يُكثر منه في الطواف وبعد كل صلاة.",
+          "kaynak": "سورة البقرة، 201"
+        }
+      }
+    },
+    {
+      "id": "bakara-127",
+      "kategoriler": [
+        "ahiret"
+      ],
+      "neIcin": "Yaptığımız ibadet ve iyiliklerin kabulü için. Hz. İbrahim ile Hz. İsmail Kâbe'yi inşa ederken böyle dua ettiler.",
+      "arabic": "رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ",
+      "okunus": "Rabbenâ tekabbel minnâ inneke entes-semîul-alîm.",
+      "meal": "Rabbimiz! Bizden kabul buyur. Şüphesiz sen hakkıyla işitensin, bilensin.",
+      "kaynak": "Bakara Suresi, 127",
+      "ceviri": {
+        "en": {
+          "neIcin": "For our worship and good deeds to be accepted. Prophets Ibrahim and Ismail prayed this while building the Kaaba.",
+          "meal": "Our Lord, accept this from us. Indeed, You are the All-Hearing, the All-Knowing.",
+          "kaynak": "Al-Baqarah 2:127"
+        },
+        "de": {
+          "neIcin": "Damit unser Gottesdienst und unsere guten Taten angenommen werden. Ibrahim und Ismail beteten so beim Bau der Kaaba.",
+          "meal": "Unser Herr, nimm es von uns an. Du bist ja der Allhörende, der Allwissende.",
+          "kaynak": "Sure al-Baqara 2:127"
+        },
+        "fr": {
+          "neIcin": "Pour que nos adorations et bonnes œuvres soient acceptées. Ibrahim et Ismaïl l’ont dite en bâtissant la Kaaba.",
+          "meal": "Seigneur, accepte ceci de notre part. Tu es Celui qui entend tout, qui sait tout.",
+          "kaynak": "Sourate Al-Baqara 2:127"
+        },
+        "ru": {
+          "neIcin": "Чтобы наши поклонение и добрые дела были приняты. Так молились Ибрахим и Исмаил, возводя Каабу.",
+          "meal": "Господь наш! Прими от нас. Воистину, Ты — Слышащий, Знающий.",
+          "kaynak": "Сура «аль-Бакара» 2:127"
+        },
+        "ar": {
+          "neIcin": "لقبول العبادات والأعمال الصالحة؛ دعا به إبراهيم وإسماعيل عليهما السلام وهما يرفعان قواعد الكعبة.",
+          "kaynak": "سورة البقرة، 127"
+        }
+      }
+    },
+    {
+      "id": "aliimran-8",
+      "kategoriler": [
+        "ahiret"
+      ],
+      "neIcin": "İmanda sebat ve doğru yoldan ayrılmamak için.",
+      "arabic": "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً إِنَّكَ أَنْتَ الْوَهَّابُ",
+      "okunus": "Rabbenâ lâ tuziğ kulûbenâ ba‘de iz hedeytenâ ve heb lenâ min ledünke rahmeh, inneke entel-vehhâb.",
+      "meal": "Rabbimiz! Bizi doğru yola ilettikten sonra kalplerimizi kaydırma. Bize katından rahmet bağışla. Şüphesiz sen çok bağışlayansın.",
+      "kaynak": "Âl-i İmrân Suresi, 8",
+      "ceviri": {
+        "en": {
+          "neIcin": "To stay firm in faith and not stray from the right path.",
+          "meal": "Our Lord, do not let our hearts deviate after You have guided us, and grant us mercy from Yourself. Indeed, You are the Bestower.",
+          "kaynak": "Al 'Imran 3:8"
+        },
+        "de": {
+          "neIcin": "Für Standhaftigkeit im Glauben und um nicht vom rechten Weg abzuweichen.",
+          "meal": "Unser Herr, lass unsere Herzen nicht abschweifen, nachdem Du uns rechtgeleitet hast, und schenke uns Barmherzigkeit von Dir. Du bist ja der Schenkende.",
+          "kaynak": "Sure Al Imran 3:8"
+        },
+        "fr": {
+          "neIcin": "Pour rester ferme dans la foi et ne pas s’écarter du droit chemin.",
+          "meal": "Seigneur, ne laisse pas dévier nos cœurs après nous avoir guidés, et accorde-nous Ta miséricorde. C’est Toi le Grand Donateur.",
+          "kaynak": "Sourate Al Imran 3:8"
+        },
+        "ru": {
+          "neIcin": "Чтобы быть стойким в вере и не сбиться с прямого пути.",
+          "meal": "Господь наш! Не уклоняй наши сердца после того, как Ты наставил нас, и даруй нам милость от Себя. Воистину, Ты — Дарующий.",
+          "kaynak": "Сура «Аль Имран» 3:8"
+        },
+        "ar": {
+          "neIcin": "للثبات على الإيمان وعدم الزيغ عن الصراط المستقيم.",
+          "kaynak": "سورة آل عمران، 8"
+        }
+      }
+    },
+    {
+      "id": "kalp-sebat",
+      "kategoriler": [
+        "ahiret"
+      ],
+      "neIcin": "Kalbin iman üzere sabit kalması için. Peygamberimiz bu duayı çok sık okurdu.",
+      "arabic": "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
+      "okunus": "Yâ mukallibel-kulûb, sebbit kalbî alâ dînik.",
+      "meal": "Ey kalpleri halden hâle çeviren Allah'ım! Kalbimi dinin üzere sabit kıl.",
+      "kaynak": "Tirmizî, Kader 7",
+      "ceviri": {
+        "en": {
+          "neIcin": "For the heart to stay firm upon faith. The Prophet ﷺ recited this very often.",
+          "meal": "O Turner of hearts, keep my heart firm upon Your religion.",
+          "kaynak": "Tirmidhi, Qadar 7"
+        },
+        "de": {
+          "neIcin": "Damit das Herz im Glauben fest bleibt. Der Prophet ﷺ sprach es sehr oft.",
+          "meal": "O Du, der die Herzen wendet, festige mein Herz auf Deiner Religion.",
+          "kaynak": "Tirmidhi, Qadar 7"
+        },
+        "fr": {
+          "neIcin": "Pour que le cœur reste ferme dans la foi. Le Prophète ﷺ la récitait très souvent.",
+          "meal": "Ô Toi qui retournes les cœurs, affermis mon cœur sur Ta religion.",
+          "kaynak": "Tirmidhi, Qadar 7"
+        },
+        "ru": {
+          "neIcin": "Чтобы сердце оставалось твёрдым в вере. Пророк ﷺ очень часто читал эту мольбу.",
+          "meal": "О Изменяющий сердца, утверди моё сердце в Твоей религии.",
+          "kaynak": "Тирмизи, Qadar 7"
+        },
+        "ar": {
+          "neIcin": "لثبات القلب على الإيمان؛ كان النبي ﷺ يكثر منه.",
+          "kaynak": "الترمذي، القدر 7"
+        }
+      }
+    },
+    {
+      "id": "bakara-286",
+      "kategoriler": [
+        "ahiret",
+        "tovbe"
+      ],
+      "neIcin": "Unutma ve hatalarımızdan dolayı sorumlu tutulmamak için; yatsıdan sonra okunması tavsiye edilir.",
+      "arabic": "رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا",
+      "okunus": "Rabbenâ lâ tüâhiznâ in nesînâ ev ahta’nâ.",
+      "meal": "Rabbimiz! Unutur veya hataya düşersek bizi sorumlu tutma.",
+      "kaynak": "Bakara Suresi, 286",
+      "ceviri": {
+        "en": {
+          "neIcin": "Not to be held accountable for forgetfulness and mistakes; recommended after Isha.",
+          "meal": "Our Lord, do not take us to task if we forget or make a mistake.",
+          "kaynak": "Al-Baqarah 2:286"
+        },
+        "de": {
+          "neIcin": "Damit wir für Vergesslichkeit und Fehler nicht belangt werden; nach dem Ischa empfohlen.",
+          "meal": "Unser Herr, belange uns nicht, wenn wir vergessen oder einen Fehler begehen.",
+          "kaynak": "Sure al-Baqara 2:286"
+        },
+        "fr": {
+          "neIcin": "Pour ne pas être tenu responsable de l’oubli et des erreurs ; recommandée après l’Isha.",
+          "meal": "Seigneur, ne nous châtie pas s’il nous arrive d’oublier ou de commettre une erreur.",
+          "kaynak": "Sourate Al-Baqara 2:286"
+        },
+        "ru": {
+          "neIcin": "Чтобы не быть наказанным за забывчивость и ошибки; рекомендуется читать после иши.",
+          "meal": "Господь наш! Не наказывай нас, если мы забыли или ошиблись.",
+          "kaynak": "Сура «аль-Бакара» 2:286"
+        },
+        "ar": {
+          "neIcin": "لئلا نؤاخذ بالنسيان والخطأ؛ يُستحب قراءتها بعد العشاء.",
+          "kaynak": "سورة البقرة، 286"
+        }
+      }
+    },
+    {
+      "id": "furkan-74",
+      "kategoriler": [
+        "aile",
+        "evlat"
+      ],
+      "neIcin": "Eşimiz ve çocuklarımız göz aydınlığımız olsun diye; hayırlı bir yuva için.",
+      "arabic": "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
+      "okunus": "Rabbenâ heb lenâ min ezvâcinâ ve zürriyyâtinâ kurrate a‘yünin vec‘alnâ lil-müttekîne imâmâ.",
+      "meal": "Rabbimiz! Eşlerimizi ve çocuklarımızı bize göz aydınlığı kıl ve bizi takva sahiplerine önder eyle.",
+      "kaynak": "Furkân Suresi, 74",
+      "ceviri": {
+        "en": {
+          "neIcin": "For our spouses and children to be a joy to our eyes; for a blessed home.",
+          "meal": "Our Lord, grant us from our spouses and children the comfort of our eyes, and make us leaders of the righteous.",
+          "kaynak": "Al-Furqan 25:74"
+        },
+        "de": {
+          "neIcin": "Damit Ehepartner und Kinder uns zur Augenweide werden; für ein gesegnetes Zuhause.",
+          "meal": "Unser Herr, schenke uns an unseren Gattinnen und Nachkommen Augentrost und mache uns zu Vorbildern für die Gottesfürchtigen.",
+          "kaynak": "Sure al-Furqan 25:74"
+        },
+        "fr": {
+          "neIcin": "Pour que nos conjoints et enfants soient la joie de nos yeux ; pour un foyer béni.",
+          "meal": "Seigneur, fais que nos épouses et nos enfants soient la joie de nos yeux, et fais de nous un modèle pour les pieux.",
+          "kaynak": "Sourate Al-Furqan 25:74"
+        },
+        "ru": {
+          "neIcin": "Чтобы супруги и дети были отрадой наших глаз; за благословенный дом.",
+          "meal": "Господь наш! Даруй нам в наших супругах и потомках отраду для глаз и сделай нас образцом для богобоязненных.",
+          "kaynak": "Сура «аль-Фуркан» 25:74"
+        },
+        "ar": {
+          "neIcin": "ليكون الأزواج والذرية قرة أعين؛ ولبيتٍ مبارك.",
+          "kaynak": "سورة الفرقان، 74"
+        }
+      }
+    },
+    {
+      "id": "evlilik-tebrik",
+      "kategoriler": [
+        "aile"
+      ],
+      "neIcin": "Yeni evlenenleri tebrik ederken okunur. Peygamberimiz evlenenlere böyle dua ederdi.",
+      "arabic": "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ",
+      "okunus": "Bârakallâhu leke ve bâreke aleyke ve cemea beynekumâ fî hayr.",
+      "meal": "Allah sana bereket versin, üzerine bereket yağdırsın ve sizi hayırda bir araya getirsin.",
+      "kaynak": "Ebû Dâvûd, Nikâh 37; Tirmizî, Nikâh 7",
+      "ceviri": {
+        "en": {
+          "neIcin": "Said when congratulating newlyweds. The Prophet ﷺ prayed this for those who married.",
+          "meal": "May Allah bless you, shower blessings upon you, and bring you together in goodness.",
+          "kaynak": "Abu Dawud, Nikah 37; Tirmidhi, Nikah 7"
+        },
+        "de": {
+          "neIcin": "Zum Gratulieren an Frischvermählte. Der Prophet ﷺ betete so für Neuvermählte.",
+          "meal": "Möge Allah dich segnen, Segen über dich ausgießen und euch im Guten vereinen.",
+          "kaynak": "Abu Dawud, Nikah 37; Tirmidhi, Nikah 7"
+        },
+        "fr": {
+          "neIcin": "Dite pour féliciter les jeunes mariés. Le Prophète ﷺ invoquait ainsi pour ceux qui se mariaient.",
+          "meal": "Qu’Allah te bénisse, répande Sa bénédiction sur toi et vous unisse dans le bien.",
+          "kaynak": "Abou Dawoud, Nikah 37; Tirmidhi, Nikah 7"
+        },
+        "ru": {
+          "neIcin": "Читают, поздравляя молодожёнов. Так Пророк ﷺ молился за вступивших в брак.",
+          "meal": "Да благословит тебя Аллах, да ниспошлёт тебе благодать и да соединит вас во благе.",
+          "kaynak": "Абу Дауд, Nikah 37; Тирмизи, Nikah 7"
+        },
+        "ar": {
+          "neIcin": "يُقال في تهنئة المتزوجين؛ كان النبي ﷺ يدعو به لمن تزوج.",
+          "kaynak": "أبو داود، النكاح 37؛ الترمذي، النكاح 7"
+        }
+      }
+    },
+    {
+      "id": "isra-24",
+      "kategoriler": [
+        "evlat",
+        "aile"
+      ],
+      "neIcin": "Anne ve babamız için; hayatta olsunlar ya da olmasınlar.",
+      "arabic": "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
+      "okunus": "Rabbirhamhumâ kemâ rabbeyânî sağîrâ.",
+      "meal": "Rabbim! Küçüklüğümde onlar beni nasıl yetiştirdilerse, sen de onlara öyle merhamet et.",
+      "kaynak": "İsrâ Suresi, 24",
+      "ceviri": {
+        "en": {
+          "neIcin": "For our parents, whether living or passed away.",
+          "meal": "My Lord, have mercy on them as they raised me when I was small.",
+          "kaynak": "Al-Isra' 17:24"
+        },
+        "de": {
+          "neIcin": "Für unsere Eltern, ob lebend oder verstorben.",
+          "meal": "Mein Herr, erbarme Dich ihrer, wie sie mich aufgezogen haben, als ich klein war.",
+          "kaynak": "Sure al-Isra' 17:24"
+        },
+        "fr": {
+          "neIcin": "Pour nos parents, qu’ils soient vivants ou décédés.",
+          "meal": "Seigneur, fais-leur miséricorde comme ils m’ont élevé tout petit.",
+          "kaynak": "Sourate Al-Isra' 17:24"
+        },
+        "ru": {
+          "neIcin": "За родителей — живы они или нет.",
+          "meal": "Господи! Помилуй их, ведь они растили меня маленьким.",
+          "kaynak": "Сура «аль-Исра» 17:24"
+        },
+        "ar": {
+          "neIcin": "للوالدين أحياءً كانوا أو أمواتًا.",
+          "kaynak": "سورة الإسراء، 24"
+        }
+      }
+    },
+    {
+      "id": "ibrahim-41",
+      "kategoriler": [
+        "evlat",
+        "tovbe"
+      ],
+      "neIcin": "Kendimiz, anne-babamız ve bütün müminlerin bağışlanması için; namazlarda Rabbenâ dualarında okunur.",
+      "arabic": "رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ",
+      "okunus": "Rabbenağfirlî ve li-vâlideyye ve lil-mü’minîne yevme yekûmul-hisâb.",
+      "meal": "Rabbimiz! Hesap gününde beni, anne babamı ve bütün müminleri bağışla.",
+      "kaynak": "İbrâhîm Suresi, 41",
+      "ceviri": {
+        "en": {
+          "neIcin": "For the forgiveness of ourselves, our parents and all believers; recited among the Rabbana prayers in salah.",
+          "meal": "Our Lord, forgive me, my parents and the believers on the Day the account is established.",
+          "kaynak": "Ibrahim 14:41"
+        },
+        "de": {
+          "neIcin": "Für die Vergebung von uns, unseren Eltern und allen Gläubigen; Teil der Rabbana-Gebete im Salat.",
+          "meal": "Unser Herr, vergib mir, meinen Eltern und den Gläubigen am Tag, an dem die Abrechnung stattfindet.",
+          "kaynak": "Sure Ibrahim 14:41"
+        },
+        "fr": {
+          "neIcin": "Pour le pardon de soi, de ses parents et de tous les croyants ; récitée dans les invocations « Rabbana » de la prière.",
+          "meal": "Seigneur, pardonne-moi, ainsi qu’à mes parents et aux croyants, le Jour où se dressera le compte.",
+          "kaynak": "Sourate Ibrahim 14:41"
+        },
+        "ru": {
+          "neIcin": "О прощении себя, родителей и всех верующих; читается среди мольб «Раббана» в намазе.",
+          "meal": "Господь наш! Прости меня, моих родителей и верующих в тот день, когда будет подведён расчёт.",
+          "kaynak": "Сура «Ибрахим» 14:41"
+        },
+        "ar": {
+          "neIcin": "لمغفرة النفس والوالدين وجميع المؤمنين؛ يُقرأ في أدعية «ربنا» في الصلاة.",
+          "kaynak": "سورة إبراهيم، 41"
+        }
+      }
+    },
+    {
+      "id": "ibrahim-40",
+      "kategoriler": [
+        "evlat",
+        "aile",
+        "gunluk"
+      ],
+      "neIcin": "Kendimizin ve çocuklarımızın namazı devamlı kılması için.",
+      "arabic": "رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ",
+      "okunus": "Rabbic‘alnî mukîmes-salâti ve min zürriyyetî, Rabbenâ ve tekabbel duâ.",
+      "meal": "Rabbim! Beni ve soyumdan gelecekleri namazı devamlı kılanlardan eyle. Rabbimiz! Duamı kabul et.",
+      "kaynak": "İbrâhîm Suresi, 40",
+      "ceviri": {
+        "en": {
+          "neIcin": "For ourselves and our children to keep up the prayer.",
+          "meal": "My Lord, make me and my descendants steadfast in prayer. Our Lord, accept my supplication.",
+          "kaynak": "Ibrahim 14:40"
+        },
+        "de": {
+          "neIcin": "Damit wir und unsere Kinder das Gebet beständig verrichten.",
+          "meal": "Mein Herr, mache mich und meine Nachkommen zu solchen, die das Gebet verrichten. Unser Herr, nimm mein Bittgebet an.",
+          "kaynak": "Sure Ibrahim 14:40"
+        },
+        "fr": {
+          "neIcin": "Pour que nous et nos enfants accomplissions la prière avec constance.",
+          "meal": "Seigneur, fais que j’accomplisse assidûment la prière, ainsi qu’une partie de ma descendance. Seigneur, exauce mon invocation.",
+          "kaynak": "Sourate Ibrahim 14:40"
+        },
+        "ru": {
+          "neIcin": "Чтобы мы и наши дети постоянно совершали молитву.",
+          "meal": "Господи! Сделай меня и моих потомков совершающими молитву. Господь наш! Прими мою мольбу.",
+          "kaynak": "Сура «Ибрахим» 14:40"
+        },
+        "ar": {
+          "neIcin": "للمداومة على الصلاة لنا ولذرياتنا.",
+          "kaynak": "سورة إبراهيم، 40"
+        }
+      }
+    },
+    {
+      "id": "aliimran-38",
+      "kategoriler": [
+        "evlat"
+      ],
+      "neIcin": "Hayırlı evlat isteyenler için; Hz. Zekeriyya'nın duası.",
+      "arabic": "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ",
+      "okunus": "Rabbi heb lî min ledünke zurriyyeten tayyibeh, inneke semîud-duâ.",
+      "meal": "Rabbim! Bana katından temiz bir nesil bağışla. Şüphesiz sen duayı hakkıyla işitensin.",
+      "kaynak": "Âl-i İmrân Suresi, 38",
+      "ceviri": {
+        "en": {
+          "neIcin": "For those wishing for righteous children; the prayer of Prophet Zakariya.",
+          "meal": "My Lord, grant me from Yourself good offspring. Indeed, You hear every prayer.",
+          "kaynak": "Al 'Imran 3:38"
+        },
+        "de": {
+          "neIcin": "Für alle, die sich gute Kinder wünschen; das Bittgebet des Propheten Zakariya.",
+          "meal": "Mein Herr, schenke mir von Dir aus gute Nachkommenschaft. Du bist ja der Erhörer des Gebets.",
+          "kaynak": "Sure Al Imran 3:38"
+        },
+        "fr": {
+          "neIcin": "Pour ceux qui souhaitent une descendance pieuse ; l’invocation de Zacharie.",
+          "meal": "Seigneur, accorde-moi de Ta part une descendance pure. Tu entends parfaitement l’invocation.",
+          "kaynak": "Sourate Al Imran 3:38"
+        },
+        "ru": {
+          "neIcin": "Для желающих праведного потомства; мольба пророка Закарии.",
+          "meal": "Господи! Даруй мне от Тебя прекрасное потомство. Воистину, Ты слышишь мольбу.",
+          "kaynak": "Сура «Аль Имран» 3:38"
+        },
+        "ar": {
+          "neIcin": "لمن يرجو الذرية الصالحة؛ دعاء زكريا عليه السلام.",
+          "kaynak": "سورة آل عمران، 38"
+        }
+      }
+    },
+    {
+      "id": "enbiya-89",
+      "kategoriler": [
+        "evlat"
+      ],
+      "neIcin": "Evlat hasretiyle dua edenler için; Hz. Zekeriyya'nın duası.",
+      "arabic": "رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ",
+      "okunus": "Rabbi lâ tezernî ferden ve ente hayrul-vârisîn.",
+      "meal": "Rabbim! Beni tek başıma bırakma. Sen varislerin en hayırlısısın.",
+      "kaynak": "Enbiyâ Suresi, 89",
+      "ceviri": {
+        "en": {
+          "neIcin": "For those longing for a child; the prayer of Prophet Zakariya.",
+          "meal": "My Lord, do not leave me alone, and You are the best of inheritors.",
+          "kaynak": "Al-Anbiya' 21:89"
+        },
+        "de": {
+          "neIcin": "Für alle, die sich nach einem Kind sehnen; das Bittgebet des Propheten Zakariya.",
+          "meal": "Mein Herr, lass mich nicht kinderlos, und Du bist der beste Erbe.",
+          "kaynak": "Sure al-Anbiya' 21:89"
+        },
+        "fr": {
+          "neIcin": "Pour ceux qui aspirent à avoir un enfant ; l’invocation de Zacharie.",
+          "meal": "Seigneur, ne me laisse pas seul, et Tu es le meilleur des héritiers.",
+          "kaynak": "Sourate Al-Anbiya' 21:89"
+        },
+        "ru": {
+          "neIcin": "Для тоскующих по ребёнку; мольба пророка Закарии.",
+          "meal": "Господи! Не оставляй меня одиноким, ведь Ты — Наилучший из наследников.",
+          "kaynak": "Сура «аль-Анбия» 21:89"
+        },
+        "ar": {
+          "neIcin": "لمن يشتاق إلى الولد؛ دعاء زكريا عليه السلام.",
+          "kaynak": "سورة الأنبياء، 89"
+        }
+      }
+    },
+    {
+      "id": "ahkaf-15",
+      "kategoriler": [
+        "evlat",
+        "aile"
+      ],
+      "neIcin": "Nimetlere şükür, anne-baba ve çocuklarımızın salihliği için.",
+      "arabic": "رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ وَأَصْلِحْ لِي فِي ذُرِّيَّتِي إِنِّي تُبْتُ إِلَيْكَ وَإِنِّي مِنَ الْمُسْلِمِينَ",
+      "okunus": "Rabbi evzi‘nî en eşkura ni‘metekelletî en‘amte aleyye ve alâ vâlideyye ve en a‘mele sâlihan terdâhu ve aslih lî fî zürriyyetî, innî tübtü ileyke ve innî minel-müslimîn.",
+      "meal": "Rabbim! Bana ve anne babama verdiğin nimete şükretmemi ve razı olacağın salih amel işlememi sağla. Soyumu da salih kıl. Şüphesiz ben sana döndüm ve ben Müslümanlardanım.",
+      "kaynak": "Ahkâf Suresi, 15",
+      "ceviri": {
+        "en": {
+          "neIcin": "In gratitude for blessings, and for the righteousness of our parents and children.",
+          "meal": "My Lord, enable me to be grateful for Your favour upon me and my parents, and to do righteous deeds that please You, and make my offspring righteous. I have turned to You, and I am of the Muslims.",
+          "kaynak": "Al-Ahqaf 46:15"
+        },
+        "de": {
+          "neIcin": "Aus Dank für die Gaben und für die Rechtschaffenheit von Eltern und Kindern.",
+          "meal": "Mein Herr, gib mir ein, für Deine Gunst an mir und meinen Eltern dankbar zu sein und Gutes zu tun, das Dir gefällt, und mache mir meine Nachkommen rechtschaffen. Ich wende mich Dir reuig zu und bin einer der Muslime.",
+          "kaynak": "Sure al-Ahqaf 46:15"
+        },
+        "fr": {
+          "neIcin": "Pour la gratitude envers les bienfaits et la piété de nos parents et enfants.",
+          "meal": "Seigneur, inspire-moi de rendre grâce pour Ton bienfait envers moi et mes parents, d’accomplir une bonne œuvre que Tu agrées, et rends ma descendance pieuse. Je me repens à Toi et je suis du nombre des musulmans.",
+          "kaynak": "Sourate Al-Ahqaf 46:15"
+        },
+        "ru": {
+          "neIcin": "В благодарность за милости и о праведности родителей и детей.",
+          "meal": "Господи! Внуши мне благодарить за милость, оказанную мне и моим родителям, и совершать праведные дела, которыми Ты доволен, и сделай праведным моё потомство. Я обратился к Тебе и я — мусульманин.",
+          "kaynak": "Сура «аль-Ахкаф» 46:15"
+        },
+        "ar": {
+          "neIcin": "لشكر النعم وصلاح الوالدين والذرية.",
+          "kaynak": "سورة الأحقاف، 15"
+        }
+      }
+    },
+    {
+      "id": "hasta-sifa",
+      "kategoriler": [
+        "saglik"
+      ],
+      "neIcin": "Hasta ziyaretinde ya da hastalanan birine şifa dilerken okunur. Peygamberimiz hastaya elini sürerek böyle dua ederdi.",
+      "arabic": "أَذْهِبِ الْبَأْسَ رَبَّ النَّاسِ اشْفِ أَنْتَ الشَّافِي لَا شِفَاءَ إِلَّا شِفَاؤُكَ شِفَاءً لَا يُغَادِرُ سَقَمًا",
+      "okunus": "Ezhibil-be’se Rabben-nâs, işfi enteş-şâfî, lâ şifâe illâ şifâuk, şifâen lâ yuğâdiru sekamâ.",
+      "meal": "Ey insanların Rabbi! Sıkıntıyı gider, şifa ver; şifa veren sensin. Senin şifandan başka şifa yoktur. Hiçbir hastalık bırakmayan bir şifa ver.",
+      "kaynak": "Buhârî, Merdâ 20; Müslim, Selâm 46",
+      "ceviri": {
+        "en": {
+          "neIcin": "Recited when visiting the sick or wishing healing for someone ill. The Prophet ﷺ prayed this while placing his hand on the sick.",
+          "meal": "O Lord of mankind, remove the harm and grant healing; You are the Healer. There is no healing but Yours, a healing that leaves no illness behind.",
+          "kaynak": "Bukhari, Marda 20; Muslim, Salam 46"
+        },
+        "de": {
+          "neIcin": "Beim Krankenbesuch oder wenn man einem Kranken Heilung wünscht. Der Prophet ﷺ legte dabei seine Hand auf den Kranken.",
+          "meal": "O Herr der Menschen, nimm das Leid und heile, Du bist der Heilende. Es gibt keine Heilung außer Deiner, eine Heilung, die keine Krankheit zurücklässt.",
+          "kaynak": "Buchari, Marda 20; Muslim, Salam 46"
+        },
+        "fr": {
+          "neIcin": "Récitée en visitant un malade ou pour souhaiter la guérison. Le Prophète ﷺ la disait en posant la main sur le malade.",
+          "meal": "Ô Seigneur des hommes, ôte le mal et guéris, Tu es Celui qui guérit. Il n’est de guérison que la Tienne, une guérison qui ne laisse aucune maladie.",
+          "kaynak": "Boukhari, Marda 20; Mouslim, Salam 46"
+        },
+        "ru": {
+          "neIcin": "Читают, навещая больного или желая исцеления. Пророк ﷺ произносил её, касаясь больного рукой.",
+          "meal": "О Господь людей, устрани недуг и исцели, Ты — Исцеляющий. Нет исцеления, кроме Твоего, — исцеления, не оставляющего болезни.",
+          "kaynak": "Бухари, Marda 20; Муслим, Salam 46"
+        },
+        "ar": {
+          "neIcin": "عند عيادة المريض أو الدعاء له بالشفاء؛ كان النبي ﷺ يمسح بيده على المريض ويدعو به.",
+          "kaynak": "البخاري، المرضى 20؛ مسلم، السلام 46"
+        }
+      }
+    },
+    {
+      "id": "beden-afiyet",
+      "kategoriler": [
+        "saglik",
+        "gunluk"
+      ],
+      "neIcin": "Bedenin, kulağın ve gözün sağlığı için; sabah ve akşam üçer kez okunur.",
+      "arabic": "اللَّهُمَّ عَافِنِي فِي بَدَنِي اللَّهُمَّ عَافِنِي فِي سَمْعِي اللَّهُمَّ عَافِنِي فِي بَصَرِي",
+      "okunus": "Allâhumme âfinî fî bedenî, Allâhumme âfinî fî sem‘î, Allâhumme âfinî fî basarî.",
+      "meal": "Allah'ım! Bedenime afiyet ver. Allah'ım! Kulağıma afiyet ver. Allah'ım! Gözüme afiyet ver.",
+      "kaynak": "Ebû Dâvûd, Edeb 101",
+      "ceviri": {
+        "en": {
+          "neIcin": "For the health of the body, hearing and sight; recited three times morning and evening.",
+          "meal": "O Allah, grant health to my body. O Allah, grant health to my hearing. O Allah, grant health to my sight.",
+          "kaynak": "Abu Dawud, Adab 101"
+        },
+        "de": {
+          "neIcin": "Für die Gesundheit von Körper, Gehör und Augen; morgens und abends je dreimal.",
+          "meal": "O Allah, schenke meinem Körper Wohlergehen. O Allah, schenke meinem Gehör Wohlergehen. O Allah, schenke meinem Augenlicht Wohlergehen.",
+          "kaynak": "Abu Dawud, Adab 101"
+        },
+        "fr": {
+          "neIcin": "Pour la santé du corps, de l’ouïe et de la vue ; trois fois matin et soir.",
+          "meal": "Ô Allah, accorde la santé à mon corps. Ô Allah, accorde la santé à mon ouïe. Ô Allah, accorde la santé à ma vue.",
+          "kaynak": "Abou Dawoud, Adab 101"
+        },
+        "ru": {
+          "neIcin": "О здоровье тела, слуха и зрения; читают по три раза утром и вечером.",
+          "meal": "О Аллах, даруй здоровье моему телу. О Аллах, даруй здоровье моему слуху. О Аллах, даруй здоровье моему зрению.",
+          "kaynak": "Абу Дауд, Adab 101"
+        },
+        "ar": {
+          "neIcin": "لعافية البدن والسمع والبصر؛ تُقال ثلاثًا صباحًا ومساءً.",
+          "kaynak": "أبو داود، الأدب 101"
+        }
+      }
+    },
+    {
+      "id": "enbiya-83",
+      "kategoriler": [
+        "saglik",
+        "huzur"
+      ],
+      "neIcin": "Hastalık ve dert içinde sabırla Allah'a sığınmak için; Hz. Eyyûb'un duası.",
+      "arabic": "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنْتَ أَرْحَمُ الرَّاحِمِينَ",
+      "okunus": "Ennî messeniyed-durru ve ente erhamur-râhimîn.",
+      "meal": "Başıma bu dert geldi. Sen ise merhametlilerin en merhametlisisin.",
+      "kaynak": "Enbiyâ Suresi, 83",
+      "ceviri": {
+        "en": {
+          "neIcin": "To seek refuge in Allah with patience in illness and hardship; the prayer of Prophet Ayyub.",
+          "meal": "Indeed, adversity has touched me, and You are the Most Merciful of the merciful.",
+          "kaynak": "Al-Anbiya' 21:83"
+        },
+        "de": {
+          "neIcin": "Um in Krankheit und Not geduldig Zuflucht bei Allah zu suchen; das Bittgebet des Propheten Ayyub.",
+          "meal": "Mich hat Unheil getroffen, und Du bist der Barmherzigste der Barmherzigen.",
+          "kaynak": "Sure al-Anbiya' 21:83"
+        },
+        "fr": {
+          "neIcin": "Pour se réfugier en Allah avec patience dans la maladie et l’épreuve ; l’invocation de Job (Ayyoub).",
+          "meal": "Le mal m’a touché, et Tu es le plus Miséricordieux des miséricordieux.",
+          "kaynak": "Sourate Al-Anbiya' 21:83"
+        },
+        "ru": {
+          "neIcin": "Чтобы с терпением искать защиты у Аллаха в болезни и беде; мольба пророка Аюба.",
+          "meal": "Меня постигло горе, а Ты — Милосерднейший из милосердных.",
+          "kaynak": "Сура «аль-Анбия» 21:83"
+        },
+        "ar": {
+          "neIcin": "للالتجاء إلى الله بصبر في المرض والبلاء؛ دعاء أيوب عليه السلام.",
+          "kaynak": "سورة الأنبياء، 83"
+        }
+      }
+    },
+    {
+      "id": "afiyet",
+      "kategoriler": [
+        "saglik",
+        "ahiret"
+      ],
+      "neIcin": "Dünyada ve ahirette afiyet istemek için. Peygamberimiz Allah'tan en çok istenecek şeyin afiyet olduğunu bildirdi.",
+      "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ",
+      "okunus": "Allâhumme innî es’elükel-âfiyete fid-dünyâ vel-âhira.",
+      "meal": "Allah'ım! Senden dünyada ve ahirette afiyet dilerim.",
+      "kaynak": "İbn Mâce, Dua 5",
+      "ceviri": {
+        "en": {
+          "neIcin": "To ask for well-being in this world and the Hereafter. The Prophet ﷺ said well-being is the best thing to ask Allah for.",
+          "meal": "O Allah, I ask You for well-being in this world and the Hereafter.",
+          "kaynak": "Ibn Majah, Du'a 5"
+        },
+        "de": {
+          "neIcin": "Um Wohlergehen im Diesseits und Jenseits zu erbitten. Der Prophet ﷺ sagte, das Wohlergehen sei das Beste, worum man Allah bittet.",
+          "meal": "O Allah, ich bitte Dich um Wohlergehen im Diesseits und im Jenseits.",
+          "kaynak": "Ibn Madscha, Du'a 5"
+        },
+        "fr": {
+          "neIcin": "Pour demander la préservation ici-bas et dans l’au-delà. Le Prophète ﷺ a dit que c’est la meilleure chose à demander à Allah.",
+          "meal": "Ô Allah, je Te demande la préservation ici-bas et dans l’au-delà.",
+          "kaynak": "Ibn Mâja, Du'a 5"
+        },
+        "ru": {
+          "neIcin": "Чтобы просить благополучия в этом мире и в вечном. Пророк ﷺ сказал, что лучше всего просить у Аллаха благополучия.",
+          "meal": "О Аллах, прошу у Тебя благополучия в этом мире и в Последней жизни.",
+          "kaynak": "Ибн Маджа, Du'a 5"
+        },
+        "ar": {
+          "neIcin": "لسؤال العافية في الدنيا والآخرة؛ أخبر النبي ﷺ أن العافية خير ما يُسأل الله.",
+          "kaynak": "ابن ماجه، الدعاء 5"
+        }
+      }
+    },
+    {
+      "id": "rizik-tayyib",
+      "kategoriler": [
+        "rizik",
+        "gunluk"
+      ],
+      "neIcin": "Faydalı ilim, helal rızık ve kabul olunan amel için; sabah namazından sonra okunur.",
+      "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
+      "okunus": "Allâhumme innî es’elüke ilmen nâfian ve rizkan tayyiben ve amelen mütekabbelâ.",
+      "meal": "Allah'ım! Senden faydalı ilim, helal ve temiz rızık ve kabul olunmuş amel dilerim.",
+      "kaynak": "İbn Mâce, İkâmet 32",
+      "ceviri": {
+        "en": {
+          "neIcin": "For beneficial knowledge, lawful provision and accepted deeds; recited after the Fajr prayer.",
+          "meal": "O Allah, I ask You for beneficial knowledge, good and lawful provision, and accepted deeds.",
+          "kaynak": "Ibn Majah, Iqamah 32"
+        },
+        "de": {
+          "neIcin": "Für nützliches Wissen, erlaubten Lebensunterhalt und angenommene Taten; nach dem Morgengebet.",
+          "meal": "O Allah, ich bitte Dich um nützliches Wissen, guten, erlaubten Lebensunterhalt und angenommene Taten.",
+          "kaynak": "Ibn Madscha, Iqamah 32"
+        },
+        "fr": {
+          "neIcin": "Pour une science utile, une subsistance licite et des œuvres acceptées ; après la prière de l’aube.",
+          "meal": "Ô Allah, je Te demande une science utile, une subsistance bonne et licite et des œuvres acceptées.",
+          "kaynak": "Ibn Mâja, Iqamah 32"
+        },
+        "ru": {
+          "neIcin": "О полезном знании, дозволенном уделе и принятых делах; читают после утренней молитвы.",
+          "meal": "О Аллах, прошу у Тебя полезного знания, благого дозволенного удела и принятых дел.",
+          "kaynak": "Ибн Маджа, Iqamah 32"
+        },
+        "ar": {
+          "neIcin": "للعلم النافع والرزق الحلال والعمل المتقبل؛ يُقال بعد صلاة الفجر.",
+          "kaynak": "ابن ماجه، إقامة الصلاة 32"
+        }
+      }
+    },
+    {
+      "id": "borc-gecim",
+      "kategoriler": [
+        "rizik"
+      ],
+      "neIcin": "Borçtan kurtulmak ve kimseye muhtaç olmamak için. Peygamberimiz borçlu birine bu duayı öğretti.",
+      "arabic": "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ",
+      "okunus": "Allâhummekfinî bi halâlike an harâmike ve ağninî bi fadlike ammen sivâk.",
+      "meal": "Allah'ım! Helalinle beni haramından koru ve lütfunla beni senden başkasına muhtaç etme.",
+      "kaynak": "Tirmizî, Daavât 110",
+      "ceviri": {
+        "en": {
+          "neIcin": "To be freed from debt and not depend on anyone. The Prophet ﷺ taught this to a man in debt.",
+          "meal": "O Allah, suffice me with what You have made lawful over what You have forbidden, and by Your grace make me independent of all besides You.",
+          "kaynak": "Tirmidhi, Da'awat 110"
+        },
+        "de": {
+          "neIcin": "Um von Schulden frei zu werden und niemandem zur Last zu fallen. Der Prophet ﷺ lehrte es einem Verschuldeten.",
+          "meal": "O Allah, lass mich mit dem Erlaubten auskommen statt mit dem Verbotenen, und mache mich durch Deine Huld unabhängig von allen außer Dir.",
+          "kaynak": "Tirmidhi, Da'awat 110"
+        },
+        "fr": {
+          "neIcin": "Pour être libéré des dettes et ne dépendre de personne. Le Prophète ﷺ l’enseigna à un endetté.",
+          "meal": "Ô Allah, suffis-moi par le licite contre l’illicite et, par Ta grâce, rends-moi indépendant de tout autre que Toi.",
+          "kaynak": "Tirmidhi, Da'awat 110"
+        },
+        "ru": {
+          "neIcin": "Чтобы освободиться от долгов и ни от кого не зависеть. Пророк ﷺ научил этой мольбе должника.",
+          "meal": "О Аллах, удовлетвори меня дозволенным, чтобы я не нуждался в запретном, и по милости Своей избавь меня от нужды в ком-либо, кроме Тебя.",
+          "kaynak": "Тирмизи, Da'awat 110"
+        },
+        "ar": {
+          "neIcin": "للخلاص من الدَّين وعدم الحاجة إلى الناس؛ علّمه النبي ﷺ لمدين.",
+          "kaynak": "الترمذي، الدعوات 110"
+        }
+      }
+    },
+    {
+      "id": "kasas-24",
+      "kategoriler": [
+        "rizik",
+        "huzur"
+      ],
+      "neIcin": "İhtiyaç ve darlık anında, iş ve rızık beklerken; Hz. Mûsâ'nın duası.",
+      "arabic": "رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ",
+      "okunus": "Rabbi innî limâ enzelte ileyye min hayrin fakîr.",
+      "meal": "Rabbim! Bana indireceğin her hayra muhtacım.",
+      "kaynak": "Kasas Suresi, 24",
+      "ceviri": {
+        "en": {
+          "neIcin": "In times of need and hardship, while waiting for work and provision; the prayer of Prophet Musa.",
+          "meal": "My Lord, I am truly in need of whatever good You send down to me.",
+          "kaynak": "Al-Qasas 28:24"
+        },
+        "de": {
+          "neIcin": "In Zeiten von Not und Bedrängnis, beim Warten auf Arbeit und Versorgung; das Bittgebet des Propheten Musa.",
+          "meal": "Mein Herr, ich bin dessen bedürftig, was Du an Gutem zu mir herabsendest.",
+          "kaynak": "Sure al-Qasas 28:24"
+        },
+        "fr": {
+          "neIcin": "Dans le besoin et la gêne, en attendant un travail ou une subsistance ; l’invocation de Moïse.",
+          "meal": "Seigneur, j’ai grand besoin du bien que Tu feras descendre vers moi.",
+          "kaynak": "Sourate Al-Qasas 28:24"
+        },
+        "ru": {
+          "neIcin": "Во время нужды и стеснения, в ожидании работы и удела; мольба пророка Мусы.",
+          "meal": "Господи! Я нуждаюсь в любом благе, которое Ты ниспошлёшь мне.",
+          "kaynak": "Сура «аль-Касас» 28:24"
+        },
+        "ar": {
+          "neIcin": "عند الحاجة والضيق وانتظار العمل والرزق؛ دعاء موسى عليه السلام.",
+          "kaynak": "سورة القصص، 24"
+        }
+      }
+    },
+    {
+      "id": "maide-114",
+      "kategoriler": [
+        "rizik"
+      ],
+      "neIcin": "Bereketli ve bol rızık istemek için.",
+      "arabic": "وَارْزُقْنَا وَأَنْتَ خَيْرُ الرَّازِقِينَ",
+      "okunus": "Verzuknâ ve ente hayrur-râzikîn.",
+      "meal": "Bizi rızıklandır. Sen rızık verenlerin en hayırlısısın.",
+      "kaynak": "Mâide Suresi, 114",
+      "ceviri": {
+        "en": {
+          "neIcin": "To ask for blessed and abundant provision.",
+          "meal": "Provide for us, and You are the best of providers.",
+          "kaynak": "Al-Ma'idah 5:114"
+        },
+        "de": {
+          "neIcin": "Um gesegnete, reichliche Versorgung zu bitten.",
+          "meal": "Versorge uns, denn Du bist der beste Versorger.",
+          "kaynak": "Sure al-Ma'ida 5:114"
+        },
+        "fr": {
+          "neIcin": "Pour demander une subsistance bénie et abondante.",
+          "meal": "Accorde-nous notre subsistance, Tu es le Meilleur des pourvoyeurs.",
+          "kaynak": "Sourate Al-Ma'ida 5:114"
+        },
+        "ru": {
+          "neIcin": "Чтобы просить благословенного и обильного удела.",
+          "meal": "Даруй нам удел, ведь Ты — Наилучший из дарующих удел.",
+          "kaynak": "Сура «аль-Маида» 5:114"
+        },
+        "ar": {
+          "neIcin": "لطلب الرزق المبارك الواسع.",
+          "kaynak": "سورة المائدة، 114"
+        }
+      }
+    },
+    {
+      "id": "felak",
+      "kategoriler": [
+        "nazar"
+      ],
+      "neIcin": "Nazar, haset, büyü ve her türlü kötülükten korunmak için; sabah-akşam ve yatmadan önce okunur.",
+      "arabic": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+      "okunus": "Kul eûzü bi rabbil-felak. Min şerri mâ halak. Ve min şerri ğâsikın izâ vekab. Ve min şerrin-neffâsâti fil-ukad. Ve min şerri hâsidin izâ hased.",
+      "meal": "De ki: Yarattığı şeylerin kötülüğünden, karanlığı çöktüğü zaman gecenin kötülüğünden, düğümlere üfleyenlerin kötülüğünden ve haset ettiği zaman hasetçinin kötülüğünden, sabahın Rabbine sığınırım.",
+      "kaynak": "Felak Suresi",
+      "ceviri": {
+        "en": {
+          "neIcin": "For protection from the evil eye, envy, magic and every harm; recited morning, evening and before sleep.",
+          "meal": "Say: I seek refuge in the Lord of daybreak from the evil of what He created, from the evil of darkness when it settles, from the evil of those who blow on knots, and from the evil of an envier when he envies.",
+          "kaynak": "Al-Falaq (113)"
+        },
+        "de": {
+          "neIcin": "Zum Schutz vor bösem Blick, Neid, Zauberei und allem Übel; morgens, abends und vor dem Schlafen.",
+          "meal": "Sprich: Ich nehme Zuflucht beim Herrn des Tagesanbruchs vor dem Übel dessen, was Er erschaffen hat, vor dem Übel der Dunkelheit, wenn sie hereinbricht, vor dem Übel derer, die auf Knoten blasen, und vor dem Übel des Neiders, wenn er neidet.",
+          "kaynak": "Sure al-Falaq (113)"
+        },
+        "fr": {
+          "neIcin": "Pour se protéger du mauvais œil, de l’envie, de la sorcellerie et de tout mal ; matin, soir et avant de dormir.",
+          "meal": "Dis : Je cherche refuge auprès du Seigneur de l’aube naissante contre le mal de ce qu’Il a créé, contre le mal de l’obscurité quand elle s’approfondit, contre le mal de celles qui soufflent sur les nœuds, et contre le mal de l’envieux quand il envie.",
+          "kaynak": "Sourate Al-Falaq (113)"
+        },
+        "ru": {
+          "neIcin": "Для защиты от сглаза, зависти, колдовства и всякого зла; читают утром, вечером и перед сном.",
+          "meal": "Скажи: «Прибегаю к защите Господа рассвета от зла того, что Он сотворил, от зла мрака, когда он наступает, от зла колдуний, дующих на узлы, и от зла завистника, когда он завидует».",
+          "kaynak": "Сура «аль-Фаляк» (113)"
+        },
+        "ar": {
+          "neIcin": "للتحصّن من العين والحسد والسحر وكل شر؛ تُقرأ صباحًا ومساءً وقبل النوم.",
+          "kaynak": "سورة الفلق"
+        }
+      }
+    },
+    {
+      "id": "nas",
+      "kategoriler": [
+        "nazar"
+      ],
+      "neIcin": "Vesvese ve kötülüklerden korunmak için; Felak ile birlikte okunur.",
+      "arabic": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ",
+      "okunus": "Kul eûzü bi rabbin-nâs. Melikin-nâs. İlâhin-nâs. Min şerril-vesvâsil-hannâs. Ellezî yuvesvisu fî sudûrin-nâs. Minel-cinneti ven-nâs.",
+      "meal": "De ki: İnsanların Rabbine, insanların Melikine, insanların İlahına; insanların gönüllerine vesvese veren, cinlerden ve insanlardan olan sinsi vesvesecinin kötülüğünden sığınırım.",
+      "kaynak": "Nâs Suresi",
+      "ceviri": {
+        "en": {
+          "neIcin": "For protection from whispering and evil; recited together with Al-Falaq.",
+          "meal": "Say: I seek refuge in the Lord of mankind, the King of mankind, the God of mankind, from the evil of the retreating whisperer who whispers into the hearts of mankind, from among jinn and mankind.",
+          "kaynak": "An-Nas (114)"
+        },
+        "de": {
+          "neIcin": "Zum Schutz vor Einflüsterungen und Übel; zusammen mit al-Falaq gesprochen.",
+          "meal": "Sprich: Ich nehme Zuflucht beim Herrn der Menschen, dem König der Menschen, dem Gott der Menschen, vor dem Übel des Einflüsterers, des Davonschleichenden, der in die Brüste der Menschen einflüstert, von den Dschinn und den Menschen.",
+          "kaynak": "Sure an-Nas (114)"
+        },
+        "fr": {
+          "neIcin": "Pour se protéger des suggestions et du mal ; récitée avec Al-Falaq.",
+          "meal": "Dis : Je cherche refuge auprès du Seigneur des hommes, le Souverain des hommes, le Dieu des hommes, contre le mal du mauvais conseiller, furtif, qui souffle le mal dans les poitrines des hommes, qu’il soit djinn ou humain.",
+          "kaynak": "Sourate An-Nas (114)"
+        },
+        "ru": {
+          "neIcin": "Для защиты от наущений и зла; читают вместе с сурой «аль-Фаляк».",
+          "meal": "Скажи: «Прибегаю к защите Господа людей, Царя людей, Бога людей от зла искусителя исчезающего, который наущает сердца людей, — из джиннов и людей».",
+          "kaynak": "Сура «ан-Нас» (114)"
+        },
+        "ar": {
+          "neIcin": "للتحصّن من الوسوسة والشرور؛ تُقرأ مع سورة الفلق.",
+          "kaynak": "سورة الناس"
+        }
+      }
+    },
+    {
+      "id": "nazar-kelimat",
+      "kategoriler": [
+        "nazar",
+        "gunluk"
+      ],
+      "neIcin": "Nazar ve zararlı her şeyden korunmak için. Peygamberimiz torunları Hz. Hasan ve Hz. Hüseyin için böyle dua ederdi.",
+      "arabic": "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ",
+      "okunus": "Eûzü bi kelimâtillâhit-tâmmeti min külli şeytânin ve hâmmetin ve min külli aynin lâmmeh.",
+      "meal": "Her şeytandan, zararlı her şeyden ve değen her kötü gözden Allah'ın eksiksiz kelimelerine sığınırım.",
+      "kaynak": "Buhârî, Enbiyâ 10 (çocuklar için: “U‘îzuke…” diye okunur)",
+      "ceviri": {
+        "en": {
+          "neIcin": "For protection from the evil eye and everything harmful. The Prophet ﷺ prayed this for his grandsons Hasan and Husayn.",
+          "meal": "I seek refuge in the perfect words of Allah from every devil, every harmful thing and every evil eye.",
+          "kaynak": "Bukhari, Anbiya' 10 (for children: “U‘idhuka…”)"
+        },
+        "de": {
+          "neIcin": "Zum Schutz vor bösem Blick und allem Schädlichen. Der Prophet ﷺ betete so für seine Enkel Hasan und Husain.",
+          "meal": "Ich nehme Zuflucht bei den vollkommenen Worten Allahs vor jedem Satan, jedem Schädling und jedem bösen Blick.",
+          "kaynak": "Buchari, Anbiya' 10 (für Kinder: „U‘idhuka…“)"
+        },
+        "fr": {
+          "neIcin": "Pour se protéger du mauvais œil et de tout ce qui nuit. Le Prophète ﷺ la disait pour ses petits-fils Hassan et Houssein.",
+          "meal": "Je cherche refuge dans les paroles parfaites d’Allah contre tout démon, toute bête nuisible et tout mauvais œil.",
+          "kaynak": "Boukhari, Anbiya' 10 (pour les enfants : « U‘îdhouka… »)"
+        },
+        "ru": {
+          "neIcin": "Для защиты от сглаза и всего вредного. Так Пророк ﷺ молился за внуков Хасана и Хусейна.",
+          "meal": "Прибегаю к совершенным словам Аллаха от всякого шайтана, всякой вредоносной твари и всякого дурного глаза.",
+          "kaynak": "Бухари, Anbiya' 10 (для детей: «У‘изука…»)"
+        },
+        "ar": {
+          "neIcin": "للتحصّن من العين ومن كل ضار؛ كان النبي ﷺ يعوّذ به الحسن والحسين.",
+          "kaynak": "البخاري، أحاديث الأنبياء 10 (للأطفال: «أعيذك…»)"
+        }
+      }
+    },
+    {
+      "id": "masallah",
+      "kategoriler": [
+        "nazar"
+      ],
+      "neIcin": "Beğendiğimiz bir şeye nazarımız değmesin diye söylenir.",
+      "arabic": "مَا شَاءَ اللَّهُ لَا قُوَّةَ إِلَّا بِاللَّهِ",
+      "okunus": "Mâşâallâh, lâ kuvvete illâ billâh.",
+      "meal": "Allah dilemiştir. Allah'ın yardımı olmadan hiçbir güç yoktur.",
+      "kaynak": "Kehf Suresi, 39",
+      "ceviri": {
+        "en": {
+          "neIcin": "Said so that our admiration does not cause the evil eye on something we like.",
+          "meal": "What Allah wills. There is no power except with Allah.",
+          "kaynak": "Al-Kahf 18:39"
+        },
+        "de": {
+          "neIcin": "Wird gesagt, damit unsere Bewunderung keinen bösen Blick verursacht.",
+          "meal": "Was Allah will. Es gibt keine Kraft außer durch Allah.",
+          "kaynak": "Sure al-Kahf 18:39"
+        },
+        "fr": {
+          "neIcin": "Se dit pour que notre admiration ne porte pas le mauvais œil.",
+          "meal": "Ce qu’Allah a voulu. Il n’y a de force que par Allah.",
+          "kaynak": "Sourate Al-Kahf 18:39"
+        },
+        "ru": {
+          "neIcin": "Говорят, чтобы наше восхищение не обернулось сглазом.",
+          "meal": "Так пожелал Аллах. Нет силы, кроме как у Аллаха.",
+          "kaynak": "Сура «аль-Кахф» 18:39"
+        },
+        "ar": {
+          "neIcin": "تُقال عند الإعجاب بشيء لئلا يصيبه العين.",
+          "kaynak": "سورة الكهف، 39"
+        }
+      }
+    },
+    {
+      "id": "kalem-51",
+      "kategoriler": [
+        "nazar"
+      ],
+      "neIcin": "Halk arasında nazara karşı okunan ayetler (Ve in yekâd).",
+      "arabic": "وَإِنْ يَكَادُ الَّذِينَ كَفَرُوا لَيُزْلِقُونَكَ بِأَبْصَارِهِمْ لَمَّا سَمِعُوا الذِّكْرَ وَيَقُولُونَ إِنَّهُ لَمَجْنُونٌ ۝ وَمَا هُوَ إِلَّا ذِكْرٌ لِلْعَالَمِينَ",
+      "okunus": "Ve in yekâdullezîne keferû le yuzlikûneke bi ebsârihim lemmâ semiuz-zikra ve yekûlûne innehû le mecnûn. Ve mâ huve illâ zikrun lil-âlemîn.",
+      "meal": "İnkâr edenler Kur'an'ı duydukları zaman neredeyse seni gözleriyle devirecekler ve “O mutlaka bir delidir” diyorlar. Oysa o, âlemler için ancak bir öğüttür.",
+      "kaynak": "Kalem Suresi, 51-52",
+      "ceviri": {
+        "en": {
+          "neIcin": "Verses commonly recited against the evil eye (Wa in yakad).",
+          "meal": "The disbelievers almost strike you down with their eyes when they hear the Reminder, and they say, “He is surely mad.” Yet it is nothing but a reminder to the worlds.",
+          "kaynak": "Al-Qalam 68:51-52"
+        },
+        "de": {
+          "neIcin": "Verse, die üblicherweise gegen den bösen Blick gesprochen werden (Wa in yakad).",
+          "meal": "Die Ungläubigen hätten dich beinahe mit ihren Blicken zu Fall gebracht, als sie die Ermahnung hörten, und sie sagen: „Er ist gewiss besessen.“ Doch es ist nichts als eine Ermahnung für die Welten.",
+          "kaynak": "Sure al-Qalam 68:51-52"
+        },
+        "fr": {
+          "neIcin": "Versets récités traditionnellement contre le mauvais œil (Wa in yakad).",
+          "meal": "Peu s’en faut que les mécréants ne te transpercent par leurs regards quand ils entendent le Rappel, et ils disent : « Il est fou. » Ce n’est pourtant qu’un rappel pour l’univers.",
+          "kaynak": "Sourate Al-Qalam 68:51-52"
+        },
+        "ru": {
+          "neIcin": "Аяты, которые принято читать от сглаза («Ва ин якад»).",
+          "meal": "Неверующие готовы сразить тебя своими взглядами, когда слышат Напоминание, и говорят: «Он — одержимый». Но это — лишь Напоминание для миров.",
+          "kaynak": "Сура «аль-Калям» 68:51-52"
+        },
+        "ar": {
+          "neIcin": "آيات تُقرأ عادةً للوقاية من العين («وإن يكاد»).",
+          "kaynak": "سورة القلم، 51-52"
+        }
+      }
+    },
+    {
+      "id": "bismillahillezi",
+      "kategoriler": [
+        "nazar",
+        "gunluk"
+      ],
+      "neIcin": "Gün boyu her türlü zarardan korunmak için; sabah ve akşam üçer kez okunur.",
+      "arabic": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+      "okunus": "Bismillâhillezî lâ yedurru measmihî şey’ün fil-ardı ve lâ fis-semâi ve huves-semîul-alîm.",
+      "meal": "İsmi anıldığında yerde ve gökte hiçbir şeyin zarar veremediği Allah'ın adıyla. O hakkıyla işitendir, bilendir.",
+      "kaynak": "Ebû Dâvûd, Edeb 101; Tirmizî, Daavât 13",
+      "ceviri": {
+        "en": {
+          "neIcin": "For protection from all harm throughout the day; recited three times morning and evening.",
+          "meal": "In the name of Allah, with whose name nothing on earth or in the heavens can cause harm; He is the All-Hearing, the All-Knowing.",
+          "kaynak": "Abu Dawud, Adab 101; Tirmidhi, Da'awat 13"
+        },
+        "de": {
+          "neIcin": "Zum Schutz vor jedem Schaden über den Tag; morgens und abends je dreimal.",
+          "meal": "Im Namen Allahs, mit dessen Namen nichts auf der Erde und im Himmel schaden kann; Er ist der Allhörende, der Allwissende.",
+          "kaynak": "Abu Dawud, Adab 101; Tirmidhi, Da'awat 13"
+        },
+        "fr": {
+          "neIcin": "Pour être protégé de tout mal durant la journée ; trois fois matin et soir.",
+          "meal": "Au nom d’Allah, avec le nom duquel rien sur terre ni dans le ciel ne peut nuire ; Il est Celui qui entend et sait tout.",
+          "kaynak": "Abou Dawoud, Adab 101; Tirmidhi, Da'awat 13"
+        },
+        "ru": {
+          "neIcin": "Для защиты от всякого вреда в течение дня; по три раза утром и вечером.",
+          "meal": "С именем Аллаха, с именем Которого ничто не причинит вреда ни на земле, ни на небе. Он — Слышащий, Знающий.",
+          "kaynak": "Абу Дауд, Adab 101; Тирмизи, Da'awat 13"
+        },
+        "ar": {
+          "neIcin": "للحفظ من كل ضرر طوال اليوم؛ تُقال ثلاثًا صباحًا ومساءً.",
+          "kaynak": "أبو داود، الأدب 101؛ الترمذي، الدعوات 13"
+        }
+      }
+    },
+    {
+      "id": "muminun-97",
+      "kategoriler": [
+        "nazar"
+      ],
+      "neIcin": "Şeytanın kışkırtmalarından ve öfkeden korunmak için.",
+      "arabic": "رَبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ ۝ وَأَعُوذُ بِكَ رَبِّ أَنْ يَحْضُرُونِ",
+      "okunus": "Rabbi eûzü bike min hemezâtiş-şeyâtîn. Ve eûzü bike Rabbi en yahdurûn.",
+      "meal": "Rabbim! Şeytanların kışkırtmalarından sana sığınırım. Onların yanımda bulunmalarından da sana sığınırım Rabbim.",
+      "kaynak": "Mü’minûn Suresi, 97-98",
+      "ceviri": {
+        "en": {
+          "neIcin": "For protection from the incitements of the devils and from anger.",
+          "meal": "My Lord, I seek refuge in You from the incitements of the devils, and I seek refuge in You, my Lord, lest they come near me.",
+          "kaynak": "Al-Mu'minun 23:97-98"
+        },
+        "de": {
+          "neIcin": "Zum Schutz vor den Einflüsterungen der Satane und vor Zorn.",
+          "meal": "Mein Herr, ich nehme Zuflucht bei Dir vor den Einflüsterungen der Satane, und ich nehme Zuflucht bei Dir, mein Herr, dass sie mir nicht nahekommen.",
+          "kaynak": "Sure al-Mu'minun 23:97-98"
+        },
+        "fr": {
+          "neIcin": "Pour se protéger des incitations des démons et de la colère.",
+          "meal": "Seigneur, je cherche refuge auprès de Toi contre les suggestions des démons, et je cherche refuge auprès de Toi, Seigneur, contre leur présence.",
+          "kaynak": "Sourate Al-Mu'minun 23:97-98"
+        },
+        "ru": {
+          "neIcin": "Для защиты от наущений шайтанов и от гнева.",
+          "meal": "Господи! Я прибегаю к Тебе от наущений шайтанов и прибегаю к Тебе, Господи, чтобы они не приближались ко мне.",
+          "kaynak": "Сура «аль-Муминун» 23:97-98"
+        },
+        "ar": {
+          "neIcin": "للتحصّن من همزات الشياطين ومن الغضب.",
+          "kaynak": "سورة المؤمنون، 97-98"
+        }
+      }
+    },
+    {
+      "id": "hem-hazen",
+      "kategoriler": [
+        "huzur",
+        "rizik"
+      ],
+      "neIcin": "Kaygı, üzüntü, tembellik ve borç yükünden kurtulmak için. Peygamberimiz bu duayı çok okurdu.",
+      "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ وَالْبُخْلِ وَالْجُبْنِ وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
+      "okunus": "Allâhumme innî eûzü bike minel-hemmi vel-hazen, vel-aczi vel-kesel, vel-buhli vel-cübn, ve dalaid-deyni ve ğalebetir-ricâl.",
+      "meal": "Allah'ım! Kaygıdan ve üzüntüden, acizlikten ve tembellikten, cimrilikten ve korkaklıktan, borç yükünden ve insanların baskısından sana sığınırım.",
+      "kaynak": "Buhârî, Daavât 36",
+      "ceviri": {
+        "en": {
+          "neIcin": "To be freed from worry, grief, laziness and the burden of debt. The Prophet ﷺ recited this often.",
+          "meal": "O Allah, I seek refuge in You from worry and grief, from weakness and laziness, from miserliness and cowardice, from the burden of debt and from being overpowered by people.",
+          "kaynak": "Bukhari, Da'awat 36"
+        },
+        "de": {
+          "neIcin": "Um von Sorge, Kummer, Trägheit und Schuldenlast befreit zu werden. Der Prophet ﷺ sprach es oft.",
+          "meal": "O Allah, ich nehme Zuflucht bei Dir vor Sorge und Kummer, vor Unfähigkeit und Trägheit, vor Geiz und Feigheit, vor der Last der Schulden und der Unterdrückung durch Menschen.",
+          "kaynak": "Buchari, Da'awat 36"
+        },
+        "fr": {
+          "neIcin": "Pour être délivré du souci, de la tristesse, de la paresse et du poids des dettes. Le Prophète ﷺ la récitait souvent.",
+          "meal": "Ô Allah, je cherche refuge auprès de Toi contre le souci et la tristesse, l’incapacité et la paresse, l’avarice et la lâcheté, le poids des dettes et la domination des hommes.",
+          "kaynak": "Boukhari, Da'awat 36"
+        },
+        "ru": {
+          "neIcin": "Чтобы избавиться от тревоги, печали, лени и бремени долгов. Пророк ﷺ часто читал эту мольбу.",
+          "meal": "О Аллах, прибегаю к Тебе от тревоги и печали, от бессилия и лени, от скупости и трусости, от бремени долга и притеснения людей.",
+          "kaynak": "Бухари, Da'awat 36"
+        },
+        "ar": {
+          "neIcin": "للخلاص من الهم والحزن والكسل وثقل الدَّين؛ كان النبي ﷺ يكثر منه.",
+          "kaynak": "البخاري، الدعوات 36"
+        }
+      }
+    },
+    {
+      "id": "ya-hayyu",
+      "kategoriler": [
+        "huzur"
+      ],
+      "neIcin": "Sıkıntı ve darlık anında Allah'ın rahmetine sığınmak için.",
+      "arabic": "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ",
+      "okunus": "Yâ Hayyu yâ Kayyûm, bi rahmetike esteğîs.",
+      "meal": "Ey diri olan, her şeyi ayakta tutan Allah'ım! Senin rahmetinle yardım dilerim.",
+      "kaynak": "Tirmizî, Daavât 91",
+      "ceviri": {
+        "en": {
+          "neIcin": "To seek refuge in Allah’s mercy in times of distress and hardship.",
+          "meal": "O Ever-Living, O Sustainer of all, by Your mercy I seek help.",
+          "kaynak": "Tirmidhi, Da'awat 91"
+        },
+        "de": {
+          "neIcin": "Um in Not und Bedrängnis Zuflucht bei Allahs Barmherzigkeit zu suchen.",
+          "meal": "O Lebendiger, o Beständiger, bei Deiner Barmherzigkeit suche ich Hilfe.",
+          "kaynak": "Tirmidhi, Da'awat 91"
+        },
+        "fr": {
+          "neIcin": "Pour se réfugier dans la miséricorde d’Allah dans la détresse.",
+          "meal": "Ô Vivant, ô Subsistant par Lui-même, c’est par Ta miséricorde que j’implore secours.",
+          "kaynak": "Tirmidhi, Da'awat 91"
+        },
+        "ru": {
+          "neIcin": "Чтобы искать прибежища в милости Аллаха в беде и стеснении.",
+          "meal": "О Живой, о Вседержитель! К милости Твоей взываю о помощи.",
+          "kaynak": "Тирмизи, Da'awat 91"
+        },
+        "ar": {
+          "neIcin": "للاستغاثة برحمة الله عند الكرب والضيق.",
+          "kaynak": "الترمذي، الدعوات 91"
+        }
+      }
+    },
+    {
+      "id": "hasbiyallah",
+      "kategoriler": [
+        "huzur"
+      ],
+      "neIcin": "Allah'a tevekkül etmek ve kalbi huzura erdirmek için; sabah-akşam yedi kez okunması tavsiye edilir.",
+      "arabic": "حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+      "okunus": "Hasbiyallâhu lâ ilâhe illâ hû, aleyhi tevekkeltü ve hüve rabbül-arşil-azîm.",
+      "meal": "Allah bana yeter. O'ndan başka ilah yoktur. Ben yalnız O'na tevekkül ettim. O, büyük Arş'ın Rabbidir.",
+      "kaynak": "Tevbe Suresi, 129",
+      "ceviri": {
+        "en": {
+          "neIcin": "To put trust in Allah and bring peace to the heart; recommended seven times morning and evening.",
+          "meal": "Allah is sufficient for me. There is no god but Him. In Him I put my trust, and He is the Lord of the Mighty Throne.",
+          "kaynak": "At-Tawbah 9:129"
+        },
+        "de": {
+          "neIcin": "Um auf Allah zu vertrauen und dem Herzen Ruhe zu schenken; morgens und abends siebenmal empfohlen.",
+          "meal": "Allah genügt mir. Es gibt keinen Gott außer Ihm. Auf Ihn verlasse ich mich, und Er ist der Herr des gewaltigen Thrones.",
+          "kaynak": "Sure at-Tauba 9:129"
+        },
+        "fr": {
+          "neIcin": "Pour placer sa confiance en Allah et apaiser le cœur ; recommandée sept fois matin et soir.",
+          "meal": "Allah me suffit. Il n’y a de dieu que Lui. En Lui je place ma confiance, et Il est le Seigneur du Trône immense.",
+          "kaynak": "Sourate At-Tawba 9:129"
+        },
+        "ru": {
+          "neIcin": "Чтобы уповать на Аллаха и успокоить сердце; рекомендуют по семь раз утром и вечером.",
+          "meal": "Достаточно мне Аллаха! Нет божества, кроме Него. На Него я уповаю, и Он — Господь великого Трона.",
+          "kaynak": "Сура «ат-Тауба» 9:129"
+        },
+        "ar": {
+          "neIcin": "للتوكل على الله وطمأنينة القلب؛ يُستحب قولها سبعًا صباحًا ومساءً.",
+          "kaynak": "سورة التوبة، 129"
+        }
+      }
+    },
+    {
+      "id": "hasbunallah",
+      "kategoriler": [
+        "huzur"
+      ],
+      "neIcin": "Korku ve endişe anında Allah'a dayanmak için.",
+      "arabic": "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+      "okunus": "Hasbunallâhu ve ni‘mel-vekîl.",
+      "meal": "Allah bize yeter. O ne güzel vekildir.",
+      "kaynak": "Âl-i İmrân Suresi, 173",
+      "ceviri": {
+        "en": {
+          "neIcin": "To rely on Allah in times of fear and worry.",
+          "meal": "Allah is sufficient for us, and He is the best Disposer of affairs.",
+          "kaynak": "Al 'Imran 3:173"
+        },
+        "de": {
+          "neIcin": "Um sich in Angst und Sorge auf Allah zu stützen.",
+          "meal": "Allah genügt uns, und welch vortrefflicher Sachwalter ist Er.",
+          "kaynak": "Sure Al Imran 3:173"
+        },
+        "fr": {
+          "neIcin": "Pour s’en remettre à Allah dans la peur et l’inquiétude.",
+          "meal": "Allah nous suffit ; Il est notre meilleur garant.",
+          "kaynak": "Sourate Al Imran 3:173"
+        },
+        "ru": {
+          "neIcin": "Чтобы опереться на Аллаха в страхе и тревоге.",
+          "meal": "Достаточно нам Аллаха, и как прекрасен этот Покровитель!",
+          "kaynak": "Сура «Аль Имран» 3:173"
+        },
+        "ar": {
+          "neIcin": "للاعتماد على الله عند الخوف والقلق.",
+          "kaynak": "سورة آل عمران، 173"
+        }
+      }
+    },
+    {
+      "id": "taha-25",
+      "kategoriler": [
+        "huzur",
+        "gunluk"
+      ],
+      "neIcin": "Bir işe, sınava ya da zor bir konuşmaya başlarken; Hz. Mûsâ'nın duası.",
+      "arabic": "رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي ۝ وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي ۝ يَفْقَهُوا قَوْلِي",
+      "okunus": "Rabbişrah lî sadrî. Ve yessir lî emrî. Vahlul ukdeten min lisânî. Yefkahû kavlî.",
+      "meal": "Rabbim! Göğsümü genişlet. İşimi kolaylaştır. Dilimdeki düğümü çöz ki sözümü anlasınlar.",
+      "kaynak": "Tâhâ Suresi, 25-28",
+      "ceviri": {
+        "en": {
+          "neIcin": "When starting a task, an exam or a difficult conversation; the prayer of Prophet Musa.",
+          "meal": "My Lord, expand my chest for me, ease my task for me, and untie the knot from my tongue so they may understand my speech.",
+          "kaynak": "Ta-Ha 20:25-28"
+        },
+        "de": {
+          "neIcin": "Zu Beginn einer Aufgabe, Prüfung oder eines schweren Gesprächs; das Bittgebet des Propheten Musa.",
+          "meal": "Mein Herr, weite mir meine Brust, erleichtere mir meine Aufgabe und löse den Knoten meiner Zunge, damit sie meine Rede verstehen.",
+          "kaynak": "Sure Ta-Ha 20:25-28"
+        },
+        "fr": {
+          "neIcin": "Au début d’une tâche, d’un examen ou d’une conversation difficile ; l’invocation de Moïse.",
+          "meal": "Seigneur, ouvre-moi ma poitrine, facilite-moi ma mission et dénoue ma langue afin qu’ils comprennent mes paroles.",
+          "kaynak": "Sourate Ta-Ha 20:25-28"
+        },
+        "ru": {
+          "neIcin": "Перед делом, экзаменом или трудным разговором; мольба пророка Мусы.",
+          "meal": "Господи! Раскрой мне грудь, облегчи мне мою задачу и развяжи узел на моём языке, чтобы они поняли мою речь.",
+          "kaynak": "Сура «Та Ха» 20:25-28"
+        },
+        "ar": {
+          "neIcin": "عند بدء عمل أو امتحان أو حديث صعب؛ دعاء موسى عليه السلام.",
+          "kaynak": "سورة طه، 25-28"
+        }
+      }
+    },
+    {
+      "id": "enbiya-87",
+      "kategoriler": [
+        "huzur",
+        "tovbe"
+      ],
+      "neIcin": "Sıkıntıdan kurtulmak ve hatalardan dönmek için; Hz. Yûnus'un balığın karnındaki duası.",
+      "arabic": "لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+      "okunus": "Lâ ilâhe illâ ente sübhâneke innî küntü minez-zâlimîn.",
+      "meal": "Senden başka ilah yoktur. Seni tenzih ederim. Gerçekten ben kendine yazık edenlerden oldum.",
+      "kaynak": "Enbiyâ Suresi, 87",
+      "ceviri": {
+        "en": {
+          "neIcin": "To be freed from distress and to turn back from mistakes; the prayer of Prophet Yunus in the belly of the whale.",
+          "meal": "There is no god but You; glory be to You. Indeed, I have been among the wrongdoers.",
+          "kaynak": "Al-Anbiya' 21:87"
+        },
+        "de": {
+          "neIcin": "Um aus Not befreit zu werden und von Fehlern umzukehren; das Bittgebet des Propheten Yunus im Bauch des Wals.",
+          "meal": "Es gibt keinen Gott außer Dir. Preis sei Dir! Ich bin wahrlich einer der Ungerechten gewesen.",
+          "kaynak": "Sure al-Anbiya' 21:87"
+        },
+        "fr": {
+          "neIcin": "Pour être délivré de l’angoisse et revenir de ses fautes ; l’invocation de Jonas dans le ventre du poisson.",
+          "meal": "Pas de divinité à part Toi ! Gloire à Toi ! J’ai été du nombre des injustes.",
+          "kaynak": "Sourate Al-Anbiya' 21:87"
+        },
+        "ru": {
+          "neIcin": "Чтобы избавиться от беды и раскаяться в ошибках; мольба пророка Юнуса во чреве рыбы.",
+          "meal": "Нет божества, кроме Тебя. Пречист Ты! Воистину, я был одним из несправедливых.",
+          "kaynak": "Сура «аль-Анбия» 21:87"
+        },
+        "ar": {
+          "neIcin": "للنجاة من الكرب والرجوع عن الخطأ؛ دعاء يونس عليه السلام في بطن الحوت.",
+          "kaynak": "سورة الأنبياء، 87"
+        }
+      }
+    },
+    {
+      "id": "seyyidul-istigfar",
+      "kategoriler": [
+        "tovbe",
+        "gunluk"
+      ],
+      "neIcin": "Bağışlanma dualarının en üstünü; sabah ve akşam okunur.",
+      "arabic": "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+      "okunus": "Allâhumme ente Rabbî, lâ ilâhe illâ ente, halaktenî ve ene abdük, ve ene alâ ahdike ve va‘dike mesteta‘tü, eûzü bike min şerri mâ sana‘tü, ebûu leke bi ni‘metike aleyye ve ebûu leke bi zenbî fağfir lî, fe innehû lâ yağfiruz-zünûbe illâ ente.",
+      "meal": "Allah'ım! Sen benim Rabbimsin. Senden başka ilah yoktur. Beni sen yarattın, ben senin kulunum. Gücüm yettiğince sana verdiğim söz ve ahdin üzerindeyim. Yaptıklarımın kötülüğünden sana sığınırım. Bana verdiğin nimetleri ve günahlarımı itiraf ediyorum. Beni bağışla; çünkü günahları ancak sen bağışlarsın.",
+      "kaynak": "Buhârî, Daavât 2",
+      "ceviri": {
+        "en": {
+          "neIcin": "The best of all prayers for forgiveness; recited morning and evening.",
+          "meal": "O Allah, You are my Lord; there is no god but You. You created me and I am Your servant. I keep Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favours upon me and I acknowledge my sins, so forgive me, for none forgives sins but You.",
+          "kaynak": "Bukhari, Da'awat 2"
+        },
+        "de": {
+          "neIcin": "Das vorzüglichste aller Bittgebete um Vergebung; morgens und abends.",
+          "meal": "O Allah, Du bist mein Herr; es gibt keinen Gott außer Dir. Du hast mich erschaffen, und ich bin Dein Diener. Ich halte an Deinem Bund und Versprechen fest, so gut ich kann. Ich nehme Zuflucht bei Dir vor dem Übel meiner Taten. Ich bekenne Deine Gaben an mich und bekenne meine Sünden; so vergib mir, denn niemand vergibt Sünden außer Dir.",
+          "kaynak": "Buchari, Da'awat 2"
+        },
+        "fr": {
+          "neIcin": "La meilleure des demandes de pardon ; matin et soir.",
+          "meal": "Ô Allah, Tu es mon Seigneur, il n’y a de dieu que Toi. Tu m’as créé et je suis Ton serviteur. Je respecte Ton pacte et Ta promesse autant que je le peux. Je cherche refuge auprès de Toi contre le mal que j’ai commis. Je reconnais Tes bienfaits envers moi et je reconnais mes péchés ; pardonne-moi, car nul ne pardonne les péchés hormis Toi.",
+          "kaynak": "Boukhari, Da'awat 2"
+        },
+        "ru": {
+          "neIcin": "Лучшая из мольб о прощении; читают утром и вечером.",
+          "meal": "О Аллах, Ты — мой Господь, нет божества, кроме Тебя. Ты сотворил меня, и я — Твой раб. Я храню верность договору и обещанию Тебе, насколько могу. Прибегаю к Тебе от зла содеянного мною. Признаю Твою милость ко мне и признаю свои грехи — прости же меня, ведь никто не прощает грехи, кроме Тебя.",
+          "kaynak": "Бухари, Da'awat 2"
+        },
+        "ar": {
+          "neIcin": "سيد الاستغفار؛ يُقال صباحًا ومساءً.",
+          "kaynak": "البخاري، الدعوات 2"
+        }
+      }
+    },
+    {
+      "id": "afuvvun",
+      "kategoriler": [
+        "tovbe"
+      ],
+      "neIcin": "Af dilemek için; Peygamberimiz Kadir Gecesi'nde bu duanın okunmasını tavsiye etti.",
+      "arabic": "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
+      "okunus": "Allâhumme inneke afuvvun tuhibbul-afve fa‘fu annî.",
+      "meal": "Allah'ım! Sen affedicisin, affetmeyi seversin; beni de affet.",
+      "kaynak": "Tirmizî, Daavât 84",
+      "ceviri": {
+        "en": {
+          "neIcin": "To ask for pardon; the Prophet ﷺ advised reciting this on Laylat al-Qadr.",
+          "meal": "O Allah, You are Pardoning and love to pardon, so pardon me.",
+          "kaynak": "Tirmidhi, Da'awat 84"
+        },
+        "de": {
+          "neIcin": "Um Verzeihung zu bitten; der Prophet ﷺ empfahl es für die Nacht der Bestimmung.",
+          "meal": "O Allah, Du bist der Verzeihende und liebst das Verzeihen, so verzeihe mir.",
+          "kaynak": "Tirmidhi, Da'awat 84"
+        },
+        "fr": {
+          "neIcin": "Pour demander le pardon ; le Prophète ﷺ l’a recommandée pour la Nuit du Destin.",
+          "meal": "Ô Allah, Tu es Celui qui pardonne et Tu aimes le pardon, alors pardonne-moi.",
+          "kaynak": "Tirmidhi, Da'awat 84"
+        },
+        "ru": {
+          "neIcin": "Чтобы просить прощения; Пророк ﷺ советовал читать её в Ночь Предопределения.",
+          "meal": "О Аллах, Ты — Прощающий, любишь прощать, так прости же меня.",
+          "kaynak": "Тирмизи, Da'awat 84"
+        },
+        "ar": {
+          "neIcin": "لطلب العفو؛ أوصى النبي ﷺ بقوله في ليلة القدر.",
+          "kaynak": "الترمذي، الدعوات 84"
+        }
+      }
+    },
+    {
+      "id": "araf-23",
+      "kategoriler": [
+        "tovbe"
+      ],
+      "neIcin": "Hata ettiğimizde pişmanlıkla dönmek için; Hz. Âdem ile Hz. Havva'nın duası.",
+      "arabic": "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",
+      "okunus": "Rabbenâ zalemnâ enfusenâ ve in lem tağfir lenâ ve terhamnâ le nekûnenne minel-hâsirîn.",
+      "meal": "Rabbimiz! Biz kendimize zulmettik. Eğer bizi bağışlamaz ve bize merhamet etmezsen mutlaka kaybedenlerden oluruz.",
+      "kaynak": "A‘râf Suresi, 23",
+      "ceviri": {
+        "en": {
+          "neIcin": "To return with remorse when we have erred; the prayer of Adam and Hawwa.",
+          "meal": "Our Lord, we have wronged ourselves. If You do not forgive us and have mercy on us, we will surely be among the losers.",
+          "kaynak": "Al-A'raf 7:23"
+        },
+        "de": {
+          "neIcin": "Um nach einem Fehler reuig umzukehren; das Bittgebet von Adam und Hawwa.",
+          "meal": "Unser Herr, wir haben uns selbst Unrecht getan. Wenn Du uns nicht vergibst und Dich unser nicht erbarmst, werden wir gewiss zu den Verlierern gehören.",
+          "kaynak": "Sure al-A'raf 7:23"
+        },
+        "fr": {
+          "neIcin": "Pour revenir avec remords après une faute ; l’invocation d’Adam et Ève.",
+          "meal": "Seigneur, nous avons fait du tort à nous-mêmes. Si Tu ne nous pardonnes pas et ne nous fais pas miséricorde, nous serons très certainement du nombre des perdants.",
+          "kaynak": "Sourate Al-A'raf 7:23"
+        },
+        "ru": {
+          "neIcin": "Чтобы с раскаянием вернуться после ошибки; мольба Адама и Хаввы.",
+          "meal": "Господь наш! Мы сами поступили несправедливо по отношению к себе. Если Ты не простишь нас и не помилуешь, то мы непременно окажемся среди потерпевших убыток.",
+          "kaynak": "Сура «аль-Араф» 7:23"
+        },
+        "ar": {
+          "neIcin": "للرجوع بندم بعد الخطأ؛ دعاء آدم وحواء عليهما السلام.",
+          "kaynak": "سورة الأعراف، 23"
+        }
+      }
+    },
+    {
+      "id": "muminun-118",
+      "kategoriler": [
+        "tovbe"
+      ],
+      "neIcin": "Bağışlanma ve rahmet dilemek için.",
+      "arabic": "رَبِّ اغْفِرْ وَارْحَمْ وَأَنْتَ خَيْرُ الرَّاحِمِينَ",
+      "okunus": "Rabbiğfir verham ve ente hayrur-râhimîn.",
+      "meal": "Rabbim! Bağışla, merhamet et. Sen merhamet edenlerin en hayırlısısın.",
+      "kaynak": "Mü’minûn Suresi, 118",
+      "ceviri": {
+        "en": {
+          "neIcin": "To ask for forgiveness and mercy.",
+          "meal": "My Lord, forgive and have mercy, and You are the best of the merciful.",
+          "kaynak": "Al-Mu'minun 23:118"
+        },
+        "de": {
+          "neIcin": "Um Vergebung und Barmherzigkeit zu bitten.",
+          "meal": "Mein Herr, vergib und erbarme Dich, denn Du bist der Beste der Erbarmer.",
+          "kaynak": "Sure al-Mu'minun 23:118"
+        },
+        "fr": {
+          "neIcin": "Pour demander pardon et miséricorde.",
+          "meal": "Seigneur, pardonne et fais miséricorde, Tu es le meilleur des miséricordieux.",
+          "kaynak": "Sourate Al-Mu'minun 23:118"
+        },
+        "ru": {
+          "neIcin": "Чтобы просить прощения и милости.",
+          "meal": "Господи! Прости и помилуй, ведь Ты — Наилучший из милующих.",
+          "kaynak": "Сура «аль-Муминун» 23:118"
+        },
+        "ar": {
+          "neIcin": "لطلب المغفرة والرحمة.",
+          "kaynak": "سورة المؤمنون، 118"
+        }
+      }
+    },
+    {
+      "id": "taha-114",
+      "kategoriler": [
+        "gunluk"
+      ],
+      "neIcin": "Ders çalışırken, okurken ve öğrenirken.",
+      "arabic": "رَبِّ زِدْنِي عِلْمًا",
+      "okunus": "Rabbi zidnî ilmâ.",
+      "meal": "Rabbim! İlmimi artır.",
+      "kaynak": "Tâhâ Suresi, 114",
+      "ceviri": {
+        "en": {
+          "neIcin": "While studying, reading and learning.",
+          "meal": "My Lord, increase me in knowledge.",
+          "kaynak": "Ta-Ha 20:114"
+        },
+        "de": {
+          "neIcin": "Beim Lernen, Lesen und Studieren.",
+          "meal": "Mein Herr, mehre mich an Wissen.",
+          "kaynak": "Sure Ta-Ha 20:114"
+        },
+        "fr": {
+          "neIcin": "En étudiant, en lisant et en apprenant.",
+          "meal": "Seigneur, accroît mes connaissances.",
+          "kaynak": "Sourate Ta-Ha 20:114"
+        },
+        "ru": {
+          "neIcin": "Во время учёбы, чтения и обучения.",
+          "meal": "Господи! Приумножь мои знания.",
+          "kaynak": "Сура «Та Ха» 20:114"
+        },
+        "ar": {
+          "neIcin": "عند المذاكرة والقراءة وطلب العلم.",
+          "kaynak": "سورة طه، 114"
+        }
+      }
+    },
+    {
+      "id": "kehf-10",
+      "kategoriler": [
+        "huzur",
+        "ahiret"
+      ],
+      "neIcin": "Bir işte doğru yolu bulmak ve rahmet dilemek için; Ashâb-ı Kehf'in duası.",
+      "arabic": "رَبَّنَا آتِنَا مِنْ لَدُنْكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا",
+      "okunus": "Rabbenâ âtinâ min ledünke rahmeten ve heyyi’ lenâ min emrinâ raşedâ.",
+      "meal": "Rabbimiz! Bize katından bir rahmet ver ve işimizde bize doğruyu bulmayı kolaylaştır.",
+      "kaynak": "Kehf Suresi, 10",
+      "ceviri": {
+        "en": {
+          "neIcin": "To find the right way in a matter and to ask for mercy; the prayer of the People of the Cave.",
+          "meal": "Our Lord, grant us mercy from Yourself and make right guidance easy for us in our affair.",
+          "kaynak": "Al-Kahf 18:10"
+        },
+        "de": {
+          "neIcin": "Um in einer Angelegenheit den rechten Weg zu finden und um Barmherzigkeit; das Bittgebet der Leute der Höhle.",
+          "meal": "Unser Herr, gib uns von Dir Barmherzigkeit und bereite uns in unserer Angelegenheit einen besonnenen Ausweg.",
+          "kaynak": "Sure al-Kahf 18:10"
+        },
+        "fr": {
+          "neIcin": "Pour trouver la bonne voie et demander la miséricorde ; l’invocation des Gens de la Caverne.",
+          "meal": "Seigneur, accorde-nous de Ta part une miséricorde et assure-nous la droiture dans notre conduite.",
+          "kaynak": "Sourate Al-Kahf 18:10"
+        },
+        "ru": {
+          "neIcin": "Чтобы найти верный путь в деле и просить милости; мольба обитателей пещеры.",
+          "meal": "Господь наш! Даруй нам милость от Тебя и облегчи нам правильное решение нашего дела.",
+          "kaynak": "Сура «аль-Кахф» 18:10"
+        },
+        "ar": {
+          "neIcin": "للاهتداء إلى الصواب في الأمر وطلب الرحمة؛ دعاء أصحاب الكهف.",
+          "kaynak": "سورة الكهف، 10"
+        }
+      }
+    },
+    {
+      "id": "evden-cikarken",
+      "kategoriler": [
+        "gunluk",
+        "nazar"
+      ],
+      "neIcin": "Evden çıkarken okunur.",
+      "arabic": "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+      "okunus": "Bismillâhi, tevekkeltü alallâh, lâ havle ve lâ kuvvete illâ billâh.",
+      "meal": "Allah'ın adıyla. Allah'a tevekkül ettim. Güç ve kuvvet ancak Allah'tandır.",
+      "kaynak": "Ebû Dâvûd, Edeb 103; Tirmizî, Daavât 34",
+      "ceviri": {
+        "en": {
+          "neIcin": "Recited when leaving home.",
+          "meal": "In the name of Allah, I put my trust in Allah. There is no might nor power except with Allah.",
+          "kaynak": "Abu Dawud, Adab 103; Tirmidhi, Da'awat 34"
+        },
+        "de": {
+          "neIcin": "Beim Verlassen des Hauses.",
+          "meal": "Im Namen Allahs, ich vertraue auf Allah. Es gibt keine Macht und keine Kraft außer bei Allah.",
+          "kaynak": "Abu Dawud, Adab 103; Tirmidhi, Da'awat 34"
+        },
+        "fr": {
+          "neIcin": "En sortant de chez soi.",
+          "meal": "Au nom d’Allah, je m’en remets à Allah. Il n’y a de force ni de puissance qu’en Allah.",
+          "kaynak": "Abou Dawoud, Adab 103; Tirmidhi, Da'awat 34"
+        },
+        "ru": {
+          "neIcin": "Читают, выходя из дома.",
+          "meal": "С именем Аллаха, уповаю на Аллаха. Нет мощи и силы, кроме как у Аллаха.",
+          "kaynak": "Абу Дауд, Adab 103; Тирмизи, Da'awat 34"
+        },
+        "ar": {
+          "neIcin": "يُقال عند الخروج من البيت.",
+          "kaynak": "أبو داود، الأدب 103؛ الترمذي، الدعوات 34"
+        }
+      }
+    },
+    {
+      "id": "yatarken",
+      "kategoriler": [
+        "gunluk"
+      ],
+      "neIcin": "Yatarken okunur.",
+      "arabic": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+      "okunus": "Bismike Allâhumme emûtu ve ahyâ.",
+      "meal": "Allah'ım! Senin adınla ölür ve dirilirim.",
+      "kaynak": "Buhârî, Daavât 7",
+      "ceviri": {
+        "en": {
+          "neIcin": "Recited when going to bed.",
+          "meal": "O Allah, in Your name I die and I live.",
+          "kaynak": "Bukhari, Da'awat 7"
+        },
+        "de": {
+          "neIcin": "Beim Schlafengehen.",
+          "meal": "O Allah, in Deinem Namen sterbe ich und lebe ich.",
+          "kaynak": "Buchari, Da'awat 7"
+        },
+        "fr": {
+          "neIcin": "Au coucher.",
+          "meal": "Ô Allah, c’est en Ton nom que je meurs et que je vis.",
+          "kaynak": "Boukhari, Da'awat 7"
+        },
+        "ru": {
+          "neIcin": "Читают, ложась спать.",
+          "meal": "О Аллах, с именем Твоим умираю и оживаю.",
+          "kaynak": "Бухари, Da'awat 7"
+        },
+        "ar": {
+          "neIcin": "يُقال عند النوم.",
+          "kaynak": "البخاري، الدعوات 7"
+        }
+      }
+    },
+    {
+      "id": "uyaninca",
+      "kategoriler": [
+        "gunluk"
+      ],
+      "neIcin": "Uykudan uyanınca okunur.",
+      "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+      "okunus": "Elhamdü lillâhillezî ahyânâ ba‘de mâ emâtenâ ve ileyhin-nüşûr.",
+      "meal": "Bizi öldürdükten sonra dirilten Allah'a hamdolsun. Dönüş O'nadır.",
+      "kaynak": "Buhârî, Daavât 7",
+      "ceviri": {
+        "en": {
+          "neIcin": "Recited upon waking up.",
+          "meal": "Praise be to Allah who gave us life after causing us to die, and to Him is the return.",
+          "kaynak": "Bukhari, Da'awat 7"
+        },
+        "de": {
+          "neIcin": "Beim Aufwachen.",
+          "meal": "Lob sei Allah, der uns lebendig gemacht hat, nachdem Er uns sterben ließ, und zu Ihm ist die Rückkehr.",
+          "kaynak": "Buchari, Da'awat 7"
+        },
+        "fr": {
+          "neIcin": "Au réveil.",
+          "meal": "Louange à Allah qui nous a redonné la vie après nous avoir fait mourir, et c’est vers Lui le retour.",
+          "kaynak": "Boukhari, Da'awat 7"
+        },
+        "ru": {
+          "neIcin": "Читают, проснувшись.",
+          "meal": "Хвала Аллаху, Который оживил нас после того, как умертвил, и к Нему — возвращение.",
+          "kaynak": "Бухари, Da'awat 7"
+        },
+        "ar": {
+          "neIcin": "يُقال عند الاستيقاظ.",
+          "kaynak": "البخاري، الدعوات 7"
+        }
+      }
+    },
+    {
+      "id": "yemekten-sonra",
+      "kategoriler": [
+        "gunluk",
+        "rizik"
+      ],
+      "neIcin": "Yemekten sonra okunur.",
+      "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَٰذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",
+      "okunus": "Elhamdü lillâhillezî et‘amenî hâzâ ve rezekanîhi min ğayri havlin minnî ve lâ kuvveh.",
+      "meal": "Bana bu yemeği yediren ve benim hiçbir gücüm ve kuvvetim olmadan onu bana rızık olarak veren Allah'a hamdolsun.",
+      "kaynak": "Ebû Dâvûd, Libâs 1; Tirmizî, Daavât 56",
+      "ceviri": {
+        "en": {
+          "neIcin": "Recited after eating.",
+          "meal": "Praise be to Allah who fed me this and provided it for me without any might or power on my part.",
+          "kaynak": "Abu Dawud, Libas 1; Tirmidhi, Da'awat 56"
+        },
+        "de": {
+          "neIcin": "Nach dem Essen.",
+          "meal": "Lob sei Allah, der mich dies essen ließ und es mir ohne Macht und Kraft von mir gewährte.",
+          "kaynak": "Abu Dawud, Libas 1; Tirmidhi, Da'awat 56"
+        },
+        "fr": {
+          "neIcin": "Après le repas.",
+          "meal": "Louange à Allah qui m’a nourri de ceci et me l’a accordé sans force ni puissance de ma part.",
+          "kaynak": "Abou Dawoud, Libas 1; Tirmidhi, Da'awat 56"
+        },
+        "ru": {
+          "neIcin": "Читают после еды.",
+          "meal": "Хвала Аллаху, Который накормил меня этим и наделил этим без какой-либо силы и мощи с моей стороны.",
+          "kaynak": "Абу Дауд, Libas 1; Тирмизи, Da'awat 56"
+        },
+        "ar": {
+          "neIcin": "يُقال بعد الطعام.",
+          "kaynak": "أبو داود، اللباس 1؛ الترمذي، الدعوات 56"
+        }
+      }
+    },
+    {
+      "id": "yolculuk",
+      "kategoriler": [
+        "gunluk"
+      ],
+      "neIcin": "Bir araca binip yolculuğa çıkarken okunur.",
+      "arabic": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ ۝ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنْقَلِبُونَ",
+      "okunus": "Sübhânellezî sahhara lenâ hâzâ ve mâ kunnâ lehû mukrinîn. Ve innâ ilâ rabbinâ le munkalibûn.",
+      "meal": "Bunu bizim hizmetimize veren Allah'ı tenzih ederiz; yoksa biz buna güç yetiremezdik. Şüphesiz biz Rabbimize döneceğiz.",
+      "kaynak": "Zuhruf Suresi, 13-14",
+      "ceviri": {
+        "en": {
+          "neIcin": "Recited when boarding a vehicle and setting out on a journey.",
+          "meal": "Glory be to Him who has subjected this to us, for we could not have done it ourselves. And indeed, to our Lord we will return.",
+          "kaynak": "Az-Zukhruf 43:13-14"
+        },
+        "de": {
+          "neIcin": "Beim Einsteigen in ein Fahrzeug und zu Beginn einer Reise.",
+          "meal": "Preis sei Dem, der uns dies dienstbar gemacht hat; wir selbst wären dazu nicht imstande gewesen. Und zu unserem Herrn werden wir gewiss zurückkehren.",
+          "kaynak": "Sure az-Zuchruf 43:13-14"
+        },
+        "fr": {
+          "neIcin": "En montant dans un véhicule et au départ d’un voyage.",
+          "meal": "Gloire à Celui qui nous a soumis ceci alors que nous n’en étions pas capables. C’est vers notre Seigneur que nous retournerons.",
+          "kaynak": "Sourate Az-Zukhruf 43:13-14"
+        },
+        "ru": {
+          "neIcin": "Читают, садясь в транспорт и отправляясь в путь.",
+          "meal": "Пречист Тот, Кто подчинил нам это, ведь мы не смогли бы сделать этого сами. Воистину, мы вернёмся к нашему Господу.",
+          "kaynak": "Сура «аз-Зухруф» 43:13-14"
+        },
+        "ar": {
+          "neIcin": "يُقال عند ركوب المركبة والخروج للسفر.",
+          "kaynak": "سورة الزخرف، 13-14"
+        }
+      }
+    }
+  ],
+  "not": "Bu dosyaya eklenen dualar uygulama güncellemesi olmadan herkese gelir. Yeni dua eklerken bir hocaya kontrol ettirin."
 }

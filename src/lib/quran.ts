@@ -4,15 +4,20 @@
 import * as Font from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SURE_ADLARI } from '../data/sureler';
+import { getLang, QURAN_TRANSLATION, QURAN_TRANSLATION_NAME, t } from '../i18n';
 
 const API = 'https://api.quran.com/api/v4';
 const FONT_URL = (page: number) => `https://verses.quran.foundation/fonts/quran/hafs/v2/ttf/p${page}.ttf`;
 export const RECITER_ID = 6; // Mahmud Halil el-Husarî (Murattal)
 export const TOTAL_PAGES = 604;
 
-export const TRANSLATION_ID = 77; // Diyanet İşleri Başkanlığı meali
-export const ATTRIBUTION =
-  'Mushaf sayfaları, Kur’an fontları ve Husarî tilaveti Quran Foundation (quran.com) tarafından sağlanmaktadır. Türkçe meal: Diyanet İşleri Başkanlığı.';
+/** Seçili dilin meali (Türkçe: Diyanet; Arapçada meal yok, Türkçe veri kullanılır ama gösterilmez) */
+const translationId = () => QURAN_TRANSLATION[getLang()] ?? 77;
+export const hasMeal = () => QURAN_TRANSLATION[getLang()] != null;
+export function attribution(): string {
+  const base = t('Mushaf sayfaları, Kur’an fontları ve Husarî tilaveti Quran Foundation (quran.com) tarafından sağlanmaktadır.');
+  return hasMeal() ? `${base} ${t('Meal')}: ${QURAN_TRANSLATION_NAME[getLang()]}.` : base;
+}
 
 export type QWord = {
   id: number;
@@ -38,7 +43,15 @@ export type QPage = {
   meals: Record<string, string>;
 };
 
-export type Chapter = { id: number; nameTr: string; nameAr: string; pages: [number, number]; verses: number };
+export type Chapter = { id: number; nameTr: string; nameAr: string; nameSimple?: string; pages: [number, number]; verses: number };
+
+/** Surenin seçili dildeki adı: Türkçe (Diyanet yazımı), Arapça ya da Latin harfli uluslararası ad */
+export function chapterName(c: Chapter): string {
+  const l = getLang();
+  if (l === 'tr') return c.nameTr;
+  if (l === 'ar') return c.nameAr;
+  return c.nameSimple ?? c.nameTr;
+}
 
 export type VerseTiming = { from: number; to: number; segments: [number, number, number][] };
 export type ChapterAudio = { chapter: number; url: string; timings: Record<string, VerseTiming> };
@@ -82,12 +95,13 @@ async function getJson(url: string) {
 }
 
 export function getChapters(): Promise<Chapter[]> {
-  return cached('quran.chapters.v2', async () => {
+  return cached('quran.chapters.v3', async () => {
     const json = await getJson(`${API}/chapters?language=tr`);
     return (json.chapters as any[]).map((c) => ({
       id: c.id,
       nameTr: SURE_ADLARI[c.id - 1] ?? c.name_simple,
       nameAr: c.name_arabic,
+      nameSimple: c.name_simple,
       pages: c.pages as [number, number],
       verses: c.verses_count,
     }));
@@ -95,14 +109,17 @@ export function getChapters(): Promise<Chapter[]> {
 }
 
 export function getPage(page: number): Promise<QPage> {
-  return cached(`quran.page.v2.${page}`, async () => {
+  const tid = translationId();
+  // Türkçe sayfalar eski anahtarla saklı (yeniden indirilmesin)
+  const key = tid === 77 ? `quran.page.v2.${page}` : `quran.page.v3.${tid}.${page}`;
+  return cached(key, async () => {
     const json = await getJson(
-      `${API}/verses/by_page/${page}?words=true&per_page=50&word_fields=line_number,code_v2,text_uthmani,page_number&translations=${TRANSLATION_ID}`
+      `${API}/verses/by_page/${page}?words=true&per_page=50&word_fields=line_number,code_v2,text_uthmani,page_number&translations=${tid}`
     );
     const words: QWord[] = [];
     const meals: Record<string, string> = {};
     for (const v of json.verses as any[]) {
-      const tr = (v.translations as any[] | undefined)?.find((t) => t.resource_id === TRANSLATION_ID) ?? v.translations?.[0];
+      const tr = (v.translations as any[] | undefined)?.find((x) => x.resource_id === tid) ?? v.translations?.[0];
       if (tr?.text) meals[v.verse_key] = cleanMeal(tr.text);
       const [c, n] = String(v.verse_key).split(':').map(Number);
       for (const w of v.words as any[]) {

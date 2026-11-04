@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { colors, fonts, radius } from '../theme';
 import { IconBack } from './Icons';
+import { isRTL, t } from '../i18n';
 
 export function Screen({
   title,
@@ -32,11 +33,13 @@ export function Screen({
         {back && (
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Geri"
+            accessibilityLabel={t('Geri')}
             onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
             style={s.roundBtn}
           >
-            <IconBack />
+            <View style={isRTL() ? { transform: [{ scaleX: -1 }] } : undefined}>
+              <IconBack />
+            </View>
           </Pressable>
         )}
         <Text style={s.title} accessibilityRole="header">{title}</Text>

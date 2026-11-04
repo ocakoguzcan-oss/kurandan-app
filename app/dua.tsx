@@ -6,7 +6,8 @@ import { Text } from '../src/components/Text';
 import { Screen, Button, Chip, Eyebrow } from '../src/components/ui';
 import { IconBookmark, IconInstagram, IconShare, StarOrnament } from '../src/components/Icons';
 import { colors, fonts, radius } from '../src/theme';
-import { Dua, duaForDate, toggleFavori, useDualar, useFavoriler } from '../src/lib/dualar';
+import { Dua, duaForDate, duaText, kategoriText, toggleFavori, useDualar, useFavoriler } from '../src/lib/dualar';
+import { isRTL, t } from '../src/i18n';
 
 const FAV = '__fav';
 
@@ -28,7 +29,11 @@ export default function DuaScreen() {
   const dua = lib.dualar.find((d) => d.id === selectedId) ?? today;
   const isToday = dua.id === today.id;
   const isFav = favs.includes(dua.id);
-  const katAd = (id: string) => lib.kategoriler.find((k) => k.id === id)?.ad ?? id;
+  const katAd = (id: string) => {
+    const k = lib.kategoriler.find((x) => x.id === id);
+    return k ? kategoriText(k).ad : id;
+  };
+  const tr = duaText(dua);
 
   const list = useMemo(() => {
     if (kat === FAV) return lib.dualar.filter((d) => favs.includes(d.id));
@@ -42,10 +47,10 @@ export default function DuaScreen() {
   };
 
   const shareText = () =>
-    Share.share({ message: `${dua.arabic}\n\n${dua.okunus}\n\n${dua.meal}\n(${dua.kaynak})\n\nKurandan.ai` }).catch(() => {});
+    Share.share({ message: `${dua.arabic}\n\n${isRTL() ? '' : `${dua.okunus}\n\n${tr.meal}\n`}(${tr.kaynak})\n\nKurandan.ai` }).catch(() => {});
 
   return (
-    <Screen title={isToday ? 'Günün Duası' : 'Dua'} scrollRef={scrollRef}>
+    <Screen title={isToday ? t('Günün Duası') : t('Dua')} scrollRef={scrollRef}>
       <View style={st.outer}>
         <View style={st.inner}>
           <View style={st.tags}>
@@ -56,27 +61,31 @@ export default function DuaScreen() {
             ))}
           </View>
           <View style={st.neIcin}>
-            <Text style={st.neIcinLabel}>Ne için okunur?</Text>
-            <Text style={st.neIcinText}>{dua.neIcin}</Text>
+            <Text style={st.neIcinLabel}>{t('Ne için okunur?')}</Text>
+            <Text style={st.neIcinText}>{tr.neIcin}</Text>
           </View>
           <View style={{ alignItems: 'center' }}>
             <StarOrnament />
           </View>
           <Text style={st.ar}>{dua.arabic}</Text>
-          <View style={{ gap: 6 }}>
-            <Eyebrow>Okunuşu</Eyebrow>
-            <Text style={st.okunus}>{dua.okunus}</Text>
-          </View>
-          <View style={{ gap: 6 }}>
-            <Eyebrow>Anlamı</Eyebrow>
-            <Text style={st.meal}>{dua.meal}</Text>
-          </View>
-          <Text style={st.kaynak}>{dua.kaynak}</Text>
+          {!isRTL() && (
+            <View style={{ gap: 6 }}>
+              <Eyebrow>{t('Okunuşu')}</Eyebrow>
+              <Text style={st.okunus}>{dua.okunus}</Text>
+            </View>
+          )}
+          {!isRTL() && (
+            <View style={{ gap: 6 }}>
+              <Eyebrow>{t('Anlamı')}</Eyebrow>
+              <Text style={st.meal}>{tr.meal}</Text>
+            </View>
+          )}
+          <Text style={st.kaynak}>{tr.kaynak}</Text>
         </View>
       </View>
 
       <Button
-        label="Instagram Story'de paylaş"
+        label={t('Instagram Story\'de paylaş')}
         icon={<IconInstagram />}
         onPress={() => router.push({ pathname: '/cuma', params: { dua: dua.id } })}
       />
@@ -84,29 +93,32 @@ export default function DuaScreen() {
         <Button
           style={{ flex: 1 }}
           variant="secondary"
-          label={isFav ? 'Favorilerde' : 'Favorilere ekle'}
+          label={isFav ? t('Favorilerde') : t('Favorilere ekle')}
           icon={<IconBookmark color={isFav ? colors.gold : colors.green} />}
           onPress={() => toggleFavori(dua.id)}
         />
-        <Button style={{ flex: 1 }} variant="secondary" label="Metin paylaş" icon={<IconShare />} onPress={shareText} />
+        <Button style={{ flex: 1 }} variant="secondary" label={t('Metin paylaş')} icon={<IconShare />} onPress={shareText} />
       </View>
-      {!isToday && <Button variant="text" label="Günün duasına dön" onPress={() => setSelectedId(undefined)} />}
+      {!isToday && <Button variant="text" label={t('Günün duasına dön')} onPress={() => setSelectedId(undefined)} />}
 
-      <Text style={st.h2}>Dualar</Text>
+      <Text style={st.h2}>{t('Dualar')}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
-        <Chip label="Hepsi" selected={kat === 'hepsi'} onPress={() => setKat('hepsi')} />
-        <Chip label={`★ Favorilerim${favs.length ? ` (${favs.length})` : ''}`} selected={kat === FAV} onPress={() => setKat(FAV)} />
+        <Chip label={t('Hepsi')} selected={kat === 'hepsi'} onPress={() => setKat('hepsi')} />
+        <Chip label={`★ ${t('Favorilerim')}${favs.length ? ` (${favs.length})` : ''}`} selected={kat === FAV} onPress={() => setKat(FAV)} />
         {lib.kategoriler.map((k) => (
-          <Chip key={k.id} label={k.ad} selected={kat === k.id} onPress={() => setKat(k.id)} />
+          <Chip key={k.id} label={kategoriText(k).ad} selected={kat === k.id} onPress={() => setKat(k.id)} />
         ))}
       </ScrollView>
       {kat !== 'hepsi' && kat !== FAV && (
-        <Text style={st.katDesc}>{lib.kategoriler.find((k) => k.id === kat)?.aciklama}</Text>
+        <Text style={st.katDesc}>{(() => {
+            const k = lib.kategoriler.find((x) => x.id === kat);
+            return k ? kategoriText(k).aciklama : '';
+          })()}</Text>
       )}
 
       <View style={st.list}>
         {list.length === 0 && (
-          <Text style={st.empty}>Henüz favori duanız yok. Bir duanın altındaki “Favorilere ekle”ye dokunun.</Text>
+          <Text style={st.empty}>{t('Henüz favori duanız yok. Bir duanın altındaki “Favorilere ekle”ye dokunun.')}</Text>
         )}
         {list.map((d, i) => {
           const on = d.id === dua.id;
@@ -122,14 +134,14 @@ export default function DuaScreen() {
                   {favs.includes(d.id) ? '★ ' : ''}
                   {kisaAd(d)}
                 </Text>
-                <Text style={st.rowSub} numberOfLines={2}>{d.neIcin}</Text>
+                <Text style={st.rowSub} numberOfLines={2}>{duaText(d).neIcin}</Text>
               </View>
               <Text style={st.rowAr} numberOfLines={1}>{d.arabic.split(' ').slice(0, 3).join(' ')}</Text>
             </Pressable>
           );
         })}
       </View>
-      <Text style={st.note}>Yeni dualar düzenli olarak eklenir; uygulamayı güncellemenize gerek yoktur.</Text>
+      <Text style={st.note}>{t('Yeni dualar düzenli olarak eklenir; uygulamayı güncellemenize gerek yoktur.')}</Text>
     </Screen>
   );
 }

@@ -20,7 +20,8 @@
         "ITSAppUsesNonExemptEncryption": false,
         "UIBackgroundModes": [
           "audio"
-        ]
+        ],
+        "CFBundleAllowMixedLocalizations": true
       }
     },
     "android": {
@@ -100,7 +101,8 @@
       "facebookAppId": "2376501199962705",
       "eas": {
         "projectId": "bb04fc89-875e-494a-b400-e32a0922aff6"
-      }
+      },
+      "supportsRTL": true
     },
     "owner": "kurandanai",
     "runtimeVersion": {
@@ -108,6 +110,14 @@
     },
     "updates": {
       "url": "https://u.expo.dev/bb04fc89-875e-494a-b400-e32a0922aff6"
+    },
+    "locales": {
+      "tr": "./locales/tr.json",
+      "en": "./locales/en.json",
+      "de": "./locales/de.json",
+      "ar": "./locales/ar.json",
+      "fr": "./locales/fr.json",
+      "ru": "./locales/ru.json"
     }
   }
 }

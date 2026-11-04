@@ -1,4 +1,5 @@
 // Diyanet takvimine göre dini günler ve geceler. Kandiller, tarihi verilen günün akşamı (gecesi) idrak edilir.
+// Adlar Türkçe yazılır, ekranda t() ile çevrilir.
 // Her yıl Diyanet yeni takvimi açıkladığında listeye ekleyin.
 export type DiniGun = { date: string; name: string; kind: 'kandil' | 'bayram' | 'ramazan' | 'gun'; note?: string };
 

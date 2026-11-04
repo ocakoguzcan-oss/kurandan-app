@@ -15,6 +15,7 @@ import { getPermissionStatus, requestPermission } from '../src/lib/notifications
 import { setPrefs, usePrefs } from '../src/lib/prefs';
 import { useApp } from '../src/context/AppContext';
 import { useTour } from '../src/tour/Tour';
+import { t, tx } from '../src/i18n';
 
 type Step = 'anlat' | 'ayarlar' | 'tamam';
 type Perm = 'granted' | 'denied' | 'undetermined';
@@ -22,9 +23,9 @@ type PermKey = 'bildirim' | 'konum' | 'foto';
 type PermState = Record<PermKey, { status: Perm; canAsk: boolean }>;
 
 const PERMS: { key: PermKey; title: string; why: string; Icon: typeof IconBell }[] = [
-  { key: 'bildirim', title: 'Bildirimler', why: 'Vakit girince ezan sesiyle haber verelim', Icon: IconBell },
-  { key: 'konum', title: 'Konum', why: 'Kıble yönü ve bulunduğunuz yerin vakitleri', Icon: IconCompass },
-  { key: 'foto', title: 'Fotoğraflar', why: 'Cuma görselini galerinize kaydedebilmek için', Icon: IconStory },
+  { key: 'bildirim', title: tx('Bildirimler'), why: tx('Vakit girince ezan sesiyle haber verelim'), Icon: IconBell },
+  { key: 'konum', title: tx('Konum'), why: tx('Kıble yönü ve bulunduğunuz yerin vakitleri'), Icon: IconCompass },
+  { key: 'foto', title: tx('Fotoğraflar'), why: tx('Cuma görselini galerinize kaydedebilmek için'), Icon: IconStory },
 ];
 
 const norm = (granted: boolean, status: string): Perm => (granted ? 'granted' : status === 'undetermined' ? 'undetermined' : 'denied');
@@ -100,8 +101,8 @@ export default function IzinScreen() {
         <ScrollView contentContainerStyle={{ gap: 16 }} showsVerticalScrollIndicator={false}>
           <View style={st.top}>
             <PulsingBell />
-            <Text style={st.h1}>Birkaç izin gerekiyor</Text>
-            <Text style={st.lead}>Uygulamanın tüm bölümlerinin çalışması için bir kez izin vermeniz yeterli.</Text>
+            <Text style={st.h1}>{t('Birkaç izin gerekiyor')}</Text>
+            <Text style={st.lead}>{t('Uygulamanın tüm bölümlerinin çalışması için bir kez izin vermeniz yeterli.')}</Text>
           </View>
           <View style={st.permList}>
             {PERMS.map(({ key, title, why, Icon }) => {
@@ -112,8 +113,8 @@ export default function IzinScreen() {
                     <Icon size={24} color={colors.green} />
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={st.permTitle}>{title}</Text>
-                    <Text style={st.permWhy}>{why}</Text>
+                    <Text style={st.permTitle}>{t(title)}</Text>
+                    <Text style={st.permWhy}>{t(why)}</Text>
                   </View>
                   {ok && (
                     <View style={st.permOk}>
@@ -126,13 +127,13 @@ export default function IzinScreen() {
           </View>
           <AlertDemo />
           <View style={st.steps}>
-            <StepRow n={1} text="Aşağıdaki yeşil “İzin ver” düğmesine dokunun." />
-            <StepRow n={2} text="Çıkan her pencerede “İzin Ver”e dokunun." />
-            <StepRow n={3} text="Konum sorulursa “Uygulamayı Kullanırken İzin Ver”i seçin." />
+            <StepRow n={1} text={t('Aşağıdaki yeşil “İzin ver” düğmesine dokunun.')} />
+            <StepRow n={2} text={t('Çıkan her pencerede “İzin Ver”e dokunun.')} />
+            <StepRow n={3} text={t('Konum sorulursa “Uygulamayı Kullanırken İzin Ver”i seçin.')} />
           </View>
-          <BigButton label={busy ? 'Bekleyin…' : 'İzin ver'} onPress={askAll} />
+          <BigButton label={busy ? t('Bekleyin…') : t('İzin ver')} onPress={askAll} />
           <Pressable accessibilityRole="button" onPress={close} style={st.later}>
-            <Text style={st.laterText}>Daha sonra</Text>
+            <Text style={st.laterText}>{t('Daha sonra')}</Text>
           </Pressable>
         </ScrollView>
       )}
@@ -140,18 +141,18 @@ export default function IzinScreen() {
       {step === 'ayarlar' && (
         <ScrollView contentContainerStyle={{ gap: 18 }} showsVerticalScrollIndicator={false}>
           <View style={st.top}>
-            <Text style={st.h1}>İzinleri Ayarlar’dan açalım</Text>
-            <Text style={st.lead}>{`Şu izinler kapalı: ${missing.map((m) => m.title).join(', ')}. Telefonunuzun Ayarlar’ından birkaç dokunuşla açabilirsiniz.`}</Text>
+            <Text style={st.h1}>{t('İzinleri Ayarlar’dan açalım')}</Text>
+            <Text style={st.lead}>{t('Şu izinler kapalı: {liste}. Telefonunuzun Ayarlar’ından birkaç dokunuşla açabilirsiniz.', { liste: missing.map((m) => t(m.title)).join(', ') })}</Text>
           </View>
           <SettingsDemo />
           <View style={st.steps}>
-            <StepRow n={1} text="Aşağıdaki “Ayarları Aç” düğmesine dokunun." />
-            <StepRow n={2} text={`Açılan sayfada ${missing.map((m) => `“${m.title}”`).join(', ')} satırına dokunun.`} />
-            <StepRow n={3} text={Platform.OS === 'ios' ? 'İzni açın (konum için “Uygulamayı Kullanırken”), sonra uygulamaya geri dönün.' : 'İzni açın, sonra uygulamaya geri dönün.'} />
+            <StepRow n={1} text={t('Aşağıdaki “Ayarları Aç” düğmesine dokunun.')} />
+            <StepRow n={2} text={t('Açılan sayfada {liste} satırına dokunun.', { liste: missing.map((m) => `“${t(m.title)}”`).join(', ') })} />
+            <StepRow n={3} text={Platform.OS === 'ios' ? t('İzni açın (konum için “Uygulamayı Kullanırken”), sonra uygulamaya geri dönün.') : t('İzni açın, sonra uygulamaya geri dönün.')} />
           </View>
-          <BigButton label="Ayarları Aç" onPress={() => Linking.openSettings()} />
+          <BigButton label={t('Ayarları Aç')} onPress={() => Linking.openSettings()} />
           <Pressable accessibilityRole="button" onPress={close} style={st.later}>
-            <Text style={st.laterText}>Daha sonra</Text>
+            <Text style={st.laterText}>{t('Daha sonra')}</Text>
           </Pressable>
         </ScrollView>
       )}
@@ -159,10 +160,10 @@ export default function IzinScreen() {
       {step === 'tamam' && (
         <View style={[st.top, { flex: 1, justifyContent: 'center' }]}>
           <SuccessCheck />
-          <Text style={st.h1}>Teşekkürler!</Text>
-          <Text style={st.lead}>{onboarding ? 'Her şey hazır. Şimdi size uygulamayı kısaca tanıtalım.' : 'Her şey hazır. Ezan vakitlerinde size haber vereceğiz.'}</Text>
+          <Text style={st.h1}>{t('Teşekkürler!')}</Text>
+          <Text style={st.lead}>{onboarding ? t('Her şey hazır. Şimdi size uygulamayı kısaca tanıtalım.') : t('Her şey hazır. Ezan vakitlerinde size haber vereceğiz.')}</Text>
           <View style={{ height: 24 }} />
-          <BigButton label={onboarding ? 'Devam' : 'Tamam'} onPress={close} />
+          <BigButton label={onboarding ? t('Devam') : t('Tamam')} onPress={close} />
         </View>
       )}
     </View>
@@ -240,17 +241,17 @@ function AlertDemo() {
   const ring = v.interpolate({ inputRange: [0, 0.55, 0.85, 1], outputRange: [0.2, 0.2, 1.6, 1.6] });
   const ringOpacity = v.interpolate({ inputRange: [0, 0.55, 0.6, 0.85, 1], outputRange: [0, 0, 0.6, 0, 0] });
   return (
-    <View style={st.demoWrap} accessibilityLabel="Örnek: izin penceresinde İzin Ver düğmesine dokunma" accessible>
+    <View style={st.demoWrap} accessibilityLabel={t('Örnek: izin penceresinde İzin Ver düğmesine dokunma')} accessible>
       <View style={st.alert}>
-        <Text style={st.alertTitle}>“Kurandan” Size Bildirim Göndermek İstiyor</Text>
-        <Text style={st.alertBody}>Bildirimler; uyarılar, sesler ve simge işaretleri içerebilir.</Text>
+        <Text style={st.alertTitle}>{t('“Kurandan” Size Bildirim Göndermek İstiyor')}</Text>
+        <Text style={st.alertBody}>{t('Bildirimler; uyarılar, sesler ve simge işaretleri içerebilir.')}</Text>
         <View style={st.alertBtns}>
           <View style={[st.alertBtn, { borderRightWidth: StyleSheet.hairlineWidth }]}>
-            <Text style={st.alertBtnText}>İzin Verme</Text>
+            <Text style={st.alertBtnText}>{t('İzin Verme')}</Text>
           </View>
           <Animated.View style={[st.alertBtn, { transform: [{ scale: press }] }]}>
             <Animated.View style={[StyleSheet.absoluteFill, st.alertGlow, { opacity: glow }]} />
-            <Text style={[st.alertBtnText, { fontFamily: fonts.bodyBold }]}>İzin Ver</Text>
+            <Text style={[st.alertBtnText, { fontFamily: fonts.bodyBold }]}>{t('İzin Ver')}</Text>
           </Animated.View>
         </View>
       </View>
@@ -270,12 +271,12 @@ function SettingsDemo() {
   const knob = v.interpolate({ inputRange: [0, 0.7, 0.8, 1], outputRange: [0, 0, 20, 20] });
   const trackOn = v.interpolate({ inputRange: [0, 0.7, 0.8, 1], outputRange: [0, 0, 1, 1] });
   const rows = [
-    { label: 'Ayarlar', o: hl(0.05, 0.25) },
+    { label: t('Ayarlar'), o: hl(0.05, 0.25) },
     { label: 'Kurandan', o: hl(0.27, 0.47) },
-    { label: 'Bildirimler · Konum · Fotoğraflar', o: hl(0.49, 0.69) },
+    { label: t('Bildirimler · Konum · Fotoğraflar'), o: hl(0.49, 0.69) },
   ];
   return (
-    <View style={st.settings} accessible accessibilityLabel="Örnek: Ayarlar, Kurandan, Bildirimler ve izin anahtarını açma">
+    <View style={st.settings} accessible accessibilityLabel={t('Örnek: Ayarlar, Kurandan, Bildirimler ve izin anahtarını açma')}>
       {rows.map((r, i) => (
         <View key={r.label} style={st.setRow}>
           <Animated.View style={[StyleSheet.absoluteFill, st.setHl, { opacity: r.o }]} />
@@ -286,7 +287,7 @@ function SettingsDemo() {
       ))}
       <View style={[st.setRow, { borderBottomWidth: 0 }]}>
         <Text style={st.setNo}>4</Text>
-        <Text style={[st.setLabel, { flex: 1 }]}>İzin Ver</Text>
+        <Text style={[st.setLabel, { flex: 1 }]}>{t('İzin Ver')}</Text>
         <View style={st.track}>
           <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: '#34C759', borderRadius: 16, opacity: trackOn }]} />
           <Animated.View style={[st.knob, { transform: [{ translateX: knob }] }]} />

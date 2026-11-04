@@ -7,6 +7,7 @@ import { Card, Chip, Button } from '../../src/components/ui';
 import { IconBack } from '../../src/components/Icons';
 import { colors, fonts } from '../../src/theme';
 import { fetchReels, filterReels, isReelsConfigured, Reel, ReelCategory, REEL_CATEGORIES, reelTitle } from '../../src/lib/reels';
+import { isRTL, t } from '../../src/i18n';
 
 const PROFILE_URL = 'https://www.instagram.com/kurandan.ai/';
 
@@ -35,23 +36,23 @@ export default function ReelsScreen() {
   const header = (
     <View style={{ gap: 16, marginBottom: 6 }}>
       <View style={st.head}>
-        <Text style={st.title} accessibilityRole="header">Reels</Text>
+        <Text style={st.title} accessibilityRole="header">{t('Reels')}</Text>
         <Pressable accessibilityRole="link" onPress={() => Linking.openURL(PROFILE_URL)} style={st.follow}>
-          <Text style={st.followText}>Takip et</Text>
+          <Text style={st.followText}>{t('Takip et')}</Text>
         </Pressable>
       </View>
       <Card style={st.profile}>
         <Image source={require('../../assets/logo.png')} style={st.logo} />
         <View style={{ flexShrink: 1 }}>
-          <Text style={st.handle}>kurandan.ai</Text>
+          <Text style={st.handle}>{t('kurandan.ai')}</Text>
           <Text style={st.muted}>
-            {offline ? 'Bağlantı yok — son kaydedilen videolar gösteriliyor' : "Instagram'daki yeni videolar otomatik eklenir"}
+            {offline ? t('Bağlantı yok — son kaydedilen videolar gösteriliyor') : t("Instagram'daki yeni videolar otomatik eklenir")}
           </Text>
         </View>
       </Card>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
         {REEL_CATEGORIES.map((c) => (
-          <Chip key={c.id} label={c.label} selected={cat === c.id} onPress={() => setCat(c.id)} />
+          <Chip key={c.id} label={t(c.label)} selected={cat === c.id} onPress={() => setCat(c.id)} />
         ))}
       </ScrollView>
     </View>
@@ -70,13 +71,13 @@ export default function ReelsScreen() {
         ListEmptyComponent={
           loading ? null : (
             <Card style={{ gap: 10 }}>
-              <Text style={st.emptyTitle}>{isReelsConfigured() ? 'Bu kategoride video yok' : 'Reels bağlantısı kurulmadı'}</Text>
+              <Text style={st.emptyTitle}>{isReelsConfigured() ? t('Bu kategoride video yok') : t('Reels bağlantısı kurulmadı')}</Text>
               <Text style={st.muted}>
                 {isReelsConfigured()
-                  ? 'Videolar Instagram açıklamasındaki etiketlere (#kuran, #hadis, #namaz…) göre gruplanır.'
-                  : 'Instagram videolarının gelmesi için README’deki “Reels sunucusu” adımlarını tamamlayın.'}
+                  ? t('Videolar Instagram açıklamasındaki etiketlere (#kuran, #hadis, #namaz…) göre gruplanır.')
+                  : t('Instagram videolarının gelmesi için README’deki “Reels sunucusu” adımlarını tamamlayın.')}
               </Text>
-              <Button variant="secondary" label="Instagram’da aç" onPress={() => Linking.openURL(PROFILE_URL)} />
+              <Button variant="secondary" label={t('Instagram’da aç')} onPress={() => Linking.openURL(PROFILE_URL)} />
             </Card>
           )
         }
@@ -109,11 +110,13 @@ function Player({ reel, onClose }: { reel: Reel; onClose: () => void }) {
     <View style={{ flex: 1, backgroundColor: '#000' }}>
       <VideoView player={player} style={{ flex: 1 }} contentFit="contain" nativeControls />
       <View style={[st.playerBar, { paddingTop: insets.top + 8 }]}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Kapat" onPress={onClose} style={st.closeBtn}>
-          <IconBack color={colors.paper} />
+        <Pressable accessibilityRole="button" accessibilityLabel={t('Kapat')} onPress={onClose} style={st.closeBtn}>
+          <View style={isRTL() ? { transform: [{ scaleX: -1 }] } : undefined}>
+            <IconBack color={colors.paper} />
+          </View>
         </Pressable>
         <Pressable accessibilityRole="link" onPress={() => Linking.openURL(reel.permalink)} style={st.follow}>
-          <Text style={st.followText}>Instagram’da aç</Text>
+          <Text style={st.followText}>{t('Instagram’da aç')}</Text>
         </Pressable>
       </View>
     </View>

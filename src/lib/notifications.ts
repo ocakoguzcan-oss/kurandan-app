@@ -1,7 +1,8 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES, VakitKey, formatTime } from './prayerTimes';
-import { nextFriday } from '../data/story';
+import { CalcOptions, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES, VakitKey, formatTime } from './prayerTimes';
+import { addDays, fromWall, ymdIn } from './tz';
+import { t } from '../i18n';
 import { upcomingDiniGunler } from '../data/diniGunler';
 
 export type ReminderSettings = {
@@ -41,14 +42,14 @@ if (Platform.OS !== 'web') {
 async function ensureChannels() {
   if (Platform.OS !== 'android') return;
   await Notifications.setNotificationChannelAsync(CHANNEL, {
-    name: 'Vakit hatırlatmaları',
+    name: t('Vakit hatırlatmaları'),
     importance: Notifications.AndroidImportance.HIGH,
     sound: 'default',
     vibrationPattern: [0, 250, 250, 250],
     lightColor: '#18583C',
   });
   await Notifications.setNotificationChannelAsync(CHANNEL_EZAN, {
-    name: 'Ezan',
+    name: t('Ezan'),
     importance: Notifications.AndroidImportance.MAX,
     sound: EZAN_FILE,
     vibrationPattern: [0, 400, 200, 400],
@@ -77,7 +78,7 @@ export async function requestPermission(): Promise<boolean> {
  * Önümüzdeki 7 günün hatırlatmalarını yeniden kurar. İzin yoksa hiçbir şey yapmaz
  * (izni yalnızca anlatım ekranı ister). Uygulama her açıldığında ve ayarlar değişince çağrılır.
  */
-export async function rescheduleAll(settings: ReminderSettings, lat: number, lng: number, placeName: string) {
+export async function rescheduleAll(settings: ReminderSettings, lat: number, lng: number, placeName: string, calc: CalcOptions = {}) {
   if (Platform.OS === 'web') return 0;
   const { status } = await getPermissionStatus();
   if (status !== 'granted') return 0;
@@ -86,25 +87,25 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
 
   const now = Date.now();
   let count = 0;
-  const today = new Date();
+  const tz = calc.tz;
+  const today = ymdIn(new Date(), tz);
   const channelId = settings.ezan ? CHANNEL_EZAN : CHANNEL;
 
   for (let i = 0; i < DAYS_AHEAD; i++) {
-    const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-    const times = getPrayerTimes(day, lat, lng);
+    const times = getPrayerTimes(addDays(today, i), lat, lng, calc);
     for (const key of VAKIT_KEYS) {
       if (!settings.enabled[key]) continue;
       const fireAt = times[key].getTime() - settings.leadMin * 60000;
       if (fireAt <= now + 30000) continue;
-      const name = VAKIT_NAMES[key];
+      const name = t(VAKIT_NAMES[key]);
       // Ezan yalnızca vaktin tam girdiği anda okunur; "x dk önce" hatırlatması normal sesle gelir.
       const withEzan = settings.ezan && settings.leadMin === 0 && key !== 'gunes';
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: settings.leadMin ? `${name} vaktine ${settings.leadMin} dakika` : `${name} vakti girdi`,
-          body: `${placeName} · ${name} ${formatTime(times[key])}`,
+          title: settings.leadMin ? t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin }) : t('{vakit} vakti girdi', { vakit: name }),
+          body: `${placeName} · ${name} ${formatTime(times[key], tz)}`,
           sound: withEzan ? EZAN_FILE : 'default',
-          data: { url: withEzan ? `/ezan?vakit=${encodeURIComponent(name)}` : '/' },
+          data: { url: withEzan ? `/ezan?vakit=${encodeURIComponent(key)}` : '/' },
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -117,15 +118,16 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
   }
 
   if (settings.cuma) {
+    // Şehrin saatiyle Cuma 09:00
+    const dow = new Date(Date.UTC(today.y, today.m - 1, today.d)).getUTCDay();
+    const firstFri = addDays(today, (5 - dow + 7) % 7);
     for (let w = 0; w < 2; w++) {
-      const fri = nextFriday(today);
-      fri.setDate(fri.getDate() + 7 * w);
-      fri.setHours(9, 0, 0, 0);
+      const fri = fromWall(addDays(firstFri, 7 * w), 9, 0, tz);
       if (fri.getTime() <= now) continue;
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Hayırlı Cumalar',
-          body: 'Cuma story görseliniz hazır. Instagram’da paylaşmak için dokunun.',
+          title: t('Hayırlı Cumalar'),
+          body: t('Cuma story görseliniz hazır. Instagram’da paylaşmak için dokunun.'),
           data: { url: '/cuma' },
         },
         trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: fri, channelId: CHANNEL },
@@ -135,14 +137,20 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
   }
 
   if (settings.diniGunler) {
-    // Önümüzdeki 45 gündeki dini günler: bir gün önce 20:00'de ve o gün 10:00'da
-    for (const g of upcomingDiniGunler(today).filter((x) => x.daysLeft <= 45)) {
-      const eve = new Date(g.day.getFullYear(), g.day.getMonth(), g.day.getDate() - 1, 20, 0);
-      const morning = new Date(g.day.getFullYear(), g.day.getMonth(), g.day.getDate(), 10, 0);
-      const tonight = g.kind === 'kandil' ? 'Bu gece' : 'Bugün';
+    // Önümüzdeki 45 gündeki dini günler: bir gün önce 20:00'de ve o gün 10:00'da (şehrin saatiyle)
+    for (const g of upcomingDiniGunler(new Date(today.y, today.m - 1, today.d)).filter((x) => x.daysLeft <= 45)) {
+      const [gy, gm, gd] = g.date.split('-').map(Number);
+      const day = { y: gy, m: gm, d: gd };
+      const eve = fromWall(addDays(day, -1), 20, 0, tz);
+      const morning = fromWall(day, 10, 0, tz);
+      const name = t(g.name);
       const pairs: [Date, string, string][] = [
-        [eve, `Yarın ${g.name}`, g.kind === 'kandil' ? 'Kandil geceniz mübarek olsun.' : 'Hayırlı olsun.'],
-        [morning, `${tonight} ${g.name}`, g.note ?? (g.kind === 'kandil' ? 'Kandiliniz mübarek olsun.' : 'Hayırlı olsun.')],
+        [eve, t('Yarın {gun}', { gun: name }), g.kind === 'kandil' ? t('Kandil geceniz mübarek olsun.') : t('Hayırlı olsun.')],
+        [
+          morning,
+          g.kind === 'kandil' ? t('Bu gece {gun}', { gun: name }) : t('Bugün {gun}', { gun: name }),
+          g.note ? t(g.note) : g.kind === 'kandil' ? t('Kandiliniz mübarek olsun.') : t('Hayırlı olsun.'),
+        ],
       ];
       for (const [date, title, body] of pairs) {
         if (date.getTime() <= now) continue;

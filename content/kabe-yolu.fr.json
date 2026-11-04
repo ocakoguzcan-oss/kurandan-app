@@ -1,0 +1,507 @@
+{
+  "surum": 1,
+  "guncelleme": "2026-11-04",
+  "genel": {
+    "umreHac": [
+      "Chacun peut aujourd’hui faire la Omra seul : entrez en Arabie saoudite avec l’e-visa touristique ou un visa Omra, puis obtenez gratuitement le permis de Omra via l’application Nusuk. Passer par une agence n’est pas obligatoire.",
+      "Depuis la Turquie, le Hajj n’est possible que via le tirage au sort de la Diyanet et les agences agréées ; pas de départ individuel. Ailleurs, le Hajj passe par l’autorité nationale ou Nusuk Hajj.",
+      "Les femmes de plus de 18 ans peuvent faire la Omra sans mahram ; les mineurs doivent voyager avec un parent ou tuteur légal."
+    ],
+    "vize": [
+      "E-visa touristique : sur visa.visitsaudi.com, environ 535 SAR assurance santé comprise. Valable 1 an, entrées multiples, jusqu’à 90 jours par séjour.",
+      "Permis de Omra : gratuit via l’application Nusuk après l’entrée en Arabie saoudite. Pendant la saison du Hajj (début de l’été), l’accès à La Mecque avec un visa touristique peut être restreint.",
+      "Votre passeport doit être valable au moins 6 mois."
+    ],
+    "kaynaklar": [
+      {
+        "ad": "Site officiel des visas saoudiens",
+        "url": "https://visa.visitsaudi.com"
+      },
+      {
+        "ad": "Nusuk (permis de Omra et rendez-vous)",
+        "url": "https://www.nusuk.sa"
+      },
+      {
+        "ad": "Avertissements aux voyageurs du ministère turc des Affaires étrangères",
+        "url": "https://www.mfa.gov.tr"
+      },
+      {
+        "ad": "Services Hajj et Omra de la Diyanet",
+        "url": "https://hacumre.diyanet.gov.tr"
+      }
+    ]
+  },
+  "modlar": {
+    "araba": {
+      "baslik": "Avec votre voiture (depuis la Turquie)",
+      "ozet": "La route terrestre est de nouveau possible depuis la réouverture de l’itinéraire syrien, fermé des années après 2011. Le plus court passe par la Syrie et la Jordanie ; sinon par l’Irak et la Jordanie.",
+      "uyari": "Les postes-frontières de l’itinéraire peuvent fermer subitement pour raisons de sécurité (ex. Nasib entre la Syrie et la Jordanie, fermé le 27 octobre 2026 et rouvert le 28). Vérifiez toujours les avertissements aux voyageurs et l’état des frontières avant de partir.",
+      "guzergahlar": [
+        {
+          "id": "suriye",
+          "ad": "Syrie – Jordanie (le plus court)",
+          "mesafe": "≈ 3 300 km",
+          "sure": "4–6 jours",
+          "duraklar": [
+            {
+              "ad": "Istanbul",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Départ du voyage. Il est conseillé de ne pas conduire plus de 8 à 10 heures par jour."
+            },
+            {
+              "ad": "Ankara",
+              "lat": 39.9334,
+              "lng": 32.8597,
+              "tur": "sehir",
+              "detay": "Continuer vers le sud par l’autoroute."
+            },
+            {
+              "ad": "Adana",
+              "lat": 37.0,
+              "lng": 35.3213,
+              "tur": "sehir",
+              "detay": "Dernière grande ville avant Hatay ; bonne étape pour l’entretien du véhicule."
+            },
+            {
+              "ad": "Poste-frontière de Cilvegözü (Hatay, Reyhanlı)",
+              "lat": 36.24,
+              "lng": 36.57,
+              "tur": "sinir",
+              "detay": "Sortie de Turquie et entrée en Syrie. Le visa syrien s’obtient à la frontière (2025 : entrée simple 50 USD) ; la taxe de sortie turque est payée à part."
+            },
+            {
+              "ad": "Alep",
+              "lat": 36.2021,
+              "lng": 37.1343,
+              "tur": "sehir",
+              "detay": "Vers le sud en Syrie par l’autoroute M5."
+            },
+            {
+              "ad": "Homs",
+              "lat": 34.7324,
+              "lng": 36.7137,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Damas",
+              "lat": 33.5138,
+              "lng": 36.2765,
+              "tur": "sehir",
+              "detay": "Grande ville idéale pour une pause et une nuit."
+            },
+            {
+              "ad": "Poste-frontière Nasib (Syrie) – Jaber (Jordanie)",
+              "lat": 32.55,
+              "lng": 36.2,
+              "tur": "sinir",
+              "detay": "Entrée en Jordanie. Les citoyens turcs n’ont pas besoin de visa jusqu’à 90 jours. L’assurance auto jordanienne se prend à la frontière."
+            },
+            {
+              "ad": "Amman",
+              "lat": 31.9454,
+              "lng": 35.9284,
+              "tur": "sehir",
+              "detay": "Capitale de la Jordanie ; vers le sud par la Desert Highway."
+            },
+            {
+              "ad": "Ma‘an",
+              "lat": 30.1962,
+              "lng": 35.7341,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Poste-frontière Al-Moudawwara (Jordanie) – Halat Ammar (Arabie saoudite)",
+              "lat": 29.25,
+              "lng": 36.03,
+              "tur": "sinir",
+              "detay": "Entrée en Arabie saoudite. L’un des principaux passages des groupes de Hajj et de Omra. L’assurance saoudienne obligatoire (Manafith) pour véhicules étrangers se prend à la frontière."
+            },
+            {
+              "ad": "Tabouk",
+              "lat": 28.3835,
+              "lng": 36.5662,
+              "tur": "sehir",
+              "detay": "La ville de l’expédition de Tabouk."
+            },
+            {
+              "ad": "Médine",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "sehir",
+              "detay": "Mosquée du Prophète. Si vous commencez la Omra depuis Médine, vous entrez en ihram au miqat de Dhoul-Houlayfa."
+            },
+            {
+              "ad": "La Mecque",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "La Mosquée sacrée et la Kaaba. Obtenez votre permis de Omra dans l’application Nusuk."
+            }
+          ]
+        },
+        {
+          "id": "irak",
+          "ad": "Irak – Jordanie",
+          "mesafe": "≈ 4 000–4 500 km",
+          "sure": "6–9 jours",
+          "duraklar": [
+            {
+              "ad": "Istanbul",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Gaziantep",
+              "lat": 37.0662,
+              "lng": 37.3833,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Şanlıurfa",
+              "lat": 37.1591,
+              "lng": 38.7969,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Poste-frontière de Habur (Şırnak, Silopi)",
+              "lat": 37.14,
+              "lng": 42.38,
+              "tur": "sinir",
+              "detay": "Entrée en Irak. Le visa fédéral irakien doit être obtenu à l’avance ; il n’est pas délivré à la frontière."
+            },
+            {
+              "ad": "Erbil",
+              "lat": 36.19,
+              "lng": 44.01,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Bagdad",
+              "lat": 33.3152,
+              "lng": 44.3661,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Ramadi",
+              "lat": 33.42,
+              "lng": 43.3,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Routba",
+              "lat": 33.04,
+              "lng": 40.28,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Poste-frontière Trebil (Irak) – Karameh (Jordanie)",
+              "lat": 32.9,
+              "lng": 38.95,
+              "tur": "sinir",
+              "detay": "Entrée en Jordanie. Pas de visa pour les citoyens turcs."
+            },
+            {
+              "ad": "Azraq",
+              "lat": 31.83,
+              "lng": 36.82,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Poste-frontière Al-Omari (Jordanie) – Al-Haditha (Arabie saoudite)",
+              "lat": 31.5,
+              "lng": 37.1,
+              "tur": "sinir",
+              "detay": "L’un des principaux passages terrestres saoudiens. L’assurance auto obligatoire (Manafith) se prend à la frontière."
+            },
+            {
+              "ad": "Al-Qurayyat",
+              "lat": 31.33,
+              "lng": 37.34,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Al-Jawf (Sakaka)",
+              "lat": 29.97,
+              "lng": 40.21,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Ha’il",
+              "lat": 27.52,
+              "lng": 41.69,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Médine",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "La Mecque",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": ""
+            }
+          ]
+        }
+      ],
+      "belgeler": [
+        "Passeport (valable au moins 6 mois)",
+        "Permis international (auprès du TTOK) et votre propre permis",
+        "Carte grise et justificatif de propriété",
+        "Document d’admission temporaire : triptyque / carnet de passage (auprès du TTOK)",
+        "E-visa touristique saoudien ou visa Omra",
+        "Visas des pays de transit (Syrie à la frontière ; visa fédéral irakien à l’avance)",
+        "Assurance auto pour chaque pays : la carte verte n’est pas valable en Syrie, Irak, Jordanie ni Arabie saoudite ; l’assurance se prend aux frontières",
+        "Assurance santé ; un vaccin contre la méningite peut être exigé, vérifiez avant le départ"
+      ],
+      "ipuclari": [
+        "Partez avec au moins deux conducteurs ; évitez de rouler la nuit.",
+        "Avant de partir, faites vérifier pneus, huile et freins ; emportez roue de secours, cric, câble de remorquage et trousse de secours.",
+        "Budget aller-retour estimé (carburant, péages, hébergement, repas) : environ 1 400–3 000 USD par personne/véhicule (estimation 2026)."
+      ],
+      "firmalar": []
+    },
+    "otobus": {
+      "baslik": "En bus (circuit Omra par la route depuis la Turquie)",
+      "ozet": "Il n’existe pas de bus régulier de la Turquie à La Mecque ; le voyage en bus se fait avec des agences de circuits Omra par la route. Ils passent par la Syrie et la Jordanie, visitent des étapes historiques du Hedjaz et atteignent La Mecque en 9 jours environ.",
+      "uyari": "Les circuits par la route dépendent de l’ouverture de l’itinéraire syrien. Avant de réserver, vérifiez la licence Omra Diyanet de l’agence et l’état actuel de la route.",
+      "guzergahlar": [
+        {
+          "id": "hicaz",
+          "ad": "Route du Hedjaz",
+          "mesafe": "≈ 3 500 km",
+          "sure": "≈ 9 jours",
+          "duraklar": [
+            {
+              "ad": "Istanbul",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Lieu de rassemblement du groupe."
+            },
+            {
+              "ad": "Poste-frontière de Cilvegözü",
+              "lat": 36.24,
+              "lng": 36.57,
+              "tur": "sinir",
+              "detay": "Entrée en Syrie ; l’agence s’occupe généralement des visas et formalités."
+            },
+            {
+              "ad": "Damas",
+              "lat": 33.5138,
+              "lng": 36.2765,
+              "tur": "sehir",
+              "detay": "Visite de la mosquée des Omeyyades et des sites historiques."
+            },
+            {
+              "ad": "Poste-frontière Nasib – Jaber",
+              "lat": 32.55,
+              "lng": 36.2,
+              "tur": "sinir",
+              "detay": "Entrée en Jordanie."
+            },
+            {
+              "ad": "Amman",
+              "lat": 31.9454,
+              "lng": 35.9284,
+              "tur": "sehir",
+              "detay": "Visite possible du cimetière des martyrs turcs de Salt."
+            },
+            {
+              "ad": "Wadi Rum",
+              "lat": 29.57,
+              "lng": 35.42,
+              "tur": "sehir",
+              "detay": "Gare du chemin de fer du Hedjaz."
+            },
+            {
+              "ad": "Aqaba",
+              "lat": 29.53,
+              "lng": 35.01,
+              "tur": "sehir",
+              "detay": "Pointe sud de la Jordanie ; passage vers l’Arabie saoudite."
+            },
+            {
+              "ad": "Madâin Sâlih / Al-Ula",
+              "lat": 26.61,
+              "lng": 37.92,
+              "tur": "sehir",
+              "detay": "Étapes historiques du Hedjaz."
+            },
+            {
+              "ad": "Tabouk",
+              "lat": 28.3835,
+              "lng": 36.5662,
+              "tur": "sehir",
+              "detay": ""
+            },
+            {
+              "ad": "Khaybar",
+              "lat": 25.7,
+              "lng": 39.29,
+              "tur": "sehir",
+              "detay": "Forteresse de Khaybar."
+            },
+            {
+              "ad": "Médine",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "sehir",
+              "detay": "Visite de la mosquée du Prophète ; ihram au miqat de Dhoul-Houlayfa."
+            },
+            {
+              "ad": "La Mecque",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "Omra."
+            }
+          ]
+        }
+      ],
+      "belgeler": [
+        "Passeport (valable au moins 6 mois)",
+        "Visa saoudien (généralement organisé par l’agence)",
+        "Visas de transit (généralement organisés par l’agence)",
+        "Assurance santé ; un vaccin contre la méningite peut être exigé"
+      ],
+      "ipuclari": [
+        "Demandez si l’agence possède une licence Diyanet pour organiser la Omra et exigez par écrit l’itinéraire, l’hébergement et le retour dans le contrat.",
+        "Il existe aussi des circuits mixtes avec retour en avion ; ils raccourcissent le voyage."
+      ],
+      "firmalar": [
+        {
+          "ad": "Liste Diyanet des agences Omra agréées",
+          "url": "https://hacumre.diyanet.gov.tr"
+        }
+      ]
+    },
+    "ucak": {
+      "baslik": "En avion",
+      "ozet": "Le moyen le plus rapide et le plus courant. Vols directs quotidiens d’Istanbul et d’Ankara vers Djeddah et Médine (environ 3 h 30). Depuis votre pays, cherchez un vol direct vers Djeddah (JED) ou Médine (MED) ; les étapes à l’arrivée sont les mêmes.",
+      "uyari": "",
+      "guzergahlar": [
+        {
+          "id": "cidde",
+          "ad": "Via Djeddah",
+          "mesafe": "≈ 2 400 km",
+          "sure": "≈ 3 h 45 de vol",
+          "duraklar": [
+            {
+              "ad": "Aéroport d’Istanbul (IST) / Sabiha Gökçen (SAW)",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Depuis IST : Turkish Airlines, Saudia, flynas, flyadeal ; depuis SAW : Pegasus, AJet, flynas, flyadeal. Plus de 100 vols directs par semaine."
+            },
+            {
+              "ad": "Djeddah – Aéroport Roi Abdelaziz (JED)",
+              "lat": 21.6796,
+              "lng": 39.1565,
+              "tur": "havalimani",
+              "detay": "Si vous allez directement à La Mecque, entrez en ihram dans l’avion avant le miqat ; l’équipage l’annonce généralement."
+            },
+            {
+              "ad": "La Mecque",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "De l’aéroport en train à grande vitesse Haramain ≈30 min (éco ≈75 SAR) ou en taxi (≈150–200 SAR)."
+            }
+          ]
+        },
+        {
+          "id": "medine",
+          "ad": "Via Médine",
+          "mesafe": "≈ 2 100 km",
+          "sure": "≈ 3 h 25 de vol",
+          "duraklar": [
+            {
+              "ad": "Istanbul (IST / SAW)",
+              "lat": 41.0082,
+              "lng": 28.9784,
+              "tur": "sehir",
+              "detay": "Depuis IST : Turkish Airlines et Saudia ; depuis SAW : Pegasus, AJet, flynas, flyadeal."
+            },
+            {
+              "ad": "Médine – Aéroport Prince Mohammed ben Abdelaziz (MED)",
+              "lat": 24.4672,
+              "lng": 39.6111,
+              "tur": "havalimani",
+              "detay": "Vous pouvez d’abord visiter Médine puis entrer en ihram pour la Omra au miqat de Dhoul-Houlayfa."
+            },
+            {
+              "ad": "La Mecque",
+              "lat": 21.4225,
+              "lng": 39.8262,
+              "tur": "hedef",
+              "detay": "De Médine en train Haramain ≈2 h (éco ≈150–200 SAR) ou en bus en 5–6 h."
+            }
+          ]
+        }
+      ],
+      "belgeler": [
+        "Passeport (valable au moins 6 mois)",
+        "E-visa touristique saoudien ou visa Omra (avant le vol)",
+        "Billet d’avion et informations d’hébergement",
+        "Permis de Omra : via l’application Nusuk après l’arrivée en Arabie saoudite"
+      ],
+      "ipuclari": [
+        "Il y a aussi des vols directs d’Ankara vers Djeddah et Médine.",
+        "Les prix varient fortement selon la saison ; le Ramadan et les vacances d’été sont les plus chers.",
+        "Arriver à Médine et repartir de Djeddah fait gagner du temps grâce au train Haramain."
+      ],
+      "firmalar": [
+        {
+          "ad": "Turkish Airlines",
+          "url": "https://www.turkishairlines.com"
+        },
+        {
+          "ad": "Pegasus",
+          "url": "https://www.flypgs.com"
+        },
+        {
+          "ad": "AJet",
+          "url": "https://ajet.com"
+        },
+        {
+          "ad": "Saudia",
+          "url": "https://www.saudia.com"
+        },
+        {
+          "ad": "flynas",
+          "url": "https://www.flynas.com"
+        },
+        {
+          "ad": "flyadeal",
+          "url": "https://www.flyadeal.com"
+        },
+        {
+          "ad": "Train à grande vitesse Haramain",
+          "url": "https://sar.hhr.sa"
+        }
+      ]
+    }
+  },
+  "not": "Quand ce fichier est mis à jour sur GitHub, les informations arrivent à tous sans mise à jour de l’app. Frontières et règles de visa peuvent changer ; vérifiez régulièrement."
+}

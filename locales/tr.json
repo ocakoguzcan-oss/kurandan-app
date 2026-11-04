@@ -1,0 +1,6 @@
+{
+  "CFBundleDisplayName": "Kurandan",
+  "NSLocationWhenInUseUsageDescription": "Namaz vakitlerini ve kıble yönünü bulunduğunuz yere göre hesaplamak için konumunuz kullanılır.",
+  "NSPhotoLibraryAddUsageDescription": "Cuma görselini galerinize kaydetmek için izin gerekir.",
+  "NSPhotoLibraryUsageDescription": "Story görselinin arka planına fotoğraf koyabilmeniz için galerinize erişim gerekir."
+}

@@ -1,0 +1,6 @@
+{
+  "CFBundleDisplayName": "Kurandan",
+  "NSLocationWhenInUseUsageDescription": "Your location is used to calculate prayer times and the Qibla direction for where you are.",
+  "NSPhotoLibraryAddUsageDescription": "Permission is needed to save story images to your gallery.",
+  "NSPhotoLibraryUsageDescription": "Gallery access lets you use your own photo as a story background."
+}

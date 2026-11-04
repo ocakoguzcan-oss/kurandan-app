@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { Amiri_400Regular, Amiri_700Bold } from '@expo-google-fonts/amiri';
 import { Lora_400Regular_Italic, Lora_600SemiBold, Lora_700Bold } from '@expo-google-fonts/lora';
@@ -17,8 +18,11 @@ import {
 import { AppProvider } from '../src/context/AppContext';
 import { TourProvider } from '../src/tour/Tour';
 import { colors } from '../src/theme';
+import { loadPrefs, usePrefs } from '../src/lib/prefs';
+import { deviceLang, initLang, restartApp } from '../src/i18n';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+const RTL_RELOAD_KEY = 'kurandan.rtlReloadAt';
 
 function useNotificationRouting() {
   useEffect(() => {
@@ -48,15 +52,36 @@ export default function RootLayout() {
 
   useNotificationRouting();
 
+  // Dil, ilk çizimden önce belli olmalı (t() eşzamanlı çalışır).
+  const [langReady, setLangReady] = useState(false);
   useEffect(() => {
-    if (loaded || error) SplashScreen.hideAsync().catch(() => {});
-  }, [loaded, error]);
+    loadPrefs().then(async (p) => {
+      const needsRestart = initLang(p.lang ?? deviceLang());
+      if (needsRestart) {
+        // Sağdan sola düzen ancak yeniden başlatınca uygulanır. Döngüye girmemek için
+        // son bir dakikada denendiyse tekrar başlatma.
+        const last = Number((await AsyncStorage.getItem(RTL_RELOAD_KEY).catch(() => null)) ?? 0);
+        if (Date.now() - last > 60000) {
+          await AsyncStorage.setItem(RTL_RELOAD_KEY, String(Date.now())).catch(() => {});
+          restartApp();
+          return;
+        }
+      }
+      setLangReady(true);
+    });
+  }, []);
+  const prefs = usePrefs();
+  const lang = prefs.lang ?? deviceLang();
 
-  if (!loaded && !error) return null;
+  useEffect(() => {
+    if ((loaded || error) && langReady) SplashScreen.hideAsync().catch(() => {});
+  }, [loaded, error, langReady]);
+
+  if ((!loaded && !error) || !langReady) return null;
 
   return (
     <SafeAreaProvider>
-      <AppProvider>
+      <AppProvider key={lang}>
         <StatusBar style="dark" />
         <TourProvider>
         <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}>
@@ -70,6 +95,8 @@ export default function RootLayout() {
           <Stack.Screen name="namaz-takip" />
           <Stack.Screen name="dini-gunler" />
           <Stack.Screen name="kabe-yolu" />
+          <Stack.Screen name="dil" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="vakit-yontemi" />
         </Stack>
         </TourProvider>
       </AppProvider>

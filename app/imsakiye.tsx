@@ -4,61 +4,74 @@ import { Text } from '../src/components/Text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { Screen, Chip, Button } from '../src/components/ui';
-import { IlPicker } from '../src/components/IlPicker';
+import { CityPicker } from '../src/components/CityPicker';
 import { colors, fonts, radius } from '../src/theme';
-import { ilByPlaka, useApp, useNow } from '../src/context/AppContext';
-import { ILLER, Il } from '../src/data/iller';
+import { useApp, useNow } from '../src/context/AppContext';
+import { citiesOf, City, cityById, nearestCity } from '../src/data/world';
+import { addDays, ymdIn } from '../src/lib/tz';
+import { formatDay, formatWeekday } from '../src/i18n/format';
 import { currentOrNextRamazan, parseLocalDate, ramazanDay } from '../src/lib/hijri';
-import { formatCountdown, formatTime, getPrayerTimes } from '../src/lib/prayerTimes';
+import { defaultMethod } from '../src/lib/prayerTimes';
+import { formatCountdown, formatTime, getPrayerTimes, METHODS } from '../src/lib/prayerTimes';
+import { getLang, t } from '../src/i18n';
 
-const AYLAR = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
-const GUNLER = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
-const POPULER = [34, 6, 35, 16, 42, 1, 7, 21]; // hızlı seçim çipleri
+const POPULER_TR = ['TR:34', 'TR:6', 'TR:35', 'TR:16', 'TR:42', 'TR:1', 'TR:7', 'TR:21']; // hızlı seçim çipleri
 
 export default function Imsakiye() {
-  const { place } = useApp();
+  const { place, calc, methodAuto } = useApp();
   const insets = useSafeAreaInsets();
   const now = useNow(1000);
-  const [il, setIl] = useState<Il>(ilByPlaka(place.ilPlaka));
+  const initial = cityById(place.cityId) ?? nearestCity(place.lat, place.lng, place.country);
+  const [city, setCity] = useState<City>(
+    place.source === 'gps' ? { ...initial, name: place.label, lat: place.lat, lng: place.lng, tz: place.tz, id: 'gps' } : initial
+  );
   const [picker, setPicker] = useState(false);
+  // Başka ülkenin şehri seçilirse (otomatik yöntemde) o ülkenin yöntemi kullanılır
+  const opts = useMemo(
+    () => ({ ...calc, tz: city.tz, method: methodAuto ? defaultMethod(city.country, getLang()) : calc.method }),
+    [calc, city, methodAuto]
+  );
 
   const ramazan = currentOrNextRamazan(now);
   const start = parseLocalDate(ramazan.ilkOruc);
+  const startYmd = { y: start.getFullYear(), m: start.getMonth() + 1, d: start.getDate() };
   const rows = useMemo(
     () =>
       Array.from({ length: ramazan.gun }).map((_, i) => {
-        const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
-        const t = getPrayerTimes(d, il.lat, il.lng);
-        return { i, d, imsak: t.imsak, iftar: t.aksam };
+        const d = addDays(startYmd, i);
+        const tm = getPrayerTimes(d, city.lat, city.lng, opts);
+        return { i, d, imsak: tm.imsak, iftar: tm.aksam };
       }),
-    [il, ramazan.ilkOruc, ramazan.gun] // eslint-disable-line react-hooks/exhaustive-deps
+    [city, opts, ramazan.ilkOruc, ramazan.gun] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  const rDay = ramazanDay(now);
+  const today = ymdIn(now, city.tz);
+  const rDay = ramazanDay(new Date(today.y, today.m - 1, today.d));
   const todayRow = rDay ? rows[rDay - 1] : null;
-  const chips = POPULER.includes(il.plaka) ? POPULER : [il.plaka, ...POPULER.slice(0, -1)];
+  const countryCities = citiesOf(city.country);
+  const popular = city.country === 'TR' ? POPULER_TR.map((id) => cityById(id)!).filter(Boolean) : countryCities.slice(0, 8);
+  const chips = popular.some((c) => c.id === city.id) ? popular : [city, ...popular.slice(0, -1)];
 
   let heroLabel: string;
   let heroCount: string;
   if (todayRow) {
     const beforeImsak = now.getTime() < todayRow.imsak.getTime();
     const target = beforeImsak ? todayRow.imsak : todayRow.iftar;
-    heroLabel = beforeImsak ? `Sahurun bitmesine · ${il.ad}` : `İftara kalan · ${il.ad}`;
-    heroCount = now.getTime() < target.getTime() ? formatCountdown(target.getTime() - now.getTime()) : 'Hayırlı iftarlar';
+    heroLabel = beforeImsak ? t('Sahurun bitmesine · {yer}', { yer: city.name }) : t('İftara kalan · {yer}', { yer: city.name });
+    heroCount = now.getTime() < target.getTime() ? formatCountdown(target.getTime() - now.getTime()) : t('Hayırlı iftarlar');
   } else {
-    const days = Math.ceil((start.getTime() - new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()) / 86400000);
-    heroLabel = `Ramazan ${ramazan.hicriYil} · ${il.ad}`;
-    heroCount = days > 0 ? `${days} gün kaldı` : 'Hayırlı bayramlar';
+    const days = Math.round((Date.UTC(startYmd.y, startYmd.m - 1, startYmd.d) - Date.UTC(today.y, today.m - 1, today.d)) / 86400000);
+    heroLabel = t('Ramazan {yil} · {yer}', { yil: ramazan.hicriYil, yer: city.name });
+    heroCount = days > 0 ? t('{n} gün kaldı', { n: days }) : t('Hayırlı bayramlar');
   }
 
   return (
-    <Screen title="Ramazan İmsakiyesi">
+    <Screen title={t('Ramazan İmsakiyesi')}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
-        {chips.map((p) => {
-          const c = ILLER.find((x) => x.plaka === p)!;
-          return <Chip key={p} label={c.ad} selected={il.plaka === p} onPress={() => setIl(c)} />;
-        })}
-        <Chip label="Tüm iller ›" selected={false} onPress={() => setPicker(true)} />
+        {chips.map((c) => (
+          <Chip key={c.id} label={c.name} selected={city.id === c.id} onPress={() => setCity(c)} />
+        ))}
+        <Chip label={city.country === 'TR' ? t('Tüm iller ›') : t('Tüm şehirler ›')} selected={false} onPress={() => setPicker(true)} />
       </ScrollView>
 
       <View style={st.hero}>
@@ -67,54 +80,60 @@ export default function Imsakiye() {
         </Svg>
         <View style={st.heroHead}>
           <Text style={st.heroEyebrow}>{heroLabel}</Text>
-          <Text style={st.heroSmall}>{rDay ? `Ramazan ${rDay}. gün` : `İlk oruç ${start.getDate()} ${AYLAR[start.getMonth()]}`}</Text>
+          <Text style={st.heroSmall}>{rDay ? t('Ramazan {n}. gün', { n: rDay }) : t('İlk oruç {tarih}', { tarih: formatDay(startYmd, false) })}</Text>
         </View>
         <Text style={st.heroCount}>{heroCount}</Text>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <View style={st.heroBox}>
-            <Text style={st.heroBoxLabel}>İmsak (sahur sonu)</Text>
-            <Text style={st.heroBoxVal}>{formatTime((todayRow ?? rows[0]).imsak)}</Text>
+            <Text style={st.heroBoxLabel}>{t('İmsak (sahur sonu)')}</Text>
+            <Text style={st.heroBoxVal}>{formatTime((todayRow ?? rows[0]).imsak, city.tz)}</Text>
           </View>
           <View style={st.heroBox}>
-            <Text style={st.heroBoxLabel}>İftar (akşam ezanı)</Text>
-            <Text style={st.heroBoxVal}>{formatTime((todayRow ?? rows[0]).iftar)}</Text>
+            <Text style={st.heroBoxLabel}>{t('İftar (akşam ezanı)')}</Text>
+            <Text style={st.heroBoxVal}>{formatTime((todayRow ?? rows[0]).iftar, city.tz)}</Text>
           </View>
         </View>
       </View>
 
       <View style={st.table}>
         <View style={[st.tr, st.th]}>
-          <Text style={[st.c1, st.thText]}>Gün</Text>
-          <Text style={[st.c2, st.thText]}>İmsak</Text>
-          <Text style={[st.c2, st.thText]}>İftar</Text>
+          <Text style={[st.c1, st.thText]}>{t('Gün')}</Text>
+          <Text style={[st.c2, st.thText]}>{t('İmsak')}</Text>
+          <Text style={[st.c2, st.thText]}>{t('İftar')}</Text>
         </View>
         {rows.map((r) => {
-          const today = rDay === r.i + 1;
+          const isToday = rDay === r.i + 1;
           return (
-            <View key={r.i} style={[st.tr, st.td, today && { backgroundColor: colors.greenTint }]}>
-              <Text style={[st.c1, st.tdText, today && st.todayText]}>
-                {`${r.i + 1}. gün · ${r.d.getDate()} ${AYLAR[r.d.getMonth()]} ${GUNLER[r.d.getDay()]}`}
+            <View key={r.i} style={[st.tr, st.td, isToday && { backgroundColor: colors.greenTint }]}>
+              <Text style={[st.c1, st.tdText, isToday && st.todayText]}>
+                {`${t('{n}. gün', { n: r.i + 1 })} · ${formatDay(r.d, false)} ${formatWeekday(r.d, true)}`}
               </Text>
-              <Text style={[st.c2, st.tdText, today && st.todayText]}>{formatTime(r.imsak)}</Text>
-              <Text style={[st.c2, st.tdText, { fontFamily: fonts.bodySemi }, today && st.todayText]}>{formatTime(r.iftar)}</Text>
+              <Text style={[st.c2, st.tdText, isToday && st.todayText]}>{formatTime(r.imsak, city.tz)}</Text>
+              <Text style={[st.c2, st.tdText, { fontFamily: fonts.bodySemi }, isToday && st.todayText]}>{formatTime(r.iftar, city.tz)}</Text>
             </View>
           );
         })}
       </View>
-      <Text style={st.note}>Saatler Diyanet yöntemiyle il merkezine göre hesaplanır; ilçelerde 1–2 dakika fark olabilir.</Text>
+      <Text style={st.note}>
+        {opts.method === 'diyanet'
+          ? t('Saatler Diyanet yöntemiyle il merkezine göre hesaplanır; ilçelerde 1–2 dakika fark olabilir.')
+          : t('Saatler {yontem} yöntemiyle şehir merkezine göre hesaplanır.', { yontem: METHODS[opts.method].name })}
+        {city.country === 'TR' ? '' : ` ${t('Ramazan’ın ilk günü Diyanet takvimine göredir; bulunduğunuz ülkede bir gün farklı olabilir.')}`}
+      </Text>
 
       <Modal visible={picker} animationType="slide" onRequestClose={() => setPicker(false)}>
         <View style={{ flex: 1, backgroundColor: colors.paper, paddingTop: insets.top + 12 }}>
-          <IlPicker
-            selected={il.plaka}
+          <CityPicker
+            country={city.country}
+            selectedId={city.id}
             onSelect={(x) => {
-              setIl(x);
+              setCity(x);
               setPicker(false);
             }}
             header={
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontFamily: fonts.display, fontSize: 24, color: colors.green }}>İl seçin</Text>
-                <Button variant="text" label="Kapat" onPress={() => setPicker(false)} />
+                <Text style={{ fontFamily: fonts.display, fontSize: 24, color: colors.green }}>{city.country === 'TR' ? t('İl seçin') : t('Şehir seçin')}</Text>
+                <Button variant="text" label={t('Kapat')} onPress={() => setPicker(false)} />
               </View>
             }
           />

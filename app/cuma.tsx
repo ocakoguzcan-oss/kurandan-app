@@ -17,12 +17,13 @@ import { colors, fonts } from '../src/theme';
 import {
   DESENLER, Desen, ICERIKLER, ICERIK_TURLERI, IcerikTuru, KONULAR, Konu, PALETLER, YAZI_RENKLERI, YAZI_TIPLERI, YaziTipi,
 } from '../src/data/story';
-import { duaById, useDualar } from '../src/lib/dualar';
+import { duaById, duaText, useDualar } from '../src/lib/dualar';
+import { isRTL, t, tx } from '../src/i18n';
 
 const SCALES = [
-  { id: 0.85, ad: 'Küçük' },
-  { id: 1, ad: 'Orta' },
-  { id: 1.18, ad: 'Büyük' },
+  { id: 0.85, ad: tx('Küçük') },
+  { id: 1, ad: tx('Orta') },
+  { id: 1.18, ad: tx('Büyük') },
 ];
 
 /** react-native-share yalnızca gerçek uygulamada (TestFlight / App Store) vardır; Expo Go'da paylaş menüsüne düşülür. */
@@ -47,7 +48,7 @@ export default function StoryStudio() {
   const [konu, setKonu] = useState<Konu>('cuma');
   const [tur, setTur] = useState<IcerikTuru>('soz');
   const [idx, setIdx] = useState(0);
-  const [serbestBaslik, setSerbestBaslik] = useState('Hayırlı Cumalar');
+  const [serbestBaslik, setSerbestBaslik] = useState(() => t('Hayırlı Cumalar'));
   const [serbestMetin, setSerbestMetin] = useState('');
   const [showTitle, setShowTitle] = useState(true);
   const [paletIdx, setPaletIdx] = useState(dua ? 1 : 0);
@@ -65,12 +66,13 @@ export default function StoryStudio() {
 
   const card = useMemo(() => {
     if (dua) {
-      return { arabicTitle: undefined, title: showTitle ? 'Günün Duası' : undefined, arabicBody: dua.arabic, body: dua.meal, kaynak: dua.kaynak };
+      const dt = duaText(dua);
+      return { arabicTitle: undefined, title: showTitle ? t('Günün Duası') : undefined, arabicBody: dua.arabic, body: isRTL() ? undefined : dt.meal, kaynak: dt.kaynak };
     }
     if (tur === 'serbest') {
-      return { arabicTitle: konuBilgi.arabic, title: serbestBaslik.trim() || undefined, body: serbestMetin.trim() || 'Buraya kendi sözünüzü yazın.', kaynak: undefined };
+      return { arabicTitle: konuBilgi.arabic, title: serbestBaslik.trim() || undefined, body: serbestMetin.trim() || t('Buraya kendi sözünüzü yazın.'), kaynak: undefined };
     }
-    return { arabicTitle: konuBilgi.arabic, title: showTitle ? konuBilgi.baslik : undefined, body: item?.metin ?? '', kaynak: item?.kaynak };
+    return { arabicTitle: konuBilgi.arabic, title: showTitle ? t(konuBilgi.baslik) : undefined, body: item ? t(item.metin) : '', kaynak: item?.kaynak ? t(item.kaynak) : undefined };
   }, [dua, tur, konuBilgi, serbestBaslik, serbestMetin, item, showTitle]);
 
   const render = () => captureRef(ref, { format: 'png', quality: 1, width: 1080, height: 1920, result: 'tmpfile' });
@@ -80,12 +82,12 @@ export default function StoryStudio() {
       const r = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsEditing: true, aspect: [9, 16], quality: 0.9 });
       if (!r.canceled && r.assets?.[0]?.uri) setPhoto(r.assets[0].uri);
     } catch {
-      Alert.alert('Fotoğraf açılamadı', 'Lütfen tekrar deneyin.');
+      Alert.alert(t('Fotoğraf açılamadı'), t('Lütfen tekrar deneyin.'));
     }
   };
 
   const shareToInstagram = async () => {
-    if (Platform.OS === 'web') return Alert.alert('Telefonda deneyin', 'Story paylaşımı yalnızca telefonda çalışır.');
+    if (Platform.OS === 'web') return Alert.alert(t('Telefonda deneyin'), t('Story paylaşımı yalnızca telefonda çalışır.'));
     setBusy(true);
     try {
       const uri = await render();
@@ -105,9 +107,9 @@ export default function StoryStudio() {
           // Instagram yüklü değilse ya da iptal edildiyse paylaş menüsünü aç.
         }
       }
-      if (await Sharing.isAvailableAsync()) await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: 'Story olarak paylaş' });
+      if (await Sharing.isAvailableAsync()) await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('Story olarak paylaş') });
     } catch {
-      Alert.alert('Paylaşılamadı', 'Görsel hazırlanırken bir sorun oldu. Lütfen tekrar deneyin.');
+      Alert.alert(t('Paylaşılamadı'), t('Görsel hazırlanırken bir sorun oldu. Lütfen tekrar deneyin.'));
     } finally {
       setBusy(false);
     }
@@ -118,18 +120,18 @@ export default function StoryStudio() {
     setBusy(true);
     try {
       const perm = await MediaLibrary.requestPermissionsAsync(true);
-      if (!perm.granted) return Alert.alert('İzin gerekli', 'Görseli kaydetmek için galeri izni verin.');
+      if (!perm.granted) return Alert.alert(t('İzin gerekli'), t('Görseli kaydetmek için galeri izni verin.'));
       await MediaLibrary.saveToLibraryAsync(await render());
-      Alert.alert('Kaydedildi', 'Görsel galerinize eklendi.');
+      Alert.alert(t('Kaydedildi'), t('Görsel galerinize eklendi.'));
     } catch {
-      Alert.alert('Kaydedilemedi', 'Lütfen tekrar deneyin.');
+      Alert.alert(t('Kaydedilemedi'), t('Lütfen tekrar deneyin.'));
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <Screen title={dua ? 'Duayı Paylaş' : 'Story Hazırla'}>
+    <Screen title={dua ? t('Duayı Paylaş') : t('Story Hazırla')}>
       <View style={st.previewWrap}>
         <StoryCard
           ref={ref}
@@ -145,9 +147,9 @@ export default function StoryStudio() {
 
       <View style={st.tabs}>
         {([
-          ['icerik', 'İçerik'],
-          ['arka', 'Arka plan'],
-          ['yazi', 'Yazı'],
+          ['icerik', t('İçerik')],
+          ['arka', t('Arka plan')],
+          ['yazi', t('Yazı')],
         ] as [Tab, string][]).map(([id, ad]) => (
           <Pressable key={id} accessibilityRole="tab" accessibilityState={{ selected: tab === id }} onPress={() => setTab(id)} style={[st.tab, tab === id && st.tabOn]}>
             <Text style={[st.tabText, tab === id && st.tabTextOn]}>{ad}</Text>
@@ -158,33 +160,33 @@ export default function StoryStudio() {
       {tab === 'icerik' && (
         <View style={{ gap: 12 }}>
           {dua ? (
-            <Text style={st.hint}>{`Bu görselde “${dua.kaynak}” duası paylaşılacak. Arka planı ve yazıyı diğer sekmelerden değiştirebilirsiniz.`}</Text>
+            <Text style={st.hint}>{t('Bu görselde “{kaynak}” duası paylaşılacak. Arka planı ve yazıyı diğer sekmelerden değiştirebilirsiniz.', { kaynak: duaText(dua).kaynak })}</Text>
           ) : (
             <>
-              <Eyebrow>Konu</Eyebrow>
+              <Eyebrow>{t('Konu')}</Eyebrow>
               <Row>
                 {KONULAR.map((k) => (
-                  <Chip key={k.id} label={k.ad} selected={konu === k.id} onPress={() => { setKonu(k.id); setIdx(0); setSerbestBaslik(k.baslik); }} />
+                  <Chip key={k.id} label={t(k.ad)} selected={konu === k.id} onPress={() => { setKonu(k.id); setIdx(0); setSerbestBaslik(t(k.baslik)); }} />
                 ))}
               </Row>
-              <Eyebrow>Ne yazsın?</Eyebrow>
+              <Eyebrow>{t('Ne yazsın?')}</Eyebrow>
               <Row>
-                {ICERIK_TURLERI.map((t) => (
-                  <Chip key={t.id} label={t.ad} selected={tur === t.id} onPress={() => { setTur(t.id); setIdx(0); }} />
+                {ICERIK_TURLERI.map((it) => (
+                  <Chip key={it.id} label={t(it.ad)} selected={tur === it.id} onPress={() => { setTur(it.id); setIdx(0); }} />
                 ))}
               </Row>
               {tur === 'serbest' ? (
                 <View style={{ gap: 8 }}>
-                  <TextInput value={serbestBaslik} onChangeText={setSerbestBaslik} maxLength={40} placeholder="Başlık" placeholderTextColor={colors.muted} style={st.input} accessibilityLabel="Başlık" />
+                  <TextInput value={serbestBaslik} onChangeText={setSerbestBaslik} maxLength={40} placeholder={t('Başlık')} placeholderTextColor={colors.muted} style={st.input} accessibilityLabel={t('Başlık')} />
                   <TextInput
                     value={serbestMetin}
                     onChangeText={setSerbestMetin}
                     maxLength={220}
                     multiline
-                    placeholder="Sözünüzü yazın"
+                    placeholder={t('Sözünüzü yazın')}
                     placeholderTextColor={colors.muted}
                     style={[st.input, { minHeight: 96, textAlignVertical: 'top', paddingTop: 12 }]}
-                    accessibilityLabel="Söz"
+                    accessibilityLabel={t('Söz')}
                   />
                   <Text style={st.hint}>{`${serbestMetin.length}/220`}</Text>
                 </View>
@@ -200,7 +202,7 @@ export default function StoryStudio() {
           {tur !== 'serbest' && (
             <Pressable accessibilityRole="switch" accessibilityState={{ checked: showTitle }} onPress={() => setShowTitle(!showTitle)} style={st.check}>
               <View style={[st.box, showTitle && st.boxOn]} />
-              <Text style={st.checkText}>{dua ? '“Günün Duası” başlığını göster' : `“${konuBilgi.baslik}” başlığını göster`}</Text>
+              <Text style={st.checkText}>{t('“{baslik}” başlığını göster', { baslik: dua ? t('Günün Duası') : t(konuBilgi.baslik) })}</Text>
             </Pressable>
           )}
         </View>
@@ -208,13 +210,13 @@ export default function StoryStudio() {
 
       {tab === 'arka' && (
         <View style={{ gap: 12 }}>
-          <Eyebrow>Renk</Eyebrow>
+          <Eyebrow>{t('Renk')}</Eyebrow>
           <Row>
             {PALETLER.map((pl, i) => (
               <Pressable
                 key={pl.id}
                 accessibilityRole="button"
-                accessibilityLabel={`${pl.ad} renk`}
+                accessibilityLabel={t('{renk} renk', { renk: t(pl.ad) })}
                 accessibilityState={{ selected: !photo && i === paletIdx }}
                 onPress={() => { setPaletIdx(i); setPhoto(null); }}
                 style={[st.swatch, { backgroundColor: pl.bg[0], borderColor: !photo && i === paletIdx ? colors.green : colors.buttonBorder, borderWidth: !photo && i === paletIdx ? 3 : 1 }]}
@@ -223,42 +225,42 @@ export default function StoryStudio() {
               </Pressable>
             ))}
           </Row>
-          <Eyebrow>Desen</Eyebrow>
+          <Eyebrow>{t('Desen')}</Eyebrow>
           <Row>
             {DESENLER.map((d) => (
-              <Chip key={d.id} label={d.ad} selected={desen === d.id} onPress={() => setDesen(d.id)} />
+              <Chip key={d.id} label={t(d.ad)} selected={desen === d.id} onPress={() => setDesen(d.id)} />
             ))}
           </Row>
-          <Eyebrow>Fotoğraf</Eyebrow>
+          <Eyebrow>{t('Fotoğraf')}</Eyebrow>
           <View style={{ flexDirection: 'row', gap: 10 }}>
-            <Button style={{ flex: 1 }} variant="secondary" label={photo ? 'Fotoğrafı değiştir' : 'Galeriden seç'} onPress={pickPhoto} />
-            {photo && <Button style={{ flex: 1 }} variant="secondary" label="Fotoğrafı kaldır" onPress={() => setPhoto(null)} />}
+            <Button style={{ flex: 1 }} variant="secondary" label={photo ? t('Fotoğrafı değiştir') : t('Galeriden seç')} onPress={pickPhoto} />
+            {photo && <Button style={{ flex: 1 }} variant="secondary" label={t('Fotoğrafı kaldır')} onPress={() => setPhoto(null)} />}
           </View>
-          <Text style={st.hint}>Fotoğrafın üzerine yazı okunaklı olsun diye hafif koyu bir perde eklenir.</Text>
+          <Text style={st.hint}>{t('Fotoğrafın üzerine yazı okunaklı olsun diye hafif koyu bir perde eklenir.')}</Text>
         </View>
       )}
 
       {tab === 'yazi' && (
         <View style={{ gap: 12 }}>
-          <Eyebrow>Yazı tipi</Eyebrow>
+          <Eyebrow>{t('Yazı tipi')}</Eyebrow>
           <Row>
             {YAZI_TIPLERI.map((f) => (
-              <Chip key={f.id} label={f.ad} selected={font === f.id} onPress={() => setFont(f.id)} />
+              <Chip key={f.id} label={t(f.ad)} selected={font === f.id} onPress={() => setFont(f.id)} />
             ))}
           </Row>
-          <Eyebrow>Boyut</Eyebrow>
+          <Eyebrow>{t('Boyut')}</Eyebrow>
           <Row>
             {SCALES.map((s) => (
-              <Chip key={s.id} label={s.ad} selected={scale === s.id} onPress={() => setScale(s.id)} />
+              <Chip key={s.id} label={t(s.ad)} selected={scale === s.id} onPress={() => setScale(s.id)} />
             ))}
           </Row>
-          <Eyebrow>Renk</Eyebrow>
+          <Eyebrow>{t('Renk')}</Eyebrow>
           <Row>
             {YAZI_RENKLERI.map((c) => (
               <Pressable
                 key={c}
                 accessibilityRole="button"
-                accessibilityLabel={c === 'auto' ? 'Otomatik renk' : `Yazı rengi ${c}`}
+                accessibilityLabel={c === 'auto' ? t('Otomatik renk') : t('Yazı rengi {renk}', { renk: c })}
                 accessibilityState={{ selected: textColor === c }}
                 onPress={() => setTextColor(c)}
                 style={[st.dot, { backgroundColor: c === 'auto' ? colors.card : c, borderWidth: textColor === c ? 3 : 1, borderColor: textColor === c ? colors.green : colors.buttonBorder }]}
@@ -270,8 +272,8 @@ export default function StoryStudio() {
         </View>
       )}
 
-      <Button label={busy ? 'Hazırlanıyor…' : "Instagram Story'de paylaş"} icon={<IconInstagram />} disabled={busy} onPress={shareToInstagram} />
-      <Button variant="text" label="Galeriye kaydet" disabled={busy} onPress={saveToGallery} />
+      <Button label={busy ? t('Hazırlanıyor…') : t("Instagram Story'de paylaş")} icon={<IconInstagram />} disabled={busy} onPress={shareToInstagram} />
+      <Button variant="text" label={t('Galeriye kaydet')} disabled={busy} onPress={saveToGallery} />
     </Screen>
   );
 }

@@ -4,8 +4,10 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { load, save } from './storage';
 import bundled from '../../content/dualar.json';
+import { getLang, Lang } from '../i18n';
 
-export type DuaKategori = { id: string; ad: string; aciklama: string };
+type Ceviri<T> = Partial<Record<Exclude<Lang, 'tr'>, Partial<T>>>;
+export type DuaKategori = { id: string; ad: string; aciklama: string; ceviri?: Ceviri<{ ad: string; aciklama: string }> };
 export type Dua = {
   id: string;
   kategoriler: string[];
@@ -14,6 +16,8 @@ export type Dua = {
   okunus: string;
   meal: string;
   kaynak: string;
+  /** Diğer dillerde anlam, ne için okunur ve kaynak */
+  ceviri?: Ceviri<{ meal: string; neIcin: string; kaynak: string }>;
 };
 export type DuaKutuphanesi = { surum: number; guncelleme: string; kategoriler: DuaKategori[]; dualar: Dua[] };
 
@@ -96,4 +100,17 @@ export function duaForDate(d: Date, list: Dua[] = lib.dualar): Dua {
 
 export function duaById(id: string | undefined): Dua | undefined {
   return id ? lib.dualar.find((x) => x.id === id) : undefined;
+}
+
+/** Duanın seçili dildeki anlamı, ne için okunduğu ve kaynağı (çeviri yoksa Türkçesi). */
+export function duaText(d: Dua): { meal: string; neIcin: string; kaynak: string } {
+  const lang = getLang();
+  const c = lang === 'tr' ? undefined : d.ceviri?.[lang];
+  return { meal: c?.meal ?? d.meal, neIcin: c?.neIcin ?? d.neIcin, kaynak: c?.kaynak ?? d.kaynak };
+}
+
+export function kategoriText(k: DuaKategori): { ad: string; aciklama: string } {
+  const lang = getLang();
+  const c = lang === 'tr' ? undefined : k.ceviri?.[lang];
+  return { ad: c?.ad ?? k.ad, aciklama: c?.aciklama ?? k.aciklama };
 }

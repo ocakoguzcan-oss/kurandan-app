@@ -27,6 +27,7 @@ import Svg, { Path } from 'react-native-svg';
 import { Text } from '../components/Text';
 import { colors, fonts } from '../theme';
 import { loadPrefs, OnboardingPhase, setPrefs, usePrefs } from '../lib/prefs';
+import { isRTL, t, tx } from '../i18n';
 
 type Rect = { x: number; y: number; w: number; h: number };
 type Step = { title: string; text: string; target?: string; tab?: number };
@@ -34,20 +35,20 @@ type Step = { title: string; text: string; target?: string; tab?: number };
 // Alt sekme sırası app/(tabs)/_layout.tsx ile aynı olmalı
 const TAB_COUNT = 6;
 const STEPS: Step[] = [
-  { target: 'hero', title: 'Namaz vakitleri', text: 'Sıradaki vakit ve kalan süre burada. Altında bugünün bütün vakitleri yazar.' },
-  { target: 'dua', title: 'Günün duası', text: 'Her gün yeni bir dua ve ne için okunduğu. Dokununca aile, sağlık, rızık, nazar gibi kategorilerdeki bütün dualar açılır; Instagram story olarak paylaşabilirsiniz.' },
-  { target: 'trackers', title: 'Hatim ve namaz takibi', text: 'Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.' },
-  { target: 'dinigun', title: 'Kandil ve dini günler', text: 'Yaklaşan kandil ve bayramlar. Bir gün önceden size hatırlatırız.' },
-  { target: 'kabe', title: 'Kâbe’ye Nasıl Gidilir?', text: 'Araba, otobüs ya da uçakla Kâbe’ye giden yollar: haritada güzergâh, sınır kapıları, vize ve gerekli belgeler adım adım.' },
-  { target: 'tile-kuran', title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra ya da kelimeye dokunup dinleyin, ▶ ile sayfa sayfa okutun. “Meal” ile her ayetin Türkçesi altında görünür.' },
-  { target: 'tile-kible', title: 'Kıble', text: 'Telefonu düz tutun; ok Kâbe’nin yönünü gösterir. Doğru yöne dönünce telefon titrer.' },
-  { target: 'tile-zikir', title: 'Zikirmatik', text: 'Büyük daireye dokunarak zikrinizi sayın. Hedefe ulaşınca telefon titrer, günlük toplamınız saklanır.' },
-  { target: 'tile-namaz-takip', title: 'Namaz Takibi', text: 'Kıldığınız vakitleri işaretleyin; haftalık çizelgenizi ve kaza namazlarınızı takip edin.' },
-  { target: 'tile-imsakiye', title: 'İmsakiye', text: 'Ramazan’da 81 ilin sahur ve iftar vakitleri, iftara geri sayım.' },
-  { target: 'tile-dini-gunler', title: 'Dini Günler', text: 'Kandil ve bayram tarihleri, kaç gün kaldığı. Bir gün önce hatırlatılır.' },
-  { target: 'tile-cuma', title: 'Story Hazırla', text: 'Cuma, kandil ve bayramlarda Instagram hikâyenize hazır görsel. Söz, ayet ya da kendi yazınızı seçin; renk, desen ya da kendi fotoğrafınızla süsleyin.' },
-  { target: 'tile-reels', title: 'Reels', text: 'Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.' },
-  { tab: 5, title: 'Ayarlar', text: 'Ezan bildirimleri, büyük yazı ve konum ayarları. Bu tanıtımı da buradan tekrar izleyebilirsiniz.' },
+  { target: 'hero', title: tx('Namaz vakitleri'), text: tx('Sıradaki vakit ve kalan süre burada. Altında bugünün bütün vakitleri yazar.') },
+  { target: 'dua', title: tx('Günün duası'), text: tx('Her gün yeni bir dua ve ne için okunduğu. Dokununca aile, sağlık, rızık, nazar gibi kategorilerdeki bütün dualar açılır; Instagram story olarak paylaşabilirsiniz.') },
+  { target: 'trackers', title: tx('Hatim ve namaz takibi'), text: tx('Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.') },
+  { target: 'dinigun', title: tx('Kandil ve dini günler'), text: tx('Yaklaşan kandil ve bayramlar. Bir gün önceden size hatırlatırız.') },
+  { target: 'kabe', title: tx('Kâbe’ye Nasıl Gidilir?'), text: tx('Araba, otobüs ya da uçakla Kâbe’ye giden yollar: haritada güzergâh, sınır kapıları, vize ve gerekli belgeler adım adım.') },
+  { target: 'tile-kuran', title: tx('Kur’an-ı Kerim'), text: tx('Mushaf sayfaları. Bir satıra ya da kelimeye dokunup dinleyin, ▶ ile sayfa sayfa okutun. “Meal” ile her ayetin anlamı altında görünür.') },
+  { target: 'tile-kible', title: tx('Kıble'), text: tx('Telefonu düz tutun; ok Kâbe’nin yönünü gösterir. Doğru yöne dönünce telefon titrer.') },
+  { target: 'tile-zikir', title: tx('Zikirmatik'), text: tx('Büyük daireye dokunarak zikrinizi sayın. Hedefe ulaşınca telefon titrer, günlük toplamınız saklanır.') },
+  { target: 'tile-namaz-takip', title: tx('Namaz Takibi'), text: tx('Kıldığınız vakitleri işaretleyin; haftalık çizelgenizi ve kaza namazlarınızı takip edin.') },
+  { target: 'tile-imsakiye', title: tx('İmsakiye'), text: tx('Ramazan’da sahur ve iftar vakitleri, iftara geri sayım.') },
+  { target: 'tile-dini-gunler', title: tx('Dini Günler'), text: tx('Kandil ve bayram tarihleri, kaç gün kaldığı. Bir gün önce hatırlatılır.') },
+  { target: 'tile-cuma', title: tx('Story Hazırla'), text: tx('Cuma, kandil ve bayramlarda Instagram hikâyenize hazır görsel. Söz, ayet ya da kendi yazınızı seçin; renk, desen ya da kendi fotoğrafınızla süsleyin.') },
+  { target: 'tile-reels', title: tx('Reels'), text: tx('Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.') },
+  { tab: 5, title: tx('Ayarlar'), text: tx('Ezan bildirimleri, büyük yazı ve konum ayarları. Bu tanıtımı da buradan tekrar izleyebilirsiniz.') },
 ];
 
 type Ctx = {
@@ -64,7 +65,7 @@ const TourCtx = createContext<Ctx | null>(null);
 
 export function useTour() {
   const c = useContext(TourCtx);
-  if (!c) throw new Error('useTour, TourProvider içinde kullanılmalı');
+  if (!c) throw new Error('useTour must be used inside TourProvider');
   return c;
 }
 
@@ -87,6 +88,14 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setPhase = (p: OnboardingPhase) => setPrefs({ onboarding: p });
+
+  // İlk açılış: önce dil seçimi
+  useEffect(() => {
+    if (loaded && prefs.onboarding === 'lang' && pathname === '/') {
+      const t = setTimeout(() => router.push('/dil'), 350);
+      return () => clearTimeout(t);
+    }
+  }, [loaded, prefs.onboarding, pathname]);
 
   // Şehir seçilince izin ekranını aç
   useEffect(() => {
@@ -250,9 +259,9 @@ function Overlay({
   const hole = rect ? { x: rect.x - pad, y: rect.y - pad, w: rect.w + pad * 2, h: rect.h + pad * 2 } : null;
 
   return (
-    <View style={StyleSheet.absoluteFill} accessibilityViewIsModal>
+    <View style={[StyleSheet.absoluteFill, { direction: 'ltr' }]} accessibilityViewIsModal>
       {hole ? <Dim hole={hole} W={W} H={H} /> : <Dim W={W} H={H} />}
-      <Pressable accessibilityRole="button" accessibilityLabel={phase === 'city' ? 'Şehir seç' : 'İleri'} onPress={onTap} style={StyleSheet.absoluteFill} />
+      <Pressable accessibilityRole="button" accessibilityLabel={phase === 'city' ? t('Şehir seç') : t('İleri')} onPress={onTap} style={StyleSheet.absoluteFill} />
       {hole && <HoleFrame hole={hole} />}
 
       <Animated.View style={[StyleSheet.absoluteFill, { opacity: fade }]} pointerEvents="box-none">
@@ -263,8 +272,8 @@ function Overlay({
             W={W}
             H={H}
             insetsTop={insets.top}
-            title={step.title}
-            text={step.text}
+            title={t(step.title)}
+            text={t(step.text)}
             counter={`${index + 1} / ${steps.length}`}
             last={index + 1 >= steps.length}
             onNext={(e) => {
@@ -416,12 +425,12 @@ function CityPrompt({ hole, W, H }: { hole: Rect; W: number; H: number }) {
       <DrawnArrow from={from} to={to} bend={-60} />
       <View style={[st.cityBox, { top: btnTop - 104, width: W }]} pointerEvents="box-none">
         <View pointerEvents="none" style={{ alignItems: 'center', gap: 10 }}>
-          <Text style={st.cityTitle}>Hoş geldiniz</Text>
-          <Text style={st.cityText}>Namaz vakitlerinin doğru gelmesi için önce şehrinizi seçin.</Text>
+          <Text style={st.cityTitle}>{t('Hoş geldiniz')}</Text>
+          <Text style={st.cityText}>{t('Namaz vakitlerinin doğru gelmesi için önce şehrinizi seçin.')}</Text>
         </View>
         <Animated.View style={{ transform: [{ translateY: bob }] }}>
           <Pressable accessibilityRole="button" onPress={() => router.push('/konum')} style={({ pressed }) => [st.cityBtn, { opacity: pressed ? 0.85 : 1 }]}>
-            <Text style={st.cityBtnText}>Şehir seç</Text>
+            <Text style={st.cityBtnText}>{t('Şehir seç')}</Text>
           </Pressable>
         </Animated.View>
       </View>
@@ -468,21 +477,21 @@ function Bubble({
           <Path d={below ? 'M14 2 L14 28 M4 12 L14 2 L24 12' : 'M14 28 L14 2 M4 18 L14 28 L24 18'} stroke={colors.goldLight} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
         </Svg>
       </Animated.View>
-      <View style={[st.bubble, pos, { maxHeight: H - insetsTop - 40 }]} pointerEvents="box-none">
+      <View style={[st.bubble, pos, { maxHeight: H - insetsTop - 40, direction: isRTL() ? 'rtl' : 'ltr' }]} pointerEvents="box-none">
         <View style={st.bubbleHead} pointerEvents="none">
           <Text style={st.bubbleTitle}>{title}</Text>
           <Text style={st.counter}>{counter}</Text>
         </View>
         <View pointerEvents="none">
           <Text style={st.bubbleText}>{text}</Text>
-          <Text style={st.tapHint}>Devam etmek için ekranın herhangi bir yerine dokunun</Text>
+          <Text style={st.tapHint}>{t('Devam etmek için ekranın herhangi bir yerine dokunun')}</Text>
         </View>
         <View style={st.bubbleBtns}>
           <Pressable accessibilityRole="button" onPress={onSkip} style={st.skip}>
-            <Text style={st.skipText}>Tanıtımı geç</Text>
+            <Text style={st.skipText}>{t('Tanıtımı geç')}</Text>
           </Pressable>
           <Pressable accessibilityRole="button" onPress={onNext} style={({ pressed }) => [st.nextBtn, { opacity: pressed ? 0.85 : 1 }]}>
-            <Text style={st.nextText}>{last ? 'Bitir' : 'İleri ›'}</Text>
+            <Text style={st.nextText}>{last ? t('Bitir') : isRTL() ? t('İleri ‹') : t('İleri ›')}</Text>
           </Pressable>
         </View>
       </View>
