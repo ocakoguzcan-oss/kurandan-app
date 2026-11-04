@@ -10,14 +10,21 @@ export type Reel = {
   timestamp: string;
 };
 
-export type ReelCategory = 'tumu' | 'sure' | 'dua' | 'hadis';
+export type ReelCategory = 'tumu' | 'kuran' | 'siyer' | 'ibadet' | 'aile';
 
+// Kategoriler, Instagram açıklamasındaki etiketlere göre (ör. #kuran, #hadis) belirlenir.
 export const REEL_CATEGORIES: { id: ReelCategory; label: string; tags: string[] }[] = [
   { id: 'tumu', label: 'Tümü', tags: [] },
-  { id: 'sure', label: 'Sureler', tags: ['#sure', '#ayet', '#kuran'] },
-  { id: 'dua', label: 'Dualar', tags: ['#dua'] },
-  { id: 'hadis', label: 'Hadisler', tags: ['#hadis'] },
+  { id: 'kuran', label: 'Kur’an', tags: ['kuran', 'kurankerim', 'ayet', 'ayetelkursi', 'ayetelkürsi', 'fatiha', 'fatihasuresi', 'sure'] },
+  { id: 'siyer', label: 'Hadis & Siyer', tags: ['hadis', 'peygamberimiz', 'hzmuhammed', 'sünnet', 'salavat', 'şefaat', 'sonvasiyet', 'hzhatice'] },
+  { id: 'ibadet', label: 'İbadet', tags: ['namaz', 'sabahnamazı', 'hac', 'umre', 'tavaf', 'kabe', 'ihram', 'dua', 'tövbe', 'zikir'] },
+  { id: 'aile', label: 'Aile', tags: ['evlilik', 'hayırlıeş', 'nasip'] },
 ];
+
+/** Açıklamadaki etiketler (küçük harf, # olmadan). "#kurandanai" "#kuran" sayılmaz. */
+function hashtags(caption: string): Set<string> {
+  return new Set((caption.match(/#[\p{L}\p{N}_]+/gu) ?? []).map((t) => t.slice(1).toLocaleLowerCase('tr')));
+}
 
 /** Reels sunucusunun adresi: app.json → expo.extra.reelsApiUrl. */
 function apiUrl(): string {
@@ -52,8 +59,8 @@ export function filterReels(reels: Reel[], cat: ReelCategory): Reel[] {
   const c = REEL_CATEGORIES.find((x) => x.id === cat);
   if (!c || c.tags.length === 0) return reels;
   return reels.filter((r) => {
-    const cap = r.caption.toLocaleLowerCase('tr');
-    return c.tags.some((t) => cap.includes(t));
+    const tags = hashtags(r.caption);
+    return c.tags.some((t) => tags.has(t));
   });
 }
 

@@ -73,7 +73,7 @@ export default function ReelsScreen() {
               <Text style={st.emptyTitle}>{isReelsConfigured() ? 'Bu kategoride video yok' : 'Reels bağlantısı kurulmadı'}</Text>
               <Text style={st.muted}>
                 {isReelsConfigured()
-                  ? 'Videolar açıklamadaki #sure, #dua, #hadis etiketlerine göre gruplanır.'
+                  ? 'Videolar Instagram açıklamasındaki etiketlere (#kuran, #hadis, #namaz…) göre gruplanır.'
                   : 'Instagram videolarının gelmesi için README’deki “Reels sunucusu” adımlarını tamamlayın.'}
               </Text>
               <Button variant="secondary" label="Instagram’da aç" onPress={() => Linking.openURL(PROFILE_URL)} />

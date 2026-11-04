@@ -88,7 +88,7 @@
       "typedRoutes": false
     },
     "extra": {
-      "reelsApiUrl": "",
+      "reelsApiUrl": "https://kurandan-app-server.vercel.app",
       "facebookAppId": "",
       "eas": {
         "projectId": "bb04fc89-875e-494a-b400-e32a0922aff6"
