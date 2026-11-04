@@ -178,3 +178,29 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
   }
   return count;
 }
+
+/**
+ * GEÇİCİ TEST: seçilen ezanla 10 saniye sonra bir bildirim gönderir (yalnız iOS, Ayarlar'da).
+ * Denedikten sonra bu fonksiyon ve Ayarlar'daki "Ezan bildirimini dene" satırı silinecek.
+ */
+export async function testEzanBildirimi(id: EzanId, saniye = 10) {
+  if (Platform.OS === 'web') return false;
+  const { status } = await getPermissionStatus();
+  if (status !== 'granted') return false;
+  await ensureChannels();
+  const e = ezanById(id);
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: id === 'cuma' ? 'Test · Cuma namazı vakti girdi' : `Test · ${e.ad} vakti girdi`,
+      body: 'Ezan sesli bildirim denemesi',
+      sound: e.dosya,
+      data: { url: `/ezan?vakit=${id === 'cuma' ? 'ogle&cuma=1' : id}` },
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: saniye,
+      channelId: ezanChannel(id),
+    },
+  });
+  return true;
+}

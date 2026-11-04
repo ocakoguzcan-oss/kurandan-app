@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { router, useFocusEffect } from 'expo-router';
 import { Screen, Card, Eyebrow, Toggle } from '../../src/components/ui';
@@ -8,7 +8,8 @@ import { useApp } from '../../src/context/AppContext';
 import { formatTime, getPrayerTimes, METHODS, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { utcLabel } from '../../src/lib/tz';
 import { countryName } from '../../src/data/world';
-import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus } from '../../src/lib/notifications';
+import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus, testEzanBildirimi } from '../../src/lib/notifications';
+import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { usePremium } from '../../src/lib/premium';
@@ -21,6 +22,19 @@ export default function Ayarlar() {
   const prefs = usePrefs();
   const tour = useTour();
   const premium = usePremium();
+
+  // GEÇİCİ TEST (yalnız iOS)
+  const testEzan = () =>
+    Alert.alert('Hangi ezan?', 'Bildirim 10 saniye sonra gelir. Sesi duymak için telefonu kilitleyin ya da ana ekrana dönün.', [
+      ...EZANLAR.map((e) => ({
+        text: e.ad,
+        onPress: async () => {
+          const ok = await testEzanBildirimi(e.id);
+          if (!ok) Alert.alert('Bildirim izni kapalı', 'Önce Ayarlar → İzinler’den bildirim izni verin.');
+        },
+      })),
+      { text: 'Vazgeç', style: 'cancel' as const },
+    ]);
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
   useFocusEffect(
     useCallback(() => {
@@ -94,6 +108,16 @@ export default function Ayarlar() {
           </View>
           <Toggle label={t('Ezan sesiyle bildir')} value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
         </View>
+        {/* GEÇİCİ TEST (yalnız iOS): denendikten sonra silinecek */}
+        {Platform.OS === 'ios' && (
+          <Pressable accessibilityRole="button" onPress={testEzan} style={[st.row, st.divider]}>
+            <View style={{ flexShrink: 1 }}>
+              <Text style={st.name}>Ezan bildirimini dene (test)</Text>
+              <Text style={st.sub}>10 saniye sonra seçtiğiniz ezanla bildirim gelir</Text>
+            </View>
+            <Text style={st.link}>Dene ›</Text>
+          </Pressable>
+        )}
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Kandil ve dini günler')}</Text>
