@@ -9,6 +9,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import {
   Animated,
   Easing,
+  GestureResponderEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
@@ -217,13 +218,31 @@ function Overlay({
     };
   }, [phase, index, step, W, H, tabH, insets.top, targets, scrollRef, scrollY, fade]);
 
-  const next = () => {
-    if (index + 1 >= steps.length) finish();
-    else setIndex(index + 1);
-  };
+  const indexRef = useRef(0);
+  indexRef.current = index;
   const finish = () => {
     scrollRef.current?.scrollTo({ y: 0, animated: true });
     onDone();
+  };
+  const next = () => {
+    if (!rect) return; // bölüm yerine oturmadan geçme
+    if (indexRef.current + 1 >= steps.length) finish();
+    else setIndex(indexRef.current + 1);
+  };
+
+  // Dokunulan yerde dalga
+  const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+  const ripple = (e: GestureResponderEvent) => {
+    const { pageX: x, pageY: y } = e.nativeEvent;
+    const id = Date.now() + Math.random();
+    setRipples((r) => [...r, { id, x, y }]);
+    setTimeout(() => setRipples((r) => r.filter((q) => q.id !== id)), 700);
+  };
+  /** Ekranın herhangi bir yerine dokunma: dalga çıkar, sonra ilerle (şehir adımında şehir listesini aç). */
+  const onTap = (e: GestureResponderEvent) => {
+    ripple(e);
+    if (phase === 'city') setTimeout(() => router.push('/konum'), 220);
+    else setTimeout(next, 200);
   };
 
   const pad = 8;
@@ -232,7 +251,8 @@ function Overlay({
   return (
     <View style={StyleSheet.absoluteFill} accessibilityViewIsModal>
       {hole ? <Dim hole={hole} W={W} H={H} /> : <Dim W={W} H={H} />}
-      {hole && <HoleFrame hole={hole} onPress={phase === 'city' ? () => router.push('/konum') : next} />}
+      <Pressable accessibilityRole="button" accessibilityLabel={phase === 'city' ? 'Şehir seç' : 'İleri'} onPress={onTap} style={StyleSheet.absoluteFill} />
+      {hole && <HoleFrame hole={hole} />}
 
       <Animated.View style={[StyleSheet.absoluteFill, { opacity: fade }]} pointerEvents="box-none">
         {phase === 'city' && hole && <CityPrompt hole={hole} W={W} H={H} />}
@@ -246,11 +266,17 @@ function Overlay({
             text={step.text}
             counter={`${index + 1} / ${steps.length}`}
             last={index + 1 >= steps.length}
-            onNext={next}
+            onNext={(e) => {
+              ripple(e);
+              setTimeout(next, 200);
+            }}
             onSkip={finish}
           />
         )}
       </Animated.View>
+      {ripples.map((r) => (
+        <Ripple key={r.id} x={r.x} y={r.y} />
+      ))}
     </View>
   );
 }
@@ -307,20 +333,34 @@ function usePulse() {
   return v;
 }
 
+/** Dokunulan noktadan yayılıp sönen altın dalga. */
+function Ripple({ x, y }: { x: number; y: number }) {
+  const v = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(v, { toValue: 1, duration: 600, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start();
+  }, [v]);
+  const R = 70;
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        st.ripple,
+        { left: x - R, top: y - R, width: R * 2, height: R * 2, borderRadius: R },
+        { opacity: v.interpolate({ inputRange: [0, 1], outputRange: [0.6, 0] }), transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [0.15, 1] }) }] },
+      ]}
+    />
+  );
+}
+
 /** Net bırakılan alanın etrafında nabız gibi atan altın çerçeve. */
-function HoleFrame({ hole, onPress }: { hole: Rect; onPress: () => void }) {
+function HoleFrame({ hole }: { hole: Rect }) {
   const p = usePulse();
   const scale = p.interpolate({ inputRange: [0, 1], outputRange: [1, 1.035] });
   const glow = p.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1] });
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel="Bu alanı aç"
-      onPress={onPress}
-      style={{ position: 'absolute', left: hole.x, top: hole.y, width: hole.w, height: hole.h }}
-    >
+    <View pointerEvents="none" style={{ position: 'absolute', left: hole.x, top: hole.y, width: hole.w, height: hole.h }}>
       <Animated.View style={[st.frame, { opacity: glow, transform: [{ scale }] }]} />
-    </Pressable>
+    </View>
   );
 }
 
@@ -374,8 +414,10 @@ function CityPrompt({ hole, W, H }: { hole: Rect; W: number; H: number }) {
     <>
       <DrawnArrow from={from} to={to} bend={-60} />
       <View style={[st.cityBox, { top: btnTop - 104, width: W }]} pointerEvents="box-none">
-        <Text style={st.cityTitle}>Hoş geldiniz</Text>
-        <Text style={st.cityText}>Namaz vakitlerinin doğru gelmesi için önce şehrinizi seçin.</Text>
+        <View pointerEvents="none" style={{ alignItems: 'center', gap: 10 }}>
+          <Text style={st.cityTitle}>Hoş geldiniz</Text>
+          <Text style={st.cityText}>Namaz vakitlerinin doğru gelmesi için önce şehrinizi seçin.</Text>
+        </View>
         <Animated.View style={{ transform: [{ translateY: bob }] }}>
           <Pressable accessibilityRole="button" onPress={() => router.push('/konum')} style={({ pressed }) => [st.cityBtn, { opacity: pressed ? 0.85 : 1 }]}>
             <Text style={st.cityBtnText}>Şehir seç</Text>
@@ -406,7 +448,7 @@ function Bubble({
   text: string;
   counter: string;
   last: boolean;
-  onNext: () => void;
+  onNext: (e: GestureResponderEvent) => void;
   onSkip: () => void;
 }) {
   const p = usePulse();
@@ -425,12 +467,15 @@ function Bubble({
           <Path d={below ? 'M14 2 L14 28 M4 12 L14 2 L24 12' : 'M14 28 L14 2 M4 18 L14 28 L24 18'} stroke={colors.goldLight} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
         </Svg>
       </Animated.View>
-      <View style={[st.bubble, pos, { maxHeight: H - insetsTop - 40 }]}>
-        <View style={st.bubbleHead}>
+      <View style={[st.bubble, pos, { maxHeight: H - insetsTop - 40 }]} pointerEvents="box-none">
+        <View style={st.bubbleHead} pointerEvents="none">
           <Text style={st.bubbleTitle}>{title}</Text>
           <Text style={st.counter}>{counter}</Text>
         </View>
-        <Text style={st.bubbleText}>{text}</Text>
+        <View pointerEvents="none">
+          <Text style={st.bubbleText}>{text}</Text>
+          <Text style={st.tapHint}>Devam etmek için ekranın herhangi bir yerine dokunun</Text>
+        </View>
         <View style={st.bubbleBtns}>
           <Pressable accessibilityRole="button" onPress={onSkip} style={st.skip}>
             <Text style={st.skipText}>Tanıtımı geç</Text>
@@ -467,6 +512,8 @@ const st = StyleSheet.create({
   },
   cityBtnText: { fontFamily: fonts.bodyBold, fontSize: 21, color: colors.greenDark },
   pointer: { position: 'absolute' },
+  ripple: { position: 'absolute', backgroundColor: colors.goldLight },
+  tapHint: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, marginTop: 6 },
   bubble: {
     position: 'absolute',
     left: 16,
