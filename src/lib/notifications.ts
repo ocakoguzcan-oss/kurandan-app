@@ -4,6 +4,7 @@ import { CalcOptions, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES, VakitKey, formatT
 import { addDays, fromWall, ymdIn } from './tz';
 import { t } from '../i18n';
 import { upcomingDiniGunler } from '../data/diniGunler';
+import { EZANLAR, ezanById, ezanFor, EzanId } from './ezanSesleri';
 
 export type ReminderSettings = {
   enabled: Record<VakitKey, boolean>;
@@ -24,8 +25,8 @@ export const DEFAULT_REMINDERS: ReminderSettings = {
 export const LEAD_OPTIONS = [0, 5, 15, 30];
 
 const CHANNEL = 'vakit';
-const CHANNEL_EZAN = 'vakit-ezan';
-const EZAN_FILE = 'ezan.wav';
+// Android'de bildirim sesi kanala bağlıdır: her kayıt için ayrı kanal
+const ezanChannel = (id: EzanId) => `ezan-${id}`;
 const DAYS_AHEAD = 7; // iOS en fazla 64 bekleyen bildirime izin verir: 6 vakit × 7 gün + Cuma + dini günler
 
 if (Platform.OS !== 'web') {
@@ -48,13 +49,17 @@ async function ensureChannels() {
     vibrationPattern: [0, 250, 250, 250],
     lightColor: '#18583C',
   });
-  await Notifications.setNotificationChannelAsync(CHANNEL_EZAN, {
-    name: t('Ezan'),
-    importance: Notifications.AndroidImportance.MAX,
-    sound: EZAN_FILE,
-    vibrationPattern: [0, 400, 200, 400],
-    lightColor: '#18583C',
-  });
+  for (const e of EZANLAR) {
+    await Notifications.setNotificationChannelAsync(ezanChannel(e.id), {
+      name: `${t('Ezan')} · ${t(e.ad)}`,
+      importance: Notifications.AndroidImportance.MAX,
+      sound: e.dosya,
+      vibrationPattern: [0, 400, 200, 400],
+      lightColor: '#18583C',
+    });
+  }
+  // Eski sürümün tek ezan kanalı
+  await Notifications.deleteNotificationChannelAsync('vakit-ezan').catch(() => {});
 }
 
 export type PermissionStatus = 'granted' | 'denied' | 'undetermined';
@@ -89,28 +94,37 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
   let count = 0;
   const tz = calc.tz;
   const today = ymdIn(new Date(), tz);
-  const channelId = settings.ezan ? CHANNEL_EZAN : CHANNEL;
-
   for (let i = 0; i < DAYS_AHEAD; i++) {
-    const times = getPrayerTimes(addDays(today, i), lat, lng, calc);
+    const day = addDays(today, i);
+    const cuma = new Date(Date.UTC(day.y, day.m - 1, day.d)).getUTCDay() === 5;
+    const times = getPrayerTimes(day, lat, lng, calc);
     for (const key of VAKIT_KEYS) {
       if (!settings.enabled[key]) continue;
       const fireAt = times[key].getTime() - settings.leadMin * 60000;
       if (fireAt <= now + 30000) continue;
       const name = t(VAKIT_NAMES[key]);
+      const cumaOgle = cuma && key === 'ogle';
       // Ezan yalnızca vaktin tam girdiği anda okunur; "x dk önce" hatırlatması normal sesle gelir.
-      const withEzan = settings.ezan && settings.leadMin === 0 && key !== 'gunes';
+      // Cuma günü öğle vaktinde Cuma salâsı çalar.
+      const ezan = settings.ezan && settings.leadMin === 0 ? ezanFor(key, cuma) : null;
+      const title = settings.leadMin
+        ? cumaOgle
+          ? t('Cuma namazına {n} dakika', { n: settings.leadMin })
+          : t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin })
+        : cumaOgle
+          ? t('Cuma namazı vakti girdi')
+          : t('{vakit} vakti girdi', { vakit: name });
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: settings.leadMin ? t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin }) : t('{vakit} vakti girdi', { vakit: name }),
+          title,
           body: `${placeName} · ${name} ${formatTime(times[key], tz)}`,
-          sound: withEzan ? EZAN_FILE : 'default',
-          data: { url: withEzan ? `/ezan?vakit=${encodeURIComponent(key)}` : '/' },
+          sound: ezan ? ezanById(ezan).dosya : 'default',
+          data: { url: ezan ? `/ezan?vakit=${encodeURIComponent(key)}${ezan === 'cuma' ? '&cuma=1' : ''}` : '/' },
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.DATE,
           date: new Date(fireAt),
-          channelId: withEzan ? channelId : CHANNEL,
+          channelId: ezan ? ezanChannel(ezan) : CHANNEL,
         },
       });
       count++;

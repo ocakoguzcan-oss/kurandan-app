@@ -10,7 +10,6 @@ import { utcLabel } from '../../src/lib/tz';
 import { countryName } from '../../src/data/world';
 import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus } from '../../src/lib/notifications';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
-import { EZAN_KAYDI_HAZIR } from '../../src/config';
 import { useTour } from '../../src/tour/Tour';
 import { getLang, LANGS, t } from '../../src/i18n';
 
@@ -89,11 +88,17 @@ export default function Ayarlar() {
             <Text style={st.name}>{t('Ezan sesiyle bildir')}</Text>
             <Text style={st.sub}>
               {reminders.leadMin === 0 ? t('Vakit girince ezan okunur') : t('Ezan yalnızca “Vaktinde” seçiliyken okunur')}
-              {EZAN_KAYDI_HAZIR ? '' : t(' · ezan kaydı yakında')}
             </Text>
           </View>
           <Toggle label={t('Ezan sesiyle bildir')} value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
         </View>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/ezan')} style={[st.row, st.divider]}>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>{t('Ezan sesleri')}</Text>
+            <Text style={st.sub}>{t('Her vaktin kendi ezanı · Cuma günü öğlede salâ')}</Text>
+          </View>
+          <Text style={st.link}>{t('Dinle ›')}</Text>
+        </Pressable>
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Kandil ve dini günler')}</Text>

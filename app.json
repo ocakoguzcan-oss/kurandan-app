@@ -72,7 +72,12 @@
           "icon": "./assets/notification-icon.png",
           "color": "#18583C",
           "sounds": [
-            "./assets/sounds/ezan.wav"
+            "./assets/sounds/ezan_imsak.wav",
+            "./assets/sounds/ezan_ogle.wav",
+            "./assets/sounds/ezan_ikindi.wav",
+            "./assets/sounds/ezan_aksam.wav",
+            "./assets/sounds/ezan_yatsi.wav",
+            "./assets/sounds/cuma_sala.wav"
           ]
         }
       ],
