@@ -69,6 +69,7 @@ export default function RootLayout() {
           <Stack.Screen name="ezan" />
           <Stack.Screen name="namaz-takip" />
           <Stack.Screen name="dini-gunler" />
+          <Stack.Screen name="kabe-yolu" />
         </Stack>
         </TourProvider>
       </AppProvider>

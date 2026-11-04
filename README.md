@@ -59,6 +59,7 @@ assets/                Logo, uygulama ikonu, açılış ekranı
 | Ne | Nerede |
 |---|---|
 | Dua eklemek / düzeltmek | `content/dualar.json` — GitHub'da düzenlenince **uygulama güncellemesi olmadan** herkese gelir (en geç 6 saat) |
+| Kâbe'ye Nasıl Gidilir? (güzergâh, sınır kapısı, vize, firmalar) | `content/kabe-yolu.json` — dualar gibi güncelleme gerekmeden herkese gelir |
 | Story sözleri, ayetler, renkler, desenler | `src/data/story.ts` |
 | Zikir listesi ve hedef sayılar | `src/data/zikirler.ts` |
 | Renkler, yazı tipleri | `src/theme.ts` |
@@ -143,3 +144,5 @@ Kimlikler: iOS `ai.kurandan.app`, Android `ai.kurandan.app` (değiştirmek ister
 ## 7. Hatırlatmalar hakkında
 
 Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında yenilenir (iOS aynı anda en fazla 64 planlı bildirime izin verir). Kullanıcı uygulamayı bir haftadan uzun açmazsa hatırlatmalar durur; ileride arka planda yenileme (`expo-background-task`) eklenebilir. Ezan sesiyle bildirim için bir ses dosyası `assets/` klasörüne eklenip `expo-notifications` ayarına tanıtılmalı.
+
+> **Android'de harita:** Mağaza sürümünde Android için Google Maps API anahtarı gerekir (`app.json` → `android.config.googleMaps.apiKey`). iPhone'da Apple Haritalar anahtarsız çalışır.

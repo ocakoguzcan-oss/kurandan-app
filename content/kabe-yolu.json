@@ -1,0 +1,507 @@
+{
+ "surum": 1,
+ "guncelleme": "2026-11-04",
+ "genel": {
+  "umreHac": [
+   "Umre için bugün herkes kendi başına gidebilir: Suudi Arabistan'ın turist e-vizesi ya da umre vizesiyle girip Mekke'de umre iznini ücretsiz Nusuk uygulamasından alırsınız. Bir firmaya bağlı olmak zorunlu değildir.",
+   "Hac ise Türkiye'den yalnızca Diyanet İşleri Başkanlığı'nın kurası ve Diyanet'ten yetki belgeli firmalar aracılığıyla yapılabilir. Hac için bireysel gidiş mümkün değildir.",
+   "18 yaş üstü kadınlar mahremsiz umre yapabilir; 18 yaş altındakiler anne-baba ya da yasal vasiyle gitmelidir."
+  ],
+  "vize": [
+   "Turist e-vizesi: visa.visitsaudi.com üzerinden, sağlık sigortası dahil yaklaşık 535 SAR. 1 yıl geçerli, çok girişli, her girişte 90 güne kadar kalış.",
+   "Umre izni: Suudi Arabistan'a girdikten sonra ücretsiz Nusuk uygulamasından alınır. Hac döneminde (yaz başı) turist vizesiyle Mekke'ye giriş kısıtlanabilir.",
+   "Pasaportunuz en az 6 ay geçerli olmalı."
+  ],
+  "kaynaklar": [
+   {
+    "ad": "Suudi Arabistan resmi vize sitesi",
+    "url": "https://visa.visitsaudi.com"
+   },
+   {
+    "ad": "Nusuk (umre izni ve randevu)",
+    "url": "https://www.nusuk.sa"
+   },
+   {
+    "ad": "T.C. Dışişleri Bakanlığı seyahat uyarıları",
+    "url": "https://www.mfa.gov.tr"
+   },
+   {
+    "ad": "Diyanet Hac ve Umre Hizmetleri",
+    "url": "https://hacumre.diyanet.gov.tr"
+   }
+  ]
+ },
+ "modlar": {
+  "araba": {
+   "baslik": "Kendi aracınızla",
+   "ozet": "Kara yolu, 2011'den sonra yıllarca kapalı kalan Suriye güzergâhının açılmasıyla yeniden mümkün oldu. En kısa yol Suriye ve Ürdün üzerinden; alternatif olarak Irak ve Ürdün üzerinden de gidilebilir.",
+   "uyari": "Güzergâh üzerindeki sınır kapıları güvenlik nedeniyle aniden kapanabiliyor (ör. Suriye–Ürdün arasındaki Nasib kapısı 27 Ekim 2026'da kapanıp 28 Ekim'de yeniden açıldı). Yola çıkmadan önce Dışişleri Bakanlığı'nın seyahat uyarılarını ve kapıların güncel durumunu mutlaka kontrol edin.",
+   "guzergahlar": [
+    {
+     "id": "suriye",
+     "ad": "Suriye – Ürdün (en kısa)",
+     "mesafe": "≈ 3.300 km",
+     "sure": "4–6 gün",
+     "duraklar": [
+      {
+       "ad": "İstanbul",
+       "lat": 41.0082,
+       "lng": 28.9784,
+       "tur": "sehir",
+       "detay": "Yolculuğun başlangıcı. Günde en fazla 8–10 saat sürüş önerilir."
+      },
+      {
+       "ad": "Ankara",
+       "lat": 39.9334,
+       "lng": 32.8597,
+       "tur": "sehir",
+       "detay": "Otoyolla güneye devam."
+      },
+      {
+       "ad": "Adana",
+       "lat": 37.0,
+       "lng": 35.3213,
+       "tur": "sehir",
+       "detay": "Hatay'a geçmeden son büyük şehir; araç bakımı için uygun durak."
+      },
+      {
+       "ad": "Cilvegözü Sınır Kapısı (Hatay, Reyhanlı)",
+       "lat": 36.24,
+       "lng": 36.57,
+       "tur": "sinir",
+       "detay": "Türkiye'den çıkış ve Suriye'ye giriş. Suriye vizesi kapıda alınabiliyor (2025'te tek giriş 50 USD); yurt dışı çıkış harcı ayrıca ödenir."
+      },
+      {
+       "ad": "Halep",
+       "lat": 36.2021,
+       "lng": 37.1343,
+       "tur": "sehir",
+       "detay": "Suriye içinde M5 otoyolu ile güneye."
+      },
+      {
+       "ad": "Humus",
+       "lat": 34.7324,
+       "lng": 36.7137,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Şam",
+       "lat": 33.5138,
+       "lng": 36.2765,
+       "tur": "sehir",
+       "detay": "Mola ve konaklama için uygun büyük şehir."
+      },
+      {
+       "ad": "Nasib (Suriye) – Cabir (Ürdün) Sınır Kapısı",
+       "lat": 32.55,
+       "lng": 36.2,
+       "tur": "sinir",
+       "detay": "Ürdün'e giriş. Türk vatandaşları için Ürdün'de 90 güne kadar vize yok. Araç için Ürdün trafik sigortası kapıda yapılır."
+      },
+      {
+       "ad": "Amman",
+       "lat": 31.9454,
+       "lng": 35.9284,
+       "tur": "sehir",
+       "detay": "Ürdün'ün başkenti; Çöl Otoyolu (Desert Highway) ile güneye."
+      },
+      {
+       "ad": "Maan",
+       "lat": 30.1962,
+       "lng": 35.7341,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Müdevvere (Ürdün) – Hâlat Ammâr (Suudi) Sınır Kapısı",
+       "lat": 29.25,
+       "lng": 36.03,
+       "tur": "sinir",
+       "detay": "Suudi Arabistan'a giriş. Hacı ve umre kafilelerinin kullandığı ana kapılardan biri. Yabancı plakalı araçlar için zorunlu Suudi sigortası (Manafith) kapıda yapılır."
+      },
+      {
+       "ad": "Tebük",
+       "lat": 28.3835,
+       "lng": 36.5662,
+       "tur": "sehir",
+       "detay": "Tebük Seferi'nin yapıldığı şehir."
+      },
+      {
+       "ad": "Medine",
+       "lat": 24.4672,
+       "lng": 39.6111,
+       "tur": "sehir",
+       "detay": "Mescid-i Nebevî. Umreye Medine'den başlayacaksanız ihrama Zülhuleyfe mîkatında girilir."
+      },
+      {
+       "ad": "Mekke",
+       "lat": 21.4225,
+       "lng": 39.8262,
+       "tur": "hedef",
+       "detay": "Mescid-i Harâm ve Kâbe. Umre izninizi Nusuk uygulamasından alın."
+      }
+     ]
+    },
+    {
+     "id": "irak",
+     "ad": "Irak – Ürdün",
+     "mesafe": "≈ 4.000–4.500 km",
+     "sure": "6–9 gün",
+     "duraklar": [
+      {
+       "ad": "İstanbul",
+       "lat": 41.0082,
+       "lng": 28.9784,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Gaziantep",
+       "lat": 37.0662,
+       "lng": 37.3833,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Şanlıurfa",
+       "lat": 37.1591,
+       "lng": 38.7969,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Habur Sınır Kapısı (Şırnak, Silopi)",
+       "lat": 37.14,
+       "lng": 42.38,
+       "tur": "sinir",
+       "detay": "Irak'a giriş. Irak federal vizesi önceden alınmalıdır; kapıda verilmez."
+      },
+      {
+       "ad": "Erbil",
+       "lat": 36.19,
+       "lng": 44.01,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Bağdat",
+       "lat": 33.3152,
+       "lng": 44.3661,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Ramadi",
+       "lat": 33.42,
+       "lng": 43.3,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Rutbe",
+       "lat": 33.04,
+       "lng": 40.28,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Trebil (Irak) – Kerâme (Ürdün) Sınır Kapısı",
+       "lat": 32.9,
+       "lng": 38.95,
+       "tur": "sinir",
+       "detay": "Ürdün'e giriş. Türk vatandaşlarına vize yok."
+      },
+      {
+       "ad": "Ezrak",
+       "lat": 31.83,
+       "lng": 36.82,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Ömerî (Ürdün) – Hadîse (Suudi) Sınır Kapısı",
+       "lat": 31.5,
+       "lng": 37.1,
+       "tur": "sinir",
+       "detay": "Suudi Arabistan'ın ana kara kapılarından biri. Zorunlu Suudi araç sigortası (Manafith) kapıda yapılır."
+      },
+      {
+       "ad": "Kureyyat",
+       "lat": 31.33,
+       "lng": 37.34,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Cevf (Sekâka)",
+       "lat": 29.97,
+       "lng": 40.21,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Hâil",
+       "lat": 27.52,
+       "lng": 41.69,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Medine",
+       "lat": 24.4672,
+       "lng": 39.6111,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Mekke",
+       "lat": 21.4225,
+       "lng": 39.8262,
+       "tur": "hedef",
+       "detay": ""
+      }
+     ]
+    }
+   ],
+   "belgeler": [
+    "Pasaport (en az 6 ay geçerli)",
+    "Uluslararası sürücü belgesi (TTOK'tan) ve kendi ehliyetiniz",
+    "Araç ruhsatı ve sahiplik belgesi",
+    "Geçici ithal belgesi: Triptik / Carnet de Passage (TTOK'tan)",
+    "Suudi Arabistan turist e-vizesi ya da umre vizesi",
+    "Geçiş ülkelerinin vizeleri (Suriye kapıda; Irak federal vizesi önceden)",
+    "Her ülke için araç sigortası: Yeşil Kart Suriye, Irak, Ürdün ve Suudi Arabistan'da geçmez; sigorta kapılarda yapılır",
+    "Sağlık sigortası; menenjit aşısı istenebilir, gitmeden teyit edin"
+   ],
+   "ipuclari": [
+    "En az iki sürücüyle gidin; gece sürüşünden kaçının.",
+    "Yola çıkmadan aracın lastik, yağ ve fren bakımını yaptırın; yedek lastik, kriko, çekme halatı ve ilk yardım çantası bulundurun.",
+    "Yakıt, geçiş ücretleri, konaklama ve yemek dahil gidiş-dönüş bütçe tahmini kişi/araç başı yaklaşık 1.400–3.000 USD (2026 tahmini)."
+   ],
+   "firmalar": []
+  },
+  "otobus": {
+   "baslik": "Otobüsle (kara yolu umre turu)",
+   "ozet": "Türkiye'den Mekke'ye düzenli tarifeli otobüs seferi yok; otobüsle gidiş, kara yolu umre turu düzenleyen firmalarla yapılıyor. Bu turlar Suriye ve Ürdün üzerinden, yol boyunca tarihî Hicaz duraklarını da gezerek yaklaşık 9 günde Mekke'ye ulaşıyor.",
+   "uyari": "Kara yolu turları Suriye güzergâhının açık olmasına bağlıdır. Tura yazılmadan önce firmanın Diyanet'ten umre yetki belgesi olduğunu ve güzergâhın güncel durumunu sorun.",
+   "guzergahlar": [
+    {
+     "id": "hicaz",
+     "ad": "Hicaz rotası",
+     "mesafe": "≈ 3.500 km",
+     "sure": "≈ 9 gün",
+     "duraklar": [
+      {
+       "ad": "İstanbul",
+       "lat": 41.0082,
+       "lng": 28.9784,
+       "tur": "sehir",
+       "detay": "Kafilenin buluştuğu yer."
+      },
+      {
+       "ad": "Cilvegözü Sınır Kapısı",
+       "lat": 36.24,
+       "lng": 36.57,
+       "tur": "sinir",
+       "detay": "Suriye'ye giriş; vize ve işlemleri genelde firma yürütür."
+      },
+      {
+       "ad": "Şam",
+       "lat": 33.5138,
+       "lng": 36.2765,
+       "tur": "sehir",
+       "detay": "Emevî Camii ve tarihî mekânların ziyareti."
+      },
+      {
+       "ad": "Nasib – Cabir Sınır Kapısı",
+       "lat": 32.55,
+       "lng": 36.2,
+       "tur": "sinir",
+       "detay": "Ürdün'e giriş."
+      },
+      {
+       "ad": "Amman",
+       "lat": 31.9454,
+       "lng": 35.9284,
+       "tur": "sehir",
+       "detay": "Salt Türk Şehitliği ziyareti yapılabiliyor."
+      },
+      {
+       "ad": "Vadi Rum",
+       "lat": 29.57,
+       "lng": 35.42,
+       "tur": "sehir",
+       "detay": "Hicaz Demiryolu durağı."
+      },
+      {
+       "ad": "Akabe",
+       "lat": 29.53,
+       "lng": 35.01,
+       "tur": "sehir",
+       "detay": "Ürdün'ün güney ucu; buradan Suudi Arabistan'a geçiş."
+      },
+      {
+       "ad": "Medâin-i Sâlih / Ula",
+       "lat": 26.61,
+       "lng": 37.92,
+       "tur": "sehir",
+       "detay": "Tarihî Hicaz durakları."
+      },
+      {
+       "ad": "Tebük",
+       "lat": 28.3835,
+       "lng": 36.5662,
+       "tur": "sehir",
+       "detay": ""
+      },
+      {
+       "ad": "Hayber",
+       "lat": 25.7,
+       "lng": 39.29,
+       "tur": "sehir",
+       "detay": "Hayber Kalesi."
+      },
+      {
+       "ad": "Medine",
+       "lat": 24.4672,
+       "lng": 39.6111,
+       "tur": "sehir",
+       "detay": "Mescid-i Nebevî ziyareti; ihram için Zülhuleyfe mîkatı."
+      },
+      {
+       "ad": "Mekke",
+       "lat": 21.4225,
+       "lng": 39.8262,
+       "tur": "hedef",
+       "detay": "Umre."
+      }
+     ]
+    }
+   ],
+   "belgeler": [
+    "Pasaport (en az 6 ay geçerli)",
+    "Suudi Arabistan vizesi (genelde firma ayarlar)",
+    "Geçiş ülkesi vizeleri (genelde firma ayarlar)",
+    "Sağlık sigortası; menenjit aşısı istenebilir"
+   ],
+   "ipuclari": [
+    "Firmanın Diyanet'ten umre organizasyonu yetki belgesi olup olmadığını sorun ve sözleşmede güzergâhı, konaklamayı ve dönüş şeklini yazılı isteyin.",
+    "Dönüşü uçakla yapan karma turlar da var; yolculuk süresini kısaltır."
+   ],
+   "firmalar": [
+    {
+     "ad": "Diyanet'in yetkili umre firmaları listesi",
+     "url": "https://hacumre.diyanet.gov.tr"
+    }
+   ]
+  },
+  "ucak": {
+   "baslik": "Uçakla",
+   "ozet": "En hızlı ve en yaygın yol. İstanbul ve Ankara'dan Cidde ile Medine'ye her gün direkt uçuşlar var; uçuş yaklaşık 3,5 saat. Diğer şehirlerden genellikle İstanbul ya da Ankara aktarmasıyla gidilir.",
+   "uyari": "",
+   "guzergahlar": [
+    {
+     "id": "cidde",
+     "ad": "Cidde üzerinden",
+     "mesafe": "≈ 2.400 km",
+     "sure": "≈ 3 saat 45 dk uçuş",
+     "duraklar": [
+      {
+       "ad": "İstanbul Havalimanı (IST) / Sabiha Gökçen (SAW)",
+       "lat": 41.0082,
+       "lng": 28.9784,
+       "tur": "sehir",
+       "detay": "IST'den THY, Saudia, flynas, flyadeal; SAW'dan Pegasus, AJet, flynas, flyadeal. Haftada 100'ün üzerinde direkt sefer."
+      },
+      {
+       "ad": "Cidde – Kral Abdülaziz Havalimanı (JED)",
+       "lat": 21.6796,
+       "lng": 39.1565,
+       "tur": "havalimani",
+       "detay": "Doğrudan Mekke'ye gidecekseniz ihrama uçakta, mîkat geçilmeden girilir; kabin ekibi genelde anons eder."
+      },
+      {
+       "ad": "Mekke",
+       "lat": 21.4225,
+       "lng": 39.8262,
+       "tur": "hedef",
+       "detay": "Havalimanından Haremeyn hızlı treniyle ≈30 dk (ekonomi ≈75 SAR) ya da taksiyle (≈150–200 SAR)."
+      }
+     ]
+    },
+    {
+     "id": "medine",
+     "ad": "Medine üzerinden",
+     "mesafe": "≈ 2.100 km",
+     "sure": "≈ 3 saat 25 dk uçuş",
+     "duraklar": [
+      {
+       "ad": "İstanbul (IST / SAW)",
+       "lat": 41.0082,
+       "lng": 28.9784,
+       "tur": "sehir",
+       "detay": "IST'den THY ve Saudia; SAW'dan Pegasus, AJet, flynas, flyadeal."
+      },
+      {
+       "ad": "Medine – Prens Muhammed bin Abdülaziz Havalimanı (MED)",
+       "lat": 24.4672,
+       "lng": 39.6111,
+       "tur": "havalimani",
+       "detay": "Önce Medine'yi ziyaret edip umre için Zülhuleyfe mîkatında ihrama girebilirsiniz."
+      },
+      {
+       "ad": "Mekke",
+       "lat": 21.4225,
+       "lng": 39.8262,
+       "tur": "hedef",
+       "detay": "Medine'den Haremeyn hızlı treniyle ≈2 saat (ekonomi ≈150–200 SAR) ya da otobüsle 5–6 saat."
+      }
+     ]
+    }
+   ],
+   "belgeler": [
+    "Pasaport (en az 6 ay geçerli)",
+    "Suudi Arabistan turist e-vizesi ya da umre vizesi (uçuştan önce)",
+    "Uçak bileti ve konaklama bilgisi",
+    "Umre izni: Suudi Arabistan'a vardıktan sonra Nusuk uygulamasından"
+   ],
+   "ipuclari": [
+    "Ankara'dan da Cidde ve Medine'ye direkt seferler var.",
+    "Bilet fiyatları sezona göre çok değişir; Ramazan ve yaz tatili en pahalı dönemlerdir.",
+    "Gidişi Medine'ye, dönüşü Cidde'den planlamak Haremeyn treniyle zaman kazandırır."
+   ],
+   "firmalar": [
+    {
+     "ad": "Türk Hava Yolları",
+     "url": "https://www.turkishairlines.com"
+    },
+    {
+     "ad": "Pegasus",
+     "url": "https://www.flypgs.com"
+    },
+    {
+     "ad": "AJet",
+     "url": "https://ajet.com"
+    },
+    {
+     "ad": "Saudia",
+     "url": "https://www.saudia.com"
+    },
+    {
+     "ad": "flynas",
+     "url": "https://www.flynas.com"
+    },
+    {
+     "ad": "flyadeal",
+     "url": "https://www.flyadeal.com"
+    },
+    {
+     "ad": "Haremeyn Hızlı Treni",
+     "url": "https://sar.hhr.sa"
+    }
+   ]
+  }
+ },
+ "not": "Bu dosya GitHub'da güncellendiğinde bilgiler uygulama güncellemesi olmadan herkese gelir. Sınır kapıları ve vize kuralları değişebilir; düzenli kontrol edin."
+}

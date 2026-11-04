@@ -4,7 +4,7 @@ import { Text } from '../../src/components/Text';
 import { Link, router } from 'expo-router';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 import { Screen, Card, Eyebrow, RoundButton } from '../../src/components/ui';
-import { IconBell, IconBook, IconCalendar, IconCheck, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
+import { IconBell, IconKaaba, IconBook, IconCalendar, IconCheck, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
 import { colors, fonts, radius } from '../../src/theme';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
@@ -51,6 +51,7 @@ export default function Home() {
   const tDua = useTourTarget('dua');
   const tTrackers = useTourTarget('trackers');
   const tGun = useTourTarget('dinigun');
+  const tKabe = useTourTarget('kabe');
   const register = tour.register;
 
   return (
@@ -157,6 +158,19 @@ export default function Home() {
         </Pressable>
         </View>
       )}
+
+      <View ref={tKabe} collapsable={false}>
+        <Pressable accessibilityRole="link" onPress={() => router.push('/kabe-yolu')}>
+          <Card style={st.gunCard}>
+            <IconKaaba />
+            <View style={{ flex: 1 }}>
+              <Text style={st.gunName}>Kâbe'ye Nasıl Gidilir?</Text>
+              <Text style={st.muted}>Araba · Otobüs · Uçak — güzergâh, sınır kapıları, vize</Text>
+            </View>
+            <Text style={st.gunMore}>Aç ›</Text>
+          </Card>
+        </Pressable>
+      </View>
 
       <View style={st.grid}>
         {FEATURES.map(({ href, label, Icon }) => (

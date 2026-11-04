@@ -38,6 +38,7 @@ const STEPS: Step[] = [
   { target: 'dua', title: 'Günün duası', text: 'Her gün yeni bir dua ve ne için okunduğu. Dokununca aile, sağlık, rızık, nazar gibi kategorilerdeki bütün dualar açılır; Instagram story olarak paylaşabilirsiniz.' },
   { target: 'trackers', title: 'Hatim ve namaz takibi', text: 'Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.' },
   { target: 'dinigun', title: 'Kandil ve dini günler', text: 'Yaklaşan kandil ve bayramlar. Bir gün önceden size hatırlatırız.' },
+  { target: 'kabe', title: 'Kâbe’ye Nasıl Gidilir?', text: 'Araba, otobüs ya da uçakla Kâbe’ye giden yollar: haritada güzergâh, sınır kapıları, vize ve gerekli belgeler adım adım.' },
   { target: 'tile-kuran', title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra ya da kelimeye dokunup dinleyin, ▶ ile sayfa sayfa okutun. “Meal” ile her ayetin Türkçesi altında görünür.' },
   { target: 'tile-kible', title: 'Kıble', text: 'Telefonu düz tutun; ok Kâbe’nin yönünü gösterir. Doğru yöne dönünce telefon titrer.' },
   { target: 'tile-zikir', title: 'Zikirmatik', text: 'Büyük daireye dokunarak zikrinizi sayın. Hedefe ulaşınca telefon titrer, günlük toplamınız saklanır.' },
