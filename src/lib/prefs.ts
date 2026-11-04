@@ -5,10 +5,20 @@ import { load, save } from './storage';
 export type MushafSize = 1 | 2 | 3;
 /** İlk açılış akışı: şehir seçimi → izinler → bölüm tanıtımı → bitti */
 export type OnboardingPhase = 'city' | 'perm' | 'sections' | 'done';
-export type Prefs = { largeText: boolean; permissionIntroShown: boolean; mushafSize: MushafSize; onboarding: OnboardingPhase };
+export type TapMode = 'line' | 'word';
+export type Prefs = {
+  largeText: boolean;
+  permissionIntroShown: boolean;
+  mushafSize: MushafSize;
+  onboarding: OnboardingPhase;
+  /** Kur'an'da dokununca satır mı kelime mi okunsun */
+  mushafTap: TapMode;
+  /** Satırların altında Türkçe meal */
+  mushafMeal: boolean;
+};
 
 const KEY = 'kurandan.prefs.v1';
-const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1, onboarding: 'city' };
+const initial: Prefs = { largeText: false, permissionIntroShown: false, mushafSize: 1, onboarding: 'city', mushafTap: 'line', mushafMeal: false };
 let state: Prefs = initial;
 let loaded = false;
 const listeners = new Set<() => void>();

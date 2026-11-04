@@ -26,7 +26,7 @@ function usePlayer(): PlayerState {
 export default function Kuran() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const { mushafSize } = usePrefs();
+  const { mushafSize, mushafTap, mushafMeal } = usePrefs();
   const [pageH, setPageH] = useState(0);
   const params = useLocalSearchParams<{ sayfa?: string }>();
   const hatim = useHatim();
@@ -90,6 +90,9 @@ export default function Kuran() {
   const onLinePress = useCallback((p: number, line: number, words: QWord[]) => {
     quranPlayer.playLine(p, line, words);
   }, []);
+  const onWordPress = useCallback((p: number, w: QWord) => {
+    quranPlayer.playWord(p, w);
+  }, []);
 
   const togglePlay = () => {
     if (player.mode === 'page') {
@@ -105,9 +108,10 @@ export default function Kuran() {
   const hatimPct = Math.round((hatim.read.length / TOTAL_PAGES) * 100);
   const playing = player.mode === 'page';
 
-  let status = 'Bir satıra dokunun, yalnızca o satır okunsun.';
+  let status = mushafTap === 'word' ? 'Bir kelimeye dokunun, telaffuzunu dinleyin.' : 'Bir satıra dokunun, yalnızca o satır okunsun.';
   if (player.loading) status = 'Tilavet hazırlanıyor…';
   else if (player.mode === 'line') status = `${player.line}. satır okunuyor`;
+  else if (player.mode === 'word') status = 'Kelime okunuyor';
   else if (playing) status = `Sayfa ${player.page} okunuyor · durdurana kadar devam eder`;
 
   return (
@@ -143,7 +147,7 @@ export default function Kuran() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         keyExtractor={(p) => String(p)}
-        extraData={`${mushafSize}:${player.mode}:${player.page}:${player.line}:${player.wordId}:${chapters.length}:${pageH}`}
+        extraData={`${mushafSize}:${mushafTap}:${mushafMeal}:${player.mode}:${player.page}:${player.line}:${player.wordId}:${chapters.length}:${pageH}`}
         initialScrollIndex={page - 1}
         initialNumToRender={1}
         maxToRenderPerBatch={2}
@@ -164,6 +168,9 @@ export default function Kuran() {
               width={width}
               height={pageH}
               size={mushafSize}
+              tapMode={mushafTap}
+              showMeal={mushafMeal}
+              onWordPress={onWordPress}
               chapters={chapters}
               activeWordId={player.page === item ? player.wordId : null}
               activeLine={player.page === item && player.mode === 'line' ? player.line : null}
@@ -178,10 +185,27 @@ export default function Kuran() {
       </View>
 
       <View style={st.footer}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Önceki sayfa" onPress={() => goTo(page - 1)} style={st.navBtn} disabled={page <= 1}>
-          <Text style={st.navText}>‹ Önceki</Text>
+        <View style={st.footRow}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Önceki sayfa" onPress={() => goTo(page - 1)} style={st.arrow} disabled={page <= 1}>
+          <Text style={st.arrowText}>‹</Text>
         </Pressable>
-        <View style={{ alignItems: 'center', flex: 1, gap: 4 }}>
+        <View style={st.seg} accessibilityRole="radiogroup">
+          {(['line', 'word'] as const).map((m) => {
+            const on = mushafTap === m;
+            return (
+              <Pressable
+                key={m}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: on }}
+                accessibilityLabel={m === 'line' ? 'Dokununca satır okunsun' : 'Dokununca kelime okunsun'}
+                onPress={() => setPrefs({ mushafTap: m })}
+                style={[st.segBtn, on && st.segOn]}
+              >
+                <Text style={[st.segText, on && st.segTextOn]}>{m === 'line' ? 'Satır' : 'Kelime'}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={playing ? 'Durdur' : 'Sayfayı okut'}
@@ -203,11 +227,20 @@ export default function Kuran() {
               </Svg>
             )}
           </Pressable>
-          <Text style={st.status} numberOfLines={1}>{status}</Text>
-        </View>
-        <Pressable accessibilityRole="button" accessibilityLabel="Sonraki sayfa" onPress={() => goTo(page + 1)} style={st.navBtn} disabled={page >= TOTAL_PAGES}>
-          <Text style={[st.navText, { textAlign: 'right' }]}>Sonraki ›</Text>
+        <Pressable
+          accessibilityRole="switch"
+          accessibilityState={{ checked: mushafMeal }}
+          accessibilityLabel="Türkçe meal"
+          onPress={() => setPrefs({ mushafMeal: !mushafMeal })}
+          style={[st.mealBtn, mushafMeal && st.segOn]}
+        >
+          <Text style={[st.segText, mushafMeal && st.segTextOn]}>Meal</Text>
         </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="Sonraki sayfa" onPress={() => goTo(page + 1)} style={st.arrow} disabled={page >= TOTAL_PAGES}>
+          <Text style={st.arrowText}>›</Text>
+        </Pressable>
+        </View>
+        <Text style={st.status} numberOfLines={1}>{status}</Text>
       </View>
 
       <SurahPicker
@@ -344,7 +377,16 @@ const st = StyleSheet.create({
   progress: { height: 4, borderRadius: 2, backgroundColor: colors.cardBorder, overflow: 'hidden' },
   progressFill: { height: 4, backgroundColor: colors.gold },
   today: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  footer: { height: 78, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, borderTopWidth: 1, borderTopColor: colors.cardBorder, backgroundColor: colors.card },
+  footRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 6 },
+  arrow: { width: 40, height: 48, alignItems: 'center', justifyContent: 'center' },
+  arrowText: { fontFamily: fonts.bodyBold, fontSize: 30, lineHeight: 34, color: colors.green },
+  seg: { flexDirection: 'row', borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, padding: 3 },
+  segBtn: { minHeight: 40, paddingHorizontal: 10, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  segOn: { backgroundColor: colors.green, borderColor: colors.green },
+  segText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
+  segTextOn: { color: colors.paper },
+  mealBtn: { minHeight: 46, paddingHorizontal: 12, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
+  footer: { paddingTop: 8, paddingBottom: 6, gap: 4, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: colors.cardBorder, backgroundColor: colors.card },
   navBtn: { width: 84, minHeight: 48, justifyContent: 'center' },
   navText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
   play: { width: 54, height: 54, borderRadius: 27, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },

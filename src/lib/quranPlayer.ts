@@ -4,7 +4,7 @@ import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { buildChunks, Chunk, getChapterAudio, getPage, prefetchPages, QWord, TOTAL_PAGES } from './quran';
 
-export type PlayerMode = 'idle' | 'line' | 'page';
+export type PlayerMode = 'idle' | 'line' | 'word' | 'page';
 export type PlayerState = {
   mode: PlayerMode;
   loading: boolean;
@@ -125,6 +125,23 @@ class QuranPlayer {
     this.set({ mode: 'line', loading: true, page, line, wordId: null });
     try {
       const chunks = await buildChunks(words.filter((w) => w.line === line), true);
+      this.set({ loading: false });
+      await this.playChunks(chunks, token);
+    } catch {
+      // ağ hatası: sessizce dur
+    }
+    if (token === this.token) {
+      this.player?.pause();
+      this.set({ mode: 'idle', loading: false, line: null, wordId: null });
+    }
+  }
+
+  /** Yalnızca o kelimeyi okur (telaffuzu tekrar dinlemek için). */
+  async playWord(page: number, word: QWord) {
+    const token = ++this.token;
+    this.set({ mode: 'word', loading: true, page, line: word.line, wordId: word.id });
+    try {
+      const chunks = await buildChunks([word], false);
       this.set({ loading: false });
       await this.playChunks(chunks, token);
     } catch {

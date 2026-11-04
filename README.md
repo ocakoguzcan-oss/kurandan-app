@@ -109,7 +109,18 @@ Meta, Story paylaşımı için bir **Facebook App ID** ister. 4. adımda açtı�
 
 ---
 
-## 6. Mağazalarda yayınlama
+## 6. Güncelleme akışı
+
+| Dal | Ne olur |
+|---|---|
+| `main` | Expo Go'da denenir (`.eas/workflows/expo-go-yayini.yml`) |
+| `yayin` | App Store'daki kullanıcılara anında güncelleme (`magaza-guncelleme.yml`) |
+| elle: **App Store sürümü** | Yeni derleme + App Store Connect'e gönderim (`magaza-surumu.yml`) |
+
+Yeni yerel paket, izin, ikon ya da SDK değişikliğinde önce `app.json` → `version` artırılır, sonra "App Store sürümü" çalıştırılır.
+Gizlilik ve destek sayfaları `docs/` klasöründedir (GitHub Pages ile yayınlanır).
+
+## 7. Mağazalarda yayınlama
 
 Gerekenler: [Apple Developer Program](https://developer.apple.com/programs/) üyeliği (yıllık ücretli) ve [Google Play Console](https://play.google.com/console) hesabı (tek seferlik ücret).
 

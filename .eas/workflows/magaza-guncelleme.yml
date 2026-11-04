@@ -1,0 +1,18 @@
+# App Store'daki uygulamaya anında güncelleme (Apple incelemesi gerekmez).
+# "yayin" dalına her gönderimde çalışır. Akış: değişiklik önce main'e gider ve Expo Go'da denenir;
+# beğenilince main, yayin dalına aktarılır ve kullanıcılara iner.
+name: Mağaza güncellemesi
+
+on:
+  push:
+    branches: ['yayin']
+
+jobs:
+  update:
+    name: Kullanıcılara güncelleme gönder
+    type: update
+    environment: production
+    env:
+      APP_VARIANT: production
+    params:
+      channel: production

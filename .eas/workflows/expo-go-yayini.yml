@@ -1,5 +1,5 @@
-# main dalına her gönderimde uygulamanın JS sürümünü EAS Update ile yayınlar.
-# Yayın, Expo Go'da ve ileride mağaza sürümünde "main" kanalından açılır.
+# main dalına her gönderimde uygulamanın yeni halini Expo Go'da denenmek üzere yayınlar.
+# (App Store'daki kullanıcılara gitmez; onlar için bkz. magaza-guncelleme.yml)
 name: Expo Go'ya yayınla
 
 on:

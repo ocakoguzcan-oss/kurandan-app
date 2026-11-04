@@ -42,11 +42,16 @@ type Props = {
   activeWordId: number | null;
   activeLine: number | null;
   onLinePress: (page: number, line: number, words: QWord[]) => void;
+  /** 'word' iken kelimeye dokununca yalnızca o kelime okunur */
+  tapMode: 'line' | 'word';
+  onWordPress: (page: number, word: QWord) => void;
+  /** Satırların altında Türkçe meal */
+  showMeal: boolean;
 };
 
 type FontState = 'loading' | 'ready' | 'failed';
 
-function MushafPageInner({ page, width, height, size, chapters, activeWordId, activeLine, onLinePress }: Props) {
+function MushafPageInner({ page, width, height, size, chapters, activeWordId, activeLine, onLinePress, tapMode, onWordPress, showMeal }: Props) {
   const [data, setData] = useState<QPage | null>(null);
   const [fontState, setFontState] = useState<FontState>('loading');
   const [error, setError] = useState(false);
@@ -163,8 +168,25 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
   const chapterOf = (id: number) => chapters.find((c) => c.id === id);
   const firstCh = chapterOf(data!.firstChapter);
 
-  // ---- 1. kademe: tam sayfa mushaf
-  if (size === 1) {
+  const renderWord = (w: QWord, fontSize: number) => {
+    const el = <Word key={w.id} w={w} text={wordText(w)} style={wordFont(fontSize)} endSize={fontSize} active={w.id === activeWordId} />;
+    if (tapMode !== 'word' || w.isEnd) return el;
+    return (
+      <Pressable
+        key={w.id}
+        accessibilityRole="button"
+        accessibilityLabel="Bu kelimeyi dinle"
+        onPress={() => onWordPress(page, w)}
+        hitSlop={4}
+        style={({ pressed }) => pressed && st.wordPressed}
+      >
+        {el}
+      </Pressable>
+    );
+  };
+
+  // ---- 1. kademe: tam sayfa mushaf (mealsiz)
+  if (size === 1 && !showMeal) {
     const lineH = innerH / 15;
     const fontSize = Math.min(fitFont, lineH / 1.4);
     const gap = fontSize * WORD_GAP;
@@ -190,9 +212,7 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
                   (activeLineNow === line || pressed) && st.lineActive,
                 ]}
               >
-                {words.map((w) => (
-                  <Word key={w.id} w={w} text={wordText(w)} style={wordFont(fontSize)} endSize={fontSize} active={w.id === activeWordId} />
-                ))}
+                {words.map((w) => renderWord(w, fontSize))}
               </Pressable>
             );
           })}
@@ -201,9 +221,10 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
     );
   }
 
-  // ---- 2–3. kademe: büyük yazı, satır blokları, dikey kaydırma
+  // ---- Büyük yazı ya da meal: satır blokları, dikey kaydırma
   const fontSize = Math.min(fitFont, innerH / 15 / 1.4) * SIZE_SCALE[size];
   const gap = fontSize * 0.16;
+  const mealSize = 15 * (size === 1 ? 1 : size === 2 ? 1.12 : 1.25);
   return (
     <View style={{ width, height }}>
       <Frame width={width} height={height} topRight={firstCh?.nameAr} topLeft={`الجزء ${toArabicDigits(data!.juz)}`} page={page} />
@@ -218,10 +239,13 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
             );
           const words = byLine.get(line);
           if (!words) return null;
+          // Bu satırda biten ayetlerin meali satırın altına yazılır
+          const meals = showMeal
+            ? words.filter((w) => w.isEnd && data!.meals[w.verseKey]).map((w) => ({ n: w.verse, key: w.verseKey, text: data!.meals[w.verseKey] }))
+            : [];
           return (
+            <View key={line} style={st.lineBlock} onLayout={(e) => (lineY.current[line] = e.nativeEvent.layout.y)}>
             <Pressable
-              key={line}
-              onLayout={(e) => (lineY.current[line] = e.nativeEvent.layout.y)}
               accessibilityRole="button"
               accessibilityLabel={`${line}. satırı dinle`}
               onPress={() => onLinePress(page, line, data!.words)}
@@ -231,10 +255,15 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
                 (activeLineNow === line || pressed) && st.lineActive,
               ]}
             >
-              {words.map((w) => (
-                <Word key={w.id} w={w} text={wordText(w)} style={wordFont(fontSize)} endSize={fontSize} active={w.id === activeWordId} />
-              ))}
+              {words.map((w) => renderWord(w, fontSize))}
             </Pressable>
+            {meals.map((m) => (
+              <Text key={m.key} style={[st.meal, { fontSize: mealSize, lineHeight: mealSize * 1.45 }]}>
+                <Text style={[st.mealNo, { fontSize: mealSize }]}>{`${m.n}. `}</Text>
+                {m.text}
+              </Text>
+            ))}
+            </View>
           );
         })}
       </ScrollView>
@@ -374,9 +403,11 @@ const st = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     paddingHorizontal: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(168,118,40,0.35)',
   },
+  lineBlock: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(168,118,40,0.35)' },
+  meal: { fontFamily: fonts.body, color: colors.inkSoft, paddingHorizontal: 6, paddingBottom: 10, paddingTop: 2 },
+  mealNo: { fontFamily: fonts.bodyBold, color: colors.goldText },
+  wordPressed: { backgroundColor: 'rgba(226,194,122,0.45)', borderRadius: 6 },
   lineActive: { backgroundColor: 'rgba(226,194,122,0.30)' },
   word: { color: colors.ink, includeFontPadding: false },
   wordActive: { color: colors.green, backgroundColor: 'rgba(24,88,60,0.13)', borderRadius: 4 },

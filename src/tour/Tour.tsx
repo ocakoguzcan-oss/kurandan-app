@@ -38,7 +38,7 @@ const STEPS: Step[] = [
   { target: 'dua', title: 'Günün duası', text: 'Her gün Kur’an’dan yeni bir dua. Dokununca okunuşu, anlamı ve paylaşma düğmesi açılır.' },
   { target: 'trackers', title: 'Hatim ve namaz takibi', text: 'Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.' },
   { target: 'dinigun', title: 'Kandil ve dini günler', text: 'Yaklaşan kandil ve bayramlar. Bir gün önceden size hatırlatırız.' },
-  { target: 'tile-kuran', title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra dokunun, yalnızca o satır okunsun; ▶ tuşuyla sayfa sayfa dinleyin. Kaldığınız yeri hatırlar.' },
+  { target: 'tile-kuran', title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra ya da kelimeye dokunup dinleyin, ▶ ile sayfa sayfa okutun. “Meal” ile her ayetin Türkçesi altında görünür.' },
   { target: 'tile-kible', title: 'Kıble', text: 'Telefonu düz tutun; ok Kâbe’nin yönünü gösterir. Doğru yöne dönünce telefon titrer.' },
   { target: 'tile-zikir', title: 'Zikirmatik', text: 'Büyük daireye dokunarak zikrinizi sayın. Hedefe ulaşınca telefon titrer, günlük toplamınız saklanır.' },
   { target: 'tile-namaz-takip', title: 'Namaz Takibi', text: 'Kıldığınız vakitleri işaretleyin; haftalık çizelgenizi ve kaza namazlarınızı takip edin.' },

@@ -10,8 +10,9 @@ const FONT_URL = (page: number) => `https://verses.quran.foundation/fonts/quran/
 export const RECITER_ID = 6; // Mahmud Halil el-Husarî (Murattal)
 export const TOTAL_PAGES = 604;
 
+export const TRANSLATION_ID = 77; // Diyanet İşleri Başkanlığı meali
 export const ATTRIBUTION =
-  'Mushaf sayfaları, Kur’an fontları ve Husarî tilaveti Quran Foundation (quran.com) tarafından sağlanmaktadır.';
+  'Mushaf sayfaları, Kur’an fontları ve Husarî tilaveti Quran Foundation (quran.com) tarafından sağlanmaktadır. Türkçe meal: Diyanet İşleri Başkanlığı.';
 
 export type QWord = {
   id: number;
@@ -33,6 +34,8 @@ export type QPage = {
   /** Sure başlığı / besmele için boş bırakılan satırlar */
   headers: { line: number; kind: 'surah' | 'bismillah'; chapter: number }[];
   firstChapter: number;
+  /** Ayet anahtarı → Türkçe meal */
+  meals: Record<string, string>;
 };
 
 export type Chapter = { id: number; nameTr: string; nameAr: string; pages: [number, number]; verses: number };
@@ -92,12 +95,15 @@ export function getChapters(): Promise<Chapter[]> {
 }
 
 export function getPage(page: number): Promise<QPage> {
-  return cached(`quran.page.v1.${page}`, async () => {
+  return cached(`quran.page.v2.${page}`, async () => {
     const json = await getJson(
-      `${API}/verses/by_page/${page}?words=true&per_page=50&word_fields=line_number,code_v2,text_uthmani,page_number`
+      `${API}/verses/by_page/${page}?words=true&per_page=50&word_fields=line_number,code_v2,text_uthmani,page_number&translations=${TRANSLATION_ID}`
     );
     const words: QWord[] = [];
+    const meals: Record<string, string> = {};
     for (const v of json.verses as any[]) {
+      const tr = (v.translations as any[] | undefined)?.find((t) => t.resource_id === TRANSLATION_ID) ?? v.translations?.[0];
+      if (tr?.text) meals[v.verse_key] = cleanMeal(tr.text);
       const [c, n] = String(v.verse_key).split(':').map(Number);
       for (const w of v.words as any[]) {
         if (w.page_number && w.page_number !== page) continue;
@@ -147,8 +153,21 @@ export function getPage(page: number): Promise<QPage> {
       lineCount,
       headers,
       firstChapter: words[0]?.chapter ?? 1,
+      meals,
     };
   });
+}
+
+/** Mealdeki dipnot işaretlerini ve HTML'i temizler. */
+function cleanMeal(t: string) {
+  return t
+    .replace(/<sup[^>]*>.*?<\/sup>/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, '\u2019')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export function getChapterAudio(chapter: number): Promise<ChapterAudio> {

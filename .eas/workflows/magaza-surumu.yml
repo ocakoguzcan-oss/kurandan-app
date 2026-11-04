@@ -1,0 +1,25 @@
+# App Store için yeni sürüm: iOS derlemesi alır ve App Store Connect'e (TestFlight) gönderir.
+# Elle başlatılır: expo.dev → proje → Workflows → "App Store sürümü" → Run.
+# Yeni yerel paket, izin, ikon ya da SDK değişikliğinde kullanılır; app.json'daki "version" önce artırılır.
+name: App Store sürümü
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build_ios:
+    name: iOS derlemesi
+    type: build
+    environment: production
+    params:
+      platform: ios
+      profile: production
+
+  submit_ios:
+    name: App Store Connect'e gönder
+    needs: [build_ios]
+    type: submit
+    environment: production
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      profile: production

@@ -16,7 +16,7 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Ana Sayfa', tabBarIcon: ({ color }) => <IconHome color={color} /> }} />
-      <Tabs.Screen name="kuran" options={{ title: "Kur'an-ı Kerim", tabBarIcon: ({ color }) => <IconBook color={color} /> }} />
+      <Tabs.Screen name="kuran" options={{ title: 'Kur’ân', tabBarIcon: ({ color }) => <IconBook color={color} /> }} />
       <Tabs.Screen name="kible" options={{ title: 'Kıble', tabBarIcon: ({ color }) => <IconCompass color={color} /> }} />
       <Tabs.Screen name="zikir" options={{ title: 'Zikir', tabBarIcon: ({ color }) => <IconPlus color={color} /> }} />
       <Tabs.Screen name="reels" options={{ title: 'Reels', tabBarIcon: ({ color }) => <IconPlay color={color} /> }} />
