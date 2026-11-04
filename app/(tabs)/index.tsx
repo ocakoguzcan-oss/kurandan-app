@@ -50,7 +50,7 @@ export default function Home() {
   const tDua = useTourTarget('dua');
   const tTrackers = useTourTarget('trackers');
   const tGun = useTourTarget('dinigun');
-  const tGrid = useTourTarget('grid');
+  const register = tour.register;
 
   return (
     <Screen scrollRef={tour.scroll.ref} onScroll={tour.scroll.onScroll}>
@@ -156,14 +156,16 @@ export default function Home() {
         </View>
       )}
 
-      <View ref={tGrid} collapsable={false} style={st.grid}>
+      <View style={st.grid}>
         {FEATURES.map(({ href, label, Icon }) => (
-          <Link key={href} href={href} asChild>
-            <Pressable accessibilityRole="link" style={st.tile}>
-              <Icon size={26} color={colors.green} />
-              <Text style={st.tileLabel} numberOfLines={2}>{label}</Text>
-            </Pressable>
-          </Link>
+          <View key={href} ref={(n) => register(`tile-${href.slice(1)}`, n)} collapsable={false} style={st.tile}>
+            <Link href={href} asChild>
+              <Pressable accessibilityRole="link" style={st.tileInner}>
+                <Icon size={26} color={colors.green} />
+                <Text style={st.tileLabel} numberOfLines={2}>{label}</Text>
+              </Pressable>
+            </Link>
+          </View>
         ))}
       </View>
     </Screen>
@@ -211,10 +213,7 @@ const st = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.cardBorder,
     borderRadius: 18,
-    paddingVertical: 12,
-    paddingHorizontal: 4,
-    alignItems: 'center',
-    gap: 8,
   },
+  tileInner: { flex: 1, paddingVertical: 12, paddingHorizontal: 4, alignItems: 'center', gap: 8 },
   tileLabel: { fontFamily: fonts.bodySemi, fontSize: 12, lineHeight: 15, color: colors.ink, textAlign: 'center' },
 });

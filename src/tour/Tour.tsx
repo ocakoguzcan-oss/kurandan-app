@@ -19,6 +19,7 @@ import {
   View,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
+import MaskedView from '@react-native-masked-view/masked-view';
 import { router, usePathname } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
@@ -36,11 +37,14 @@ const STEPS: Step[] = [
   { target: 'dua', title: 'Günün duası', text: 'Her gün Kur’an’dan yeni bir dua. Dokununca okunuşu, anlamı ve paylaşma düğmesi açılır.' },
   { target: 'trackers', title: 'Hatim ve namaz takibi', text: 'Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.' },
   { target: 'dinigun', title: 'Kandil ve dini günler', text: 'Yaklaşan kandil ve bayramlar. Bir gün önceden size hatırlatırız.' },
-  { target: 'grid', title: 'Bütün bölümler', text: 'İmsakiye, Cuma story görseli, namaz takibi ve diğer bölümlere buradan ulaşırsınız.' },
-  { tab: 1, title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra dokunun, yalnızca o satır okunsun. ▶ tuşuyla sayfa sayfa dinleyin.' },
-  { tab: 2, title: 'Kıble', text: 'Telefonu düz tutun; ok Kâbe’nin yönünü gösterir. Doğru yöne dönünce telefon titrer.' },
-  { tab: 3, title: 'Zikirmatik', text: 'Büyük daireye dokunarak zikrinizi sayın. Hedefe ulaşınca telefon titrer.' },
-  { tab: 4, title: 'Reels', text: 'Kurandan.ai Instagram videoları burada, uygulamadan çıkmadan izleyin.' },
+  { target: 'tile-kuran', title: 'Kur’an-ı Kerim', text: 'Mushaf sayfaları. Bir satıra dokunun, yalnızca o satır okunsun; ▶ tuşuyla sayfa sayfa dinleyin. Kaldığınız yeri hatırlar.' },
+  { target: 'tile-kible', title: 'Kıble', text: 'Telefonu düz tutun; ok Kâbe’nin yönünü gösterir. Doğru yöne dönünce telefon titrer.' },
+  { target: 'tile-zikir', title: 'Zikirmatik', text: 'Büyük daireye dokunarak zikrinizi sayın. Hedefe ulaşınca telefon titrer, günlük toplamınız saklanır.' },
+  { target: 'tile-namaz-takip', title: 'Namaz Takibi', text: 'Kıldığınız vakitleri işaretleyin; haftalık çizelgenizi ve kaza namazlarınızı takip edin.' },
+  { target: 'tile-imsakiye', title: 'İmsakiye', text: 'Ramazan’da 81 ilin sahur ve iftar vakitleri, iftara geri sayım.' },
+  { target: 'tile-dini-gunler', title: 'Dini Günler', text: 'Kandil ve bayram tarihleri, kaç gün kaldığı. Bir gün önce hatırlatılır.' },
+  { target: 'tile-cuma', title: 'Cuma Story', text: 'Cuma günleri Instagram hikâyenizde paylaşacağınız hazır görsel. Rengini ve ayetini seçebilirsiniz.' },
+  { target: 'tile-reels', title: 'Reels', text: 'Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.' },
   { tab: 5, title: 'Ayarlar', text: 'Ezan bildirimleri, büyük yazı ve konum ayarları. Bu tanıtımı da buradan tekrar izleyebilirsiniz.' },
 ];
 
@@ -250,28 +254,40 @@ function Overlay({
   );
 }
 
-/** Deliğin etrafını bulanıklaştıran dört parça (iOS'ta gerçek bulanıklık, Android'de koyu perde). */
+const HOLE_RADIUS = 20;
+
+/** Köşeleri yuvarlatılmış dikdörtgenin SVG yolu */
+function roundRect(r: Rect, rad: number) {
+  const k = Math.min(rad, r.w / 2, r.h / 2);
+  const { x, y, w, h } = r;
+  return `M${x + k} ${y} H${x + w - k} A${k} ${k} 0 0 1 ${x + w} ${y + k} V${y + h - k} A${k} ${k} 0 0 1 ${x + w - k} ${y + h} H${x + k} A${k} ${k} 0 0 1 ${x} ${y + h - k} V${y + k} A${k} ${k} 0 0 1 ${x + k} ${y} Z`;
+}
+
+/**
+ * Tüm ekranı bulanıklaştırır; hedef alan köşeleri yuvarlak bir pencere olarak net kalır.
+ * (iOS'ta gerçek bulanıklık, Android'de koyu perde.)
+ */
 function Dim({ hole, W, H }: { hole?: Rect; W: number; H: number }) {
-  const parts: Rect[] = hole
-    ? [
-        { x: 0, y: 0, w: W, h: Math.max(0, hole.y) },
-        { x: 0, y: hole.y + hole.h, w: W, h: Math.max(0, H - hole.y - hole.h) },
-        { x: 0, y: hole.y, w: Math.max(0, hole.x), h: hole.h },
-        { x: hole.x + hole.w, y: hole.y, w: Math.max(0, W - hole.x - hole.w), h: hole.h },
-      ]
-    : [{ x: 0, y: 0, w: W, h: H }];
+  const layer =
+    Platform.OS === 'ios' ? (
+      <BlurView intensity={28} tint="dark" style={StyleSheet.absoluteFill}>
+        <View style={st.tint} />
+      </BlurView>
+    ) : (
+      <View style={[StyleSheet.absoluteFill, st.dimAndroid]} />
+    );
+  if (!hole) return <View style={StyleSheet.absoluteFill} pointerEvents="auto">{layer}</View>;
   return (
-    <>
-      {parts.map((p, i) =>
-        Platform.OS === 'ios' ? (
-          <BlurView key={i} intensity={28} tint="dark" style={[st.dim, { left: p.x, top: p.y, width: p.w, height: p.h }]}>
-            <View style={st.tint} />
-          </BlurView>
-        ) : (
-          <View key={i} style={[st.dim, st.dimAndroid, { left: p.x, top: p.y, width: p.w, height: p.h }]} />
-        )
-      )}
-    </>
+    <MaskedView
+      style={StyleSheet.absoluteFill}
+      maskElement={
+        <Svg width={W} height={H}>
+          <Path d={`M0 0 H${W} V${H} H0 Z ${roundRect(hole, HOLE_RADIUS)}`} fill="#000" fillRule="evenodd" />
+        </Svg>
+      }
+    >
+      {layer}
+    </MaskedView>
   );
 }
 
@@ -428,10 +444,9 @@ function Bubble({
 }
 
 const st = StyleSheet.create({
-  dim: { position: 'absolute', overflow: 'hidden' },
   tint: { flex: 1, backgroundColor: 'rgba(8,24,16,0.35)' },
   dimAndroid: { backgroundColor: 'rgba(8,24,16,0.72)' },
-  frame: { flex: 1, borderRadius: 18, borderWidth: 3, borderColor: colors.goldLight },
+  frame: { flex: 1, borderRadius: 20, borderWidth: 3, borderColor: colors.goldLight },
   cityBox: { position: 'absolute', left: 0, alignItems: 'center', paddingHorizontal: 32, gap: 10 },
   cityTitle: { fontFamily: fonts.displayBold, fontSize: 30, color: colors.white, textAlign: 'center' },
   cityText: { fontFamily: fonts.body, fontSize: 18, lineHeight: 26, color: '#F3ECDC', textAlign: 'center', marginBottom: 10 },
