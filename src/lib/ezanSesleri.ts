@@ -7,13 +7,13 @@ import { tx } from '../i18n';
 
 export type EzanId = 'imsak' | 'ogle' | 'ikindi' | 'aksam' | 'yatsi' | 'cuma';
 
-export const EZANLAR: { id: EzanId; ad: string; dosya: string; asset: number }[] = [
-  { id: 'imsak', ad: tx('Sabah'), dosya: 'ezan_imsak.wav', asset: require('../../assets/sounds/ezan_imsak.wav') },
-  { id: 'ogle', ad: tx('Öğle'), dosya: 'ezan_ogle.wav', asset: require('../../assets/sounds/ezan_ogle.wav') },
-  { id: 'ikindi', ad: tx('İkindi'), dosya: 'ezan_ikindi.wav', asset: require('../../assets/sounds/ezan_ikindi.wav') },
-  { id: 'aksam', ad: tx('Akşam'), dosya: 'ezan_aksam.wav', asset: require('../../assets/sounds/ezan_aksam.wav') },
-  { id: 'yatsi', ad: tx('Yatsı'), dosya: 'ezan_yatsi.wav', asset: require('../../assets/sounds/ezan_yatsi.wav') },
-  { id: 'cuma', ad: tx('Cuma salâsı'), dosya: 'cuma_sala.wav', asset: require('../../assets/sounds/cuma_sala.wav') },
+export const EZANLAR: { id: EzanId; ad: string; dosya: string; }[] = [
+  { id: 'imsak', ad: tx('Sabah'), dosya: 'ezan_imsak.wav' },
+  { id: 'ogle', ad: tx('Öğle'), dosya: 'ezan_ogle.wav' },
+  { id: 'ikindi', ad: tx('İkindi'), dosya: 'ezan_ikindi.wav' },
+  { id: 'aksam', ad: tx('Akşam'), dosya: 'ezan_aksam.wav' },
+  { id: 'yatsi', ad: tx('Yatsı'), dosya: 'ezan_yatsi.wav' },
+  { id: 'cuma', ad: tx('Cuma salâsı'), dosya: 'cuma_sala.wav' },
 ];
 
 export const ezanById = (id: EzanId) => EZANLAR.find((e) => e.id === id)!;

@@ -92,13 +92,6 @@ export default function Ayarlar() {
           </View>
           <Toggle label={t('Ezan sesiyle bildir')} value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
         </View>
-        <Pressable accessibilityRole="button" onPress={() => router.push('/ezan')} style={[st.row, st.divider]}>
-          <View style={{ flexShrink: 1 }}>
-            <Text style={st.name}>{t('Ezan sesleri')}</Text>
-            <Text style={st.sub}>{t('Her vaktin kendi ezanı · Cuma günü öğlede salâ')}</Text>
-          </View>
-          <Text style={st.link}>{t('Dinle ›')}</Text>
-        </Pressable>
         <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Kandil ve dini günler')}</Text>
