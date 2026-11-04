@@ -107,17 +107,29 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
       // Ezan yalnızca vaktin tam girdiği anda okunur; "x dk önce" hatırlatması normal sesle gelir.
       // Cuma günü öğle vaktinde Cuma salâsı çalar.
       const ezan = settings.ezan && settings.leadMin === 0 ? ezanFor(key, cuma) : null;
-      const title = settings.leadMin
-        ? cumaOgle
+      // Ezanlı bildirim: "Sabah Ezanı Okunuyor" / "Namaz Vakti 🤲🏻📿"; Cuma öğlesinde salâ
+      const ezanAdi = t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]);
+      let title: string;
+      let body: string;
+      if (settings.leadMin) {
+        title = cumaOgle
           ? t('Cuma namazına {n} dakika', { n: settings.leadMin })
-          : t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin })
-        : cumaOgle
-          ? t('Cuma namazı vakti girdi')
-          : t('{vakit} vakti girdi', { vakit: name });
+          : t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin });
+        body = `${placeName} · ${name} ${formatTime(times[key], tz)}`;
+      } else if (key === 'gunes') {
+        title = t('{vakit} vakti girdi', { vakit: name });
+        body = `${placeName} · ${name} ${formatTime(times[key], tz)}`;
+      } else if (ezan) {
+        title = ezan === 'cuma' ? t('Cuma Salâsı Okunuyor') : t('{vakit} Ezanı Okunuyor', { vakit: ezanAdi });
+        body = ezan === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿');
+      } else {
+        title = cumaOgle ? t('Cuma Namazı Vakti 🤲🏻📿') : t('{vakit} Namazı Vakti 🤲🏻📿', { vakit: ezanAdi });
+        body = `${placeName} · ${formatTime(times[key], tz)}`;
+      }
       await Notifications.scheduleNotificationAsync({
         content: {
           title,
-          body: `${placeName} · ${name} ${formatTime(times[key], tz)}`,
+          body,
           sound: ezan ? ezanById(ezan).dosya : 'default',
           data: { url: ezan ? `/ezan?vakit=${encodeURIComponent(key)}${ezan === 'cuma' ? '&cuma=1' : ''}` : '/' },
         },
@@ -191,8 +203,8 @@ export async function testEzanBildirimi(id: EzanId, saniye = 10) {
   const e = ezanById(id);
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: id === 'cuma' ? 'Test · Cuma namazı vakti girdi' : `Test · ${e.ad} vakti girdi`,
-      body: 'Ezan sesli bildirim denemesi',
+      title: id === 'cuma' ? t('Cuma Salâsı Okunuyor') : t('{vakit} Ezanı Okunuyor', { vakit: t(e.ad) }),
+      body: id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿'),
       sound: e.dosya,
       data: { url: `/ezan?vakit=${id === 'cuma' ? 'ogle&cuma=1' : id}` },
     },
