@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal, Pressable, ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text as RNText, Modal, Pressable, ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import Svg, { Path, Rect } from 'react-native-svg';
@@ -292,9 +292,12 @@ function SizeButton({ size, onPress }: { size: MushafSize; onPress: () => void }
       onPress={onPress}
       style={st.sizeBtn}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 1 }}>
-        <Text style={[st.sizeA, { fontSize: 13 }]}>A</Text>
-        <Text style={[st.sizeA, { fontSize: 19 }]}>A</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 1 }}>
+          <RNText allowFontScaling={false} style={[st.sizeA, { fontSize: 12 }]}>A</RNText>
+          <RNText allowFontScaling={false} style={[st.sizeA, { fontSize: 18 }]}>A</RNText>
+        </View>
+        <RNText allowFontScaling={false} style={st.sizeLabel}>{size === 3 ? 'Yazı\nKüçült' : 'Yazı\nBüyüt'}</RNText>
       </View>
       <View style={st.sizeDots}>
         {[1, 2, 3].map((n) => (
@@ -366,8 +369,9 @@ const st = StyleSheet.create({
   titleBtn: { flexShrink: 1, minHeight: 44, justifyContent: 'center' },
   title: { fontFamily: fonts.display, fontSize: 20, color: colors.green },
   sub: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.goldText },
-  sizeBtn: { width: 52, minHeight: 44, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center', gap: 3 },
+  sizeBtn: { minWidth: 84, paddingHorizontal: 8, minHeight: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center', gap: 3 },
   sizeA: { fontFamily: fonts.bodyBold, color: colors.green, lineHeight: 22 },
+  sizeLabel: { fontFamily: fonts.bodyBold, fontSize: 11, lineHeight: 13, color: colors.green },
   sizeDots: { flexDirection: 'row', gap: 3 },
   sizeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.cardBorder },
   sizeDotOn: { backgroundColor: colors.gold },
