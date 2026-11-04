@@ -55,6 +55,11 @@ export const IconCalendar = ({ size = 22, color = colors.green, strokeWidth = 1.
 export const IconKaaba = ({ size = 24, color = colors.green, strokeWidth = 1.8 }: P) => (
   <Svg {...base(size, color, strokeWidth)}><Path d="M4 8l8-4 8 4v10l-8 3-8-3z" /><Path d="M4 8l8 3 8-3M12 11v10" /><Path d="M4 11.5l8 3 8-3" /></Svg>
 );
+export const IconGlobe = ({ size = 20, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Circle cx={12} cy={12} r={9.5} /><Path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5s1.3-6.8 3.9-9.5z" />
+  </Svg>
+);
 export const IconBell = ({ size = 20, color = colors.green, strokeWidth = 1.8 }: P) => (
   <Svg {...base(size, color, strokeWidth)}><Path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></Svg>
 );

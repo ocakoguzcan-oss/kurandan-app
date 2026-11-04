@@ -1,4 +1,5 @@
 // İlk açılış tanıtımı.
+//   0) Dil seçimi (app/dil.tsx), cihaz dili önceden işaretli.
 //   1) Şehir seçimi: ekranın tamamı bulanıklaşır, yalnızca sol üstteki "Selâmün aleyküm / Şehir"
 //      çerçevelenip net kalır; oradan ortaya kıvrılan bir ok "Şehir seç" düğmesini gösterir.
 //   2) İzinler: tüm izinler tek ekranda, tek düğmeyle istenir (app/izin.tsx).
@@ -35,6 +36,7 @@ type Step = { title: string; text: string; target?: string; tab?: number };
 // Alt sekme sırası app/(tabs)/_layout.tsx ile aynı olmalı
 const TAB_COUNT = 6;
 const STEPS: Step[] = [
+  { target: 'lang', title: tx('Dil seçimi'), text: tx('Uygulamayı Türkçe, English, Deutsch, العربية, Français ya da Русский kullanabilirsiniz. Dualar, Kur’an meali ve vakit yöntemi de seçtiğiniz dile göre gelir. Dili buradan istediğiniz zaman değiştirin.') },
   { target: 'hero', title: tx('Namaz vakitleri'), text: tx('Sıradaki vakit ve kalan süre burada. Altında bugünün bütün vakitleri yazar.') },
   { target: 'dua', title: tx('Günün duası'), text: tx('Her gün yeni bir dua ve ne için okunduğu. Dokununca aile, sağlık, rızık, nazar gibi kategorilerdeki bütün dualar açılır; Instagram story olarak paylaşabilirsiniz.') },
   { target: 'trackers', title: tx('Hatim ve namaz takibi'), text: tx('Kur’an’da kaldığınız sayfa ve bugün kıldığınız namazlar. Dokunarak işaretleyebilirsiniz.') },
@@ -48,7 +50,7 @@ const STEPS: Step[] = [
   { target: 'tile-dini-gunler', title: tx('Dini Günler'), text: tx('Kandil ve bayram tarihleri, kaç gün kaldığı. Bir gün önce hatırlatılır.') },
   { target: 'tile-cuma', title: tx('Story Hazırla'), text: tx('Cuma, kandil ve bayramlarda Instagram hikâyenize hazır görsel. Söz, ayet ya da kendi yazınızı seçin; renk, desen ya da kendi fotoğrafınızla süsleyin.') },
   { target: 'tile-reels', title: tx('Reels'), text: tx('Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.') },
-  { tab: 5, title: tx('Ayarlar'), text: tx('Ezan bildirimleri, büyük yazı ve konum ayarları. Bu tanıtımı da buradan tekrar izleyebilirsiniz.') },
+  { tab: 5, title: tx('Ayarlar'), text: tx('Ezan bildirimleri, büyük yazı, konum, dil ve vakit hesaplama yöntemi. Bu tanıtımı da buradan tekrar izleyebilirsiniz.') },
 ];
 
 type Ctx = {
@@ -123,9 +125,9 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
       permissionsDone: () => {
         if (prefs.onboarding === 'perm') setPhase('sections');
       },
-      // Baştan: şehir seçimi → izinler → bölüm tanıtımı
+      // Baştan: dil → şehir seçimi → izinler → bölüm tanıtımı
       restart: () => {
-        setPhase('city');
+        setPhase('lang');
         router.navigate('/');
       },
     }),

@@ -4,12 +4,12 @@ import { Text } from '../../src/components/Text';
 import { Link, router } from 'expo-router';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 import { Screen, Card, Eyebrow, RoundButton } from '../../src/components/ui';
-import { IconBell, IconKaaba, IconBook, IconCalendar, IconCheck, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
+import { IconBell, IconGlobe, IconKaaba, IconBook, IconCalendar, IconCheck, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
 import { colors, fonts, radius } from '../../src/theme';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
-import { t, tx } from '../../src/i18n';
+import { getLang, LANGS, t, tx } from '../../src/i18n';
 import { formatDay } from '../../src/i18n/format';
 import { ymdIn, ymdToLocalDate } from '../../src/lib/tz';
 import { duaForDate, duaText, useDualar } from '../../src/lib/dualar';
@@ -57,6 +57,8 @@ export default function Home() {
   const tTrackers = useTourTarget('trackers');
   const tGun = useTourTarget('dinigun');
   const tKabe = useTourTarget('kabe');
+  const tLang = useTourTarget('lang');
+  const langName = LANGS.find((l) => l.code === getLang())?.name ?? '';
   const register = tour.register;
 
   return (
@@ -72,9 +74,17 @@ export default function Home() {
             </Pressable>
           </View>
         </View>
-        <RoundButton label={t('Bildirim ayarları')} onPress={() => router.push('/ayarlar')}>
-          <IconBell />
-        </RoundButton>
+        <View style={st.topRight}>
+          <View ref={tLang} collapsable={false}>
+            <Pressable accessibilityRole="button" accessibilityLabel={`${t('Dil')}: ${langName}`} onPress={() => router.push('/dil')} style={st.langBtn}>
+              <IconGlobe size={18} />
+              <Text style={st.langText}>{getLang().toUpperCase()}</Text>
+            </Pressable>
+          </View>
+          <RoundButton label={t('Bildirim ayarları')} onPress={() => router.push('/ayarlar')}>
+            <IconBell />
+          </RoundButton>
+        </View>
       </View>
 
       <View ref={tHero} collapsable={false} style={st.hero}>
@@ -196,6 +206,19 @@ export default function Home() {
 const st = StyleSheet.create({
   top: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   topLeft: { flexDirection: 'row', alignItems: 'center', gap: 10, flexShrink: 1 },
+  topRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  langBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    minHeight: 44,
+    paddingHorizontal: 12,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: colors.buttonBorder,
+    backgroundColor: colors.card,
+  },
+  langText: { fontFamily: fonts.bodyBold, fontSize: 13, color: colors.green },
   logo: { width: 46, height: 44, resizeMode: 'contain' },
   greet: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
   placeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, minHeight: 28 },

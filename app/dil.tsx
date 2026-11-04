@@ -20,6 +20,16 @@ const SELAM: Record<Lang, string> = {
   ru: 'Выберите язык',
 };
 
+// İlk açılışta, seçilen dilde kısa bilgi
+const NOT: Record<Lang, string> = {
+  tr: 'Dualar, Kur’an meali ve vakit hesaplama yöntemi de bu dile göre gelir. Dili daha sonra ana sayfadaki 🌐 düğmesinden ya da Ayarlar’dan değiştirebilirsiniz.',
+  en: 'Supplications, the Quran translation and the prayer time method also follow this language. You can change it later with the 🌐 button on the home screen or in Settings.',
+  de: 'Bittgebete, Koranübersetzung und Berechnungsmethode richten sich ebenfalls nach dieser Sprache. Später über die 🌐-Taste auf der Startseite oder in den Einstellungen änderbar.',
+  ar: 'تأتي الأدعية وطريقة حساب المواقيت أيضًا حسب هذه اللغة. يمكنك تغييرها لاحقًا من زر 🌐 في الصفحة الرئيسية أو من الإعدادات.',
+  fr: 'Les invocations, la traduction du Coran et la méthode de calcul suivent aussi cette langue. Modifiable plus tard via le bouton 🌐 de l’accueil ou dans les Réglages.',
+  ru: 'Мольбы, перевод Корана и метод расчёта времени намаза тоже зависят от языка. Изменить его можно позже кнопкой 🌐 на главной или в настройках.',
+};
+
 const DEVAM: Record<Lang, string> = { tr: 'Devam', en: 'Continue', de: 'Weiter', ar: 'متابعة', fr: 'Continuer', ru: 'Продолжить' };
 
 export default function DilScreen() {
@@ -60,6 +70,7 @@ export default function DilScreen() {
             );
           })}
         </View>
+        <Text style={st.note}>{NOT[sel]}</Text>
         {sel === 'ar' || getLang() === 'ar' ? (
           <Text style={st.note}>{t('Arapçada uygulama sağdan sola düzene geçer ve bir kez yeniden başlar.')}</Text>
         ) : null}
