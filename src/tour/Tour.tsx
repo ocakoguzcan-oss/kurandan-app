@@ -112,8 +112,9 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
       permissionsDone: () => {
         if (prefs.onboarding === 'perm') setPhase('sections');
       },
+      // Baştan: şehir seçimi → izinler → bölüm tanıtımı
       restart: () => {
-        setPhase('sections');
+        setPhase('city');
         router.navigate('/');
       },
     }),
