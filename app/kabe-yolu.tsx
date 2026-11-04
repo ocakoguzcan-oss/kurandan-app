@@ -2,7 +2,9 @@
 // altında sınır kapıları, belgeler, firmalar ve ipuçları adım adım yazar.
 // İçerik content/kabe-yolu.json'dan gelir (GitHub'da güncellenince herkese ulaşır).
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text as RNText, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text as RNText, View } from 'react-native';
+import Constants from 'expo-constants';
+import Svg, { Circle, Polyline as SvgPolyline } from 'react-native-svg';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { Text } from '../src/components/Text';
 import { Screen, Card, Chip, Eyebrow } from '../src/components/ui';
@@ -75,6 +77,42 @@ function path(duraklar: Durak[], ucak: boolean): LL[] {
   return out;
 }
 
+/**
+ * Android'de gerçek harita için Google Maps anahtarı gerekir (Expo Go'da hazır gelir).
+ * Anahtar yoksa çökmemek için çizim haritası gösterilir. iPhone'da Apple Haritalar anahtarsız çalışır.
+ */
+const NATIVE_MAP_OK =
+  Platform.OS === 'ios' ||
+  Constants.executionEnvironment === 'storeClient' ||
+  !!(Constants.expoConfig?.android as { config?: { googleMaps?: { apiKey?: string } } } | undefined)?.config?.googleMaps?.apiKey;
+
+/** Anahtarsız Android için basit çizim harita: durakları düz bir projeksiyonla çizer. */
+function SketchMap({ line, visible, duraklar, focus, onPress }: { line: LL[]; visible: LL[]; duraklar: Durak[]; focus: number | null; onPress: (i: number) => void }) {
+  const W = 340;
+  const H = 320;
+  const lats = line.map((p) => p.latitude);
+  const lngs = line.map((p) => p.longitude);
+  const [minLa, maxLa, minLn, maxLn] = [Math.min(...lats), Math.max(...lats), Math.min(...lngs), Math.max(...lngs)];
+  const pad = 28;
+  const sx = (W - 2 * pad) / Math.max(0.5, maxLn - minLn);
+  const sy = (H - 2 * pad) / Math.max(0.5, maxLa - minLa);
+  const k = Math.min(sx, sy);
+  const ox = (W - (maxLn - minLn) * k) / 2;
+  const oy = (H - (maxLa - minLa) * k) / 2;
+  const xy = (p: LL) => [ox + (p.longitude - minLn) * k, H - oy - (p.latitude - minLa) * k];
+  const pts = (arr: LL[]) => arr.map((p) => xy(p).join(',')).join(' ');
+  return (
+    <Svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`}>
+      <SvgPolyline points={pts(line)} fill="none" stroke="rgba(24,88,60,0.18)" strokeWidth={5} />
+      <SvgPolyline points={pts(visible)} fill="none" stroke={colors.green} strokeWidth={3.5} strokeLinejoin="round" />
+      {duraklar.map((d, i) => {
+        const [x, y] = xy({ latitude: d.lat, longitude: d.lng });
+        return <Circle key={i} cx={x} cy={y} r={focus === i ? 8 : d.tur === 'hedef' ? 7 : 5} fill={DOT[d.tur]} stroke="#fff" strokeWidth={1.5} onPress={() => onPress(i)} />;
+      })}
+    </Svg>
+  );
+}
+
 const DOT: Record<Durak['tur'], string> = { sehir: colors.green, sinir: '#C8553D', havalimani: '#1B5E9E', hedef: colors.gold };
 
 export default function KabeYolu() {
@@ -141,6 +179,9 @@ export default function KabeYolu() {
       </View>
 
       <View style={st.mapBox}>
+        {!NATIVE_MAP_OK ? (
+          <SketchMap line={line} visible={visible} duraklar={g.duraklar} focus={focus} onPress={setFocus} />
+        ) : (
         <MapView
           ref={mapRef}
           style={StyleSheet.absoluteFill}
@@ -165,6 +206,7 @@ export default function KabeYolu() {
             </Marker>
           )}
         </MapView>
+        )}
         <Pressable accessibilityRole="button" onPress={() => setRun((r) => r + 1)} style={st.replay}>
           <Text style={st.replayText}>↻ Yolu tekrar çiz</Text>
         </Pressable>

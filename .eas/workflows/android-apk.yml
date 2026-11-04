@@ -1,0 +1,17 @@
+# Android APK derlemesi (Google Play gerekmez; dosya doğrudan telefona kurulur).
+# "apk" dalına gönderim yapıldığında ya da expo.dev → Workflows → "Android APK" → Run ile çalışır.
+# APK "main" kanalındaki güncellemeleri alır; yani Expo Go'ya gelen her yenilik APK'ya da gelir.
+name: Android APK
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ['apk']
+
+jobs:
+  build_android:
+    name: Android APK derlemesi
+    type: build
+    params:
+      platform: android
+      profile: preview
