@@ -10,9 +10,9 @@
 //      Entitlement: ENTITLEMENT_ID → Offering "default" içine "Lifetime" paketi olarak ekle.
 //   4. RevenueCat → API keys → "Public app-specific key" (appl_… / goog_…) değerlerini
 //      app.json → extra → revenuecatIosKey / revenuecatAndroidKey alanına yazın. Bu anahtarlar gizli değildir.
-// Expo Go'da RevenueCat önizleme modunda çalışır (gerçek ödeme alınmaz).
+// Not: react-native-purchases paketi şu an projede yok (aşağıdaki loadSdk açıklamasına bakın).
 import { useSyncExternalStore } from 'react';
-import { NativeModules, Platform, TurboModuleRegistry } from 'react-native';
+import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { load, save } from './storage';
 
@@ -44,9 +44,23 @@ const set = (p: Partial<State>) => {
   listeners.forEach((l) => l());
 };
 
-type RC = typeof import('react-native-purchases').default;
+// RevenueCat SDK'sının kullandığımız kısmı. Paket ilk sürümde projeden çıkarıldı:
+// react-native-purchases 11.0.1'in iOS parçası (PurchasesHybridCommon 20.4.0) CocoaPods'ta
+// yayımlanmadığı için iPhone derlemesi kurulamıyordu. Satın almayı açarken:
+//   1. package.json'a uyumlu bir react-native-purchases sürümü ekleyin,
+//   2. aşağıdaki loadSdk() içinde require satırını geri açın.
+type Info = { entitlements: { active: Record<string, unknown> } };
+type Pkg = { product: { priceString: string } };
+type RC = {
+  configure(o: { apiKey: string }): void;
+  addCustomerInfoUpdateListener(cb: (info: Info) => void): void;
+  getCustomerInfo(): Promise<Info>;
+  getOfferings(): Promise<{ current: { lifetime?: Pkg | null; availablePackages: Pkg[] } | null }>;
+  purchasePackage(p: Pkg): Promise<{ customerInfo: Info }>;
+  restorePurchases(): Promise<Info>;
+};
 let rc: RC | null = null;
-let pkg: unknown = null;
+let pkg: Pkg | null = null;
 let started: Promise<void> | null = null;
 
 function apiKey(): string | null {
@@ -56,27 +70,12 @@ function apiKey(): string | null {
 }
 
 function loadSdk(): RC | null {
-  // Yerel modül yoksa (eski derleme) uygulama çökmesin
-  const inExpoGo = Constants.executionEnvironment === 'storeClient';
-  const native = NativeModules.RNPurchases ?? safeTurbo('RNPurchases');
-  if (!inExpoGo && !native) return null;
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require('react-native-purchases').default as RC;
-  } catch {
-    return null;
-  }
+  if (!SATIN_ALMA_ACIK) return null;
+  // return require('react-native-purchases').default as RC;
+  return null;
 }
 
-function safeTurbo(name: string) {
-  try {
-    return TurboModuleRegistry.get(name);
-  } catch {
-    return null;
-  }
-}
-
-const hasEntitlement = (info: { entitlements: { active: Record<string, unknown> } }) => !!info.entitlements.active[ENTITLEMENT_ID];
+const hasEntitlement = (info: Info) => !!info.entitlements.active[ENTITLEMENT_ID];
 
 export function startPremium(): Promise<void> {
   if (started) return started;
@@ -115,7 +114,7 @@ export async function buy(): Promise<BuyResult> {
   if (!rc || !pkg) return 'unavailable';
   set({ busy: true });
   try {
-    const r = await rc.purchasePackage(pkg as Parameters<RC['purchasePackage']>[0]);
+    const r = await rc.purchasePackage(pkg);
     const ok = hasEntitlement(r.customerInfo);
     setOwned(ok);
     return ok ? 'ok' : 'error';
