@@ -1,6 +1,6 @@
 {
   "ios": {
-    "CFBundleDisplayName": "Kurandan",
+    "CFBundleDisplayName": "Kurandan.ai",
     "NSLocationWhenInUseUsageDescription": "يُستخدم موقعك لحساب مواقيت الصلاة واتجاه القبلة في مكانك.",
     "NSPhotoLibraryAddUsageDescription": "نحتاج إلى الإذن لحفظ صور القصص في معرض الصور.",
     "NSPhotoLibraryUsageDescription": "يتيح لك الوصول إلى المعرض استخدام صورتك كخلفية للقصة."
