@@ -8,7 +8,8 @@ import { useApp } from '../../src/context/AppContext';
 import { formatTime, getPrayerTimes, METHODS, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { utcLabel } from '../../src/lib/tz';
 import { countryName } from '../../src/data/world';
-import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus, testEzanBildirimi } from '../../src/lib/notifications';
+import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus, sesOf, testEzanBildirimi } from '../../src/lib/notifications';
+import { sesById } from '../../src/lib/bildirimSesleri';
 import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
@@ -29,7 +30,7 @@ export default function Ayarlar() {
       ...EZANLAR.map((e) => ({
         text: e.ad,
         onPress: async () => {
-          const ok = await testEzanBildirimi(e.id);
+          const ok = await testEzanBildirimi(e.id, sesOf(reminders));
           if (!ok) Alert.alert('Bildirim izni kapalı', 'Önce Ayarlar → İzinler’den bildirim izni verin.');
         },
       })),
@@ -99,21 +100,21 @@ export default function Ayarlar() {
       </View>
 
       <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
-        <View style={[st.row, st.divider]}>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/bildirim-sesi')} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
-            <Text style={st.name}>{t('Ezan sesiyle bildir')}</Text>
+            <Text style={st.name}>{t('Bildirim sesi')}</Text>
             <Text style={st.sub}>
-              {reminders.leadMin === 0 ? t('Vakit girince ezan okunur') : t('Ezan yalnızca “Vaktinde” seçiliyken okunur')}
+              {reminders.leadMin === 0 ? t(sesById(sesOf(reminders)).aciklama) : t('Seçilen ses yalnızca “Vaktinde” seçiliyken çalar')}
             </Text>
           </View>
-          <Toggle label={t('Ezan sesiyle bildir')} value={reminders.ezan} onChange={(v) => setReminders({ ...reminders, ezan: v })} />
-        </View>
+          <Text style={st.link}>{`${t(sesById(sesOf(reminders)).ad)} ›`}</Text>
+        </Pressable>
         {/* GEÇİCİ TEST (yalnız iOS): denendikten sonra silinecek */}
         {Platform.OS === 'ios' && (
           <Pressable accessibilityRole="button" onPress={testEzan} style={[st.row, st.divider]}>
             <View style={{ flexShrink: 1 }}>
               <Text style={st.name}>Ezan bildirimini dene (test)</Text>
-              <Text style={st.sub}>10 saniye sonra seçtiğiniz ezanla bildirim gelir</Text>
+              <Text style={st.sub}>10 saniye sonra seçili sesle bildirim gelir</Text>
             </View>
             <Text style={st.link}>Dene ›</Text>
           </Pressable>

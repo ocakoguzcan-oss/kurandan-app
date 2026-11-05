@@ -97,6 +97,7 @@ export default function RootLayout() {
           <Stack.Screen name="kabe-yolu" />
           <Stack.Screen name="dil" options={{ presentation: 'modal' }} />
           <Stack.Screen name="vakit-yontemi" />
+          <Stack.Screen name="bildirim-sesi" />
           <Stack.Screen name="kilit-ekrani" options={{ presentation: 'modal' }} />
         </Stack>
         </TourProvider>

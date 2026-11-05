@@ -73,6 +73,7 @@ assets/                Logo, uygulama ikonu, açılış ekranı
 | Dua çevirileri | `content/dualar.json` → her duanın `ceviri` alanı (anlam, ne için okunur, kaynak). Arapçada anlam gösterilmez |
 | Kâbe yolu çevirileri | `content/kabe-yolu.<dil>.json` (ör. `kabe-yolu.en.json`) |
 | Ülke / şehir / saat dilimi verisi | `src/data/world/` — `scripts/dunya-verisi.py` ile üretilir (Natural Earth tabanlı city-timezones, MIT; ülke adları Unicode CLDR; saat dilimleri IANA 2025–2040) |
+| Bildirim sesleri | Ayarlar → Bildirim sesi: Ezan, Nur, Seher, Ney, Kanun, Damla, telefonun sesi, sessiz (`src/lib/bildirimSesleri.ts`). Zil sesleri `scripts/bildirim-sesleri.py` ile sentezlendi, telifsizdir |
 | Ezan kayıtları | `assets/sounds/ezan_imsak.wav`, `ezan_ogle`, `ezan_ikindi`, `ezan_aksam`, `ezan_yatsi`, `cuma_sala.wav` (WAV, en fazla 30 sn — iOS sınırı). Cuma günü öğle bildiriminde salâ çalar. Listesi `src/lib/ezanSesleri.ts`'de. Bildirim sesleri uygulamayla yüklendiği için değişince yeni mağaza sürümü gerekir |
 
 > **Önemli:** `content/dualar.json` içindeki Arapça metinleri, okunuşları ve mealleri yayından önce bir hocaya kontrol ettirin. Diğer dillerdeki çeviriler (arayüz, dua anlamları, story sözleri, Kâbe yolu) yapay zekâyla hazırlandı; yayından önce her dili ana dili o olan birine okutun.

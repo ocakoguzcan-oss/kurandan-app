@@ -70,7 +70,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         load<ReminderSettings>(KEYS.reminders, DEFAULT_REMINDERS),
       ]);
       setPlace(migrate(p));
-      setRemindersState({ ...DEFAULT_REMINDERS, ...r, enabled: { ...DEFAULT_REMINDERS.enabled, ...r.enabled } });
+      // Eski kayıtta `ses` yok: `ezan` anahtarından türet
+      setRemindersState({ ...DEFAULT_REMINDERS, ...r, ses: r.ses ?? (r.ezan === false ? 'varsayilan' : 'ezan'), enabled: { ...DEFAULT_REMINDERS.enabled, ...r.enabled } });
       setReady(true);
       // Konum GPS'ten seçildiyse açılışta sessizce yenile.
       if (p.source === 'gps') refreshGps(false).catch(() => {});

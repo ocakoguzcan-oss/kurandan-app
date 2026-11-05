@@ -106,7 +106,12 @@
             "./assets/sounds/ezan_ikindi.wav",
             "./assets/sounds/ezan_aksam.wav",
             "./assets/sounds/ezan_yatsi.wav",
-            "./assets/sounds/cuma_sala.wav"
+            "./assets/sounds/cuma_sala.wav",
+            "./assets/sounds/ses_nur.wav",
+            "./assets/sounds/ses_seher.wav",
+            "./assets/sounds/ses_ney.wav",
+            "./assets/sounds/ses_kanun.wav",
+            "./assets/sounds/ses_damla.wav"
           ]
         }
       ],

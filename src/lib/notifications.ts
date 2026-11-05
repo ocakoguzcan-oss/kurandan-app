@@ -5,12 +5,16 @@ import { addDays, fromWall, ymdIn } from './tz';
 import { t } from '../i18n';
 import { upcomingDiniGunler } from '../data/diniGunler';
 import { EZANLAR, ezanById, ezanFor, EzanId } from './ezanSesleri';
+import { SESLER, sesById, SesId } from './bildirimSesleri';
 
 export type ReminderSettings = {
   enabled: Record<VakitKey, boolean>;
   leadMin: number; // vakitten kaç dakika önce (0 = tam vaktinde)
   cuma: boolean;
-  ezan: boolean; // bildirim sesi olarak ezan
+  /** Eski sürüm: bildirim sesi olarak ezan (yerini `ses` aldı) */
+  ezan: boolean;
+  /** Bildirim sesi: ezan, zil sesleri, telefonun sesi ya da sessiz */
+  ses?: SesId;
   diniGunler: boolean; // kandil ve bayram hatırlatmaları
 };
 
@@ -19,14 +23,19 @@ export const DEFAULT_REMINDERS: ReminderSettings = {
   leadMin: 0,
   cuma: true,
   ezan: true,
+  ses: 'ezan',
   diniGunler: true,
 };
+
+/** Seçili ses (eski kayıtlarda `ezan` anahtarından) */
+export const sesOf = (s: ReminderSettings): SesId => s.ses ?? (s.ezan === false ? 'varsayilan' : 'ezan');
 
 export const LEAD_OPTIONS = [0, 5, 15, 30];
 
 const CHANNEL = 'vakit';
 // Android'de bildirim sesi kanala bağlıdır: her kayıt için ayrı kanal
 const ezanChannel = (id: EzanId) => `ezan-${id}`;
+const sesChannel = (id: SesId) => `ses-${id}`;
 const DAYS_AHEAD = 7; // iOS en fazla 64 bekleyen bildirime izin verir: 6 vakit × 7 gün + Cuma + dini günler
 
 if (Platform.OS !== 'web') {
@@ -55,6 +64,17 @@ async function ensureChannels() {
       importance: Notifications.AndroidImportance.MAX,
       sound: e.dosya,
       vibrationPattern: [0, 400, 200, 400],
+      lightColor: '#18583C',
+    });
+  }
+  for (const z of SESLER) {
+    if (!z.dosya && z.id !== 'sessiz') continue;
+    await Notifications.setNotificationChannelAsync(sesChannel(z.id), {
+      name: `${t('Vakit hatırlatmaları')} · ${t(z.ad)}`,
+      importance: Notifications.AndroidImportance.HIGH,
+      sound: z.dosya ?? null,
+      vibrationPattern: [0, 300, 200, 300],
+      enableVibrate: true,
       lightColor: '#18583C',
     });
   }
@@ -106,7 +126,10 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
       const cumaOgle = cuma && key === 'ogle';
       // Ezan yalnızca vaktin tam girdiği anda okunur; "x dk önce" hatırlatması normal sesle gelir.
       // Cuma günü öğle vaktinde Cuma salâsı çalar.
-      const ezan = settings.ezan && settings.leadMin === 0 ? ezanFor(key, cuma) : null;
+      const ses = sesOf(settings);
+      const ezan = ses === 'ezan' && settings.leadMin === 0 ? ezanFor(key, cuma) : null;
+      // Ezan dışındaki seçimler (zil sesi, telefonun sesi, sessiz) yalnız tam vaktinde uygulanır
+      const zil = !ezan && settings.leadMin === 0 && ses !== 'ezan' ? sesById(ses) : null;
       // Ezanlı bildirim: "Sabah Ezanı Okunuyor" / "Namaz Vakti 🤲🏻📿"; Cuma öğlesinde salâ
       const ezanAdi = t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]);
       let title: string;
@@ -130,13 +153,13 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
         content: {
           title,
           body,
-          sound: ezan ? ezanById(ezan).dosya : 'default',
+          sound: ezan ? ezanById(ezan).dosya : zil?.dosya ? zil.dosya : zil?.id === 'sessiz' ? false : 'default',
           data: { url: ezan ? `/ezan?vakit=${encodeURIComponent(key)}${ezan === 'cuma' ? '&cuma=1' : ''}` : '/' },
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.DATE,
           date: new Date(fireAt),
-          channelId: ezan ? ezanChannel(ezan) : CHANNEL,
+          channelId: ezan ? ezanChannel(ezan) : zil && (zil.dosya || zil.id === 'sessiz') ? sesChannel(zil.id) : CHANNEL,
         },
       });
       count++;
@@ -192,26 +215,30 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
 }
 
 /**
- * GEÇİCİ TEST: seçilen ezanla 10 saniye sonra bir bildirim gönderir (yalnız iOS, Ayarlar'da).
- * Denedikten sonra bu fonksiyon ve Ayarlar'daki "Ezan bildirimini dene" satırı silinecek.
+ * GEÇİCİ TEST: seçili bildirim sesiyle 10 saniye sonra bir bildirim gönderir (yalnız iOS, Ayarlar'da).
+ * Ezan seçiliyse hangi vaktin ezanı çalınacağı `id` ile verilir. Denedikten sonra silinecek.
  */
-export async function testEzanBildirimi(id: EzanId, saniye = 10) {
+export async function testEzanBildirimi(id: EzanId, ses: SesId = 'ezan', saniye = 10) {
   if (Platform.OS === 'web') return false;
   const { status } = await getPermissionStatus();
   if (status !== 'granted') return false;
   await ensureChannels();
   const e = ezanById(id);
+  const z = sesById(ses);
+  const isEzan = ses === 'ezan';
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: id === 'cuma' ? t('Cuma Salâsı Okunuyor') : t('{vakit} Ezanı Okunuyor', { vakit: t(e.ad) }),
-      body: id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿'),
-      sound: e.dosya,
-      data: { url: `/ezan?vakit=${id === 'cuma' ? 'ogle&cuma=1' : id}` },
+      title: isEzan
+        ? id === 'cuma' ? t('Cuma Salâsı Okunuyor') : t('{vakit} Ezanı Okunuyor', { vakit: t(e.ad) })
+        : id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('{vakit} Namazı Vakti 🤲🏻📿', { vakit: t(e.ad) }),
+      body: isEzan ? (id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿')) : `Test · ${t(z.ad)}`,
+      sound: isEzan ? e.dosya : z.dosya ? z.dosya : ses === 'sessiz' ? false : 'default',
+      data: { url: isEzan ? `/ezan?vakit=${id === 'cuma' ? 'ogle&cuma=1' : id}` : '/' },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
       seconds: saniye,
-      channelId: ezanChannel(id),
+      channelId: isEzan ? ezanChannel(id) : z.dosya || ses === 'sessiz' ? sesChannel(ses) : CHANNEL,
     },
   });
   return true;
