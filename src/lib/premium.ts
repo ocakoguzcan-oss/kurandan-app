@@ -16,6 +16,13 @@ import { NativeModules, Platform, TurboModuleRegistry } from 'react-native';
 import Constants from 'expo-constants';
 import { load, save } from './storage';
 
+/**
+ * İlk App Store sürümünde satın alma gizli (Apple'ın ücretli uygulama anlaşması tamamlanınca açılacak).
+ * Açmak için: true yapın, app.json'da expo-audio → enableBackgroundPlayback: true ve
+ * ios.infoPlist.UIBackgroundModes: ["audio"] ekleyin, yeni mağaza sürümü derleyin.
+ */
+export const SATIN_ALMA_ACIK = false;
+
 export const ENTITLEMENT_ID = 'kilit_ekrani';
 export const PRODUCT_ID = 'ai.kurandan.app.kilitekrani';
 
@@ -136,7 +143,7 @@ export async function restore(): Promise<boolean> {
   }
 }
 
-export const isPremium = () => state.owned;
+export const isPremium = () => SATIN_ALMA_ACIK && state.owned;
 
 function subscribe(cb: () => void) {
   listeners.add(cb);

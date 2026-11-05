@@ -12,7 +12,7 @@ import { quranPlayer, PlayerState } from '../../src/lib/quranPlayer';
 import { loadHatim, markPageRead, resetHatim, setGoal, setLastPage, useHatim } from '../../src/lib/hatim';
 import { MushafSize, setPrefs, usePrefs } from '../../src/lib/prefs';
 import { normalizeTr } from '../../src/data/sureler';
-import { usePremium } from '../../src/lib/premium';
+import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
 import { t, tx } from '../../src/i18n';
 
 const PAGES = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
@@ -52,7 +52,7 @@ export default function Kuran() {
     const sub = AppState.addEventListener('change', (s) => {
       if (s === 'active' && quranPlayer.stoppedByLock) {
         quranPlayer.stoppedByLock = false;
-        if (!premium.owned) setTimeout(() => router.push('/kilit-ekrani'), 400);
+        if (SATIN_ALMA_ACIK && !premium.owned) setTimeout(() => router.push('/kilit-ekrani'), 400);
       }
     });
     return () => sub.remove();
@@ -256,7 +256,7 @@ export default function Kuran() {
           <Text style={st.arrowText}>›</Text>
         </Pressable>
         </View>
-        {playing && !premium.owned ? (
+        {SATIN_ALMA_ACIK && playing && !premium.owned ? (
           <Pressable accessibilityRole="button" onPress={() => router.push('/kilit-ekrani')} hitSlop={8}>
             <Text style={[st.status, { color: colors.green, fontFamily: fonts.bodySemi }]} numberOfLines={1}>
               {t('🔒 Ekran kilitlenince durur · Kilitliyken dinle ›')}

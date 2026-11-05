@@ -12,7 +12,7 @@ import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus, testEzanBildirimi 
 import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
-import { usePremium } from '../../src/lib/premium';
+import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -132,6 +132,7 @@ export default function Ayarlar() {
           </View>
           <Toggle label={t('Cuma hatırlatması')} value={reminders.cuma} onChange={(v) => setReminders({ ...reminders, cuma: v })} />
         </View>
+        {SATIN_ALMA_ACIK && (
         <Pressable accessibilityRole="button" onPress={() => router.push('/kilit-ekrani')} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Kilit ekranında Kur’an dinleme')}</Text>
@@ -139,6 +140,7 @@ export default function Ayarlar() {
           </View>
           <Text style={st.link}>{premium.owned ? t('Açık ›') : premium.price ? `${premium.price} ›` : t('Aç ›')}</Text>
         </Pressable>
+        )}
         <Pressable accessibilityRole="button" onPress={() => router.push('/konum')} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 0 }}>
             <Text style={st.name}>{t('Konum')}</Text>

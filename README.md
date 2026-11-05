@@ -133,7 +133,7 @@ Gizlilik ve destek sayfaları `docs/` klasöründedir (GitHub Pages ile yayınla
 
 ## 7. Uygulama içi satın alma: Kilit ekranında dinleme
 
-Ücretsiz sürümde ekran kilitlenince ya da başka uygulamaya geçince tilavet durur. Tek seferlik “Kilit ekranında dinleme” (0,99 USD) satın alınınca okuma arka planda sürer, kilit ekranında sure adı ve durdur/başlat görünür. Kod: `src/lib/premium.ts` (RevenueCat), ekran: `app/kilit-ekrani.tsx`. Kurulum adımları `premium.ts` başındadır; anahtarlar `app.json` → `extra.revenuecatIosKey` / `revenuecatAndroidKey`. Yeni derleme gerektirir (Expo Go'da gerçek satın alma yapılamaz).
+**Şu an gizli** (`src/lib/premium.ts` → `SATIN_ALMA_ACIK = false`; açarken app.json'da arka plan sesini de açın). Ücretsiz sürümde ekran kilitlenince ya da başka uygulamaya geçince tilavet durur. Tek seferlik “Kilit ekranında dinleme” (0,99 USD) satın alınınca okuma arka planda sürer, kilit ekranında sure adı ve durdur/başlat görünür. Kod: `src/lib/premium.ts` (RevenueCat), ekran: `app/kilit-ekrani.tsx`. Kurulum adımları `premium.ts` başındadır; anahtarlar `app.json` → `extra.revenuecatIosKey` / `revenuecatAndroidKey`. Yeni derleme gerektirir (Expo Go'da gerçek satın alma yapılamaz).
 
 ## 8. Mağazalarda yayınlama
 

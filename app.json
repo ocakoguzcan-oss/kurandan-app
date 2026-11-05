@@ -18,9 +18,6 @@
           "instagram-stories"
         ],
         "ITSAppUsesNonExemptEncryption": false,
-        "UIBackgroundModes": [
-          "audio"
-        ],
         "CFBundleAllowMixedLocalizations": true
       },
       "privacyManifests": {
@@ -87,7 +84,7 @@
         "expo-audio",
         {
           "microphonePermission": false,
-          "enableBackgroundPlayback": true
+          "enableBackgroundPlayback": false
         }
       ],
       "expo-font",
