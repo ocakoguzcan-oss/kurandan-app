@@ -100,6 +100,7 @@
         {
           "icon": "./assets/notification-icon.png",
           "color": "#18583C",
+          "enableRemoteNotifications": false,
           "sounds": [
             "./assets/sounds/ezan_imsak.wav",
             "./assets/sounds/ezan_ogle.wav",
