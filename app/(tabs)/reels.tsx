@@ -71,11 +71,11 @@ export default function ReelsScreen() {
         ListEmptyComponent={
           loading ? null : (
             <Card style={{ gap: 10 }}>
-              <Text style={st.emptyTitle}>{isReelsConfigured() ? t('Bu kategoride video yok') : t('Reels bağlantısı kurulmadı')}</Text>
+              <Text style={st.emptyTitle}>{reels.length ? t('Bu kategoride video yok') : t('Videolar şu an yüklenemedi')}</Text>
               <Text style={st.muted}>
-                {isReelsConfigured()
+                {reels.length
                   ? t('Videolar Instagram açıklamasındaki etiketlere (#kuran, #hadis, #namaz…) göre gruplanır.')
-                  : t('Instagram videolarının gelmesi için README’deki “Reels sunucusu” adımlarını tamamlayın.')}
+                  : t('İnternet bağlantınızı kontrol edip sayfayı aşağı çekerek yenileyin. Videoları Instagram’da da izleyebilirsiniz.')}
               </Text>
               <Button variant="secondary" label={t('Instagram’da aç')} onPress={() => Linking.openURL(PROFILE_URL)} />
             </Card>
