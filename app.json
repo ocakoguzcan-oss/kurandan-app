@@ -132,7 +132,19 @@
             "./assets/sounds/ezan_yatsi_orta.wav",
             "./assets/sounds/ezan_yatsi_dusuk.wav",
             "./assets/sounds/cuma_sala_orta.wav",
-            "./assets/sounds/cuma_sala_dusuk.wav"
+            "./assets/sounds/cuma_sala_dusuk.wav",
+            "./assets/sounds/ezan_imsak_s4.wav",
+            "./assets/sounds/ezan_imsak_s2.wav",
+            "./assets/sounds/ezan_ogle_s4.wav",
+            "./assets/sounds/ezan_ogle_s2.wav",
+            "./assets/sounds/ezan_ikindi_s4.wav",
+            "./assets/sounds/ezan_ikindi_s2.wav",
+            "./assets/sounds/ezan_aksam_s4.wav",
+            "./assets/sounds/ezan_aksam_s2.wav",
+            "./assets/sounds/ezan_yatsi_s4.wav",
+            "./assets/sounds/ezan_yatsi_s2.wav",
+            "./assets/sounds/cuma_sala_s4.wav",
+            "./assets/sounds/cuma_sala_s2.wav"
           ]
         }
       ],

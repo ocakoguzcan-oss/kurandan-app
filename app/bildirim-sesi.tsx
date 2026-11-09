@@ -4,13 +4,17 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { Text } from '../src/components/Text';
-import { Screen, Card, Chip } from '../src/components/ui';
+import { Screen, Card } from '../src/components/ui';
+import { SesCubugu } from '../src/components/SesCubugu';
 import { colors, fonts } from '../src/theme';
 import { useApp } from '../src/context/AppContext';
 import { sesOf } from '../src/lib/notifications';
 import { SESLER, SesId } from '../src/lib/bildirimSesleri';
-import { SEVIYELER } from '../src/lib/ezanSesleri';
+import { SEVIYELER, seviyeKazanc } from '../src/lib/ezanSesleri';
 import { t } from '../src/i18n';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const EZAN_ONIZLEME = require('../assets/sounds/ezan_ogle.wav');
 
 export default function BildirimSesi() {
   const { reminders, setReminders } = useApp();
@@ -37,6 +41,24 @@ export default function BildirimSesi() {
     });
     p.play();
     setPlaying(id);
+  };
+
+  const seviyeIdx = Math.max(0, SEVIYELER.findIndex((v) => v.id === (reminders.sesSeviyesi ?? 'yuksek')));
+
+  // Seviye önizlemesi: öğle ezanının ilk saniyeleri, seçilen seviyenin yüksekliğinde
+  const previewEzan = async (i: number) => {
+    stop();
+    await setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
+    const p = createAudioPlayer(EZAN_ONIZLEME);
+    player.current = p;
+    p.volume = seviyeKazanc(SEVIYELER[i].id);
+    p.addListener('playbackStatusUpdate', (ps) => {
+      if (ps.didJustFinish || ps.currentTime >= 8) {
+        if (player.current === p) stop();
+      }
+    });
+    p.play();
+    setPlaying('ezan');
   };
 
   const choose = (id: SesId) => {
@@ -87,18 +109,38 @@ export default function BildirimSesi() {
         })}
       </Card>
       {sel === 'ezan' && (
-        <View style={{ gap: 10 }}>
-          <Text style={st.name}>{t('Ezan ses seviyesi')}</Text>
-          <View style={{ flexDirection: 'row', gap: 8 }}>
-            {SEVIYELER.map((v) => (
-              <Chip
-                key={v.id}
-                label={t(v.ad)}
-                selected={(reminders.sesSeviyesi ?? 'yuksek') === v.id}
-                onPress={() => setReminders({ ...reminders, sesSeviyesi: v.id })}
-                style={{ flex: 1 }}
-              />
-            ))}
+        <View style={{ gap: 6 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={st.name}>{t('Ezan ses seviyesi')}</Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('{ses} sesini dinle', { ses: t('Ezan') })}
+              onPress={() => (playing === 'ezan' ? stop() : previewEzan(seviyeIdx))}
+              hitSlop={8}
+              style={st.play}
+            >
+              <Svg width={18} height={18} viewBox="0 0 24 24">
+                {playing === 'ezan' ? (
+                  <>
+                    <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.green} />
+                    <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.green} />
+                  </>
+                ) : (
+                  <Path d="M8 5v14l11-7z" fill={colors.green} />
+                )}
+              </Svg>
+            </Pressable>
+          </View>
+          <SesCubugu
+            steps={SEVIYELER.length}
+            value={seviyeIdx}
+            label={t('Ezan ses seviyesi')}
+            onChange={(i) => setReminders({ ...reminders, sesSeviyesi: SEVIYELER[i].id })}
+            onRelease={previewEzan}
+          />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={st.sub}>{t('Düşük')}</Text>
+            <Text style={st.sub}>{t('Yüksek')}</Text>
           </View>
           <Text style={st.sub}>{t('Asıl ses düzeyini telefonun zil ve uyarı sesi belirler.')}</Text>
         </View>

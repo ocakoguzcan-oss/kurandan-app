@@ -25,14 +25,24 @@ export function ezanFor(key: VakitKey, cuma: boolean): EzanId | null {
   return key;
 }
 
-/** Ezan ses seviyesi: her kaydın üç sürümü vardır (Yüksek = asıl dosya, Orta −3,5 dB, Düşük −7 dB). */
-export type EzanSeviye = 'yuksek' | 'orta' | 'dusuk';
+/**
+ * Ezan ses seviyesi (5 kademe). Her kaydın her kademe için ayrı dosyası vardır, çünkü iOS bildirim
+ * sesinin yüksekliğini uygulamanın değiştirmesine izin vermez. Yüksek = asıl dosya.
+ * Eski kayıtlardaki 'yuksek' | 'orta' | 'dusuk' değerleri aynen geçerlidir.
+ */
+export type EzanSeviye = 'dusuk' | 's2' | 'orta' | 's4' | 'yuksek';
 
-export const SEVIYELER: { id: EzanSeviye; ad: string }[] = [
-  { id: 'yuksek', ad: tx('Yüksek') },
-  { id: 'orta', ad: tx('Orta') },
-  { id: 'dusuk', ad: tx('Düşük') },
+/** Düşükten yükseğe; db: asıl dosyaya göre fark */
+export const SEVIYELER: { id: EzanSeviye; db: number }[] = [
+  { id: 'dusuk', db: -7 },
+  { id: 's2', db: -5.25 },
+  { id: 'orta', db: -3.5 },
+  { id: 's4', db: -1.75 },
+  { id: 'yuksek', db: 0 },
 ];
+
+/** Önizlemede oynatıcı sesi (asıl dosyaya göre doğrusal kazanç) */
+export const seviyeKazanc = (id: EzanSeviye) => Math.pow(10, (SEVIYELER.find((x) => x.id === id)?.db ?? 0) / 20);
 
 /** Seviyeye göre çalınacak dosya adı */
 export function ezanDosya(id: EzanId, seviye: EzanSeviye = 'yuksek'): string {
