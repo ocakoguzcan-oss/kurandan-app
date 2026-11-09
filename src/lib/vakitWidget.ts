@@ -72,3 +72,13 @@ export async function syncSabahAlarm(on: boolean, lat: number, lng: number, calc
     return false;
   }
 }
+
+/** GEÇİCİ TEST: birkaç saniye sonra sabah ezanı alarmı */
+export async function testSabahAlarm(saniye = 10): Promise<boolean> {
+  if (!alarmSupported()) return false;
+  try {
+    return await EzanNative!.testAlarm(saniye, t('{vakit} Ezanı Okunuyor', { vakit: t('Sabah') }), ezanById('imsak').dosya, t('Durdur'));
+  } catch {
+    return false;
+  }
+}

@@ -14,7 +14,7 @@ import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
-import { alarmPermission, alarmSupported } from '../../src/lib/vakitWidget';
+import { alarmPermission, alarmSupported, testSabahAlarm } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -35,6 +35,17 @@ export default function Ayarlar() {
           if (!ok) Alert.alert('Bildirim izni kapalı', 'Önce Ayarlar → İzinler’den bildirim izni verin.');
         },
       })),
+      ...(alarmSupported()
+        ? [
+            {
+              text: 'Sabah alarmı (10 sn)',
+              onPress: async () => {
+                const ok = await testSabahAlarm(10);
+                if (!ok) Alert.alert('Alarm kurulamadı', 'Alarm izni verilmedi ya da iOS 26 gerekli.');
+              },
+            },
+          ]
+        : []),
       { text: 'Vazgeç', style: 'cancel' as const },
     ]);
   const alarmVar = useMemo(() => alarmSupported(), []);

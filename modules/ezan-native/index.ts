@@ -9,6 +9,8 @@ type EzanNativeModule = {
   alarmSupported(): boolean;
   alarmPermission(ask: boolean): Promise<AlarmPermission>;
   scheduleAlarms(items: { at: number; title: string }[], sound: string, stopText: string): Promise<number>;
+  /** GEÇİCİ TEST */
+  testAlarm(seconds: number, title: string, sound: string, stopText: string): Promise<boolean>;
   cancelAlarms(): Promise<void>;
 };
 
