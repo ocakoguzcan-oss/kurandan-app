@@ -117,20 +117,24 @@ struct VakitWidgetView: View {
           .padding(4)
         }
       case .accessoryRectangular:
-        VStack(alignment: .leading, spacing: 0) {
-          HStack(spacing: 4) {
-            Text(n.n).font(.headline).lineLimit(1)
-            Spacer(minLength: 2)
-            Text(n.h).font(.headline)
-          }
-          Text(date, style: .timer)
-            .font(.system(.title3, design: .rounded).weight(.semibold))
-            .monospacedDigit()
+        // Şehir üstte, "Yatsı 18:32" ortada, geri sayım altta (ortalı)
+        VStack(spacing: 0) {
           if !entry.place.isEmpty {
-            Text(entry.place).font(.caption2).lineLimit(1).opacity(0.75)
+            Text(entry.place)
+              .font(.caption)
+              .lineLimit(1)
+              .opacity(0.8)
           }
+          Text("\(n.n)  \(n.h)")
+            .font(.system(.title3, design: .rounded).weight(.semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+          Text(date, style: .timer)
+            .font(.system(.body, design: .rounded))
+            .monospacedDigit()
+            .multilineTextAlignment(.center)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity)
       default:
         VStack(alignment: .leading, spacing: 2) {
           Text(entry.place)
