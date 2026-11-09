@@ -45,6 +45,10 @@ export default function BildirimSesi() {
   return (
     <Screen title={t('Bildirim sesi')}>
       <Text style={st.lead}>{t('Vakit girdiğinde bildirimle birlikte çalacak sesi seçin. Seçim bütün vakitler için geçerlidir.')}</Text>
+      <View style={st.warn}>
+        <Text style={st.warnIcon}>🔔</Text>
+        <Text style={st.warnText}>{t('Ezanı duyabilmek için telefonunuz sessiz modda olmamalı. Telefon sessizdeyken hiçbir uygulamanın bildirim sesi çalmaz.')}</Text>
+      </View>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {SESLER.map((z, i) => {
           const on = z.id === sel;
@@ -82,7 +86,7 @@ export default function BildirimSesi() {
         })}
       </Card>
       <Text style={st.note}>
-        {t('“5/15/30 dk önce” hatırlatmalarında her zaman telefonun kendi sesi çalar. Sesli bildirimler için telefonun sessiz modda olmaması gerekir.')}
+        {t('“5/15/30 dk önce” hatırlatmalarında her zaman telefonun kendi sesi çalar.')}
       </Text>
     </Screen>
   );
@@ -99,5 +103,8 @@ const st = StyleSheet.create({
   name: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 12, color: colors.muted, marginTop: 1 },
   play: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
+  warn: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', borderRadius: 14, borderWidth: 1, borderColor: colors.cardBorder, backgroundColor: colors.card, padding: 12 },
+  warnIcon: { fontSize: 18, lineHeight: 22 },
+  warnText: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 14, lineHeight: 20, color: colors.ink },
   note: { fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: colors.muted, textAlign: 'center' },
 });
