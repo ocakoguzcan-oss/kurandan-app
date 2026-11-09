@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 import { EzanNative, AlarmPermission } from '../../modules/ezan-native';
 import { CalcOptions, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES, formatTime } from './prayerTimes';
 import { addDays, ymdIn } from './tz';
-import { ezanById } from './ezanSesleri';
+import { ezanDosya, EzanSeviye } from './ezanSesleri';
 import { t } from '../i18n';
 
 const APP_GROUP = 'group.ai.kurandan.app';
@@ -52,7 +52,13 @@ export async function alarmPermission(ask: boolean): Promise<AlarmPermission> {
  * Sabah alarmlarını ayara göre kurar ya da kaldırır. Kurulduysa true döner
  * (o zaman imsak bildirimi ayrıca ezan çalmaz, iki ses üst üste binmesin).
  */
-export async function syncSabahAlarm(on: boolean, lat: number, lng: number, calc: CalcOptions = {}): Promise<boolean> {
+export async function syncSabahAlarm(
+  on: boolean,
+  lat: number,
+  lng: number,
+  calc: CalcOptions = {},
+  sev: EzanSeviye = 'yuksek'
+): Promise<boolean> {
   if (!alarmSupported()) return false;
   try {
     if (!on || (await alarmPermission(false)) !== 'granted') {
@@ -66,7 +72,7 @@ export async function syncSabahAlarm(on: boolean, lat: number, lng: number, calc
       const at = getPrayerTimes(addDays(today, i), lat, lng, calc).imsak.getTime();
       if (at > now + 60000) items.push({ at, title: t('{vakit} Ezanı Okunuyor', { vakit: t('Sabah') }) });
     }
-    const n = await EzanNative!.scheduleAlarms(items, ezanById('imsak').dosya, t('Durdur'));
+    const n = await EzanNative!.scheduleAlarms(items, ezanDosya('imsak', sev), t('Durdur'));
     return n > 0;
   } catch {
     return false;
@@ -74,10 +80,10 @@ export async function syncSabahAlarm(on: boolean, lat: number, lng: number, calc
 }
 
 /** GEÇİCİ TEST: birkaç saniye sonra sabah ezanı alarmı */
-export async function testSabahAlarm(saniye = 10): Promise<boolean> {
+export async function testSabahAlarm(saniye = 10, sev: EzanSeviye = 'yuksek'): Promise<boolean> {
   if (!alarmSupported()) return false;
   try {
-    return await EzanNative!.testAlarm(saniye, t('{vakit} Ezanı Okunuyor', { vakit: t('Sabah') }), ezanById('imsak').dosya, t('Durdur'));
+    return await EzanNative!.testAlarm(saniye, t('{vakit} Ezanı Okunuyor', { vakit: t('Sabah') }), ezanDosya('imsak', sev), t('Durdur'));
   } catch {
     return false;
   }

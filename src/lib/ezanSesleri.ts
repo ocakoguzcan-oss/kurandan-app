@@ -24,3 +24,18 @@ export function ezanFor(key: VakitKey, cuma: boolean): EzanId | null {
   if (key === 'ogle' && cuma) return 'cuma';
   return key;
 }
+
+/** Ezan ses seviyesi: her kaydın üç sürümü vardır (Yüksek = asıl dosya, Orta −3,5 dB, Düşük −7 dB). */
+export type EzanSeviye = 'yuksek' | 'orta' | 'dusuk';
+
+export const SEVIYELER: { id: EzanSeviye; ad: string }[] = [
+  { id: 'yuksek', ad: tx('Yüksek') },
+  { id: 'orta', ad: tx('Orta') },
+  { id: 'dusuk', ad: tx('Düşük') },
+];
+
+/** Seviyeye göre çalınacak dosya adı */
+export function ezanDosya(id: EzanId, seviye: EzanSeviye = 'yuksek'): string {
+  const d = ezanById(id).dosya;
+  return seviye === 'yuksek' ? d : d.replace('.wav', `_${seviye}.wav`);
+}

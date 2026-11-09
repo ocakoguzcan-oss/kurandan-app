@@ -31,7 +31,7 @@ export default function Ayarlar() {
       ...EZANLAR.map((e) => ({
         text: e.ad,
         onPress: async () => {
-          const ok = await testEzanBildirimi(e.id, sesOf(reminders));
+          const ok = await testEzanBildirimi(e.id, sesOf(reminders), reminders.sesSeviyesi);
           if (!ok) Alert.alert('Bildirim izni kapalı', 'Önce Ayarlar → İzinler’den bildirim izni verin.');
         },
       })),
@@ -40,7 +40,7 @@ export default function Ayarlar() {
             {
               text: 'Sabah alarmı (10 sn)',
               onPress: async () => {
-                const ok = await testSabahAlarm(10);
+                const ok = await testSabahAlarm(10, reminders.sesSeviyesi);
                 if (!ok) Alert.alert('Alarm kurulamadı', 'Alarm izni verilmedi ya da iOS 26 gerekli.');
               },
             },

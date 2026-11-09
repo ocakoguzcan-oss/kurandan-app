@@ -4,11 +4,12 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { Text } from '../src/components/Text';
-import { Screen, Card } from '../src/components/ui';
+import { Screen, Card, Chip } from '../src/components/ui';
 import { colors, fonts } from '../src/theme';
 import { useApp } from '../src/context/AppContext';
 import { sesOf } from '../src/lib/notifications';
 import { SESLER, SesId } from '../src/lib/bildirimSesleri';
+import { SEVIYELER } from '../src/lib/ezanSesleri';
 import { t } from '../src/i18n';
 
 export default function BildirimSesi() {
@@ -85,6 +86,23 @@ export default function BildirimSesi() {
           );
         })}
       </Card>
+      {sel === 'ezan' && (
+        <View style={{ gap: 10 }}>
+          <Text style={st.name}>{t('Ezan ses seviyesi')}</Text>
+          <View style={{ flexDirection: 'row', gap: 8 }}>
+            {SEVIYELER.map((v) => (
+              <Chip
+                key={v.id}
+                label={t(v.ad)}
+                selected={(reminders.sesSeviyesi ?? 'yuksek') === v.id}
+                onPress={() => setReminders({ ...reminders, sesSeviyesi: v.id })}
+                style={{ flex: 1 }}
+              />
+            ))}
+          </View>
+          <Text style={st.sub}>{t('Asıl ses düzeyini telefonun zil ve uyarı sesi belirler.')}</Text>
+        </View>
+      )}
       <Text style={st.note}>
         {t('“5/15/30 dk önce” hatırlatmalarında her zaman telefonun kendi sesi çalar.')}
       </Text>

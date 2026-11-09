@@ -93,7 +93,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     let iptal = false;
     (async () => {
       updateWidget(place.lat, place.lng, place.label, calc);
-      const alarm = await syncSabahAlarm(!!reminders.sabahAlarm && reminders.enabled.imsak, place.lat, place.lng, calc);
+      const alarm = await syncSabahAlarm(
+        !!reminders.sabahAlarm && reminders.enabled.imsak,
+        place.lat,
+        place.lng,
+        calc,
+        reminders.sesSeviyesi
+      );
       if (!iptal) await rescheduleAll(reminders, place.lat, place.lng, place.label, calc, alarm);
     })().catch(() => {});
     return () => {
