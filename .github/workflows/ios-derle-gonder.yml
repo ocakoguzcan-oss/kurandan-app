@@ -1,0 +1,41 @@
+# Tek düğme: iOS derlemesi (EAS) + App Store Connect'e (TestFlight) gönderim.
+# Expo'nun ücretsiz CI/CD dakikasını harcamaz: derleme EAS derleme hakkından düşer (ücretsiz planda ayda 15 iOS),
+# gönderim her planda ücretsizdir. Bu iş yalnızca komutları verir ve derlemenin bitmesini bekler.
+# Elle başlatılır: GitHub → Actions → "iOS derle ve gönder" → Run workflow.
+# Gerekli GitHub secret'ları: EXPO_TOKEN, ASC_API_KEY (.p8 içeriği), ASC_ISSUER_ID.
+name: iOS derle ve gönder
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  ios:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Paketleri kur
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: App Store Connect anahtarını yaz
+        env:
+          ASC_API_KEY: ${{ secrets.ASC_API_KEY }}
+        run: |
+          printf '%s\n' "$ASC_API_KEY" > "$RUNNER_TEMP/asc.p8"
+          grep -q "BEGIN PRIVATE KEY" "$RUNNER_TEMP/asc.p8" || { echo "ASC_API_KEY secret'ı eksik ya da hatalı"; exit 1; }
+      - name: Derle (EAS, bitene kadar bekler)
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: 6QNDBXCP8X
+          EXPO_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: npx --yes eas-cli@latest build -p ios --profile production --non-interactive --wait
+      - name: TestFlight'a gönder
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: 6QNDBXCP8X
+          EXPO_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: npx --yes eas-cli@latest submit -p ios --profile production --latest --non-interactive --no-wait
