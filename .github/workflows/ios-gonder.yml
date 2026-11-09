@@ -35,6 +35,7 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
           EXPO_ASC_KEY_ID: 6QNDBXCP8X
+          EXPO_APPLE_TEAM_ID: 34J4Q96FX6
           EXPO_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           if [ -n "${{ github.event.inputs.build_id }}" ]; then SRC="--id ${{ github.event.inputs.build_id }}"; else SRC="--latest"; fi
