@@ -38,4 +38,4 @@ jobs:
           EXPO_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           if [ -n "${{ github.event.inputs.build_id }}" ]; then SRC="--id ${{ github.event.inputs.build_id }}"; else SRC="--latest"; fi
-          npx --yes eas-cli@latest submit -p ios --profile production $SRC --non-interactive
+          npx --yes eas-cli@latest submit -p ios --profile production $SRC --non-interactive --no-wait
