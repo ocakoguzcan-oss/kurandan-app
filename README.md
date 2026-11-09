@@ -161,3 +161,10 @@ Kimlikler: iOS `ai.kurandan.app`, Android `ai.kurandan.app` (değiştirmek ister
 Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında yenilenir (iOS aynı anda en fazla 64 planlı bildirime izin verir). Kullanıcı uygulamayı bir haftadan uzun açmazsa hatırlatmalar durur; ileride arka planda yenileme (`expo-background-task`) eklenebilir. Ezan sesiyle bildirim için bir ses dosyası `assets/` klasörüne eklenip `expo-notifications` ayarına tanıtılmalı.
 
 > **Android'de harita:** Mağaza sürümünde Android için Google Maps API anahtarı gerekir (`app.json` → `android.config.googleMaps.apiKey`). iPhone'da Apple Haritalar anahtarsız çalışır.
+
+## Widget ve sabah ezanı alarmı (iOS)
+
+- `targets/widget/`: WidgetKit eklentisi (@bacons/apple-targets). Kilit ekranı (satır, yuvarlak, dikdörtgen) ve ana ekran (küçük) "sıradaki vakit + geri sayım" widget'ı; sabah alarmının Canlı Etkinlik görünümü.
+- `modules/ezan-native/`: yerel Expo modülü. Vakit listesini App Group'a (`group.ai.kurandan.app`) yazar, iOS 26+ AlarmKit ile sabah ezanını alarm olarak kurar.
+- `src/lib/vakitWidget.ts`: JS tarafı. Ayarlar → "Sabah ezanı alarm olarak" (varsayılan kapalı). Alarm kuruluysa imsak bildirimi ayrıca gelmez.
+- Alarm sesi `ezan_imsak.wav` (Apple sınırı 30 sn). Android karşılığı henüz yok.

@@ -3,6 +3,7 @@
     "CFBundleDisplayName": "Kurandan.ai",
     "NSLocationWhenInUseUsageDescription": "Votre position sert à calculer les horaires de prière et la direction de la qibla là où vous êtes.",
     "NSPhotoLibraryAddUsageDescription": "L’autorisation est nécessaire pour enregistrer les images de story dans votre galerie.",
-    "NSPhotoLibraryUsageDescription": "L’accès à la galerie permet d’utiliser votre photo comme fond de story."
+    "NSPhotoLibraryUsageDescription": "L’accès à la galerie permet d’utiliser votre photo comme fond de story.",
+    "NSAlarmKitUsageDescription": "Programme l’adhan de l’aube comme alarme pour que vous l’entendiez même en mode silencieux."
   }
 }

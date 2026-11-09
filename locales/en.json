@@ -3,6 +3,7 @@
     "CFBundleDisplayName": "Kurandan.ai",
     "NSLocationWhenInUseUsageDescription": "Your location is used to calculate prayer times and the Qibla direction for where you are.",
     "NSPhotoLibraryAddUsageDescription": "Permission is needed to save story images to your gallery.",
-    "NSPhotoLibraryUsageDescription": "Gallery access lets you use your own photo as a story background."
+    "NSPhotoLibraryUsageDescription": "Gallery access lets you use your own photo as a story background.",
+    "NSAlarmKitUsageDescription": "Sets the dawn adhan as an alarm so you can hear it even when your phone is on silent."
   }
 }

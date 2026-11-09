@@ -4,6 +4,7 @@ import { DEFAULT_IL, ILLER, Il } from '../data/iller';
 import { City, nearestCity } from '../data/world';
 import { load, save, KEYS } from '../lib/storage';
 import { DEFAULT_REMINDERS, ReminderSettings, rescheduleAll } from '../lib/notifications';
+import { syncSabahAlarm, updateWidget } from '../lib/vakitWidget';
 import { CalcOptions, defaultAsr, defaultMethod } from '../lib/prayerTimes';
 import { deviceTimeZone, hasTz } from '../lib/tz';
 import { usePrefs } from '../lib/prefs';
@@ -89,7 +90,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Konum, yöntem ya da ayarlar değişince 7 günlük hatırlatmaları yeniden kur.
   useEffect(() => {
     if (!ready) return;
-    rescheduleAll(reminders, place.lat, place.lng, place.label, calc).catch(() => {});
+    let iptal = false;
+    (async () => {
+      updateWidget(place.lat, place.lng, place.label, calc);
+      const alarm = await syncSabahAlarm(!!reminders.sabahAlarm && reminders.enabled.imsak, place.lat, place.lng, calc);
+      if (!iptal) await rescheduleAll(reminders, place.lat, place.lng, place.label, calc, alarm);
+    })().catch(() => {});
+    return () => {
+      iptal = true;
+    };
   }, [ready, reminders, place.lat, place.lng, place.label, calc]);
 
   const updatePlace = useCallback((p: Place) => {

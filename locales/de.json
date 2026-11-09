@@ -3,6 +3,7 @@
     "CFBundleDisplayName": "Kurandan.ai",
     "NSLocationWhenInUseUsageDescription": "Ihr Standort wird verwendet, um Gebetszeiten und die Qibla-Richtung für Ihren Ort zu berechnen.",
     "NSPhotoLibraryAddUsageDescription": "Die Berechtigung wird benötigt, um Story-Bilder in Ihrer Galerie zu speichern.",
-    "NSPhotoLibraryUsageDescription": "Mit Galeriezugriff können Sie ein eigenes Foto als Story-Hintergrund verwenden."
+    "NSPhotoLibraryUsageDescription": "Mit Galeriezugriff können Sie ein eigenes Foto als Story-Hintergrund verwenden.",
+    "NSAlarmKitUsageDescription": "Stellt den Morgen-Adhan als Wecker, damit Sie ihn auch im Stumm-Modus hören."
   }
 }

@@ -16,6 +16,8 @@ export type ReminderSettings = {
   /** Bildirim sesi: ezan, zil sesleri, telefonun sesi ya da sessiz */
   ses?: SesId;
   diniGunler: boolean; // kandil ve bayram hatırlatmaları
+  /** iOS 26+: sabah ezanı gerçek alarm olarak (sessiz modu deler) */
+  sabahAlarm?: boolean;
 };
 
 export const DEFAULT_REMINDERS: ReminderSettings = {
@@ -103,7 +105,15 @@ export async function requestPermission(): Promise<boolean> {
  * Önümüzdeki 7 günün hatırlatmalarını yeniden kurar. İzin yoksa hiçbir şey yapmaz
  * (izni yalnızca anlatım ekranı ister). Uygulama her açıldığında ve ayarlar değişince çağrılır.
  */
-export async function rescheduleAll(settings: ReminderSettings, lat: number, lng: number, placeName: string, calc: CalcOptions = {}) {
+export async function rescheduleAll(
+  settings: ReminderSettings,
+  lat: number,
+  lng: number,
+  placeName: string,
+  calc: CalcOptions = {},
+  /** Sabah alarmı kuruluysa imsak bildirimi sessiz gelir (alarm zaten ezanı çalar) */
+  sabahAlarmKurulu = false
+) {
   if (Platform.OS === 'web') return 0;
   const { status } = await getPermissionStatus();
   if (status !== 'granted') return 0;
@@ -127,6 +137,8 @@ export async function rescheduleAll(settings: ReminderSettings, lat: number, lng
       // Ezan yalnızca vaktin tam girdiği anda okunur; "x dk önce" hatırlatması normal sesle gelir.
       // Cuma günü öğle vaktinde Cuma salâsı çalar.
       const ses = sesOf(settings);
+      // Sabah alarmı kuruluysa imsakta bildirim yalnızca yazı olarak gelir
+      if (sabahAlarmKurulu && key === 'imsak' && settings.leadMin === 0) continue;
       const ezan = ses === 'ezan' && settings.leadMin === 0 ? ezanFor(key, cuma) : null;
       // Ezan dışındaki seçimler (zil sesi, telefonun sesi, sessiz) yalnız tam vaktinde uygulanır
       const zil = !ezan && settings.leadMin === 0 && ses !== 'ezan' ? sesById(ses) : null;

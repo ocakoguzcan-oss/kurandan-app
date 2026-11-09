@@ -10,6 +10,7 @@
     "ios": {
       "bundleIdentifier": "ai.kurandan.app",
       "supportsTablet": false,
+      "appleTeamId": "34J4Q96FX6",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Namaz vakitlerini ve kıble yönünü bulunduğunuz yere göre hesaplamak için konumunuz kullanılır.",
         "NSPhotoLibraryAddUsageDescription": "Cuma görselini galerinize kaydetmek için izin gerekir.",
@@ -18,7 +19,9 @@
           "instagram-stories"
         ],
         "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleAllowMixedLocalizations": true
+        "CFBundleAllowMixedLocalizations": true,
+        "NSAlarmKitUsageDescription": "Sabah ezanını, telefon sessizdeyken de duyabilmeniz için alarm olarak kurar.",
+        "NSSupportsLiveActivities": true
       },
       "privacyManifests": {
         "NSPrivacyTracking": false,
@@ -49,6 +52,11 @@
               "E174.1"
             ]
           }
+        ]
+      },
+      "entitlements": {
+        "com.apple.security.application-groups": [
+          "group.ai.kurandan.app"
         ]
       }
     },
@@ -131,7 +139,8 @@
           "cameraPermission": false,
           "microphonePermission": false
         }
-      ]
+      ],
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": false

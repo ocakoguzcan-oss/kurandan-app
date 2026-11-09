@@ -14,6 +14,7 @@ import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
+import { alarmPermission, alarmSupported } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -36,6 +37,17 @@ export default function Ayarlar() {
       })),
       { text: 'Vazgeç', style: 'cancel' as const },
     ]);
+  const alarmVar = useMemo(() => alarmSupported(), []);
+  const sabahAlarm = async (v: boolean) => {
+    if (v) {
+      const p = await alarmPermission(true);
+      if (p !== 'granted') {
+        Alert.alert(t('Alarm izni verilmedi'), t('Ayarlar → Kurandan.ai → Alarmlar’dan izin verebilirsiniz.'));
+        return;
+      }
+    }
+    setReminders({ ...reminders, sabahAlarm: v });
+  };
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
   useFocusEffect(
     useCallback(() => {
@@ -109,6 +121,15 @@ export default function Ayarlar() {
           </View>
           <Text style={st.link}>{`${t(sesById(sesOf(reminders)).ad)} ›`}</Text>
         </Pressable>
+        {alarmVar && (
+          <View style={[st.row, st.divider]}>
+            <View style={{ flexShrink: 1 }}>
+              <Text style={st.name}>{t('Sabah ezanı alarm olarak')}</Text>
+              <Text style={st.sub}>{t('Sessiz modda da çalar · kaydırarak ya da Durdur ile kapatılır')}</Text>
+            </View>
+            <Toggle label={t('Sabah ezanı alarm olarak')} value={!!reminders.sabahAlarm} onChange={sabahAlarm} />
+          </View>
+        )}
         {/* GEÇİCİ TEST (yalnız iOS): denendikten sonra silinecek */}
         {Platform.OS === 'ios' && (
           <Pressable accessibilityRole="button" onPress={testEzan} style={[st.row, st.divider]}>

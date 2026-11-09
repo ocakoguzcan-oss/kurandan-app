@@ -12,6 +12,7 @@
     "test:vakit": "node --experimental-strip-types scripts/test-vakit.ts"
   },
   "dependencies": {
+    "@bacons/apple-targets": "^5.0.0",
     "@expo-google-fonts/amiri": "^0.4.1",
     "@expo-google-fonts/lora": "^0.4.1",
     "@expo-google-fonts/plus-jakarta-sans": "^0.4.1",

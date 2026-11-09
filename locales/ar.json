@@ -3,6 +3,7 @@
     "CFBundleDisplayName": "Kurandan.ai",
     "NSLocationWhenInUseUsageDescription": "يُستخدم موقعك لحساب مواقيت الصلاة واتجاه القبلة في مكانك.",
     "NSPhotoLibraryAddUsageDescription": "نحتاج إلى الإذن لحفظ صور القصص في معرض الصور.",
-    "NSPhotoLibraryUsageDescription": "يتيح لك الوصول إلى المعرض استخدام صورتك كخلفية للقصة."
+    "NSPhotoLibraryUsageDescription": "يتيح لك الوصول إلى المعرض استخدام صورتك كخلفية للقصة.",
+    "NSAlarmKitUsageDescription": "يضبط أذان الفجر كمنبّه لتسمعه حتى عندما يكون هاتفك في الوضع الصامت."
   }
 }
