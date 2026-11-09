@@ -6,6 +6,7 @@ import { t } from '../i18n';
 import { upcomingDiniGunler } from '../data/diniGunler';
 import { EZANLAR, ezanById, ezanDosya, ezanFor, EzanId, EzanSeviye } from './ezanSesleri';
 import { SESLER, sesById, SesId } from './bildirimSesleri';
+import { vakitSozu } from './vakitSozleri';
 
 export type ReminderSettings = {
   enabled: Record<VakitKey, boolean>;
@@ -159,10 +160,10 @@ export async function rescheduleAll(
         body = `${placeName} · ${name} ${formatTime(times[key], tz)}`;
       } else if (ezan) {
         title = ezan === 'cuma' ? t('Cuma Salâsı Okunuyor') : t('{vakit} Ezanı Okunuyor', { vakit: ezanAdi });
-        body = ezan === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿');
+        body = `${ezan === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿')}\n${vakitSozu(key, day)}`;
       } else {
         title = cumaOgle ? t('Cuma Namazı Vakti 🤲🏻📿') : t('{vakit} Namazı Vakti 🤲🏻📿', { vakit: ezanAdi });
-        body = `${placeName} · ${formatTime(times[key], tz)}`;
+        body = `${placeName} · ${formatTime(times[key], tz)}\n${vakitSozu(key, day)}`;
       }
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -246,7 +247,10 @@ export async function testEzanBildirimi(id: EzanId, ses: SesId = 'ezan', sev: Ez
       title: isEzan
         ? id === 'cuma' ? t('Cuma Salâsı Okunuyor') : t('{vakit} Ezanı Okunuyor', { vakit: t(e.ad) })
         : id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('{vakit} Namazı Vakti 🤲🏻📿', { vakit: t(e.ad) }),
-      body: isEzan ? (id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿')) : `Test · ${t(z.ad)}`,
+      body: `${isEzan ? (id === 'cuma' ? t('Cuma Namazı Vakti 🤲🏻📿') : t('Namaz Vakti 🤲🏻📿')) : `Test · ${t(z.ad)}`}\n${vakitSozu(
+        id === 'cuma' ? 'ogle' : id,
+        ymdIn(new Date())
+      )}`,
       sound: isEzan ? ezanDosya(id, sev) : z.dosya ? z.dosya : ses === 'sessiz' ? false : 'default',
       data: { url: isEzan ? `/ezan?vakit=${id === 'cuma' ? 'ogle&cuma=1' : id}` : '/' },
     },

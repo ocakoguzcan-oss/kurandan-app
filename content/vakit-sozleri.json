@@ -1,0 +1,535 @@
+{
+ "aciklama": "Vakit bildirimlerinde gösterilen kısa ayet, hadis ve dualar. Akşam/yatsı huzur, bereket, rızık ve sağlık temalı. Hoca kontrolünden geçirilmeli.",
+ "surum": 1,
+ "liste": [
+  {
+   "id": "bakara45",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Sabır ve namaz ile Allah’tan yardım isteyin.",
+    "en": "Seek help through patience and prayer.",
+    "de": "Sucht Hilfe in Geduld und Gebet.",
+    "fr": "Cherchez secours dans la patience et la prière.",
+    "ru": "Обращайтесь за помощью к терпению и молитве.",
+    "ar": "وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ"
+   },
+   "kaynak": {
+    "tr": "Bakara, 45",
+    "en": "Al-Baqarah 2:45",
+    "de": "Al-Baqarah 2:45",
+    "fr": "Al-Baqarah 2:45",
+    "ru": "Al-Baqarah 2:45",
+    "ar": "البقرة: ٤٥"
+   }
+  },
+  {
+   "id": "nisa103",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Namaz, müminlere vakitleri belirlenmiş bir farzdır.",
+    "en": "Prayer is a duty prescribed for the believers at fixed times.",
+    "de": "Das Gebet ist für die Gläubigen eine zu bestimmten Zeiten vorgeschriebene Pflicht.",
+    "fr": "La prière est une prescription à des heures déterminées pour les croyants.",
+    "ru": "Молитва предписана верующим в определённое время.",
+    "ar": "إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَوْقُوتًا"
+   },
+   "kaynak": {
+    "tr": "Nisâ, 103",
+    "en": "An-Nisa 4:103",
+    "de": "An-Nisa 4:103",
+    "fr": "An-Nisa 4:103",
+    "ru": "An-Nisa 4:103",
+    "ar": "النساء: ١٠٣"
+   }
+  },
+  {
+   "id": "ankebut45",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Namaz, hayasızlıktan ve kötülükten alıkoyar.",
+    "en": "Prayer restrains from indecency and wrongdoing.",
+    "de": "Das Gebet hält ab von Schändlichem und Verwerflichem.",
+    "fr": "La prière préserve de la turpitude et du blâmable.",
+    "ru": "Молитва удерживает от мерзости и порицаемого.",
+    "ar": "إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنْكَرِ"
+   },
+   "kaynak": {
+    "tr": "Ankebût, 45",
+    "en": "Al-Ankabut 29:45",
+    "de": "Al-Ankabut 29:45",
+    "fr": "Al-Ankabut 29:45",
+    "ru": "Al-Ankabut 29:45",
+    "ar": "العنكبوت: ٤٥"
+   }
+  },
+  {
+   "id": "bakara152",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Beni anın ki ben de sizi anayım.",
+    "en": "Remember Me; I will remember you.",
+    "de": "Gedenkt Meiner, so gedenke Ich eurer.",
+    "fr": "Souvenez-vous de Moi, Je Me souviendrai de vous.",
+    "ru": "Поминайте Меня, и Я буду помнить о вас.",
+    "ar": "فَاذْكُرُونِي أَذْكُرْكُمْ"
+   },
+   "kaynak": {
+    "tr": "Bakara, 152",
+    "en": "Al-Baqarah 2:152",
+    "de": "Al-Baqarah 2:152",
+    "fr": "Al-Baqarah 2:152",
+    "ru": "Al-Baqarah 2:152",
+    "ar": "البقرة: ١٥٢"
+   }
+  },
+  {
+   "id": "insirah6",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Şüphesiz güçlükle beraber bir kolaylık vardır.",
+    "en": "Indeed, with hardship comes ease.",
+    "de": "Gewiss, mit der Erschwernis kommt Erleichterung.",
+    "fr": "À côté de la difficulté est, certes, une facilité.",
+    "ru": "Воистину, за тягостью наступает облегчение.",
+    "ar": "إِنَّ مَعَ الْعُسْرِ يُسْرًا"
+   },
+   "kaynak": {
+    "tr": "İnşirah, 6",
+    "en": "Ash-Sharh 94:6",
+    "de": "Ash-Sharh 94:6",
+    "fr": "Ash-Sharh 94:6",
+    "ru": "Ash-Sharh 94:6",
+    "ar": "الشرح: ٦"
+   }
+  },
+  {
+   "id": "secde",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "hadis",
+   "metin": {
+    "tr": "Kulun Rabbine en yakın olduğu an secde hâlidir; secdede duayı çok yapın.",
+    "en": "A servant is closest to his Lord while prostrating, so supplicate much then.",
+    "de": "Der Diener ist seinem Herrn am nächsten, wenn er sich niederwirft; so macht dann viele Bittgebete.",
+    "fr": "Le serviteur n’est jamais aussi proche de son Seigneur qu’en prosternation ; multipliez-y les invocations.",
+    "ru": "Ближе всего раб к своему Господу, когда совершает земной поклон, так усердствуйте же в мольбах.",
+    "ar": "أَقْرَبُ مَا يَكُونُ الْعَبْدُ مِنْ رَبِّهِ وَهُوَ سَاجِدٌ فَأَكْثِرُوا الدُّعَاءَ"
+   },
+   "kaynak": {
+    "tr": "Müslim, Salât 215",
+    "en": "Muslim 482",
+    "de": "Muslim 482",
+    "fr": "Muslim 482",
+    "ru": "Muslim 482",
+    "ar": "رواه مسلم"
+   }
+  },
+  {
+   "id": "nehir",
+   "havuz": [
+    "genel"
+   ],
+   "tur": "hadis",
+   "metin": {
+    "tr": "Beş vakit namaz, kapınızın önünden akan ve günde beş kez yıkandığınız bir nehir gibidir.",
+    "en": "The five prayers are like a river flowing by your door in which you bathe five times a day.",
+    "de": "Die fünf Gebete gleichen einem Fluss vor eurer Tür, in dem ihr euch fünfmal am Tag wascht.",
+    "fr": "Les cinq prières sont comme une rivière coulant devant votre porte où vous vous lavez cinq fois par jour.",
+    "ru": "Пять молитв подобны реке у ваших дверей, в которой вы омываетесь пять раз в день.",
+    "ar": "مَثَلُ الصَّلَوَاتِ الْخَمْسِ كَمَثَلِ نَهْرٍ جَارٍ غَمْرٍ عَلَى بَابِ أَحَدِكُمْ يَغْتَسِلُ مِنْهُ كُلَّ يَوْمٍ خَمْسَ مَرَّاتٍ"
+   },
+   "kaynak": {
+    "tr": "Müslim, Mesâcid 284",
+    "en": "Muslim 668",
+    "de": "Muslim 668",
+    "fr": "Muslim 668",
+    "ru": "Muslim 668",
+    "ar": "رواه مسلم"
+   }
+  },
+  {
+   "id": "zimmet",
+   "havuz": [
+    "sabah"
+   ],
+   "tur": "hadis",
+   "metin": {
+    "tr": "Sabah namazını kılan kimse Allah’ın koruması altındadır.",
+    "en": "Whoever prays the dawn prayer is under the protection of Allah.",
+    "de": "Wer das Morgengebet verrichtet, steht unter dem Schutz Allahs.",
+    "fr": "Celui qui accomplit la prière de l’aube est sous la protection d’Allah.",
+    "ru": "Тот, кто совершил утреннюю молитву, находится под защитой Аллаха.",
+    "ar": "مَنْ صَلَّى الصُّبْحَ فَهُوَ فِي ذِمَّةِ اللَّهِ"
+   },
+   "kaynak": {
+    "tr": "Müslim, Mesâcid 261",
+    "en": "Muslim 657",
+    "de": "Muslim 657",
+    "fr": "Muslim 657",
+    "ru": "Muslim 657",
+    "ar": "رواه مسلم"
+   }
+  },
+  {
+   "id": "bukur",
+   "havuz": [
+    "sabah"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Allah’ım! Ümmetimin sabah erken vakitlerini bereketli kıl.",
+    "en": "O Allah, bless my community in its early mornings.",
+    "de": "O Allah, segne meine Gemeinde in ihren frühen Morgenstunden.",
+    "fr": "Ô Allah, bénis ma communauté dans ses premières heures du matin.",
+    "ru": "О Аллах, благослови мою общину в её ранние утренние часы.",
+    "ar": "اللَّهُمَّ بَارِكْ لِأُمَّتِي فِي بُكُورِهَا"
+   },
+   "kaynak": {
+    "tr": "Tirmizî, Büyû 6",
+    "en": "At-Tirmidhi 1212",
+    "de": "At-Tirmidhi 1212",
+    "fr": "At-Tirmidhi 1212",
+    "ru": "At-Tirmidhi 1212",
+    "ar": "رواه الترمذي"
+   }
+  },
+  {
+   "id": "ilimrizik",
+   "havuz": [
+    "sabah"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Allah’ım! Senden faydalı ilim, helal rızık ve kabul edilmiş amel isterim.",
+    "en": "O Allah, I ask You for beneficial knowledge, good provision and accepted deeds.",
+    "de": "O Allah, ich bitte Dich um nützliches Wissen, gute Versorgung und angenommene Taten.",
+    "fr": "Ô Allah, je Te demande une science utile, une subsistance licite et des œuvres agréées.",
+    "ru": "О Аллах, прошу у Тебя полезного знания, благого удела и принятых деяний.",
+    "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا"
+   },
+   "kaynak": {
+    "tr": "İbn Mâce, İkâme 32",
+    "en": "Ibn Majah 925",
+    "de": "Ibn Majah 925",
+    "fr": "Ibn Majah 925",
+    "ru": "Ibn Majah 925",
+    "ar": "رواه ابن ماجه"
+   }
+  },
+  {
+   "id": "bakara238",
+   "havuz": [
+    "ikindi"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Namazlara ve orta namaza devam edin.",
+    "en": "Guard strictly the prayers, and the middle prayer.",
+    "de": "Haltet die Gebete ein, und zwar das mittlere Gebet.",
+    "fr": "Soyez assidus aux prières, et surtout à la prière médiane.",
+    "ru": "Оберегайте молитвы, особенно среднюю молитву.",
+    "ar": "حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَىٰ"
+   },
+   "kaynak": {
+    "tr": "Bakara, 238",
+    "en": "Al-Baqarah 2:238",
+    "de": "Al-Baqarah 2:238",
+    "fr": "Al-Baqarah 2:238",
+    "ru": "Al-Baqarah 2:238",
+    "ar": "البقرة: ٢٣٨"
+   }
+  },
+  {
+   "id": "rad28",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Bilesiniz ki kalpler ancak Allah’ı anmakla huzur bulur.",
+    "en": "Surely, in the remembrance of Allah do hearts find rest.",
+    "de": "Wahrlich, im Gedenken Allahs finden die Herzen Ruhe.",
+    "fr": "C’est par l’évocation d’Allah que les cœurs s’apaisent.",
+    "ru": "Воистину, в поминании Аллаха успокаиваются сердца.",
+    "ar": "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ"
+   },
+   "kaynak": {
+    "tr": "Ra’d, 28",
+    "en": "Ar-Ra‘d 13:28",
+    "de": "Ar-Ra‘d 13:28",
+    "fr": "Ar-Ra‘d 13:28",
+    "ru": "Ar-Ra‘d 13:28",
+    "ar": "الرعد: ٢٨"
+   }
+  },
+  {
+   "id": "talak3",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Kim Allah’a tevekkül ederse, O ona yeter.",
+    "en": "Whoever puts their trust in Allah, He is sufficient for them.",
+    "de": "Wer sich auf Allah verlässt, dem ist Er genug.",
+    "fr": "Quiconque place sa confiance en Allah, Il lui suffit.",
+    "ru": "Кто уповает на Аллаха, тому Он будет достаточен.",
+    "ar": "وَمَنْ يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ"
+   },
+   "kaynak": {
+    "tr": "Talâk, 3",
+    "en": "At-Talaq 65:3",
+    "de": "At-Talaq 65:3",
+    "fr": "At-Talaq 65:3",
+    "ru": "At-Talaq 65:3",
+    "ar": "الطلاق: ٣"
+   }
+  },
+  {
+   "id": "talak2",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Kim Allah’a karşı gelmekten sakınırsa, Allah ona bir çıkış yolu açar ve onu ummadığı yerden rızıklandırır.",
+    "en": "Whoever is mindful of Allah, He will make a way out for them and provide for them from where they do not expect.",
+    "de": "Wer Allah fürchtet, dem schafft Er einen Ausweg und versorgt ihn, von wo er es nicht erwartet.",
+    "fr": "Quiconque craint Allah, Il lui donne une issue et lui accorde Ses dons par où il ne s’y attend pas.",
+    "ru": "Тому, кто боится Аллаха, Он даёт выход и наделяет уделом оттуда, откуда он не ожидает.",
+    "ar": "وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ"
+   },
+   "kaynak": {
+    "tr": "Talâk, 2-3",
+    "en": "At-Talaq 65:2-3",
+    "de": "At-Talaq 65:2-3",
+    "fr": "At-Talaq 65:2-3",
+    "ru": "At-Talaq 65:2-3",
+    "ar": "الطلاق: ٢-٣"
+   }
+  },
+  {
+   "id": "ibrahim7",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Andolsun, eğer şükrederseniz elbette size nimetimi artırırım.",
+    "en": "If you are grateful, I will surely increase you.",
+    "de": "Wenn ihr dankbar seid, werde Ich euch gewiss noch mehr geben.",
+    "fr": "Si vous êtes reconnaissants, très certainement J’augmenterai Mes bienfaits pour vous.",
+    "ru": "Если вы будете благодарны, Я непременно приумножу вам.",
+    "ar": "لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ"
+   },
+   "kaynak": {
+    "tr": "İbrâhîm, 7",
+    "en": "Ibrahim 14:7",
+    "de": "Ibrahim 14:7",
+    "fr": "Ibrahim 14:7",
+    "ru": "Ibrahim 14:7",
+    "ar": "إبراهيم: ٧"
+   }
+  },
+  {
+   "id": "suara80",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "ayet",
+   "metin": {
+    "tr": "Hastalandığım zaman bana şifa veren O’dur.",
+    "en": "And when I am ill, it is He who cures me.",
+    "de": "Und wenn ich krank bin, ist Er es, der mich heilt.",
+    "fr": "Et quand je suis malade, c’est Lui qui me guérit.",
+    "ru": "А когда я заболеваю, Он исцеляет меня.",
+    "ar": "وَإِذَا مَرِضْتُ فَهُوَ يَشْفِينِ"
+   },
+   "kaynak": {
+    "tr": "Şuarâ, 80",
+    "en": "Ash-Shu‘ara 26:80",
+    "de": "Ash-Shu‘ara 26:80",
+    "fr": "Ash-Shu‘ara 26:80",
+    "ru": "Ash-Shu‘ara 26:80",
+    "ar": "الشعراء: ٨٠"
+   }
+  },
+  {
+   "id": "bakara201",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver ve bizi ateş azabından koru.",
+    "en": "Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.",
+    "de": "Unser Herr, gib uns im Diesseits Gutes und im Jenseits Gutes und bewahre uns vor der Strafe des Feuers.",
+    "fr": "Seigneur ! Accorde-nous belle part ici-bas, et belle part aussi dans l’au-delà, et protège-nous du châtiment du Feu.",
+    "ru": "Господь наш! Даруй нам добро в этом мире и добро в Последней жизни и защити нас от мучений Огня.",
+    "ar": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"
+   },
+   "kaynak": {
+    "tr": "Bakara, 201",
+    "en": "Al-Baqarah 2:201",
+    "de": "Al-Baqarah 2:201",
+    "fr": "Al-Baqarah 2:201",
+    "ru": "Al-Baqarah 2:201",
+    "ar": "البقرة: ٢٠١"
+   }
+  },
+  {
+   "id": "kasas24",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Rabbim! Bana indireceğin her hayra muhtacım.",
+    "en": "My Lord, I am truly in need of whatever good You send down to me.",
+    "de": "Mein Herr, ich bedarf des Guten, das Du mir herabsendest.",
+    "fr": "Seigneur, j’ai grand besoin du bien que Tu feras descendre vers moi.",
+    "ru": "Господи! Я нуждаюсь в любом благе, которое Ты ниспошлёшь мне.",
+    "ar": "رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ"
+   },
+   "kaynak": {
+    "tr": "Kasas, 24",
+    "en": "Al-Qasas 28:24",
+    "de": "Al-Qasas 28:24",
+    "fr": "Al-Qasas 28:24",
+    "ru": "Al-Qasas 28:24",
+    "ar": "القصص: ٢٤"
+   }
+  },
+  {
+   "id": "furkan74",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Rabbimiz! Bize gözümüzü aydınlatacak eşler ve nesiller bağışla.",
+    "en": "Our Lord, grant us spouses and offspring who are a comfort to our eyes.",
+    "de": "Unser Herr, schenke uns an unseren Gattinnen und Nachkommen Grund zur Freude.",
+    "fr": "Seigneur, donne-nous, en nos épouses et nos descendants, la joie des yeux.",
+    "ru": "Господь наш! Даруй нам в наших супругах и потомстве отраду для глаз.",
+    "ar": "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ"
+   },
+   "kaynak": {
+    "tr": "Furkân, 74",
+    "en": "Al-Furqan 25:74",
+    "de": "Al-Furqan 25:74",
+    "fr": "Al-Furqan 25:74",
+    "ru": "Al-Furqan 25:74",
+    "ar": "الفرقان: ٧٤"
+   }
+  },
+  {
+   "id": "afiyet",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Allah’ım! Bedenime, kulağıma ve gözüme sağlık ve afiyet ver.",
+    "en": "O Allah, grant me well-being in my body, my hearing and my sight.",
+    "de": "O Allah, gib mir Wohlergehen an meinem Körper, meinem Gehör und meinem Augenlicht.",
+    "fr": "Ô Allah, accorde-moi la santé dans mon corps, mon ouïe et ma vue.",
+    "ru": "О Аллах, даруй здоровье моему телу, моему слуху и моему зрению.",
+    "ar": "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي"
+   },
+   "kaynak": {
+    "tr": "Ebû Dâvûd, Edeb 101",
+    "en": "Abu Dawud 5090",
+    "de": "Abu Dawud 5090",
+    "fr": "Abu Dawud 5090",
+    "ru": "Abu Dawud 5090",
+    "ar": "رواه أبو داود"
+   }
+  },
+  {
+   "id": "saglik",
+   "havuz": [
+    "aksam"
+   ],
+   "tur": "hadis",
+   "metin": {
+    "tr": "İki nimet vardır ki insanların çoğu onların kıymetini bilmez: sağlık ve boş vakit.",
+    "en": "There are two blessings many people lose out on: health and free time.",
+    "de": "Zwei Gaben werden von vielen Menschen vernachlässigt: Gesundheit und freie Zeit.",
+    "fr": "Il y a deux bienfaits dont beaucoup de gens sont lésés : la santé et le temps libre.",
+    "ru": "Есть две милости, которыми многие люди пренебрегают: здоровье и свободное время.",
+    "ar": "نِعْمَتَانِ مَغْبُونٌ فِيهِمَا كَثِيرٌ مِنَ النَّاسِ: الصِّحَّةُ وَالْفَرَاغُ"
+   },
+   "kaynak": {
+    "tr": "Buhârî, Rikâk 1",
+    "en": "Al-Bukhari 6412",
+    "de": "Al-Bukhari 6412",
+    "fr": "Al-Bukhari 6412",
+    "ru": "Al-Bukhari 6412",
+    "ar": "رواه البخاري"
+   }
+  },
+  {
+   "id": "yatsicemaat",
+   "havuz": [
+    "yatsi"
+   ],
+   "tur": "hadis",
+   "metin": {
+    "tr": "Yatsıyı cemaatle kılan, gecenin yarısını ibadetle geçirmiş gibidir.",
+    "en": "Whoever prays the night prayer in congregation is as if he prayed half the night.",
+    "de": "Wer das Nachtgebet in Gemeinschaft verrichtet, ist wie einer, der die halbe Nacht gebetet hat.",
+    "fr": "Celui qui accomplit la prière du soir en groupe est comme s’il avait prié la moitié de la nuit.",
+    "ru": "Кто совершил ночную молитву в общине, тот словно простоял в молитве полночи.",
+    "ar": "مَنْ صَلَّى الْعِشَاءَ فِي جَمَاعَةٍ فَكَأَنَّمَا قَامَ نِصْفَ اللَّيْلِ"
+   },
+   "kaynak": {
+    "tr": "Müslim, Mesâcid 260",
+    "en": "Muslim 656",
+    "de": "Muslim 656",
+    "fr": "Muslim 656",
+    "ru": "Muslim 656",
+    "ar": "رواه مسلم"
+   }
+  },
+  {
+   "id": "uyku",
+   "havuz": [
+    "yatsi"
+   ],
+   "tur": "dua",
+   "metin": {
+    "tr": "Allah’ım! Senin adınla ölür, senin adınla dirilirim.",
+    "en": "O Allah, in Your name I die and I live.",
+    "de": "O Allah, in Deinem Namen sterbe ich und lebe ich.",
+    "fr": "Ô Allah, c’est en Ton nom que je meurs et que je vis.",
+    "ru": "О Аллах, с Твоим именем я умираю и оживаю.",
+    "ar": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا"
+   },
+   "kaynak": {
+    "tr": "Buhârî, Daavât 7",
+    "en": "Al-Bukhari 6312",
+    "de": "Al-Bukhari 6312",
+    "fr": "Al-Bukhari 6312",
+    "ru": "Al-Bukhari 6312",
+    "ar": "رواه البخاري"
+   }
+  }
+ ]
+}
