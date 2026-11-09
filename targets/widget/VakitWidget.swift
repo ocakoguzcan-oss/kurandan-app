@@ -125,14 +125,16 @@ struct VakitWidgetView: View {
               .lineLimit(1)
               .opacity(0.8)
           }
-          Text("\(n.n)  \(n.h)")
-            .font(.system(.title3, design: .rounded).weight(.semibold))
+          Text("\(n.n) \(n.h)")
+            .font(.system(size: 17, weight: .semibold, design: .rounded))
             .lineLimit(1)
-            .minimumScaleFactor(0.7)
+            .minimumScaleFactor(0.5)
+            .allowsTightening(true)
           Text(date, style: .timer)
-            .font(.system(.body, design: .rounded))
+            .font(.system(size: 15, design: .rounded))
             .monospacedDigit()
             .multilineTextAlignment(.center)
+            .lineLimit(1)
         }
         .frame(maxWidth: .infinity)
       default:
