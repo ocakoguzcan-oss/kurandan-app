@@ -88,3 +88,15 @@ export async function testSabahAlarm(saniye = 10, sev: EzanSeviye = 'yuksek'): P
     return false;
   }
 }
+
+/** GEÇİCİ TANILAMA: yerel modül, App Group ve widget verisi durumu */
+export function tanilama(): string {
+  if (Platform.OS !== 'ios') return 'iOS değil';
+  if (!EzanNative) return 'Yerel modül YOK (derlemeye girmemiş)';
+  try {
+    const d = EzanNative.diagnose(APP_GROUP, 'vakitler');
+    return `Modül: var\niOS: ${d.ios}\nApp Group: ${d.group ? 'erişilebilir' : 'YOK'}\nWidget verisi: ${d.dataLength} karakter\nAlarm: ${alarmSupported() ? 'destekleniyor' : 'yok'}`;
+  } catch (e) {
+    return `Modül var ama hata: ${String(e)}`;
+  }
+}

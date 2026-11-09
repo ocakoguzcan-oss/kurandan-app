@@ -14,7 +14,7 @@ import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
-import { alarmPermission, alarmSupported, testSabahAlarm } from '../../src/lib/vakitWidget';
+import { alarmPermission, alarmSupported, tanilama, testSabahAlarm } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -46,6 +46,7 @@ export default function Ayarlar() {
             },
           ]
         : []),
+      { text: 'Tanılama', onPress: () => Alert.alert('Tanılama', tanilama()) },
       { text: 'Vazgeç', style: 'cancel' as const },
     ]);
   const alarmVar = useMemo(() => alarmSupported(), []);

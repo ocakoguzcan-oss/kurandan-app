@@ -6,6 +6,7 @@ export type AlarmPermission = 'granted' | 'denied' | 'undetermined' | 'unsupport
 
 type EzanNativeModule = {
   setWidgetData(group: string, key: string, json: string): void;
+  diagnose(group: string, key: string): { group: boolean; dataLength: number; ios: string };
   alarmSupported(): boolean;
   alarmPermission(ask: boolean): Promise<AlarmPermission>;
   scheduleAlarms(items: { at: number; title: string }[], sound: string, stopText: string): Promise<number>;
