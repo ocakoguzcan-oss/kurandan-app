@@ -110,11 +110,6 @@
           "color": "#18583C",
           "enableRemoteNotifications": false,
           "sounds": [
-            "./assets/sounds/ses_nur.wav",
-            "./assets/sounds/ses_seher.wav",
-            "./assets/sounds/ses_ney.wav",
-            "./assets/sounds/ses_kanun.wav",
-            "./assets/sounds/ses_damla.wav",
             "./assets/sounds/ezan_imsak.caf",
             "./assets/sounds/ezan_imsak_s4.caf",
             "./assets/sounds/ezan_imsak_orta.caf",
@@ -144,7 +139,21 @@
             "./assets/sounds/cuma_sala_s4.caf",
             "./assets/sounds/cuma_sala_orta.caf",
             "./assets/sounds/cuma_sala_s2.caf",
-            "./assets/sounds/cuma_sala_dusuk.caf"
+            "./assets/sounds/cuma_sala_dusuk.caf",
+            "./assets/sounds/ses_kisa1.caf",
+            "./assets/sounds/ses_kisa2.caf",
+            "./assets/sounds/ses_kisa3.caf",
+            "./assets/sounds/ses_kanun.caf",
+            "./assets/sounds/ses_ruzgar.caf",
+            "./assets/sounds/ses_melodi1.caf",
+            "./assets/sounds/ses_melodi2.caf",
+            "./assets/sounds/ses_melodi3.caf",
+            "./assets/sounds/ses_saat.caf",
+            "./assets/sounds/ses_dingdong.caf",
+            "./assets/sounds/ses_uyan.caf",
+            "./assets/sounds/ses_yuksek.caf",
+            "./assets/sounds/ses_kus.caf",
+            "./assets/sounds/ses_bip.caf"
           ]
         }
       ],

@@ -5,7 +5,7 @@ import { addDays, fromWall, ymdIn } from './tz';
 import { t } from '../i18n';
 import { upcomingDiniGunler } from '../data/diniGunler';
 import { EZANLAR, ezanById, ezanDosya, ezanFor, EzanId, EzanSeviye } from './ezanSesleri';
-import { SESLER, sesById, SesId } from './bildirimSesleri';
+import { gecerliSes, SESLER, sesById, SesId } from './bildirimSesleri';
 import { vakitSozu } from './vakitSozleri';
 
 export type ReminderSettings = {
@@ -33,7 +33,7 @@ export const DEFAULT_REMINDERS: ReminderSettings = {
 };
 
 /** Seçili ses (eski kayıtlarda `ezan` anahtarından) */
-export const sesOf = (s: ReminderSettings): SesId => s.ses ?? (s.ezan === false ? 'varsayilan' : 'ezan');
+export const sesOf = (s: ReminderSettings): SesId => gecerliSes(s.ses) ?? (s.ezan === false ? 'varsayilan' : 'ezan');
 
 export const LEAD_OPTIONS = [0, 5, 15, 30];
 
