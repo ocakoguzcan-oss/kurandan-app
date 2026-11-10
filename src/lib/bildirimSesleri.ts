@@ -4,21 +4,17 @@
 // Bildirim sesleri uygulamayla yüklenir: yeni ses eklemek yeni mağaza sürümü gerektirir.
 import { tx } from '../i18n';
 
-export type SesId = 'ezan' | 'ney1' | 'k2' | 'k3' | 'k4' | 'k5' | 'k8' | 'k9' | 'k6' | 'k7' | 'kisa1' | 'kisa2' | 'kisa3' | 'kanun' | 'ruzgar' | 'melodi1' | 'melodi2' | 'melodi3' | 'saat' | 'dingdong' | 'uyan' | 'yuksek' | 'kus' | 'bip' | 'varsayilan' | 'sessiz';
+export type SesId = 'ezan' | 'ney1' | 'k2' | 'k3' | 'k6' | 'k7' | 'kisa1' | 'kisa2' | 'kisa3' | 'kanun' | 'ruzgar' | 'melodi1' | 'melodi2' | 'melodi3' | 'saat' | 'dingdong' | 'uyan' | 'yuksek' | 'kus' | 'bip' | 'varsayilan' | 'sessiz';
 
 export type Ses = { id: SesId; ad: string; aciklama: string; dosya?: string; asset?: number };
 
 export const SESLER: Ses[] = [
   { id: 'ezan', ad: tx('Ezan'), aciklama: tx('Her vaktin kendi ezanı · Cuma günü salâ') },
-  { id: 'ney1', ad: tx('Ney 1'), aciklama: tx('Nefesli ney ezgisi'), dosya: 'ses_ney1.caf', asset: require('../../assets/sounds/ses_ney1.caf') },
-  { id: 'k2', ad: tx('Ses 2'), aciklama: tx('29 sn'), dosya: 'ses_k2.caf', asset: require('../../assets/sounds/ses_k2.caf') },
-  { id: 'k3', ad: tx('Ses 3'), aciklama: tx('28 sn'), dosya: 'ses_k3.caf', asset: require('../../assets/sounds/ses_k3.caf') },
-  { id: 'k4', ad: tx('Ses 4'), aciklama: tx('24 sn'), dosya: 'ses_k4.caf', asset: require('../../assets/sounds/ses_k4.caf') },
-  { id: 'k5', ad: tx('Ses 5'), aciklama: tx('29 sn'), dosya: 'ses_k5.caf', asset: require('../../assets/sounds/ses_k5.caf') },
-  { id: 'k8', ad: tx('Ses 6'), aciklama: tx('29 sn'), dosya: 'ses_k8.caf', asset: require('../../assets/sounds/ses_k8.caf') },
-  { id: 'k9', ad: tx('Ses 7'), aciklama: tx('20 sn'), dosya: 'ses_k9.caf', asset: require('../../assets/sounds/ses_k9.caf') },
-  { id: 'k6', ad: tx('Ding Dong 2'), aciklama: tx('Kısa iki notalı zil'), dosya: 'ses_k6.caf', asset: require('../../assets/sounds/ses_k6.caf') },
-  { id: 'k7', ad: tx('Çan'), aciklama: tx('Kısa çan ezgisi'), dosya: 'ses_k7.caf', asset: require('../../assets/sounds/ses_k7.caf') },
+  { id: 'ney1', ad: tx('Huzur'), aciklama: tx('Ney ezgisi'), dosya: 'ses_ney1.caf', asset: require('../../assets/sounds/ses_ney1.caf') },
+  { id: 'k2', ad: tx('Allâhümme Salli 1'), aciklama: tx('Salavat ezgisi'), dosya: 'ses_k2.caf', asset: require('../../assets/sounds/ses_k2.caf') },
+  { id: 'k3', ad: tx('Allâhümme Salli 2'), aciklama: tx('Sesli salavat'), dosya: 'ses_k3.caf', asset: require('../../assets/sounds/ses_k3.caf') },
+  { id: 'k6', ad: tx('Kurandan Air'), aciklama: tx('Kısa iki notalı zil'), dosya: 'ses_k6.caf', asset: require('../../assets/sounds/ses_k6.caf') },
+  { id: 'k7', ad: tx('Kurandan 1'), aciklama: tx('Kısa çan ezgisi'), dosya: 'ses_k7.caf', asset: require('../../assets/sounds/ses_k7.caf') },
   { id: 'kisa1', ad: tx('Kısa Ezan 1'), aciklama: tx('Tek “Allâhu ekber”'), dosya: 'ses_kisa1.caf', asset: require('../../assets/sounds/ses_kisa1.caf') },
   { id: 'kisa2', ad: tx('Kısa Ezan 2'), aciklama: tx('Ezanın başı, yatsı makamı'), dosya: 'ses_kisa2.caf', asset: require('../../assets/sounds/ses_kisa2.caf') },
   { id: 'kisa3', ad: tx('Kısa Ezan 3'), aciklama: tx('İlk iki tekbir, öğle makamı'), dosya: 'ses_kisa3.caf', asset: require('../../assets/sounds/ses_kisa3.caf') },
