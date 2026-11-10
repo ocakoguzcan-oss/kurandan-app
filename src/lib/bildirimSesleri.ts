@@ -4,7 +4,7 @@
 // Bildirim sesleri uygulamayla yüklenir: yeni ses eklemek yeni mağaza sürümü gerektirir.
 import { tx } from '../i18n';
 
-export type SesId = 'ezan' | 'ney1' | 'k2' | 'k3' | 'k6' | 'k7' | 'kisa1' | 'kisa2' | 'kisa3' | 'kanun' | 'ruzgar' | 'melodi1' | 'melodi2' | 'melodi3' | 'saat' | 'dingdong' | 'uyan' | 'yuksek' | 'kus' | 'bip' | 'varsayilan' | 'sessiz';
+export type SesId = 'ezan' | 'ney1' | 'k2' | 'k3' | 'k6' | 'k7' | 'k4' | 'k5' | 'k8' | 'k9' | 'kisa1' | 'kisa2' | 'kisa3' | 'kanun' | 'ruzgar' | 'melodi1' | 'melodi2' | 'melodi3' | 'saat' | 'dingdong' | 'uyan' | 'yuksek' | 'kus' | 'bip' | 'varsayilan' | 'sessiz';
 
 export type Ses = { id: SesId; ad: string; aciklama: string; dosya?: string; asset?: number };
 
@@ -15,6 +15,10 @@ export const SESLER: Ses[] = [
   { id: 'k3', ad: tx('Allâhümme Salli 2'), aciklama: tx('Sesli salavat'), dosya: 'ses_k3.caf', asset: require('../../assets/sounds/ses_k3.caf') },
   { id: 'k6', ad: tx('Kurandan Air'), aciklama: tx('Kısa iki notalı zil'), dosya: 'ses_k6.caf', asset: require('../../assets/sounds/ses_k6.caf') },
   { id: 'k7', ad: tx('Kurandan 1'), aciklama: tx('Kısa çan ezgisi'), dosya: 'ses_k7.caf', asset: require('../../assets/sounds/ses_k7.caf') },
+  { id: 'k4', ad: tx('Zimbabwe Ezanı'), aciklama: tx('Uzun ezan kaydı'), dosya: 'ses_k4.caf', asset: require('../../assets/sounds/ses_k4.caf') },
+  { id: 'k5', ad: tx('Reunion Ezanı'), aciklama: tx('Uzun ezan kaydı'), dosya: 'ses_k5.caf', asset: require('../../assets/sounds/ses_k5.caf') },
+  { id: 'k8', ad: tx('Dubai Ezanı'), aciklama: tx('Uzun ezan kaydı'), dosya: 'ses_k8.caf', asset: require('../../assets/sounds/ses_k8.caf') },
+  { id: 'k9', ad: tx('Rusya Ezanı'), aciklama: tx('Uzun ezan kaydı'), dosya: 'ses_k9.caf', asset: require('../../assets/sounds/ses_k9.caf') },
   { id: 'kisa1', ad: tx('Kısa Ezan 1'), aciklama: tx('Tek “Allâhu ekber”'), dosya: 'ses_kisa1.caf', asset: require('../../assets/sounds/ses_kisa1.caf') },
   { id: 'kisa2', ad: tx('Kısa Ezan 2'), aciklama: tx('Ezanın başı, yatsı makamı'), dosya: 'ses_kisa2.caf', asset: require('../../assets/sounds/ses_kisa2.caf') },
   { id: 'kisa3', ad: tx('Kısa Ezan 3'), aciklama: tx('İlk iki tekbir, öğle makamı'), dosya: 'ses_kisa3.caf', asset: require('../../assets/sounds/ses_kisa3.caf') },

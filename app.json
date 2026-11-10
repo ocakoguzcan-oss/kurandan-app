@@ -158,7 +158,11 @@
             "./assets/sounds/ses_k2.caf",
             "./assets/sounds/ses_k3.caf",
             "./assets/sounds/ses_k6.caf",
-            "./assets/sounds/ses_k7.caf"
+            "./assets/sounds/ses_k7.caf",
+            "./assets/sounds/ses_k4.caf",
+            "./assets/sounds/ses_k5.caf",
+            "./assets/sounds/ses_k8.caf",
+            "./assets/sounds/ses_k9.caf"
           ]
         }
       ],
