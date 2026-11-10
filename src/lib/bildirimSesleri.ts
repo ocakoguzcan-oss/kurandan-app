@@ -4,12 +4,13 @@
 // Bildirim sesleri uygulamayla yüklenir: yeni ses eklemek yeni mağaza sürümü gerektirir.
 import { tx } from '../i18n';
 
-export type SesId = 'ezan' | 'kisa1' | 'kisa2' | 'kisa3' | 'kanun' | 'ruzgar' | 'melodi1' | 'melodi2' | 'melodi3' | 'saat' | 'dingdong' | 'uyan' | 'yuksek' | 'kus' | 'bip' | 'varsayilan' | 'sessiz';
+export type SesId = 'ezan' | 'ney1' | 'kisa1' | 'kisa2' | 'kisa3' | 'kanun' | 'ruzgar' | 'melodi1' | 'melodi2' | 'melodi3' | 'saat' | 'dingdong' | 'uyan' | 'yuksek' | 'kus' | 'bip' | 'varsayilan' | 'sessiz';
 
 export type Ses = { id: SesId; ad: string; aciklama: string; dosya?: string; asset?: number };
 
 export const SESLER: Ses[] = [
   { id: 'ezan', ad: tx('Ezan'), aciklama: tx('Her vaktin kendi ezanı · Cuma günü salâ') },
+  { id: 'ney1', ad: tx('Ney 1'), aciklama: tx('Nefesli ney ezgisi'), dosya: 'ses_ney1.caf', asset: require('../../assets/sounds/ses_ney1.caf') },
   { id: 'kisa1', ad: tx('Kısa Ezan 1'), aciklama: tx('Tek “Allâhu ekber”'), dosya: 'ses_kisa1.caf', asset: require('../../assets/sounds/ses_kisa1.caf') },
   { id: 'kisa2', ad: tx('Kısa Ezan 2'), aciklama: tx('Ezanın başı, yatsı makamı'), dosya: 'ses_kisa2.caf', asset: require('../../assets/sounds/ses_kisa2.caf') },
   { id: 'kisa3', ad: tx('Kısa Ezan 3'), aciklama: tx('İlk iki tekbir, öğle makamı'), dosya: 'ses_kisa3.caf', asset: require('../../assets/sounds/ses_kisa3.caf') },
