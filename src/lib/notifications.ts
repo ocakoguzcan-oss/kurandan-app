@@ -41,7 +41,16 @@ const CHANNEL = 'vakit';
 // Android'de bildirim sesi kanala bağlıdır: her kayıt için ayrı kanal
 const ezanChannel = (id: EzanId, sev: EzanSeviye = 'yuksek') => (sev === 'yuksek' ? `ezan-${id}` : `ezan-${id}-${sev}`);
 const sesChannel = (id: SesId) => `ses-${id}`;
-const DAYS_AHEAD = 7; // iOS en fazla 64 bekleyen bildirime izin verir: 6 vakit × 7 gün + Cuma + dini günler
+const DAYS_AHEAD = 7;
+/** iOS en fazla 64 bekleyen bildirime izin verir; Cuma ve dini günler için pay bırakılır */
+const VAKIT_BUTCESI = 54;
+
+/** Kaç günlük vakit bildirimi kurulabilir ("x dk önce" seçiliyse her vakit iki bildirim olur) */
+export function kurulanGun(settings: ReminderSettings): number {
+  const vakit = VAKIT_KEYS.filter((k) => settings.enabled[k]).length || 1;
+  const gunluk = vakit * (settings.leadMin ? 2 : 1);
+  return Math.max(3, Math.min(DAYS_AHEAD, Math.floor(VAKIT_BUTCESI / gunluk)));
+}
 
 if (Platform.OS !== 'web') {
   Notifications.setNotificationHandler({
@@ -128,34 +137,48 @@ export async function rescheduleAll(
   let count = 0;
   const tz = calc.tz;
   const today = ymdIn(new Date(), tz);
-  for (let i = 0; i < DAYS_AHEAD; i++) {
+  const gunSayisi = kurulanGun(settings);
+  const ses = sesOf(settings);
+  for (let i = 0; i < gunSayisi; i++) {
     const day = addDays(today, i);
     const cuma = new Date(Date.UTC(day.y, day.m - 1, day.d)).getUTCDay() === 5;
     const times = getPrayerTimes(day, lat, lng, calc);
     for (const key of VAKIT_KEYS) {
       if (!settings.enabled[key]) continue;
-      const fireAt = times[key].getTime() - settings.leadMin * 60000;
-      if (fireAt <= now + 30000) continue;
+      const vakitMs = times[key].getTime();
       const name = t(VAKIT_NAMES[key]);
       const cumaOgle = cuma && key === 'ogle';
-      // Ezan yalnızca vaktin tam girdiği anda okunur; "x dk önce" hatırlatması normal sesle gelir.
-      // Cuma günü öğle vaktinde Cuma salâsı çalar.
-      const ses = sesOf(settings);
-      // Sabah alarmı kuruluysa imsakta bildirim yalnızca yazı olarak gelir
-      if (sabahAlarmKurulu && key === 'imsak' && settings.leadMin === 0) continue;
-      const ezan = ses === 'ezan' && settings.leadMin === 0 ? ezanFor(key, cuma) : null;
-      // Ezan dışındaki seçimler (zil sesi, telefonun sesi, sessiz) yalnız tam vaktinde uygulanır
-      const zil = !ezan && settings.leadMin === 0 && ses !== 'ezan' ? sesById(ses) : null;
-      // Ezanlı bildirim: "Sabah Ezanı Okunuyor" / "Namaz Vakti 🤲🏻📿"; Cuma öğlesinde salâ
+
+      // 1) "x dk önce" hatırlatması (seçiliyse): telefonun normal sesiyle
+      if (settings.leadMin) {
+        const onceMs = vakitMs - settings.leadMin * 60000;
+        if (onceMs > now + 30000) {
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: cumaOgle
+                ? t('Cuma namazına {n} dakika', { n: settings.leadMin })
+                : t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin }),
+              body: `${placeName} · ${name} ${formatTime(times[key], tz)}`,
+              sound: 'default',
+              data: { url: '/' },
+            },
+            trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: new Date(onceMs), channelId: CHANNEL },
+          });
+          count++;
+        }
+      }
+
+      // 2) Vakit girdiğinde: seçilen ses (ezan, zil sesi, telefonun sesi ya da sessiz)
+      if (vakitMs <= now + 30000) continue;
+      // Sabah alarmı kuruluysa imsakta ayrıca bildirim gelmez (alarm ezanı çalar)
+      if (sabahAlarmKurulu && key === 'imsak') continue;
+      // Cuma günü öğle vaktinde Cuma salâsı çalar
+      const ezan = ses === 'ezan' ? ezanFor(key, cuma) : null;
+      const zil = !ezan && ses !== 'ezan' ? sesById(ses) : null;
       const ezanAdi = t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]);
       let title: string;
       let body: string;
-      if (settings.leadMin) {
-        title = cumaOgle
-          ? t('Cuma namazına {n} dakika', { n: settings.leadMin })
-          : t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin });
-        body = `${placeName} · ${name} ${formatTime(times[key], tz)}`;
-      } else if (key === 'gunes') {
+      if (key === 'gunes') {
         title = t('{vakit} vakti girdi', { vakit: name });
         body = `${placeName} · ${name} ${formatTime(times[key], tz)}`;
       } else if (ezan) {
@@ -174,7 +197,7 @@ export async function rescheduleAll(
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.DATE,
-          date: new Date(fireAt),
+          date: new Date(vakitMs),
           channelId: ezan ? ezanChannel(ezan, sev) : zil && (zil.dosya || zil.id === 'sessiz') ? sesChannel(zil.id) : CHANNEL,
         },
       });

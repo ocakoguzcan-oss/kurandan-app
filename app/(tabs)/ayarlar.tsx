@@ -8,7 +8,7 @@ import { useApp } from '../../src/context/AppContext';
 import { formatTime, getPrayerTimes, METHODS, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { utcLabel } from '../../src/lib/tz';
 import { countryName } from '../../src/data/world';
-import { getPermissionStatus, LEAD_OPTIONS, PermissionStatus, sesOf, testEzanBildirimi } from '../../src/lib/notifications';
+import { getPermissionStatus, kurulanGun, LEAD_OPTIONS, PermissionStatus, sesOf, testEzanBildirimi } from '../../src/lib/notifications';
 import { sesById } from '../../src/lib/bildirimSesleri';
 import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
@@ -128,7 +128,7 @@ export default function Ayarlar() {
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Bildirim sesi')}</Text>
             <Text style={st.sub}>
-              {reminders.leadMin === 0 ? t(sesById(sesOf(reminders)).aciklama) : t('Seçilen ses yalnızca “Vaktinde” seçiliyken çalar')}
+              {t(sesById(sesOf(reminders)).aciklama)}
             </Text>
           </View>
           <Text style={st.link}>{`${t(sesById(sesOf(reminders)).ad)} ›`}</Text>
@@ -206,7 +206,7 @@ export default function Ayarlar() {
       </Card>
 
       <Text style={st.note}>
-        {t('Hatırlatmalar önümüzdeki 7 gün için kurulur ve uygulamayı her açtığınızda yenilenir. Bir haftadan uzun süre açmazsanız uygulamayı bir kez açmanız yeterli.')}
+        {t('Hatırlatmalar önümüzdeki {n} gün için kurulur ve uygulamayı her açtığınızda yenilenir. Daha uzun süre açmazsanız uygulamayı bir kez açmanız yeterli.', { n: kurulanGun(reminders) })}
       </Text>
     </Screen>
   );
