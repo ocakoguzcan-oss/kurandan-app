@@ -167,4 +167,4 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
 - `targets/widget/`: WidgetKit eklentisi (@bacons/apple-targets). Kilit ekranı (satır, yuvarlak, dikdörtgen) ve ana ekran (küçük) "sıradaki vakit + geri sayım" widget'ı; sabah alarmının Canlı Etkinlik görünümü.
 - `modules/ezan-native/`: yerel Expo modülü. Vakit listesini App Group'a (`group.ai.kurandan.app`) yazar, iOS 26+ AlarmKit ile sabah ezanını alarm olarak kurar.
 - `src/lib/vakitWidget.ts`: JS tarafı. Ayarlar → "Sabah ezanı alarm olarak" (varsayılan kapalı). Alarm kuruluysa imsak bildirimi ayrıca gelmez.
-- Alarm sesi `ezan_imsak.wav` (Apple sınırı 30 sn). Android karşılığı henüz yok.
+- Alarm sesi `ezan_imsak.caf` (Apple sınırı 30 sn). Android karşılığı henüz yok.

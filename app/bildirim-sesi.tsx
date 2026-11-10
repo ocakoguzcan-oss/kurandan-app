@@ -14,7 +14,7 @@ import { SEVIYELER, seviyeKazanc } from '../src/lib/ezanSesleri';
 import { t } from '../src/i18n';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const EZAN_ONIZLEME = require('../assets/sounds/ezan_ogle.wav');
+const EZAN_ONIZLEME = require('../assets/sounds/ezan_ogle.caf');
 
 export default function BildirimSesi() {
   const { reminders, setReminders } = useApp();
