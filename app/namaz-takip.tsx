@@ -39,7 +39,7 @@ export default function NamazTakip() {
               style={[st.row, i < FARZLAR.length - 1 && st.divider]}
             >
               <Text style={st.name}>{t(f.name)}</Text>
-              <View style={[st.box, on ? st.boxOn : st.boxOff]}>{on && <IconCheck size={22} color={colors.paper} strokeWidth={3} />}</View>
+              <View style={[st.box, on ? st.boxOn : st.boxOff]}>{on && <IconCheck size={22} color={colors.onGreen} strokeWidth={3} />}</View>
             </Pressable>
           );
         })}
@@ -57,7 +57,7 @@ export default function NamazTakip() {
                   <View style={[st.bar, { height: `${(n / GUNLUK_VAKITLER.length) * 100}%`, backgroundColor: full ? colors.green : colors.gold }]} />
                 </View>
                 <Text style={st.dayN}>{n}</Text>
-                <Text style={[st.dayL, dayKey(d) === todayKey && { color: colors.green, fontFamily: fonts.bodyBold }]}>{formatWeekday(d, true)}</Text>
+                <Text style={[st.dayL, dayKey(d) === todayKey && { color: colors.greenText, fontFamily: fonts.bodyBold }]}>{formatWeekday(d, true)}</Text>
               </View>
             );
           })}
@@ -94,9 +94,9 @@ const st = StyleSheet.create({
   muted: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, textAlign: 'center' },
   counter: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   cBtn: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
-  cBtnText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.green },
+  cBtnText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.greenText },
   kazaCard: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   mutedLeft: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
-  more: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
+  more: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText },
   cVal: { minWidth: 36, textAlign: 'center', fontFamily: fonts.bodyBold, fontSize: 18, color: colors.ink },
 });

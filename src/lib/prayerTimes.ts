@@ -256,8 +256,7 @@ export function distanceToKaaba(lat: number, lng: number): number {
 
 /** Saat:dakika — tz verilirse o şehrin saatiyle, yoksa cihaz saatiyle. */
 export function formatTime(d: Date, tz?: string): string {
-  if (tz) return hhmm(d, tz);
-  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  return hhmm(d, tz);
 }
 
 export function formatCountdown(ms: number): string {

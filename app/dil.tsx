@@ -64,7 +64,7 @@ export default function DilScreen() {
                 onPress={() => setSel(l.code)}
                 style={[st.row, on && st.rowOn]}
               >
-                <Text style={[st.name, on && { color: colors.paper }]}>{l.name}</Text>
+                <Text style={[st.name, on && { color: colors.onGreen }]}>{l.name}</Text>
                 <Text style={[st.latin, on && { color: colors.goldLight }]}>{l.latin}</Text>
               </Pressable>
             );
@@ -86,7 +86,7 @@ export default function DilScreen() {
 const st = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.paper, gap: 12 },
   ar: { fontFamily: fonts.arabic, fontSize: 30, color: colors.gold, textAlign: 'center' },
-  h1: { fontFamily: fonts.displayBold, fontSize: 26, color: colors.green, textAlign: 'center' },
+  h1: { fontFamily: fonts.displayBold, fontSize: 26, color: colors.greenText, textAlign: 'center' },
   row: {
     minHeight: 64,
     borderRadius: 16,

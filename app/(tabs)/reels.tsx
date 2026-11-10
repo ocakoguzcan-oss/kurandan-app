@@ -67,7 +67,7 @@ export default function ReelsScreen() {
         columnWrapperStyle={{ gap: 10 }}
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24, gap: 14 }}
         ListHeaderComponent={header}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={colors.green} />}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={colors.greenText} />}
         ListEmptyComponent={
           loading ? null : (
             <Card style={{ gap: 10 }}>
@@ -86,7 +86,7 @@ export default function ReelsScreen() {
             <View style={st.thumbWrap}>
               <Image source={{ uri: item.thumbnailUrl }} style={st.thumb} />
               <View style={st.playDot}>
-                <Text style={{ color: colors.paper, fontSize: 11 }}>▶</Text>
+                <Text style={{ color: colors.onGreen, fontSize: 11 }}>▶</Text>
               </View>
             </View>
             <Text style={st.itemTitle} numberOfLines={2}>{reelTitle(item)}</Text>
@@ -112,7 +112,7 @@ function Player({ reel, onClose }: { reel: Reel; onClose: () => void }) {
       <View style={[st.playerBar, { paddingTop: insets.top + 8 }]}>
         <Pressable accessibilityRole="button" accessibilityLabel={t('Kapat')} onPress={onClose} style={st.closeBtn}>
           <View style={isRTL() ? { transform: [{ scaleX: -1 }] } : undefined}>
-            <IconBack color={colors.paper} />
+            <IconBack color={colors.onGreen} />
           </View>
         </Pressable>
         <Pressable accessibilityRole="link" onPress={() => Linking.openURL(reel.permalink)} style={st.follow}>
@@ -126,16 +126,16 @@ function Player({ reel, onClose }: { reel: Reel; onClose: () => void }) {
 const st = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.paper },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  title: { fontFamily: fonts.display, fontSize: 24, color: colors.green },
+  title: { fontFamily: fonts.display, fontSize: 24, color: colors.greenText },
   follow: { minHeight: 40, paddingHorizontal: 14, borderRadius: 20, backgroundColor: colors.green, justifyContent: 'center' },
-  followText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.paper },
+  followText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.onGreen },
   profile: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
   logo: { width: 48, height: 46, resizeMode: 'contain' },
   handle: { fontFamily: fonts.bodyBold, fontSize: 15, color: colors.ink },
   muted: { fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: colors.muted },
   emptyTitle: { fontFamily: fonts.bodyBold, fontSize: 15, color: colors.ink },
   item: { flex: 1, gap: 6 },
-  thumbWrap: { height: 220, borderRadius: 16, overflow: 'hidden', backgroundColor: '#EFE4CB', borderWidth: 1, borderColor: colors.buttonBorder },
+  thumbWrap: { height: 220, borderRadius: 16, overflow: 'hidden', backgroundColor: colors.tableHead, borderWidth: 1, borderColor: colors.buttonBorder },
   thumb: { width: '100%', height: '100%' },
   playDot: {
     position: 'absolute', right: 8, bottom: 8, width: 28, height: 28, borderRadius: 14,

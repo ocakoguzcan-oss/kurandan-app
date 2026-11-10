@@ -5,7 +5,8 @@ import { Link, router } from 'expo-router';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 import { Screen, Card, Eyebrow, RoundButton } from '../../src/components/ui';
 import { IconBell, IconGlobe, IconKaaba, IconBook, IconCalendar, IconCheck, IconCoins, IconCompass, IconHatim, IconHijri, IconMoon, IconMosque, IconPin, IconStory, IconTasbih } from '../../src/components/Icons';
-import { colors, fonts, radius } from '../../src/theme';
+import { colors, fonts, lightColors, radius } from '../../src/theme';
+import { usePrefs } from '../../src/lib/prefs';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
@@ -47,7 +48,16 @@ export default function Home() {
   const duaLib = useDualar();
   const dua = useMemo(() => duaForDate(localDay, duaLib.dualar), [localDay, duaLib]);
   const duaTr = duaText(dua);
-  const hijri = useMemo(() => formatHijriAr(toHijri(localDay)), [localDay]);
+  const prefs = usePrefs();
+  const hijri = useMemo(() => formatHijriAr(toHijri(localDay)), [localDay, prefs.hicriDuzelt]); // eslint-disable-line react-hooks/exhaustive-deps
+  // İftar sayacı (Kişisel ayarlar): gündüz akşama, akşamdan sonra imsaka kalan süre
+  const iftar = useMemo(() => {
+    if (!prefs.iftarSayaci) return null;
+    const n = now.getTime();
+    if (n >= times.imsak.getTime() && n < times.aksam.getTime()) return { ad: t('İftara kalan'), hedef: times.aksam };
+    const imsak = n < times.imsak.getTime() ? times.imsak : getPrayerTimes(ymdIn(new Date(n + 6 * 3600000), calc.tz), place.lat, place.lng, calc).imsak;
+    return { ad: t('Sahura (imsaka) kalan'), hedef: imsak };
+  }, [prefs.iftarSayaci, now, times, calc, place.lat, place.lng]);
   const rDay = ramazanDay(localDay);
   const hatim = useHatim();
   const namaz = useNamaz();
@@ -118,13 +128,21 @@ export default function Home() {
             const active = k === next.key && times[k].getTime() === next.time.getTime();
             return (
               <View key={k} style={[st.timeCell, active && st.timeCellOn]}>
-                <Text style={[st.timeLabel, active && { color: colors.green, fontFamily: fonts.bodySemi }]}>{t(VAKIT_NAMES[k])}</Text>
-                <Text style={[st.timeVal, active && { color: colors.green, fontFamily: fonts.bodyBold }]}>{formatTime(times[k], calc.tz)}</Text>
+                <Text style={[st.timeLabel, active && { color: lightColors.green, fontFamily: fonts.bodySemi }]}>{t(VAKIT_NAMES[k])}</Text>
+                <Text style={[st.timeVal, active && { color: lightColors.green, fontFamily: fonts.bodyBold }]}>{formatTime(times[k], calc.tz)}</Text>
               </View>
             );
           })}
         </View>
       </View>
+
+      {iftar && (
+        <View style={st.iftar}>
+          <Text style={st.iftarAd}>{iftar.ad}</Text>
+          <Text style={st.iftarSure}>{formatCountdown(iftar.hedef.getTime() - now.getTime())}</Text>
+          <Text style={st.iftarSaat}>{formatTime(iftar.hedef, calc.tz)}</Text>
+        </View>
+      )}
 
       <View ref={tDua} collapsable={false}>
       <Link href="/dua" asChild>
@@ -196,7 +214,7 @@ export default function Home() {
           <View key={href} ref={(n) => register(`tile-${href.slice(1)}`, n)} collapsable={false} style={st.tile}>
             <Link href={href} asChild>
               <Pressable accessibilityRole="link" style={st.tileInner}>
-                <Icon size={26} color={colors.green} />
+                <Icon size={26} color={colors.greenText} />
                 <Text style={st.tileLabel} numberOfLines={2}>{t(label)}</Text>
               </Pressable>
             </Link>
@@ -222,38 +240,42 @@ const st = StyleSheet.create({
     borderColor: colors.buttonBorder,
     backgroundColor: colors.card,
   },
-  langText: { fontFamily: fonts.bodyBold, fontSize: 13, color: colors.green },
+  langText: { fontFamily: fonts.bodyBold, fontSize: 13, color: colors.greenText },
   logo: { width: 46, height: 44, resizeMode: 'contain' },
   greet: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
   placeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, minHeight: 28 },
-  place: { fontFamily: fonts.display, fontSize: 18, color: colors.green, flexShrink: 1 },
+  place: { fontFamily: fonts.display, fontSize: 18, color: colors.greenText, flexShrink: 1 },
   hero: { backgroundColor: colors.green, borderRadius: radius.xl, padding: 20, gap: 14, overflow: 'hidden' },
   heroStar: { position: 'absolute', right: -40, top: -40, opacity: 0.18 },
   heroHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   heroEyebrow: { fontFamily: fonts.bodySemi, fontSize: 12, letterSpacing: 0.9, textTransform: 'uppercase', color: colors.goldLight },
-  heroName: { fontFamily: fonts.display, fontSize: 30, color: colors.paper },
+  heroName: { fontFamily: fonts.display, fontSize: 30, color: colors.onGreen },
   heroDate: { fontFamily: fonts.body, fontSize: 12, color: colors.mutedOnGreen },
   heroHijri: { fontFamily: fonts.arabic, fontSize: 16, color: colors.goldLight },
   countRow: { flexDirection: 'row', alignItems: 'baseline', gap: 10 },
-  count: { fontFamily: fonts.bodyBold, fontSize: 44, color: colors.paper, fontVariant: ['tabular-nums'], letterSpacing: -0.8 },
+  count: { fontFamily: fonts.bodyBold, fontSize: 44, color: colors.onGreen, fontVariant: ['tabular-nums'], letterSpacing: -0.8 },
   countSub: { fontFamily: fonts.body, fontSize: 13, color: colors.mutedOnGreen },
   timesRow: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.18)', borderRadius: 14, padding: 6, gap: 4 },
   timeCell: { flex: 1, alignItems: 'center', gap: 3, paddingVertical: 4, borderRadius: 8 },
   timeCellOn: { backgroundColor: colors.goldLight },
+  iftar: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, paddingVertical: 12, paddingHorizontal: 16 },
+  iftarAd: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 14, color: colors.ink },
+  iftarSure: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.greenText, fontVariant: ['tabular-nums'] },
+  iftarSaat: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, fontVariant: ['tabular-nums'] },
   timeLabel: { fontFamily: fonts.body, fontSize: 10, color: colors.mutedOnGreen },
-  timeVal: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.paper },
+  timeVal: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.onGreen },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   muted: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  duaAr: { fontFamily: fonts.arabic, fontSize: 20, lineHeight: 34, color: colors.green, textAlign: 'right', writingDirection: 'rtl' },
+  duaAr: { fontFamily: fonts.arabic, fontSize: 20, lineHeight: 34, color: colors.greenText, textAlign: 'right', writingDirection: 'rtl' },
   duaNe: { fontFamily: fonts.bodySemi, fontSize: 13, lineHeight: 18, color: colors.goldText },
   duaTr: { fontFamily: fonts.body, fontSize: 13, lineHeight: 20, color: colors.inkSoft },
   mini: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, padding: 14, gap: 4 },
-  miniBig: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.green },
+  miniBig: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.greenText },
   miniBar: { height: 5, borderRadius: 3, backgroundColor: colors.cardBorder, overflow: 'hidden', marginVertical: 2 },
   miniFill: { height: 5, backgroundColor: colors.gold },
   gunCard: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12 },
   gunName: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
-  gunMore: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
+  gunMore: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   tile: {
     width: '22%',

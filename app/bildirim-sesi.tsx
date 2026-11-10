@@ -80,7 +80,7 @@ export default function BildirimSesi() {
               <Pressable accessibilityRole="radio" accessibilityState={{ selected: on }} onPress={() => choose(z.id)} style={st.main}>
                 <View style={[st.radio, on && st.radioOn]}>{on && <View style={st.dot} />}</View>
                 <View style={{ flex: 1 }}>
-                  <Text style={[st.name, on && { color: colors.green, fontFamily: fonts.bodyBold }]}>{t(z.ad)}</Text>
+                  <Text style={[st.name, on && { color: colors.greenText, fontFamily: fonts.bodyBold }]}>{t(z.ad)}</Text>
                   <Text style={st.sub}>{t(z.aciklama)}</Text>
                 </View>
               </Pressable>
@@ -95,11 +95,11 @@ export default function BildirimSesi() {
                   <Svg width={18} height={18} viewBox="0 0 24 24">
                     {playing === z.id ? (
                       <>
-                        <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.green} />
-                        <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.green} />
+                        <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.greenText} />
+                        <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.greenText} />
                       </>
                     ) : (
-                      <Path d="M8 5v14l11-7z" fill={colors.green} />
+                      <Path d="M8 5v14l11-7z" fill={colors.greenText} />
                     )}
                   </Svg>
                 </Pressable>
@@ -122,11 +122,11 @@ export default function BildirimSesi() {
               <Svg width={18} height={18} viewBox="0 0 24 24">
                 {playing === 'ezan' ? (
                   <>
-                    <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.green} />
-                    <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.green} />
+                    <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.greenText} />
+                    <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.greenText} />
                   </>
                 ) : (
-                  <Path d="M8 5v14l11-7z" fill={colors.green} />
+                  <Path d="M8 5v14l11-7z" fill={colors.greenText} />
                 )}
               </Svg>
             </Pressable>
@@ -158,7 +158,7 @@ const st = StyleSheet.create({
   divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   main: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 },
   radio: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: colors.buttonBorder, alignItems: 'center', justifyContent: 'center' },
-  radioOn: { borderColor: colors.green },
+  radioOn: { borderColor: colors.greenText },
   dot: { width: 12, height: 12, borderRadius: 6, backgroundColor: colors.green },
   name: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 12, color: colors.muted, marginTop: 1 },

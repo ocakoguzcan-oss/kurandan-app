@@ -70,7 +70,7 @@ export default function Kible() {
       <View style={st.center}>
         <Svg width={320} height={320} viewBox="0 0 320 320" accessibilityLabel={t('Kıble pusulası')}>
           <G transform={`rotate(${dialRotation} 160 160)`}>
-            <Circle cx={160} cy={160} r={152} fill={colors.card} stroke={aligned ? colors.green : colors.gold} strokeWidth={aligned ? 4 : 2} />
+            <Circle cx={160} cy={160} r={152} fill={colors.card} stroke={aligned ? colors.greenText : colors.gold} strokeWidth={aligned ? 4 : 2} />
             <Circle cx={160} cy={160} r={142} fill="none" stroke={colors.cardBorder} strokeWidth={1} />
             <G stroke="#B9A57A" strokeWidth={1.5}>
               {Array.from({ length: 36 }).map((_, i) => {
@@ -92,7 +92,7 @@ export default function Kible() {
               </SvgText>
             ))}
             <G transform={`rotate(${qibla} 160 160)`}>
-              <Path d="M160 46 L172 160 L160 172 L148 160 Z" fill={colors.green} />
+              <Path d="M160 46 L172 160 L160 172 L148 160 Z" fill={colors.greenText} />
               <Path d="M160 274 L170 160 L160 150 L150 160 Z" fill={colors.buttonBorder} />
               <G transform={`translate(160 30) rotate(${-qibla - dialRotation})`}>
                 <Rect x={-13} y={-13} width={26} height={26} rx={3} fill={colors.ink} />
@@ -100,7 +100,7 @@ export default function Kible() {
               </G>
             </G>
           </G>
-          <Path d="M160 2 L166 14 L154 14 Z" fill={colors.green} />
+          <Path d="M160 2 L166 14 L154 14 Z" fill={colors.greenText} />
           <Circle cx={160} cy={160} r={8} fill={colors.gold} />
           <Circle cx={160} cy={160} r={3} fill={colors.card} />
         </Svg>
@@ -108,7 +108,7 @@ export default function Kible() {
 
       <View style={[st.status, { backgroundColor: aligned ? colors.green : colors.card, borderWidth: aligned ? 0 : 1 }]}>
         {aligned && <IconCheck />}
-        <Text style={[st.statusText, { color: aligned ? colors.paper : colors.ink }]}>{status}</Text>
+        <Text style={[st.statusText, { color: aligned ? colors.onGreen : colors.ink }]}>{status}</Text>
       </View>
 
       {Platform.OS !== 'web' && heading != null && accuracy < 2 && (
@@ -127,7 +127,7 @@ export default function Kible() {
 const st = StyleSheet.create({
   center: { alignItems: 'center', gap: 4 },
   muted: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
-  deg: { fontFamily: fonts.bodyBold, fontSize: 48, color: colors.green, letterSpacing: -1 },
+  deg: { fontFamily: fonts.bodyBold, fontSize: 48, color: colors.greenText, letterSpacing: -1 },
   status: { borderRadius: radius.md + 2, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 12, borderColor: colors.cardBorder },
   statusText: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, flexShrink: 1 },
   warn: { fontFamily: fonts.body, fontSize: 13, color: colors.goldText, textAlign: 'center' },

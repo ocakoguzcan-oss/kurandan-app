@@ -121,7 +121,7 @@ export default function Zekat() {
 
 const st = StyleSheet.create({
   result: { backgroundColor: colors.green, borderColor: colors.green, gap: 6 },
-  big: { fontFamily: fonts.bodyBold, fontSize: 40, color: colors.paper, fontVariant: ['tabular-nums'] },
+  big: { fontFamily: fonts.bodyBold, fontSize: 40, color: colors.onGreen, fontVariant: ['tabular-nums'] },
   resultSub: { fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: colors.mutedOnGreen },
   group: { paddingVertical: 4, paddingHorizontal: 14 },
   field: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 64, borderBottomWidth: 1, borderBottomColor: colors.divider },

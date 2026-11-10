@@ -55,8 +55,8 @@ export default function DiniGunler() {
 const st = StyleSheet.create({
   hero: { backgroundColor: colors.green, borderRadius: 22, padding: 20, gap: 4 },
   heroEyebrow: { fontFamily: fonts.bodySemi, fontSize: 12, letterSpacing: 0.9, textTransform: 'uppercase', color: colors.goldLight },
-  heroName: { fontFamily: fonts.display, fontSize: 26, color: colors.paper },
-  heroDays: { fontFamily: fonts.bodyBold, fontSize: 34, color: colors.paper },
+  heroName: { fontFamily: fonts.display, fontSize: 26, color: colors.onGreen },
+  heroDays: { fontFamily: fonts.bodyBold, fontSize: 34, color: colors.onGreen },
   heroDate: { fontFamily: fonts.body, fontSize: 14, color: colors.mutedOnGreen },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12 },
   icon: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.greenTint, alignItems: 'center', justifyContent: 'center' },

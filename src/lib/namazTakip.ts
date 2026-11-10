@@ -1,5 +1,7 @@
 // Namaz takip çizelgesi: günlük beş vakit işaretleme ve kaza namazı sayacı.
 import { useSyncExternalStore } from 'react';
+import { Platform } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { load, save } from './storage';
 import { tx } from '../i18n';
 
@@ -35,15 +37,22 @@ function emit(next: State) {
   listeners.forEach((l) => l());
 }
 
-function subscribe(cb: () => void) {
-  listeners.add(cb);
-  if (!loaded) {
+let yukleniyor: Promise<void> | null = null;
+/** Kayıtlı çizelgeyi yükler (bildirim kurarken de gerekir) */
+export function namazYukle(): Promise<void> {
+  if (!yukleniyor) {
     loaded = true;
-    load<State>(KEY, initial).then((s) => {
+    yukleniyor = load<State>(KEY, initial).then((s) => {
       state = { days: s.days ?? {}, kaza: { ...initial.kaza, ...s.kaza }, kilinan: s.kilinan ?? 0 };
       listeners.forEach((l) => l());
     });
   }
+  return yukleniyor;
+}
+
+function subscribe(cb: () => void) {
+  listeners.add(cb);
+  if (!loaded) namazYukle();
   return () => {
     listeners.delete(cb);
   };
@@ -56,7 +65,18 @@ export function useNamaz(): State {
 
 export function toggleVakit(day: string, key: FarzKey) {
   const cur = state.days[day] ?? {};
-  emit({ ...state, days: { ...state.days, [day]: { ...cur, [key]: !cur[key] } } });
+  isaretle(day, key, !cur[key]);
+}
+
+export function isaretliMi(day: string, key: FarzKey): boolean {
+  return !!state.days[day]?.[key];
+}
+
+/** Vakti kılındı / kılınmadı olarak işaretler; kılındıysa "kıldınız mı?" bildirimi iptal edilir */
+export function isaretle(day: string, key: FarzKey, val: boolean) {
+  const cur = state.days[day] ?? {};
+  emit({ ...state, days: { ...state.days, [day]: { ...cur, [key]: val } } });
+  if (val && Platform.OS !== 'web') Notifications.cancelScheduledNotificationAsync(`kildin:${day}:${key}`).catch(() => {});
 }
 
 export function changeKaza(key: FarzKey, delta: number) {

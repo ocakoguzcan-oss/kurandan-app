@@ -219,7 +219,7 @@ export default function StoryStudio() {
                 accessibilityLabel={t('{renk} renk', { renk: t(pl.ad) })}
                 accessibilityState={{ selected: !photo && i === paletIdx }}
                 onPress={() => { setPaletIdx(i); setPhoto(null); }}
-                style={[st.swatch, { backgroundColor: pl.bg[0], borderColor: !photo && i === paletIdx ? colors.green : colors.buttonBorder, borderWidth: !photo && i === paletIdx ? 3 : 1 }]}
+                style={[st.swatch, { backgroundColor: pl.bg[0], borderColor: !photo && i === paletIdx ? colors.greenText : colors.buttonBorder, borderWidth: !photo && i === paletIdx ? 3 : 1 }]}
               >
                 <View style={[st.swatchHalf, { backgroundColor: pl.bg[pl.bg.length - 1] }]} />
               </Pressable>
@@ -263,7 +263,7 @@ export default function StoryStudio() {
                 accessibilityLabel={c === 'auto' ? t('Otomatik renk') : t('Yazı rengi {renk}', { renk: c })}
                 accessibilityState={{ selected: textColor === c }}
                 onPress={() => setTextColor(c)}
-                style={[st.dot, { backgroundColor: c === 'auto' ? colors.card : c, borderWidth: textColor === c ? 3 : 1, borderColor: textColor === c ? colors.green : colors.buttonBorder }]}
+                style={[st.dot, { backgroundColor: c === 'auto' ? colors.card : c, borderWidth: textColor === c ? 3 : 1, borderColor: textColor === c ? colors.greenText : colors.buttonBorder }]}
               >
                 {c === 'auto' && <Text style={st.auto}>A</Text>}
               </Pressable>
@@ -291,8 +291,8 @@ const st = StyleSheet.create({
   tabs: { flexDirection: 'row', backgroundColor: colors.card, borderRadius: 14, borderWidth: 1, borderColor: colors.cardBorder, padding: 4 },
   tab: { flex: 1, minHeight: 44, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   tabOn: { backgroundColor: colors.green },
-  tabText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
-  tabTextOn: { color: colors.paper },
+  tabText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText },
+  tabTextOn: { color: colors.onGreen },
   hint: { fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: colors.muted },
   input: { minHeight: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, paddingHorizontal: 14, fontFamily: fonts.body, fontSize: 16, color: colors.ink },
   pager: { flexDirection: 'row', alignItems: 'center', gap: 12 },
@@ -305,5 +305,5 @@ const st = StyleSheet.create({
   swatch: { width: 48, height: 48, borderRadius: 12, overflow: 'hidden' },
   swatchHalf: { position: 'absolute', right: 0, bottom: 0, width: 48, height: 24 },
   dot: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
-  auto: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.green },
+  auto: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.greenText },
 });

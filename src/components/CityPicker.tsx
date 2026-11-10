@@ -75,7 +75,7 @@ export function CityPicker({
           <Pressable accessibilityRole="button" accessibilityState={{ selected: on }} onPress={() => onSelect(item)} style={st.row}>
             {item.plaka ? <Text style={st.plaka}>{String(item.plaka).padStart(2, '0')}</Text> : null}
             <View style={{ flex: 1 }}>
-              <Text style={[st.name, on && { color: colors.green, fontFamily: fonts.bodyBold }]}>{item.name}</Text>
+              <Text style={[st.name, on && { color: colors.greenText, fontFamily: fonts.bodyBold }]}>{item.name}</Text>
               {item.province ? <Text style={st.sub}>{item.province}</Text> : null}
             </View>
             {on && <Text style={st.check}>✓</Text>}
@@ -134,7 +134,7 @@ export function CountryList({ selected, onSelect, header }: { selected?: string;
           <Pressable accessibilityRole="button" accessibilityState={{ selected: on }} onPress={() => onSelect(item)} style={[st.row, sep && st.sep]}>
             <Text style={st.flag}>{flag(item.c)}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={[st.name, on && { color: colors.green, fontFamily: fonts.bodyBold }]}>{item.n[lang]}</Text>
+              <Text style={[st.name, on && { color: colors.greenText, fontFamily: fonts.bodyBold }]}>{item.n[lang]}</Text>
               <Text style={st.sub}>{utcLabel(citiesOf(item.c)[0]?.tz)}</Text>
             </View>
             {on && <Text style={st.check}>✓</Text>}
@@ -171,13 +171,13 @@ const st = StyleSheet.create({
   },
   countryLabel: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
   countryName: { fontFamily: fonts.bodySemi, fontSize: 17, color: colors.ink },
-  change: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
+  change: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText },
   flag: { fontSize: 26 },
   row: { flexDirection: 'row', alignItems: 'center', minHeight: 52, borderBottomWidth: 1, borderBottomColor: colors.divider, gap: 14, paddingVertical: 6 },
   sep: { borderTopWidth: 6, borderTopColor: colors.divider },
   plaka: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.goldText, width: 24 },
   name: { fontFamily: fonts.body, fontSize: 16, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  check: { fontSize: 18, color: colors.green },
+  check: { fontSize: 18, color: colors.greenText },
   empty: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, color: colors.muted, textAlign: 'center', marginTop: 20 },
 });

@@ -145,7 +145,7 @@ export default function Kaza() {
 
 const st = StyleSheet.create({
   hero: { backgroundColor: colors.green, borderColor: colors.green, gap: 6 },
-  big: { fontFamily: fonts.bodyBold, fontSize: 44, color: colors.paper, fontVariant: ['tabular-nums'] },
+  big: { fontFamily: fonts.bodyBold, fontSize: 44, color: colors.onGreen, fontVariant: ['tabular-nums'] },
   bar: { height: 8, borderRadius: 4, backgroundColor: 'rgba(0,0,0,0.25)', overflow: 'hidden' },
   fill: { height: 8, backgroundColor: colors.goldLight },
   heroSub: { fontFamily: fonts.body, fontSize: 13, color: colors.mutedOnGreen },
@@ -154,9 +154,9 @@ const st = StyleSheet.create({
   name: { fontFamily: fonts.bodySemi, fontSize: 17, color: colors.ink },
   count: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, fontVariant: ['tabular-nums'] },
   small: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
-  smallText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.green },
+  smallText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.greenText },
   kildim: { minHeight: 44, paddingHorizontal: 16, borderRadius: 22, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
-  kildimText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.paper },
+  kildimText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.onGreen },
   inputs: { flexDirection: 'row', gap: 10 },
   inLabel: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.muted },
   input: {

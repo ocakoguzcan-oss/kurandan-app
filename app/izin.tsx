@@ -110,7 +110,7 @@ export default function IzinScreen() {
               return (
                 <View key={key} style={st.permRow}>
                   <View style={st.permIcon}>
-                    <Icon size={24} color={colors.green} />
+                    <Icon size={24} color={colors.greenText} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text style={st.permTitle}>{t(title)}</Text>
@@ -118,7 +118,7 @@ export default function IzinScreen() {
                   </View>
                   {ok && (
                     <View style={st.permOk}>
-                      <IconCheck size={18} color={colors.paper} strokeWidth={3} />
+                      <IconCheck size={18} color={colors.onGreen} strokeWidth={3} />
                     </View>
                   )}
                 </View>
@@ -211,7 +211,7 @@ function PulsingBell() {
   const rotate = v.interpolate({ inputRange: [0, 0.1, 0.2, 0.3, 0.4, 1], outputRange: ['0deg', '-14deg', '12deg', '-8deg', '0deg', '0deg'] });
   return (
     <Animated.View style={[st.bell, { transform: [{ scale }, { rotate }] }]}>
-      <IconBell size={44} color={colors.paper} strokeWidth={2} />
+      <IconBell size={44} color={colors.onGreen} strokeWidth={2} />
     </Animated.View>
   );
 }
@@ -304,7 +304,7 @@ function SuccessCheck() {
   }, [v]);
   return (
     <Animated.View style={[st.bell, { transform: [{ scale: v }] }]}>
-      <IconCheck size={48} color={colors.paper} strokeWidth={3} />
+      <IconCheck size={48} color={colors.onGreen} strokeWidth={3} />
     </Animated.View>
   );
 }
@@ -319,7 +319,7 @@ const st = StyleSheet.create({
   permOk: { width: 30, height: 30, borderRadius: 15, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
   top: { alignItems: 'center', gap: 10 },
   bell: { width: 88, height: 88, borderRadius: 44, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
-  h1: { fontFamily: fonts.displayBold, fontSize: 28, color: colors.green, textAlign: 'center' },
+  h1: { fontFamily: fonts.displayBold, fontSize: 28, color: colors.greenText, textAlign: 'center' },
   lead: { fontFamily: fonts.body, fontSize: 18, lineHeight: 26, color: colors.inkSoft, textAlign: 'center' },
   steps: { gap: 10 },
   stepRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
@@ -327,7 +327,7 @@ const st = StyleSheet.create({
   stepNoText: { fontFamily: fonts.bodyBold, fontSize: 17, color: colors.white },
   stepText: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 18, lineHeight: 25, color: colors.ink },
   big: { minHeight: 64, borderRadius: 18, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
-  bigText: { fontFamily: fonts.bodyBold, fontSize: 21, color: colors.paper },
+  bigText: { fontFamily: fonts.bodyBold, fontSize: 21, color: colors.onGreen },
   later: { minHeight: 48, alignItems: 'center', justifyContent: 'center' },
   laterText: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.muted },
   demoWrap: { alignItems: 'center', height: 200, justifyContent: 'center' },
@@ -339,7 +339,7 @@ const st = StyleSheet.create({
   alertBtnText: { fontFamily: fonts.bodySemi, fontSize: 16, color: '#0A64D8' },
   alertGlow: { backgroundColor: 'rgba(10,100,216,0.18)' },
   fingerBox: { position: 'absolute', left: '50%', top: 60, alignItems: 'center' },
-  ring: { position: 'absolute', top: -14, left: 4, width: 36, height: 36, borderRadius: 18, borderWidth: 3, borderColor: colors.green },
+  ring: { position: 'absolute', top: -14, left: 4, width: 36, height: 36, borderRadius: 18, borderWidth: 3, borderColor: colors.greenText },
   settings: { borderRadius: 18, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, overflow: 'hidden' },
   setRow: { flexDirection: 'row', alignItems: 'center', minHeight: 52, paddingHorizontal: 14, gap: 12, borderBottomWidth: 1, borderBottomColor: colors.divider },
   setHl: { backgroundColor: 'rgba(226,194,122,0.45)' },

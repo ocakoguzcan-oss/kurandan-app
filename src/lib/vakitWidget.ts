@@ -100,3 +100,41 @@ export function tanilama(): string {
     return `Modül var ama hata: ${String(e)}`;
   }
 }
+
+/** Canlı Etkinlik (iOS 16.2+, yeni derleme) destekleniyor ve kullanıcı kapatmamış mı */
+export function canliDestek(): boolean {
+  if (Platform.OS !== 'ios' || !EzanNative?.liveSupported) return false;
+  try {
+    return EzanNative.liveSupported();
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Kilit ekranı ve Dinamik Ada'da sıradaki vakte geri sayım. Vakit girince sayaç sıfırda kalır;
+ * uygulama her açıldığında bir sonraki vakte geçer.
+ */
+export async function syncCanli(on: boolean, lat: number, lng: number, place: string, calc: CalcOptions = {}) {
+  if (!canliDestek()) return;
+  try {
+    if (!on) {
+      await EzanNative!.liveStop();
+      return;
+    }
+    const today = ymdIn(new Date(), calc.tz);
+    const now = Date.now();
+    const list: { k: (typeof VAKIT_KEYS)[number]; at: Date }[] = [];
+    for (let i = -1; i < 2; i++) {
+      const times = getPrayerTimes(addDays(today, i), lat, lng, calc);
+      for (const k of VAKIT_KEYS) list.push({ k, at: times[k] });
+    }
+    const idx = list.findIndex((x) => x.at.getTime() > now + 1000);
+    if (idx <= 0) return;
+    const next = list[idx];
+    const prev = list[idx - 1];
+    await EzanNative!.liveStart(place, t(VAKIT_NAMES[next.k]), formatTime(next.at, calc.tz), prev.at.getTime(), next.at.getTime());
+  } catch {
+    // eski derleme ya da Canlı Etkinlikler kapalı
+  }
+}

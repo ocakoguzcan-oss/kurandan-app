@@ -150,7 +150,7 @@ export default function Kuran() {
       <View style={{ flex: 1 }} onLayout={(e) => setPageH(Math.floor(e.nativeEvent.layout.height))}>
       {!ready || pageH === 0 ? (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator color={colors.green} />
+          <ActivityIndicator color={colors.greenText} />
         </View>
       ) : (
       <FlatList
@@ -227,16 +227,16 @@ export default function Kuran() {
             style={st.play}
           >
             {player.loading ? (
-              <ActivityIndicator color={colors.paper} />
+              <ActivityIndicator color={colors.onGreen} />
             ) : (
               <Svg width={26} height={26} viewBox="0 0 24 24">
                 {playing ? (
                   <>
-                    <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.paper} />
-                    <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.paper} />
+                    <Rect x={6} y={5} width={4} height={14} rx={1} fill={colors.onGreen} />
+                    <Rect x={14} y={5} width={4} height={14} rx={1} fill={colors.onGreen} />
                   </>
                 ) : (
-                  <Path d="M8 5v14l11-7z" fill={colors.paper} />
+                  <Path d="M8 5v14l11-7z" fill={colors.onGreen} />
                 )}
               </Svg>
             )}
@@ -258,7 +258,7 @@ export default function Kuran() {
         </View>
         {SATIN_ALMA_ACIK && playing && !premium.owned ? (
           <Pressable accessibilityRole="button" onPress={() => router.push('/kilit-ekrani')} hitSlop={8}>
-            <Text style={[st.status, { color: colors.green, fontFamily: fonts.bodySemi }]} numberOfLines={1}>
+            <Text style={[st.status, { color: colors.greenText, fontFamily: fonts.bodySemi }]} numberOfLines={1}>
               {t('🔒 Ekran kilitlenince durur · Kilitliyken dinle ›')}
             </Text>
           </Pressable>
@@ -367,7 +367,7 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
                 accessibilityLabel={t('Sure ara')}
                 style={st.search}
               />
-              {chapters.length === 0 && <ActivityIndicator color={colors.green} />}
+              {chapters.length === 0 && <ActivityIndicator color={colors.greenText} />}
             </View>
           }
           renderItem={({ item }) => (
@@ -391,43 +391,43 @@ const st = StyleSheet.create({
   header: { paddingHorizontal: 16, gap: 6, paddingBottom: 4 },
   headRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
   titleBtn: { flexShrink: 1, minHeight: 44, justifyContent: 'center' },
-  title: { fontFamily: fonts.display, fontSize: 20, color: colors.green },
+  title: { fontFamily: fonts.display, fontSize: 20, color: colors.greenText },
   sub: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.goldText },
   sizeBtn: { minWidth: 84, paddingHorizontal: 8, minHeight: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center', gap: 3 },
-  sizeA: { fontFamily: fonts.bodyBold, color: colors.green, lineHeight: 22 },
-  sizeLabel: { fontFamily: fonts.bodyBold, fontSize: 11, lineHeight: 13, color: colors.green },
+  sizeA: { fontFamily: fonts.bodyBold, color: colors.greenText, lineHeight: 22 },
+  sizeLabel: { fontFamily: fonts.bodyBold, fontSize: 11, lineHeight: 13, color: colors.greenText },
   sizeDots: { flexDirection: 'row', gap: 3 },
   sizeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.cardBorder },
   sizeDotOn: { backgroundColor: colors.gold },
   hatimBtn: { minWidth: 64, minHeight: 44, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
-  hatimPct: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.green },
+  hatimPct: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.greenText },
   hatimLabel: { fontFamily: fonts.body, fontSize: 11, color: colors.muted },
   progress: { height: 4, borderRadius: 2, backgroundColor: colors.cardBorder, overflow: 'hidden' },
   progressFill: { height: 4, backgroundColor: colors.gold },
   today: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
   footRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 6 },
   arrow: { width: 40, height: 48, alignItems: 'center', justifyContent: 'center' },
-  arrowText: { fontFamily: fonts.bodyBold, fontSize: 30, lineHeight: 34, color: colors.green },
+  arrowText: { fontFamily: fonts.bodyBold, fontSize: 30, lineHeight: 34, color: colors.greenText },
   seg: { flexDirection: 'row', borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, padding: 3 },
   segBtn: { minHeight: 40, paddingHorizontal: 10, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   segOn: { backgroundColor: colors.green, borderColor: colors.green },
-  segText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
-  segTextOn: { color: colors.paper },
+  segText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText },
+  segTextOn: { color: colors.onGreen },
   mealBtn: { minHeight: 46, paddingHorizontal: 12, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
   footer: { paddingTop: 8, paddingBottom: 6, gap: 4, paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: colors.cardBorder, backgroundColor: colors.card },
   navBtn: { width: 84, minHeight: 48, justifyContent: 'center' },
-  navText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
+  navText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText },
   play: { width: 54, height: 54, borderRadius: 27, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
   status: { fontFamily: fonts.body, fontSize: 11, color: colors.muted, textAlign: 'center' },
   sheetBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.35)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: colors.paper, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, gap: 12 },
-  sheetTitle: { fontFamily: fonts.display, fontSize: 22, color: colors.green },
-  big: { fontFamily: fonts.bodyBold, fontSize: 36, color: colors.green },
+  sheetTitle: { fontFamily: fonts.display, fontSize: 22, color: colors.greenText },
+  big: { fontFamily: fonts.bodyBold, fontSize: 36, color: colors.greenText },
   muted: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, lineHeight: 19 },
   attrib: { fontFamily: fonts.body, fontSize: 11, color: colors.muted, lineHeight: 16 },
   search: { minHeight: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, paddingHorizontal: 14, fontFamily: fonts.body, fontSize: 15, color: colors.ink },
   surahRow: { flexDirection: 'row', alignItems: 'center', gap: 14, minHeight: 60, borderBottomWidth: 1, borderBottomColor: colors.divider },
   surahNo: { width: 30, fontFamily: fonts.bodyBold, fontSize: 14, color: colors.goldText, textAlign: 'center' },
   surahName: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.ink },
-  surahAr: { fontFamily: fonts.arabic, fontSize: 20, color: colors.green },
+  surahAr: { fontFamily: fonts.arabic, fontSize: 20, color: colors.greenText },
 });

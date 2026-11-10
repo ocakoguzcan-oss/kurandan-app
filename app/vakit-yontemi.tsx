@@ -22,7 +22,7 @@ export default function VakitYontemi() {
   const Row = ({ id, label, sub, on, onPress, last }: { id: string; label: string; sub?: string; on: boolean; onPress: () => void; last?: boolean }) => (
     <Pressable key={id} accessibilityRole="radio" accessibilityState={{ selected: on }} onPress={onPress} style={[st.row, !last && st.divider]}>
       <View style={{ flex: 1 }}>
-        <Text style={[st.name, on && { color: colors.green, fontFamily: fonts.bodyBold }]}>{label}</Text>
+        <Text style={[st.name, on && { color: colors.greenText, fontFamily: fonts.bodyBold }]}>{label}</Text>
         {sub ? <Text style={st.sub}>{sub}</Text> : null}
       </View>
       <View style={[st.radio, on && st.radioOn]} />
@@ -89,7 +89,7 @@ const st = StyleSheet.create({
   timesRow: { flexDirection: 'row', gap: 4 },
   cell: { flex: 1, alignItems: 'center', gap: 2 },
   cellLabel: { fontFamily: fonts.body, fontSize: 10, color: colors.muted },
-  cellVal: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.green },
+  cellVal: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
   row: { flexDirection: 'row', alignItems: 'center', minHeight: 58, paddingVertical: 8, gap: 12 },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   name: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },

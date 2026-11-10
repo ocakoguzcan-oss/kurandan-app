@@ -1,10 +1,12 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { AppState } from 'react-native';
 import * as Location from 'expo-location';
 import { DEFAULT_IL, ILLER, Il } from '../data/iller';
 import { City, nearestCity } from '../data/world';
 import { load, save, KEYS } from '../lib/storage';
 import { DEFAULT_REMINDERS, ReminderSettings, rescheduleAll } from '../lib/notifications';
-import { syncSabahAlarm, updateWidget } from '../lib/vakitWidget';
+import { syncCanli, syncSabahAlarm, updateWidget } from '../lib/vakitWidget';
+import { kategorileriKur } from '../lib/bildirimEylem';
 import { CalcOptions, defaultAsr, defaultMethod } from '../lib/prayerTimes';
 import { deviceTimeZone, hasTz } from '../lib/tz';
 import { usePrefs } from '../lib/prefs';
@@ -53,6 +55,8 @@ type Ctx = {
   /** Eski ekranlar için: Türkiye ili seç */
   setIl: (il: Il) => void;
   locateWithGps: () => Promise<boolean>;
+  /** Otomatik şehir bulma: açıkken her açılışta konumdan güncellenir (false = seçili şehirde kal) */
+  setOtoKonum: (on: boolean) => Promise<boolean>;
   reminders: ReminderSettings;
   setReminders: (r: ReminderSettings) => void;
 };
@@ -87,12 +91,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const asr = prefs.asr ?? defaultAsr(place.country, lang);
   const calc = useMemo(() => ({ tz: place.tz, method, asr }), [place.tz, method, asr]);
 
+  // Uygulama öne gelince: Canlı Etkinlik hemen sıradaki vakte geçer; bildirimler en fazla 10 dakikada bir yeniden kurulur.
+  const [tick, setTick] = useState(0);
+  const sonKurulum = useRef(Date.now());
+  const canliRef = useRef<() => void>(() => {});
+  canliRef.current = () => syncCanli(!!reminders.canli, place.lat, place.lng, place.label, calc);
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st !== 'active') return;
+      canliRef.current();
+      if (Date.now() - sonKurulum.current > 10 * 60000) setTick((x) => x + 1);
+    });
+    return () => sub.remove();
+  }, []);
+
   // Konum, yöntem ya da ayarlar değişince 7 günlük hatırlatmaları yeniden kur.
   useEffect(() => {
+    sonKurulum.current = Date.now();
     if (!ready) return;
     let iptal = false;
     (async () => {
       updateWidget(place.lat, place.lng, place.label, calc);
+      syncCanli(!!reminders.canli, place.lat, place.lng, place.label, calc);
+      await kategorileriKur(reminders.erteleDk ?? 10);
       const alarm = await syncSabahAlarm(
         !!reminders.sabahAlarm && reminders.enabled.imsak,
         place.lat,
@@ -105,7 +126,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return () => {
       iptal = true;
     };
-  }, [ready, reminders, place.lat, place.lng, place.label, calc]);
+  }, [ready, reminders, place.lat, place.lng, place.label, calc, tick]);
 
   const updatePlace = useCallback((p: Place) => {
     setPlace(p);
@@ -157,6 +178,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setIl: (il: Il) =>
         updatePlace({ source: 'il', lat: il.lat, lng: il.lng, country: 'TR', tz: 'Europe/Istanbul', cityId: `TR:${il.plaka}`, ilPlaka: il.plaka, label: il.ad }),
       locateWithGps: () => refreshGps(true),
+      setOtoKonum: async (on: boolean) => {
+        if (on) return refreshGps(true).catch(() => false);
+        updatePlace({ ...place, source: 'il' });
+        return true;
+      },
       reminders,
       setReminders: (r: ReminderSettings) => {
         setRemindersState(r);

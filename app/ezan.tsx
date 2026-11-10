@@ -46,7 +46,7 @@ export default function EzanScreen() {
 const st = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
   times: { fontFamily: fonts.bodyBold, fontSize: 14, color: colors.goldText },
-  ar: { flex: 1, fontFamily: fonts.arabic, fontSize: 24, color: colors.green, textAlign: 'right', writingDirection: 'rtl' },
+  ar: { flex: 1, fontFamily: fonts.arabic, fontSize: 24, color: colors.greenText, textAlign: 'right', writingDirection: 'rtl' },
   tr: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.ink },
   meal: { fontFamily: fonts.body, fontSize: 14, color: colors.muted },
 });

@@ -7,6 +7,9 @@ import { upcomingDiniGunler } from '../data/diniGunler';
 import { EZANLAR, ezanById, ezanDosya, ezanFor, EzanId, EzanSeviye } from './ezanSesleri';
 import { gecerliSes, SESLER, sesById, SesId } from './bildirimSesleri';
 import { vakitSozu } from './vakitSozleri';
+import { FarzKey, isaretliMi, namazYukle } from './namazTakip';
+import type { Ymd } from './tz';
+import { BILDIRIM_KATEGORI, ERTELE_ONEK } from './bildirimEylem';
 
 export type ReminderSettings = {
   enabled: Record<VakitKey, boolean>;
@@ -21,7 +24,49 @@ export type ReminderSettings = {
   sabahAlarm?: boolean;
   /** Ezan kayıtlarının ses seviyesi (varsayılan yüksek) */
   sesSeviyesi?: EzanSeviye;
+  /**
+   * Vakte özel ayar: birden çok "önce" hatırlatması (dakika) ve hangi günler (0 = Pazar … 6 = Cumartesi).
+   * `once` yoksa genel `leadMin` kullanılır; `gunler` yoksa her gün.
+   */
+  vakitAyar?: Partial<Record<VakitKey, VakitAyar>>;
+  /** Teheccüd için uyandırma: imsaktan `teheccudDk` dakika önce */
+  teheccud?: boolean;
+  teheccudDk?: number;
+  /** Pazartesi ve Perşembe orucu: bir önceki akşam ve sahurda hatırlat */
+  oruc?: boolean;
+  /** Cuma namazından 45 dakika önce hatırlat */
+  cumaNamaz?: boolean;
+  /** "Namazını kıldın mı?": vakit girdikten `kildinMiDk` dakika sonra, Namaz Takibi'nde işaretlenmediyse */
+  kildinMi?: boolean;
+  kildinMiDk?: number;
+  /** Bildirimdeki "sonra hatırlat" süresi (dakika); 0 = düğme yok */
+  erteleDk?: number;
+  /** Kilit ekranı ve Dinamik Ada'da sıradaki vakte geri sayım (Canlı Etkinlik) */
+  canli?: boolean;
 };
+
+export type VakitAyar = { once?: number[]; gunler?: number[] };
+
+export const ONCE_SECENEK = [5, 10, 15, 20, 30, 45, 60];
+export const TEHECCUD_SECENEK = [30, 60, 90, 120];
+export const KILDIN_SECENEK = [30, 45, 60, 90];
+export const ERTELE_SECENEK = [0, 5, 10, 15];
+export const TUM_GUNLER = [1, 2, 3, 4, 5, 6, 0];
+
+/** Vaktin "önce" hatırlatmaları (dakika, büyükten küçüğe) */
+export function onceListesi(s: ReminderSettings, key: VakitKey): number[] {
+  const l = s.vakitAyar?.[key]?.once ?? (s.leadMin ? [s.leadMin] : []);
+  return [...new Set(l.filter((n) => n > 0))].sort((a, b) => b - a);
+}
+/** Vakit o gün açık mı (gün seçimi) */
+export function gunAcik(s: ReminderSettings, key: VakitKey, dow: number): boolean {
+  const g = s.vakitAyar?.[key]?.gunler;
+  return !g || g.includes(dow);
+}
+/** Namaz Takibi'ndeki karşılığı (güneş yok) */
+export const TAKIP_KEY: Partial<Record<VakitKey, FarzKey>> = { imsak: 'sabah', ogle: 'ogle', ikindi: 'ikindi', aksam: 'aksam', yatsi: 'yatsi' };
+export const kildinId = (gun: string, farz: FarzKey) => `kildin:${gun}:${farz}`;
+const ymdStr = (d: Ymd) => `${d.y}-${String(d.m).padStart(2, '0')}-${String(d.d).padStart(2, '0')}`;
 
 export const DEFAULT_REMINDERS: ReminderSettings = {
   enabled: { imsak: true, gunes: false, ogle: true, ikindi: true, aksam: true, yatsi: true },
@@ -45,11 +90,18 @@ const DAYS_AHEAD = 7;
 /** iOS en fazla 64 bekleyen bildirime izin verir; Cuma ve dini günler için pay bırakılır */
 const VAKIT_BUTCESI = 54;
 
-/** Kaç günlük vakit bildirimi kurulabilir ("x dk önce" seçiliyse her vakit iki bildirim olur) */
+/** Kaç günlük vakit bildirimi kurulabilir (günlük bildirim sayısına göre; iOS sınırı 64) */
 export function kurulanGun(settings: ReminderSettings): number {
-  const vakit = VAKIT_KEYS.filter((k) => settings.enabled[k]).length || 1;
-  const gunluk = vakit * (settings.leadMin ? 2 : 1);
-  return Math.max(3, Math.min(DAYS_AHEAD, Math.floor(VAKIT_BUTCESI / gunluk)));
+  let gunluk = 0;
+  for (const k of VAKIT_KEYS) {
+    if (!settings.enabled[k]) continue;
+    const oran = (settings.vakitAyar?.[k]?.gunler?.length ?? 7) / 7;
+    gunluk += oran * (1 + onceListesi(settings, k).length + (settings.kildinMi && TAKIP_KEY[k] ? 1 : 0));
+  }
+  if (settings.teheccud) gunluk += 1;
+  if (settings.oruc) gunluk += 4 / 7;
+  if (settings.cumaNamaz) gunluk += 1 / 7;
+  return Math.max(2, Math.min(DAYS_AHEAD, Math.floor(VAKIT_BUTCESI / Math.max(1, gunluk))));
 }
 
 if (Platform.OS !== 'web') {
@@ -113,6 +165,24 @@ export async function requestPermission(): Promise<boolean> {
   return req.granted;
 }
 
+async function zamanla(content: Notifications.NotificationContentInput, at: number, identifier?: string) {
+  const kanal = (content.data as { kanal?: string } | undefined)?.kanal ?? CHANNEL;
+  // Erteleme düğmesi aynı sesi tekrar çalabilsin diye ses dosyası veride de tutulur
+  const ses = typeof content.sound === 'string' ? content.sound : content.sound === false ? '' : 'default';
+  await Notifications.scheduleNotificationAsync({
+    ...(identifier ? { identifier } : {}),
+    content: { ...content, data: { ...content.data, ses } },
+    trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: new Date(at), channelId: kanal },
+  });
+}
+
+/** "1 sa 20 dk" / "40 dk" */
+function kalanYaz(ms: number): string {
+  const dk = Math.max(1, Math.round(ms / 60000));
+  const sa = Math.floor(dk / 60);
+  return sa ? t('{sa} sa {dk} dk', { sa, dk: dk % 60 }) : t('{dk} dk', { dk });
+}
+
 /**
  * Önümüzdeki 7 günün hatırlatmalarını yeniden kurar. İzin yoksa hiçbir şey yapmaz
  * (izni yalnızca anlatım ekranı ister). Uygulama her açıldığında ve ayarlar değişince çağrılır.
@@ -131,8 +201,14 @@ export async function rescheduleAll(
   if (status !== 'granted') return 0;
   const sev = settings.sesSeviyesi ?? 'yuksek';
   await ensureChannels(sev);
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  // Ertelenmiş ("sonra hatırlat") bildirimler korunur
+  const bekleyen = await Notifications.getAllScheduledNotificationsAsync().catch(() => []);
+  for (const b of bekleyen) {
+    if (!b.identifier.startsWith(ERTELE_ONEK)) await Notifications.cancelScheduledNotificationAsync(b.identifier).catch(() => {});
+  }
+  const kategori = (settings.erteleDk ?? 10) > 0 ? BILDIRIM_KATEGORI.vakit : undefined;
 
+  if (settings.kildinMi) await namazYukle().catch(() => {});
   const now = Date.now();
   let count = 0;
   const tz = calc.tz;
@@ -141,29 +217,92 @@ export async function rescheduleAll(
   const ses = sesOf(settings);
   for (let i = 0; i < gunSayisi; i++) {
     const day = addDays(today, i);
-    const cuma = new Date(Date.UTC(day.y, day.m - 1, day.d)).getUTCDay() === 5;
+    const dow = new Date(Date.UTC(day.y, day.m - 1, day.d)).getUTCDay();
+    const cuma = dow === 5;
+    const gun = ymdStr(day);
     const times = getPrayerTimes(day, lat, lng, calc);
+    const sonraki = (k: VakitKey) =>
+      k === 'yatsi' ? getPrayerTimes(addDays(day, 1), lat, lng, calc).imsak.getTime() : times[VAKIT_KEYS[VAKIT_KEYS.indexOf(k) + 1]].getTime();
+
+    // Teheccüd: imsaktan önce, yumuşak sesle
+    if (settings.teheccud) {
+      const at = times.imsak.getTime() - (settings.teheccudDk ?? 60) * 60000;
+      if (at > now + 30000) {
+        await zamanla(
+          { title: t('Teheccüd vakti 🌙'), body: t('Gecenin son üçte biri; duaların kabul edildiği vakit. İki rekât kılmaya ne dersiniz?'), sound: 'default', data: { url: '/', kanal: CHANNEL }, categoryIdentifier: kategori },
+          at
+        );
+        count++;
+      }
+    }
+    // Pazartesi / Perşembe orucu: önceki akşam 21:00 ve sahurda (imsaktan 45 dk önce)
+    if (settings.oruc && (dow === 1 || dow === 4)) {
+      const gunAdi = dow === 1 ? t('Pazartesi') : t('Perşembe');
+      const aksam = fromWall(addDays(day, -1), 21, 0, tz).getTime();
+      if (aksam > now + 30000) {
+        await zamanla({ title: t('Yarın {gun} orucu', { gun: gunAdi }), body: t('Niyet etmeyi ve sahura kalkmayı unutmayın.'), sound: 'default', data: { url: '/imsakiye', kanal: CHANNEL } }, aksam);
+        count++;
+      }
+      const sahur = times.imsak.getTime() - 45 * 60000;
+      if (sahur > now + 30000) {
+        await zamanla(
+          { title: t('Sahur vakti'), body: t('{gun} orucu · imsak {saat}', { gun: gunAdi, saat: formatTime(times.imsak, tz) }), sound: 'default', data: { url: '/imsakiye', kanal: CHANNEL }, categoryIdentifier: kategori },
+          sahur
+        );
+        count++;
+      }
+    }
+    // Cuma namazından 45 dakika önce
+    if (settings.cumaNamaz && cuma) {
+      const at = times.ogle.getTime() - 45 * 60000;
+      if (at > now + 30000) {
+        await zamanla(
+          { title: t('Cuma namazına 45 dakika'), body: t('Gusül, temiz kıyafet ve erken gitmek sünnettir. Hayırlı Cumalar.'), sound: 'default', data: { url: '/', kanal: CHANNEL }, categoryIdentifier: kategori },
+          at
+        );
+        count++;
+      }
+    }
+
     for (const key of VAKIT_KEYS) {
-      if (!settings.enabled[key]) continue;
+      if (!settings.enabled[key] || !gunAcik(settings, key, dow)) continue;
       const vakitMs = times[key].getTime();
       const name = t(VAKIT_NAMES[key]);
       const cumaOgle = cuma && key === 'ogle';
 
-      // 1) "x dk önce" hatırlatması (seçiliyse): telefonun normal sesiyle
-      if (settings.leadMin) {
-        const onceMs = vakitMs - settings.leadMin * 60000;
-        if (onceMs > now + 30000) {
-          await Notifications.scheduleNotificationAsync({
-            content: {
-              title: cumaOgle
-                ? t('Cuma namazına {n} dakika', { n: settings.leadMin })
-                : t('{vakit} vaktine {n} dakika', { vakit: name, n: settings.leadMin }),
-              body: `${placeName} · ${name} ${formatTime(times[key], tz)}`,
+      // 1) "x dk önce" hatırlatmaları (seçiliyse): telefonun normal sesiyle
+      for (const dk of onceListesi(settings, key)) {
+        const onceMs = vakitMs - dk * 60000;
+        if (onceMs <= now + 30000) continue;
+        await zamanla(
+          {
+            title: cumaOgle ? t('Cuma namazına {n} dakika', { n: dk }) : t('{vakit} vaktine {n} dakika', { vakit: name, n: dk }),
+            body: `${placeName} · ${name} ${formatTime(times[key], tz)}`,
+            sound: 'default',
+            data: { url: '/', kanal: CHANNEL },
+            categoryIdentifier: kategori,
+          },
+          onceMs
+        );
+        count++;
+      }
+
+      // 3) "Namazını kıldın mı?": Namaz Takibi'nde işaretlenmediyse vaktin içinde bir kez
+      const farz = TAKIP_KEY[key];
+      if (settings.kildinMi && farz && !isaretliMi(gun, farz)) {
+        const at = Math.min(vakitMs + (settings.kildinMiDk ?? 45) * 60000, sonraki(key) - 20 * 60000);
+        if (at > vakitMs && at > now + 30000) {
+          await zamanla(
+            {
+              title: t('{vakit} namazını kıldınız mı?', { vakit: t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]) }),
+              body: t('Kıldıysanız işaretleyin; vaktin çıkmasına {saat} kaldı.', { saat: kalanYaz(sonraki(key) - at) }),
               sound: 'default',
-              data: { url: '/' },
+              data: { url: '/namaz-takip', kanal: CHANNEL, gun, farz },
+              categoryIdentifier: BILDIRIM_KATEGORI.kildin,
             },
-            trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: new Date(onceMs), channelId: CHANNEL },
-          });
+            at,
+            kildinId(gun, farz)
+          );
           count++;
         }
       }
@@ -188,19 +327,17 @@ export async function rescheduleAll(
         title = cumaOgle ? t('Cuma Namazı Vakti 🤲🏻📿') : t('{vakit} Namazı Vakti 🤲🏻📿', { vakit: ezanAdi });
         body = `${placeName} · ${formatTime(times[key], tz)}\n${vakitSozu(key, day)}`;
       }
-      await Notifications.scheduleNotificationAsync({
-        content: {
+      const kanal = ezan ? ezanChannel(ezan, sev) : zil && (zil.dosya || zil.id === 'sessiz') ? sesChannel(zil.id) : CHANNEL;
+      await zamanla(
+        {
           title,
           body,
           sound: ezan ? ezanDosya(ezan, sev) : zil?.dosya ? zil.dosya : zil?.id === 'sessiz' ? false : 'default',
-          data: { url: ezan ? `/ezan?vakit=${encodeURIComponent(key)}${ezan === 'cuma' ? '&cuma=1' : ''}` : '/' },
+          data: { url: ezan ? `/ezan?vakit=${encodeURIComponent(key)}${ezan === 'cuma' ? '&cuma=1' : ''}` : '/', kanal },
+          categoryIdentifier: kategori,
         },
-        trigger: {
-          type: Notifications.SchedulableTriggerInputTypes.DATE,
-          date: new Date(vakitMs),
-          channelId: ezan ? ezanChannel(ezan, sev) : zil && (zil.dosya || zil.id === 'sessiz') ? sesChannel(zil.id) : CHANNEL,
-        },
-      });
+        vakitMs
+      );
       count++;
     }
   }

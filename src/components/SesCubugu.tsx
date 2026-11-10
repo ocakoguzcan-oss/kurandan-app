@@ -103,7 +103,7 @@ const st = StyleSheet.create({
     borderRadius: KNOB / 2,
     backgroundColor: colors.paper,
     borderWidth: 2,
-    borderColor: colors.green,
+    borderColor: colors.greenText,
     top: 8,
   },
 });

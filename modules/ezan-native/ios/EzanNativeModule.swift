@@ -72,6 +72,74 @@ public class EzanNativeModule: Module {
         EzanAlarms.cancelAll()
       }
     }
+
+    // Canlı Etkinlik: kilit ekranı ve Dinamik Ada'da sıradaki vakte geri sayım
+    Function("liveSupported") { () -> Bool in
+      if #available(iOS 16.2, *) {
+        return ActivityAuthorizationInfo().areActivitiesEnabled
+      }
+      return false
+    }
+
+    AsyncFunction("liveStart") { (city: String, vakit: String, saat: String, startMs: Double, endMs: Double) async -> Bool in
+      if #available(iOS 16.2, *) {
+        return await VakitCanli.start(city: city, vakit: vakit, saat: saat, startMs: startMs, endMs: endMs)
+      }
+      return false
+    }
+
+    AsyncFunction("liveStop") { () async -> Void in
+      if #available(iOS 16.2, *) {
+        await VakitCanli.stopAll()
+      }
+    }
+  }
+}
+
+/// Widget eklentisindeki tanımla birebir aynı olmalı (Canlı Etkinlik tür adıyla eşleşir).
+@available(iOS 16.1, *)
+struct VakitAktiviteAttributes: ActivityAttributes {
+  public struct ContentState: Codable, Hashable {
+    var vakit: String
+    var saat: String
+    /// Unix saniye
+    var baslangic: Double
+    var bitis: Double
+  }
+  var sehir: String
+}
+
+@available(iOS 16.2, *)
+enum VakitCanli {
+  static func stopAll() async {
+    for a in Activity<VakitAktiviteAttributes>.activities {
+      await a.end(nil, dismissalPolicy: .immediate)
+    }
+  }
+
+  static func start(city: String, vakit: String, saat: String, startMs: Double, endMs: Double) async -> Bool {
+    guard ActivityAuthorizationInfo().areActivitiesEnabled else { return false }
+    let state = VakitAktiviteAttributes.ContentState(vakit: vakit, saat: saat, baslangic: startMs / 1000, bitis: endMs / 1000)
+    let end = Date(timeIntervalSince1970: endMs / 1000)
+    // Aynı şehir ve vakit zaten gösteriliyorsa dokunma; başka bir şeyse güncelle
+    let mevcut = Activity<VakitAktiviteAttributes>.activities
+    if let a = mevcut.first, a.attributes.sehir == city, mevcut.count == 1 {
+      if a.content.state != state {
+        await a.update(ActivityContent(state: state, staleDate: end.addingTimeInterval(60)))
+      }
+      return true
+    }
+    await stopAll()
+    do {
+      _ = try Activity.request(
+        attributes: VakitAktiviteAttributes(sehir: city),
+        content: ActivityContent(state: state, staleDate: end.addingTimeInterval(60)),
+        pushType: nil
+      )
+      return true
+    } catch {
+      return false
+    }
   }
 }
 

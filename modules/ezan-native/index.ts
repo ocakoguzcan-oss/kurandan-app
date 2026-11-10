@@ -13,6 +13,10 @@ type EzanNativeModule = {
   /** GEÇİCİ TEST */
   testAlarm(seconds: number, title: string, sound: string, stopText: string): Promise<boolean>;
   cancelAlarms(): Promise<void>;
+  /** Canlı Etkinlik: sıradaki vakte geri sayım (iOS 16.2+) */
+  liveSupported?(): boolean;
+  liveStart(city: string, vakit: string, saat: string, startMs: number, endMs: number): Promise<boolean>;
+  liveStop(): Promise<void>;
 };
 
 export const EzanNative: EzanNativeModule | null =

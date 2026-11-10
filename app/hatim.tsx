@@ -92,7 +92,7 @@ export default function Hatim() {
               style={[st.juz, full && st.juzFull]}
             >
               {!full && oran > 0 && <View style={[st.juzFill, { height: `${oran * 100}%` }]} />}
-              <Text style={[st.juzN, full && { color: colors.paper }]}>{juz}</Text>
+              <Text style={[st.juzN, full && { color: colors.onGreen }]}>{juz}</Text>
             </Pressable>
           );
         })}
@@ -127,7 +127,7 @@ export default function Hatim() {
 const st = StyleSheet.create({
   hero: { backgroundColor: colors.green, borderColor: colors.green, gap: 8 },
   heroTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
-  big: { fontFamily: fonts.bodyBold, fontSize: 44, color: colors.paper, fontVariant: ['tabular-nums'] },
+  big: { fontFamily: fonts.bodyBold, fontSize: 44, color: colors.onGreen, fontVariant: ['tabular-nums'] },
   heroNum: { fontFamily: fonts.display, fontSize: 28, color: colors.goldLight },
   heroSub: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18, color: colors.mutedOnGreen },
   bar: { height: 8, borderRadius: 4, backgroundColor: 'rgba(0,0,0,0.25)', overflow: 'hidden' },
@@ -147,8 +147,8 @@ const st = StyleSheet.create({
   },
   juzFull: { backgroundColor: colors.green, borderColor: colors.green },
   juzFill: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: colors.greenTint },
-  juzN: { fontFamily: fonts.bodyBold, fontSize: 17, color: colors.green, fontVariant: ['tabular-nums'] },
+  juzN: { fontFamily: fonts.bodyBold, fontSize: 17, color: colors.greenText, fontVariant: ['tabular-nums'] },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   note: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17, color: colors.muted, textAlign: 'center' },
-  link: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green, textAlign: 'center' },
+  link: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText, textAlign: 'center' },
 });

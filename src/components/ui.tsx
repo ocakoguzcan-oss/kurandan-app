@@ -89,7 +89,7 @@ export function Chip({ label, selected, onPress, style }: { label: string; selec
       onPress={onPress}
       style={[s.chip, selected ? s.chipOn : s.chipOff, style]}
     >
-      <Text style={[s.chipText, { color: selected ? colors.paper : colors.green }]}>{label}</Text>
+      <Text style={[s.chipText, { color: selected ? colors.onGreen : colors.greenText }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -125,7 +125,7 @@ export function Button({
   style?: StyleProp<ViewStyle>;
 }) {
   const v = variant === 'primary' ? s.btnPrimary : variant === 'secondary' ? s.btnSecondary : s.btnText;
-  const color = variant === 'primary' ? colors.paper : colors.green;
+  const color = variant === 'primary' ? colors.onGreen : colors.greenText;
   return (
     <Pressable
       accessibilityRole="button"
@@ -144,7 +144,7 @@ export const s = StyleSheet.create({
   scrollContent: { paddingHorizontal: 20, gap: 16 },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 0 },
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12, flexShrink: 1 },
-  title: { fontFamily: fonts.display, fontSize: 24, color: colors.green, flexShrink: 1 },
+  title: { fontFamily: fonts.display, fontSize: 24, color: colors.greenText, flexShrink: 1 },
   roundBtn: {
     width: 44,
     height: 44,

@@ -145,7 +145,7 @@ function MushafPageInner({ page, width, height, size, chapters, activeWordId, ac
       <View style={{ width, height }}>
         <Frame width={width} height={height} />
         <View style={[StyleSheet.absoluteFill, st.center]}>
-          <ActivityIndicator color={colors.green} />
+          <ActivityIndicator color={colors.greenText} />
         </View>
         {measuring && (
           <View style={st.measureBox} pointerEvents="none">
@@ -333,7 +333,7 @@ function Ornament({ size }: { size: number }) {
         <Rect x={22} y={22} width={56} height={56} />
         <Rect x={22} y={22} width={56} height={56} transform="rotate(45 50 50)" />
       </G>
-      <Circle cx={50} cy={50} r={10} fill={colors.green} />
+      <Circle cx={50} cy={50} r={10} fill={colors.greenText} />
     </Svg>
   );
 }
@@ -355,7 +355,7 @@ function Frame({ width, height, topRight, topLeft, page }: { width: number; heig
         <View key={i} style={[st.corner, pos, { width: corner, height: corner }]}>
           <Svg width={corner} height={corner} viewBox="0 0 100 100">
             <Rect x={18} y={18} width={64} height={64} fill={colors.paper} stroke={colors.gold} strokeWidth={9} transform="rotate(45 50 50)" />
-            <Circle cx={50} cy={50} r={14} fill={colors.green} />
+            <Circle cx={50} cy={50} r={14} fill={colors.greenText} />
           </Svg>
         </View>
       ))}
@@ -387,7 +387,7 @@ const st = StyleSheet.create({
   center: { alignItems: 'center', justifyContent: 'center', gap: 12, padding: 24 },
   msg: { fontFamily: fonts.body, fontSize: 15, color: colors.muted, textAlign: 'center' },
   retry: { minHeight: 44, paddingHorizontal: 18, borderRadius: 12, backgroundColor: colors.green, justifyContent: 'center' },
-  retryText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.paper },
+  retryText: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.onGreen },
   measureBox: { position: 'absolute', left: 0, top: 0, width: 4000, opacity: 0, alignItems: 'flex-start' },
   measureLine: { flexDirection: 'row-reverse', alignSelf: 'flex-start' },
   content: {
@@ -411,28 +411,28 @@ const st = StyleSheet.create({
   wordPressed: { backgroundColor: 'rgba(226,194,122,0.45)', borderRadius: 6 },
   lineActive: { backgroundColor: 'rgba(226,194,122,0.30)' },
   word: { color: colors.ink, includeFontPadding: false },
-  wordActive: { color: colors.green, backgroundColor: 'rgba(24,88,60,0.13)', borderRadius: 4 },
+  wordActive: { color: colors.greenText, backgroundColor: 'rgba(24,88,60,0.13)', borderRadius: 4 },
   end: { fontFamily: fonts.arabic, color: colors.gold, includeFontPadding: false },
   headerRow: { alignItems: 'center', justifyContent: 'center' },
-  band: { alignSelf: 'stretch', borderWidth: 1.5, borderColor: colors.gold, backgroundColor: '#F6EBCF', padding: 2 },
+  band: { alignSelf: 'stretch', borderWidth: 1.5, borderColor: colors.gold, backgroundColor: colors.creamBox, padding: 2 },
   bandInner: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 0.75,
-    borderColor: colors.green,
+    borderColor: colors.greenText,
     paddingHorizontal: 8,
   },
   bandCenter: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
-  bandAr: { fontFamily: fonts.arabicBold, color: colors.green, textAlign: 'center' },
+  bandAr: { fontFamily: fonts.arabicBold, color: colors.greenText, textAlign: 'center' },
   bandTr: { fontFamily: fonts.bodySemi, color: colors.goldText, maxWidth: '30%' },
-  bismillah: { fontFamily: fonts.arabic, color: colors.green, textAlign: 'center' },
-  frameOuter: { flex: 1, borderWidth: FRAME1, borderColor: colors.gold, borderRadius: 6, padding: FRAME_GAP, backgroundColor: '#FBF6EA' },
-  frameInner: { flex: 1, borderWidth: FRAME2, borderColor: colors.green, borderRadius: 3 },
+  bismillah: { fontFamily: fonts.arabic, color: colors.greenText, textAlign: 'center' },
+  frameOuter: { flex: 1, borderWidth: FRAME1, borderColor: colors.gold, borderRadius: 6, padding: FRAME_GAP, backgroundColor: colors.mushaf },
+  frameInner: { flex: 1, borderWidth: FRAME2, borderColor: colors.greenText, borderRadius: 3 },
   corner: { position: 'absolute' },
-  labelBox: { position: 'absolute', backgroundColor: '#FBF6EA', paddingHorizontal: 6, height: 14, justifyContent: 'center' },
+  labelBox: { position: 'absolute', backgroundColor: colors.mushaf, paddingHorizontal: 6, height: 14, justifyContent: 'center' },
   labelAr: { fontFamily: fonts.arabic, fontSize: 11, lineHeight: 14, color: colors.goldText },
   pageNo: { position: 'absolute', width: 40, height: 22, alignItems: 'center', justifyContent: 'center' },
-  pageNoText: { fontFamily: fonts.arabicBold, fontSize: 12, lineHeight: 16, color: colors.green },
+  pageNoText: { fontFamily: fonts.arabicBold, fontSize: 12, lineHeight: 16, color: colors.greenText },
 });

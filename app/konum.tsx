@@ -79,7 +79,7 @@ export default function KonumScreen() {
             </Text>
             <Button
               label={busy ? t('Konum bulunuyor…') : t('Konumumu kullan')}
-              icon={<IconPin color={colors.paper} />}
+              icon={<IconPin color={colors.onGreen} />}
               disabled={busy}
               onPress={gps}
             />

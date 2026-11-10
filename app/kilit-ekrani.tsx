@@ -57,7 +57,7 @@ export default function KilitEkrani() {
           {MADDELER.map((m) => (
             <View key={m} style={st.li}>
               <View style={st.tick}>
-                <IconCheck size={16} color={colors.paper} strokeWidth={3} />
+                <IconCheck size={16} color={colors.onGreen} strokeWidth={3} />
               </View>
               <Text style={st.liText}>{t(m)}</Text>
             </View>
@@ -67,7 +67,7 @@ export default function KilitEkrani() {
       <View style={{ paddingHorizontal: 24, gap: 8 }}>
         {p.owned ? (
           <View style={st.owned}>
-            <IconCheck size={20} color={colors.green} strokeWidth={3} />
+            <IconCheck size={20} color={colors.greenText} strokeWidth={3} />
             <Text style={st.ownedText}>{t('Satın alındı · kilit ekranında dinleme açık')}</Text>
           </View>
         ) : (
@@ -88,13 +88,13 @@ export default function KilitEkrani() {
 const st = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.paper, gap: 12 },
   phone: { width: '100%', borderRadius: 26, backgroundColor: colors.green, paddingVertical: 26, alignItems: 'center', gap: 12 },
-  ar: { fontFamily: fonts.arabic, fontSize: 24, color: colors.paper, writingDirection: 'rtl' },
-  h1: { fontFamily: fonts.displayBold, fontSize: 26, lineHeight: 32, color: colors.green, textAlign: 'center' },
+  ar: { fontFamily: fonts.arabic, fontSize: 24, color: colors.onGreen, writingDirection: 'rtl' },
+  h1: { fontFamily: fonts.displayBold, fontSize: 26, lineHeight: 32, color: colors.greenText, textAlign: 'center' },
   lead: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23, color: colors.inkSoft, textAlign: 'center' },
   li: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   tick: { width: 28, height: 28, borderRadius: 14, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
   liText: { flex: 1, fontFamily: fonts.body, fontSize: 15, lineHeight: 21, color: colors.ink },
   owned: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, minHeight: 56, borderRadius: 16, backgroundColor: colors.greenTint },
-  ownedText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.green },
+  ownedText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.greenText },
   fine: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17, color: colors.muted, textAlign: 'center' },
 });

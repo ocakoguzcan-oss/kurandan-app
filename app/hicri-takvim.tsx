@@ -124,7 +124,7 @@ export default function HicriTakvim() {
                   onPress={() => setSel(d)}
                   style={[st.cell, isToday && st.today, isSel && st.sel]}
                 >
-                  <Text style={[st.g, isSel && { color: colors.paper }]}>{d.getDate()}</Text>
+                  <Text style={[st.g, isSel && { color: colors.onGreen }]}>{d.getDate()}</Text>
                   <Text style={[st.h, hd.day === 1 && st.hFirst, isSel && { color: colors.goldLight }]} numberOfLines={1}>
                     {hd.day === 1 ? hijriMonthName(hd.month, lang).split(' ')[0].slice(0, 5) : hd.day}
                   </Text>
@@ -204,12 +204,12 @@ export default function HicriTakvim() {
 
 const st = StyleSheet.create({
   selCard: { backgroundColor: colors.green, borderColor: colors.green, gap: 4 },
-  selHijri: { fontFamily: fonts.display, fontSize: 24, color: colors.paper },
+  selHijri: { fontFamily: fonts.display, fontSize: 24, color: colors.onGreen },
   selGreg: { fontFamily: fonts.body, fontSize: 14, color: colors.mutedOnGreen },
   selGun: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.goldLight, marginTop: 4 },
   nav: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   navBtn: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
-  navArrow: { fontFamily: fonts.bodyBold, fontSize: 24, color: colors.green, lineHeight: 26 },
+  navArrow: { fontFamily: fonts.bodyBold, fontSize: 24, color: colors.greenText, lineHeight: 26 },
   navTitle: { fontFamily: fonts.display, fontSize: 18, color: colors.ink },
   navSub: { fontFamily: fonts.body, fontSize: 13, color: colors.goldText, textAlign: 'center' },
   row: { flexDirection: 'row' },
@@ -230,9 +230,9 @@ const st = StyleSheet.create({
   stepLabel: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
   stepper: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   sBtn: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
-  sBtnText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.green },
+  sBtnText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.greenText },
   sVal: { minWidth: 120, textAlign: 'center', fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
   result: { backgroundColor: colors.greenTint, borderRadius: radius.sm, padding: 12, alignItems: 'center' },
-  resultText: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.green, textAlign: 'center' },
-  link: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green, textAlign: 'center' },
+  resultText: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.greenText, textAlign: 'center' },
+  link: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.greenText, textAlign: 'center' },
 });

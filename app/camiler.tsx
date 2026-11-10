@@ -124,7 +124,7 @@ export default function Camiler() {
                 coordinate={{ latitude: c.lat, longitude: c.lng }}
                 title={c.ad || t('Cami')}
                 description={mesafeYaz(c.m)}
-                pinColor={c.id === secili ? colors.gold : colors.green}
+                pinColor={c.id === secili ? '#A87628' : '#18583C'}
                 onPress={() => setSecili(c.id)}
               />
             ))}
@@ -137,7 +137,7 @@ export default function Camiler() {
 
       {!liste && !hata && (
         <View style={st.center}>
-          <ActivityIndicator color={colors.green} />
+          <ActivityIndicator color={colors.greenText} />
           <Text style={st.note}>{t('Camiler aranıyor…')}</Text>
         </View>
       )}
@@ -188,7 +188,7 @@ const st = StyleSheet.create({
   divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   name: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
   dist: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, fontVariant: ['tabular-nums'] },
-  go: { minHeight: 40, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: colors.green, alignItems: 'center', justifyContent: 'center' },
-  goText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.green },
+  go: { minHeight: 40, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: colors.greenText, alignItems: 'center', justifyContent: 'center' },
+  goText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
   attr: { fontFamily: fonts.body, fontSize: 11, color: colors.muted, textAlign: 'center' },
 });

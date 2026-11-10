@@ -94,7 +94,7 @@ export default function DuaScreen() {
           style={{ flex: 1 }}
           variant="secondary"
           label={isFav ? t('Favorilerde') : t('Favorilere ekle')}
-          icon={<IconBookmark color={isFav ? colors.gold : colors.green} />}
+          icon={<IconBookmark color={isFav ? colors.gold : colors.greenText} />}
           onPress={() => toggleFavori(dua.id)}
         />
         <Button style={{ flex: 1 }} variant="secondary" label={t('Metin paylaş')} icon={<IconShare />} onPress={shareText} />
@@ -151,15 +151,15 @@ const st = StyleSheet.create({
   inner: { borderWidth: 1, borderColor: colors.cardBorder, borderRadius: 19, paddingVertical: 20, paddingHorizontal: 18, gap: 16 },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   tag: { backgroundColor: colors.greenTint, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4 },
-  tagText: { fontFamily: fonts.bodySemi, fontSize: 12, color: colors.green },
-  neIcin: { backgroundColor: '#F6EBCF', borderRadius: 14, padding: 12, gap: 2 },
+  tagText: { fontFamily: fonts.bodySemi, fontSize: 12, color: colors.greenText },
+  neIcin: { backgroundColor: colors.creamBox, borderRadius: 14, padding: 12, gap: 2 },
   neIcinLabel: { fontFamily: fonts.bodyBold, fontSize: 12, color: colors.goldText, textTransform: 'uppercase', letterSpacing: 0.8 },
   neIcinText: { fontFamily: fonts.bodySemi, fontSize: 15, lineHeight: 22, color: colors.ink },
-  ar: { fontFamily: fonts.arabic, fontSize: 26, lineHeight: 50, color: colors.green, textAlign: 'center', writingDirection: 'rtl' },
+  ar: { fontFamily: fonts.arabic, fontSize: 26, lineHeight: 50, color: colors.greenText, textAlign: 'center', writingDirection: 'rtl' },
   okunus: { fontFamily: fonts.displayItalic, fontSize: 16, lineHeight: 25, color: colors.inkSoft },
   meal: { fontFamily: fonts.body, fontSize: 15, lineHeight: 24, color: colors.ink },
   kaynak: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
-  h2: { fontFamily: fonts.display, fontSize: 22, color: colors.green, marginTop: 8 },
+  h2: { fontFamily: fonts.display, fontSize: 22, color: colors.greenText, marginTop: 8 },
   katDesc: { fontFamily: fonts.body, fontSize: 14, color: colors.muted },
   list: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, paddingHorizontal: 14 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 12, minHeight: 64 },
@@ -167,7 +167,7 @@ const st = StyleSheet.create({
   divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   rowTitle: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
   rowSub: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18, color: colors.muted },
-  rowAr: { fontFamily: fonts.arabic, fontSize: 17, color: colors.green, maxWidth: 110, textAlign: 'right' },
+  rowAr: { fontFamily: fonts.arabic, fontSize: 17, color: colors.greenText, maxWidth: 110, textAlign: 'right' },
   empty: { fontFamily: fonts.body, fontSize: 14, color: colors.muted, paddingVertical: 16 },
   note: { fontFamily: fonts.body, fontSize: 12, color: colors.muted, textAlign: 'center' },
 });

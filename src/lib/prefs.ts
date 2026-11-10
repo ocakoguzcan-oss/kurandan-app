@@ -22,6 +22,14 @@ export type Prefs = {
   /** Vakit hesaplama yöntemi; boşsa ülkeye göre otomatik */
   method?: MethodId;
   asr?: AsrSchool;
+  /** Gece modu: cihaza göre (varsayılan), hep koyu ya da hep açık */
+  tema?: 'auto' | 'dark' | 'light';
+  /** Hicri takvimi Diyanet'e uydurmak için gün düzeltmesi (−2 … +2) */
+  hicriDuzelt?: number;
+  /** Saatleri 12 saat biçiminde göster */
+  saat12?: boolean;
+  /** Ana ekranda iftar sayacı (Ramazan dışında da, nafile oruç için) */
+  iftarSayaci?: boolean;
 };
 
 const KEY = 'kurandan.prefs.v1';

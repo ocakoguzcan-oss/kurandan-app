@@ -69,9 +69,18 @@ export function ymdToLocalDate(v: Ymd): Date {
 }
 
 /** Saat:dakika — şehrin saatiyle. */
+/** Saat biçimi: 24 saat (varsayılan) ya da 12 saat (ÖÖ/ÖS ekleriyle) */
+let saat12: { am: string; pm: string } | null = null;
+export function setSaat12(on: boolean, am = 'AM', pm = 'PM') {
+  saat12 = on ? { am, pm } : null;
+}
+
 export function hhmm(d: Date, tz?: string): string {
   const w = wall(d, tz);
-  return `${String(w.getUTCHours()).padStart(2, '0')}:${String(w.getUTCMinutes()).padStart(2, '0')}`;
+  const h = w.getUTCHours();
+  const m = String(w.getUTCMinutes()).padStart(2, '0');
+  if (saat12) return `${h % 12 || 12}:${m} ${h < 12 ? saat12.am : saat12.pm}`;
+  return `${String(h).padStart(2, '0')}:${m}`;
 }
 
 /** "UTC+3", "UTC−4:30" */

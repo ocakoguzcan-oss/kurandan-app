@@ -113,7 +113,7 @@ function SketchMap({ line, visible, duraklar, focus, onPress }: { line: LL[]; vi
   return (
     <Svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`}>
       <SvgPolyline points={pts(line)} fill="none" stroke="rgba(24,88,60,0.18)" strokeWidth={5} />
-      <SvgPolyline points={pts(visible)} fill="none" stroke={colors.green} strokeWidth={3.5} strokeLinejoin="round" />
+      <SvgPolyline points={pts(visible)} fill="none" stroke={colors.greenText} strokeWidth={3.5} strokeLinejoin="round" />
       {duraklar.map((d, i) => {
         const [x, y] = xy({ latitude: d.lat, longitude: d.lng });
         return <Circle key={i} cx={x} cy={y} r={focus === i ? 8 : d.tur === 'hedef' ? 7 : 5} fill={DOT[d.tur]} stroke="#fff" strokeWidth={1.5} onPress={() => onPress(i)} />;
@@ -122,7 +122,7 @@ function SketchMap({ line, visible, duraklar, focus, onPress }: { line: LL[]; vi
   );
 }
 
-const DOT: Record<Durak['tur'], string> = { sehir: colors.green, sinir: '#C8553D', havalimani: '#1B5E9E', hedef: colors.gold };
+const DOT: Record<Durak['tur'], string> = { sehir: colors.greenText, sinir: '#C8553D', havalimani: '#1B5E9E', hedef: colors.gold };
 
 export default function KabeYolu() {
   const lang = getLang();
@@ -201,7 +201,7 @@ export default function KabeYolu() {
           toolbarEnabled={false}
         >
           <Polyline coordinates={line} strokeColor="rgba(24,88,60,0.18)" strokeWidth={5} />
-          <Polyline coordinates={visible} strokeColor={mod === 'ucak' ? '#1B5E9E' : colors.green} strokeWidth={4} lineDashPattern={mod === 'ucak' ? [10, 8] : undefined} />
+          <Polyline coordinates={visible} strokeColor={mod === 'ucak' ? '#1B5E9E' : '#18583C'} strokeWidth={4} lineDashPattern={mod === 'ucak' ? [10, 8] : undefined} />
           {reachedStops.map((d) => {
             const i = g.duraklar.indexOf(d);
             return (
@@ -332,20 +332,20 @@ const st = StyleSheet.create({
   seg: { flexDirection: 'row', borderRadius: 16, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, padding: 4 },
   segBtn: { minHeight: 44, minWidth: 92, paddingHorizontal: 14, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   segOn: { backgroundColor: colors.green },
-  segText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.green },
-  segTextOn: { color: colors.paper },
+  segText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.greenText },
+  segTextOn: { color: colors.onGreen },
   mapBox: { height: 320, borderRadius: radius.xl, overflow: 'hidden', borderWidth: 1, borderColor: colors.cardBorder, backgroundColor: colors.card },
-  replay: { position: 'absolute', right: 10, bottom: 10, backgroundColor: 'rgba(251,247,238,0.95)', borderRadius: 12, paddingHorizontal: 12, minHeight: 36, justifyContent: 'center' },
-  replayText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.green },
+  replay: { position: 'absolute', right: 10, bottom: 10, backgroundColor: colors.card, borderRadius: 12, paddingHorizontal: 12, minHeight: 36, justifyContent: 'center' },
+  replayText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
   mapNote: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17, color: colors.muted, textAlign: 'center' },
   dot: { borderRadius: 10, borderWidth: 2, borderColor: '#FFFFFF' },
   dotFocus: { transform: [{ scale: 1.6 }] },
   facts: { flexDirection: 'row', gap: 10 },
   fact: { flex: 1, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, padding: 12, gap: 2 },
   factLabel: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  factVal: { fontFamily: fonts.bodyBold, fontSize: 18, color: colors.green },
+  factVal: { fontFamily: fonts.bodyBold, fontSize: 18, color: colors.greenText },
   ozet: { fontFamily: fonts.body, fontSize: 15, lineHeight: 23, color: colors.ink },
-  warn: { backgroundColor: '#FBEBD3', borderWidth: 1, borderColor: colors.gold, borderRadius: 16, padding: 14, gap: 4 },
+  warn: { backgroundColor: colors.warnBg, borderWidth: 1, borderColor: colors.gold, borderRadius: 16, padding: 14, gap: 4 },
   warnTitle: { fontFamily: fonts.bodyBold, fontSize: 15, color: colors.goldText },
   warnText: { fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: colors.ink },
   timeline: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, paddingTop: 14, paddingHorizontal: 12 },
@@ -358,9 +358,9 @@ const st = StyleSheet.create({
   badge: { alignSelf: 'flex-start', marginTop: 3, fontFamily: fonts.bodySemi, fontSize: 11, color: '#FFFFFF', backgroundColor: '#C8553D', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2, overflow: 'hidden' },
   stopDetail: { fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: colors.muted, marginTop: 3 },
   li: { flexDirection: 'row', gap: 8 },
-  check: { fontFamily: fonts.bodyBold, fontSize: 14, color: colors.green, width: 14 },
+  check: { fontFamily: fonts.bodyBold, fontSize: 14, color: colors.greenText, width: 14 },
   liText: { flex: 1, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: colors.ink },
   firmWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   firm: { minHeight: 40, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, justifyContent: 'center' },
-  firmText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.green },
+  firmText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
 });

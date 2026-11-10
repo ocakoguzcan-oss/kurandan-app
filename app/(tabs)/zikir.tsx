@@ -115,13 +115,13 @@ export default function Zikirmatik() {
 
 const s = StyleSheet.create({
   center: { alignItems: 'center', gap: 2 },
-  ar: { fontFamily: fonts.arabic, fontSize: 30, color: colors.green, writingDirection: 'rtl' },
+  ar: { fontFamily: fonts.arabic, fontSize: 30, color: colors.greenText, writingDirection: 'rtl' },
   meaning: { fontFamily: fonts.body, fontSize: 14, color: colors.muted, textAlign: 'center' },
   counter: { width: 280, height: 280, alignItems: 'center', justifyContent: 'center' },
-  count: { fontFamily: fonts.bodyBold, fontSize: 64, color: colors.paper, fontVariant: ['tabular-nums'] },
+  count: { fontFamily: fonts.bodyBold, fontSize: 64, color: colors.onGreen, fontVariant: ['tabular-nums'] },
   target: { fontFamily: fonts.body, fontSize: 14, color: colors.goldLight },
   stat: { flex: 1, paddingVertical: 12, gap: 2 },
   statLabel: { fontFamily: fonts.body, fontSize: 12, color: colors.muted },
-  statVal: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.green },
+  statVal: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.greenText },
   hint: { fontFamily: fonts.body, fontSize: 12, color: colors.muted, textAlign: 'center' },
 });

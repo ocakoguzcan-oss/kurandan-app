@@ -12,7 +12,18 @@ const MONTHS_AR = [
 
 export type HijriDate = { day: number; month: number; year: number };
 
+/** Kullanıcının hicri gün düzeltmesi (−2 … +2), Ayarlar → Kişisel */
+let duzelt = 0;
+export function setHicriDuzelt(n: number) {
+  duzelt = Math.max(-2, Math.min(2, Math.round(n) || 0));
+}
+
 export function toHijri(date: Date): HijriDate {
+  if (!duzelt) return toHijriRaw(date);
+  return toHijriRaw(new Date(date.getFullYear(), date.getMonth(), date.getDate() + duzelt, 12));
+}
+
+function toHijriRaw(date: Date): HijriDate {
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
   const d = date.getDate();

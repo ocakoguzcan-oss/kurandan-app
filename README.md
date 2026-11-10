@@ -177,3 +177,20 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
 - `app/hicri-takvim.tsx`: miladi ay görünümünde hicri günler, dini günler, hicri → miladi çevirici (`fromHijri`).
 - `app/camiler.tsx`: OpenStreetMap / Overpass API ile çevredeki camiler, haritada gösterim ve yol tarifi. Atıf ekranda; gizlilik metninde belirtildi.
 
+
+## Hatırlatıcılar, Canlı Etkinlik, gece modu, kişisel ayarlar
+
+- **Vakte özel ayar** (`app/vakit-ayar.tsx`): her vakit için birden çok "önce" hatırlatması ve gün seçimi
+  (`ReminderSettings.vakitAyar`). Ayarlar'daki genel "Ne zaman hatırlatılsın?" seçimi bunların "önce" kısmını sıfırlar.
+- **Hatırlatıcılar** (`app/hatirlaticilar.tsx`): "Namazını kıldın mı?" (Namaz Takibi'nde işaretlenmediyse vaktin
+  içinde bir kez; işaretlenince bildirim iptal edilir), teheccüd, Pazartesi/Perşembe orucu, Cuma namazı, kandil, Cuma story.
+- **Bildirim düğmeleri** (`src/lib/bildirimEylem.ts`): "x dk sonra hatırlat" ve "Kıldım ✓". Ertelenen bildirimler
+  `ertele:` önekiyle kurulur ve yeniden kurulumda silinmez.
+- iOS en fazla 64 bekleyen bildirime izin verir; `kurulanGun()` günlük bildirim sayısına göre 2–7 gün kurar.
+- **Canlı Etkinlik** (iOS 16.2+): `modules/ezan-native` (`liveStart`/`liveStop`) ve `targets/widget/VakitCanliActivity.swift`.
+  `VakitAktiviteAttributes` iki yerde birebir aynı olmalı. Vakit girince sayaç sıfırda kalır; uygulama öne gelince bir sonrakine geçer.
+- **Gece modu**: `src/theme.ts` renkleri iOS'ta `DynamicColorIOS` ile açık/koyu çiftidir. `green` dolgu, `greenText` yazı,
+  `onGreen` yeşil zemin üstündeki yazıdır. Ayarlar'daki seçim `Appearance.setColorScheme` ile uygulanır.
+  Story görselleri (StoryCard) hep açık renkte kalır.
+- **Kişisel ayarlar** (`app/kisisel.tsx`): hicri gün düzeltmesi (`setHicriDuzelt`), 12 saat biçimi (`setSaat12`),
+  ana ekranda iftar sayacı, otomatik şehir bulma (konum kaynağı `gps`).

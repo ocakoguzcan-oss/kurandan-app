@@ -132,7 +132,7 @@ export default function Imsakiye() {
             }}
             header={
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontFamily: fonts.display, fontSize: 24, color: colors.green }}>{city.country === 'TR' ? t('İl seçin') : t('Şehir seçin')}</Text>
+                <Text style={{ fontFamily: fonts.display, fontSize: 24, color: colors.greenText }}>{city.country === 'TR' ? t('İl seçin') : t('Şehir seçin')}</Text>
                 <Button variant="text" label={t('Kapat')} onPress={() => setPicker(false)} />
               </View>
             }
@@ -149,18 +149,18 @@ const st = StyleSheet.create({
   heroHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 },
   heroEyebrow: { fontFamily: fonts.bodySemi, fontSize: 12, letterSpacing: 0.9, textTransform: 'uppercase', color: colors.goldLight, flexShrink: 1 },
   heroSmall: { fontFamily: fonts.body, fontSize: 12, color: colors.mutedOnGreen },
-  heroCount: { fontFamily: fonts.bodyBold, fontSize: 40, color: colors.paper, fontVariant: ['tabular-nums'] },
+  heroCount: { fontFamily: fonts.bodyBold, fontSize: 40, color: colors.onGreen, fontVariant: ['tabular-nums'] },
   heroBox: { flex: 1, backgroundColor: 'rgba(0,0,0,0.18)', borderRadius: 12, paddingVertical: 10, paddingHorizontal: 12, gap: 2 },
   heroBoxLabel: { fontFamily: fonts.body, fontSize: 12, color: colors.mutedOnGreen },
-  heroBoxVal: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.paper },
+  heroBoxVal: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.onGreen },
   table: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.md + 2, overflow: 'hidden' },
   tr: { flexDirection: 'row', paddingHorizontal: 14 },
-  th: { backgroundColor: '#EFE4CB', paddingVertical: 10 },
+  th: { backgroundColor: colors.tableHead, paddingVertical: 10 },
   td: { paddingVertical: 11, borderTopWidth: 1, borderTopColor: colors.divider },
   c1: { flex: 1.6 },
   c2: { flex: 1, textAlign: 'right' },
-  thText: { fontFamily: fonts.bodyBold, fontSize: 12, color: '#5C4110' },
+  thText: { fontFamily: fonts.bodyBold, fontSize: 12, color: colors.goldText },
   tdText: { fontFamily: fonts.body, fontSize: 14, color: colors.ink, fontVariant: ['tabular-nums'] },
-  todayText: { color: colors.green, fontFamily: fonts.bodyBold },
+  todayText: { color: colors.greenText, fontFamily: fonts.bodyBold },
   note: { fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: colors.muted, textAlign: 'center' },
 });
