@@ -16,7 +16,7 @@ const MADDELER = [
   tx('Telefon kilitliyken de tilavet sayfa sayfa devam eder'),
   tx('Başka bir uygulamaya geçince okuma durmaz'),
   tx('Kilit ekranından durdurup yeniden başlatabilirsiniz'),
-  tx('Tek seferlik ödeme; abonelik yok, reklam yok'),
+  tx('Tek seferlik ödeme; abonelik yok'),
 ];
 
 export default function KilitEkrani() {
