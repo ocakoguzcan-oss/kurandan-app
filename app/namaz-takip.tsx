@@ -1,11 +1,12 @@
 import React from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Text } from '../src/components/Text';
 import { Screen, Card, Eyebrow } from '../src/components/ui';
 import { IconCheck } from '../src/components/Icons';
 import { colors, fonts } from '../src/theme';
-import { changeKaza, countDay, dayKey, FARZLAR, GUNLUK_VAKITLER, toggleVakit, useNamaz } from '../src/lib/namazTakip';
+import { countDay, dayKey, FARZLAR, GUNLUK_VAKITLER, toggleVakit, useNamaz } from '../src/lib/namazTakip';
 import { t } from '../src/i18n';
 import { formatWeekday } from '../src/i18n/format';
 
@@ -64,28 +65,14 @@ export default function NamazTakip() {
         <Text style={st.muted}>{t('Bu hafta {a} / {b} vakit kılındı', { a: weekTotal, b: 35 })}</Text>
       </Card>
 
-      <Eyebrow>{t('Kaza namazlarım')}</Eyebrow>
-      <Card style={{ padding: 0, paddingHorizontal: 14 }}>
-        {FARZLAR.map((f, i) => (
-          <View key={f.key} style={[st.row, i < FARZLAR.length - 1 && st.divider]}>
-            <Text style={st.name}>{t(f.name)}</Text>
-            <View style={st.counter}>
-              <Pressable accessibilityRole="button" accessibilityLabel={t('{vakit} kazası bir azalt (kıldım)', { vakit: t(f.name) })} onPress={() => changeKaza(f.key, -1)} style={st.cBtn}>
-                <Text style={st.cBtnText}>−</Text>
-              </Pressable>
-              <Text style={st.cVal}>{s.kaza[f.key] ?? 0}</Text>
-              <Pressable accessibilityRole="button" accessibilityLabel={t('{vakit} kazası bir artır', { vakit: t(f.name) })} onPress={() => changeKaza(f.key, 1)} style={st.cBtn}>
-                <Text style={st.cBtnText}>+</Text>
-              </Pressable>
-            </View>
+      <Pressable accessibilityRole="link" onPress={() => router.push('/kaza')}>
+        <Card style={st.kazaCard}>
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text style={st.name}>{t('Kaza Namazı')}</Text>
+            <Text style={st.mutedLeft}>{t('Kalan borç: {n} · Kılınan: {k}', { n: kazaTotal, k: s.kilinan ?? 0 })}</Text>
           </View>
-        ))}
-      </Card>
-      <Pressable
-        accessibilityRole="button"
-        onPress={() => Alert.alert(t('Kaza namazı'), t('Borcunuzu + ile ekleyin. Her kıldığınız kaza namazında − ile bir azaltın.'))}
-      >
-        <Text style={st.muted}>{t('Toplam kaza borcu: {n} · Nasıl kullanılır?', { n: kazaTotal })}</Text>
+          <Text style={st.more}>{t('Aç ›')}</Text>
+        </Card>
       </Pressable>
     </Screen>
   );
@@ -108,5 +95,8 @@ const st = StyleSheet.create({
   counter: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   cBtn: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
   cBtnText: { fontFamily: fonts.bodyBold, fontSize: 22, color: colors.green },
+  kazaCard: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  mutedLeft: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
+  more: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.green },
   cVal: { minWidth: 36, textAlign: 'center', fontFamily: fonts.bodyBold, fontSize: 18, color: colors.ink },
 });

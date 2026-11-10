@@ -4,7 +4,7 @@ import { Text } from '../../src/components/Text';
 import { Link, router } from 'expo-router';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 import { Screen, Card, Eyebrow, RoundButton } from '../../src/components/ui';
-import { IconBell, IconGlobe, IconKaaba, IconBook, IconCalendar, IconCheck, IconCompass, IconMoon, IconPin, IconReels, IconStory, IconTasbih } from '../../src/components/Icons';
+import { IconBell, IconGlobe, IconKaaba, IconBook, IconCalendar, IconCheck, IconCoins, IconCompass, IconHatim, IconHijri, IconMoon, IconMosque, IconPin, IconStory, IconTasbih } from '../../src/components/Icons';
 import { colors, fonts, radius } from '../../src/theme';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
@@ -21,13 +21,17 @@ import { TOTAL_PAGES } from '../../src/lib/quran';
 
 const FEATURES = [
   { href: '/kuran', label: tx("Kur'an-ı Kerim"), Icon: IconBook },
+  { href: '/hatim', label: tx('Hatim'), Icon: IconHatim },
   { href: '/kible', label: tx('Kıble'), Icon: IconCompass },
-  { href: '/zikir', label: tx('Zikirmatik'), Icon: IconTasbih },
+  { href: '/camiler', label: tx('Yakın Camiler'), Icon: IconMosque },
   { href: '/namaz-takip', label: tx('Namaz Takibi'), Icon: IconCheck },
+  { href: '/kaza', label: tx('Kaza Namazı'), Icon: IconCheck },
+  { href: '/zikir', label: tx('Zikirmatik'), Icon: IconTasbih },
   { href: '/imsakiye', label: tx('İmsakiye'), Icon: IconMoon },
+  { href: '/hicri-takvim', label: tx('Hicri Takvim'), Icon: IconHijri },
   { href: '/dini-gunler', label: tx('Dini Günler'), Icon: IconCalendar },
+  { href: '/zekat', label: tx('Zekât'), Icon: IconCoins },
   { href: '/cuma', label: tx('Story Hazırla'), Icon: IconStory },
-  { href: '/reels', label: tx('Reels'), Icon: IconReels },
 ] as const;
 
 export default function Home() {

@@ -49,7 +49,7 @@ const STEPS: Step[] = [
   { target: 'tile-imsakiye', title: tx('İmsakiye'), text: tx('Ramazan’da sahur ve iftar vakitleri, iftara geri sayım.') },
   { target: 'tile-dini-gunler', title: tx('Dini Günler'), text: tx('Kandil ve bayram tarihleri, kaç gün kaldığı. Bir gün önce hatırlatılır.') },
   { target: 'tile-cuma', title: tx('Story Hazırla'), text: tx('Cuma, kandil ve bayramlarda Instagram hikâyenize hazır görsel. Söz, ayet ya da kendi yazınızı seçin; renk, desen ya da kendi fotoğrafınızla süsleyin.') },
-  { target: 'tile-reels', title: tx('Reels'), text: tx('Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.') },
+  { tab: 4, title: tx('Reels'), text: tx('Kurandan.ai Instagram videoları burada; uygulamadan çıkmadan izleyin.') },
   { tab: 5, title: tx('Ayarlar'), text: tx('Ezan bildirimleri, büyük yazı, konum, dil ve vakit hesaplama yöntemi. Bu tanıtımı da buradan tekrar izleyebilirsiniz.') },
 ];
 

@@ -168,3 +168,12 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
 - `modules/ezan-native/`: yerel Expo modülü. Vakit listesini App Group'a (`group.ai.kurandan.app`) yazar, iOS 26+ AlarmKit ile sabah ezanını alarm olarak kurar.
 - `src/lib/vakitWidget.ts`: JS tarafı. Ayarlar → "Sabah ezanı alarm olarak" (varsayılan kapalı). Alarm kuruluysa imsak bildirimi ayrıca gelmez.
 - Alarm sesi `ezan_imsak.caf` (Apple sınırı 30 sn). Android karşılığı henüz yok.
+
+## Hatim, kaza, zekât, hicri takvim, yakın camiler
+
+- `app/hatim.tsx`: 30 cüz ızgarası (okunan oranı), tamamlanan hatimler, günlük hedef ve tahmini bitiş. Cüz başlangıçları `src/lib/hatim.ts` → `JUZ_START` (604 sayfalık Medine Mushafı).
+- `app/kaza.tsx`: kaza borcu (yıl/ay/gün ile toplu ekleme), her vakit için "Kıldım", kılınan toplam. Veri `src/lib/namazTakip.ts`.
+- `app/zekat.tsx`: nisap 80,18 g altın (Diyanet), %2,5. Altın fiyatını kullanıcı girer; para birimi kullanıcının kendi para birimi.
+- `app/hicri-takvim.tsx`: miladi ay görünümünde hicri günler, dini günler, hicri → miladi çevirici (`fromHijri`).
+- `app/camiler.tsx`: OpenStreetMap / Overpass API ile çevredeki camiler, haritada gösterim ve yol tarifi. Atıf ekranda; gizlilik metninde belirtildi.
+

@@ -101,3 +101,24 @@ export const StarOrnament = ({ size = 40, color = colors.gold, fill = colors.gre
     <Circle cx={50} cy={50} r={8} fill={fill} />
   </Svg>
 );
+export const IconMosque = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="M6 20.5v-7a6 6 0 0 1 12 0v7" /><Path d="M12 7.5V5M12 3.2v.1" /><Path d="M2.5 20.5v-9M2.5 11.5l.9-2 .9 2M21.5 20.5v-9M21.5 11.5l-.9-2-.9 2" />
+    <Path d="M2 20.5h20M10 20.5v-3a2 2 0 0 1 4 0v3" />
+  </Svg>
+);
+export const IconCoins = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Circle cx={9} cy={9} r={6} /><Path d="M15.5 9.3a6 6 0 1 1-6.2 9.2" /><Path d="M9 6.5v5M7 9h4" />
+  </Svg>
+);
+export const IconHatim = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="M12 6.5C10 5 7 4.5 3 5v13c4-.5 7 0 9 1.5 2-1.5 5-2 9-1.5V5c-4-.5-7 0-9 1.5z" /><Path d="M15 11.5l1.6 1.6 3-3.2" />
+  </Svg>
+);
+export const IconHijri = ({ size = 22, color = colors.green, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Rect x={3.5} y={5} width={17} height={15.5} rx={2.5} /><Path d="M8 3v4M16 3v4" /><Path d="M14.5 10.5a4 4 0 1 0 1.5 6 3.2 3.2 0 0 1-1.5-6z" />
+  </Svg>
+);

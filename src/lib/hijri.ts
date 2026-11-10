@@ -36,6 +36,47 @@ export function toHijri(date: Date): HijriDate {
   return { day, month, year };
 }
 
+const MONTHS_LATIN = [
+  'Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Jumada al-Ula', 'Jumada al-Akhirah',
+  'Rajab', 'Shaban', 'Ramadan', 'Shawwal', 'Dhu al-Qadah', 'Dhu al-Hijjah',
+];
+const MONTHS_RU = [
+  'Мухаррам', 'Сафар', 'Раби аль-авваль', 'Раби ас-сани', 'Джумада аль-уля', 'Джумада ас-сани',
+  'Раджаб', 'Шабан', 'Рамадан', 'Шавваль', 'Зуль-када', 'Зуль-хиджа',
+];
+
+/** Hicri ay adı, seçili dilde */
+export function hijriMonthName(month: number, lang: string): string {
+  const i = month - 1;
+  if (lang === 'tr') return MONTHS_TR[i];
+  if (lang === 'ar') return MONTHS_AR[i];
+  if (lang === 'ru') return MONTHS_RU[i];
+  return MONTHS_LATIN[i];
+}
+
+/** Hicri tarihten miladi tarihe (aynı tablolu takvimle; Diyanet'ten ±1 gün sapabilir). */
+export function fromHijri(h: HijriDate): Date {
+  const est = (h.year - 1) * 354.36707 + (h.month - 1) * 29.5306 + (h.day - 1);
+  const base = new Date(622, 6, 16);
+  const guess = new Date(base.getFullYear(), base.getMonth(), base.getDate() + Math.round(est));
+  const key = (x: HijriDate) => x.year * 400 + x.month * 31 + x.day;
+  const want = key(h);
+  for (let off = 0; off < 90; off++) {
+    for (const sgn of off ? [1, -1] : [1]) {
+      const d = new Date(guess.getFullYear(), guess.getMonth(), guess.getDate() + sgn * off);
+      if (key(toHijri(d)) === want) return d;
+    }
+  }
+  return guess;
+}
+
+/** Hicri ayın gün sayısı (29 ya da 30) */
+export function hijriMonthLength(year: number, month: number): number {
+  const first = fromHijri({ year, month, day: 1 });
+  const next = month === 12 ? fromHijri({ year: year + 1, month: 1, day: 1 }) : fromHijri({ year, month: month + 1, day: 1 });
+  return Math.round((next.getTime() - first.getTime()) / 86400000);
+}
+
 const toArabicDigits = (n: number) => String(n).replace(/\d/g, (c) => '٠١٢٣٤٥٦٧٨٩'[Number(c)]);
 
 export function formatHijriTr(h: HijriDate): string {

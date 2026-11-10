@@ -77,3 +77,28 @@ export function setGoal(goal: number) {
 export function resetHatim() {
   emit({ ...state, read: [] });
 }
+
+/** Medine Mushafı'nda (604 sayfa) cüzlerin başladığı sayfalar */
+export const JUZ_START = [1, 22, 42, 62, 82, 102, 121, 142, 162, 182, 201, 222, 242, 262, 282, 302, 322, 342, 362, 382, 402, 422, 442, 462, 482, 502, 522, 542, 562, 582];
+
+/** Cüzün sayfa aralığı (1–30) */
+export function juzPages(juz: number): [number, number] {
+  const from = JUZ_START[juz - 1];
+  const to = juz === 30 ? TOTAL_PAGES : JUZ_START[juz] - 1;
+  return [from, to];
+}
+
+/** Bir cüzü toptan okundu ya da okunmadı işaretle (başka yerden okuyanlar için) */
+export function setJuzRead(juz: number, read: boolean) {
+  const [from, to] = juzPages(juz);
+  const set = new Set(state.read);
+  for (let p = from; p <= to; p++) (read ? set.add(p) : set.delete(p));
+  const list = [...set].sort((a, b) => a - b);
+  if (list.length >= TOTAL_PAGES) emit({ ...state, read: [], completed: state.completed + 1 });
+  else emit({ ...state, read: list });
+}
+
+/** Bu hatmi tamamlandı say ve yenisine başla */
+export function completeHatim() {
+  emit({ ...state, read: [], completed: state.completed + 1 });
+}

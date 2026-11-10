@@ -14,9 +14,14 @@ export const FARZLAR = [
 export type FarzKey = (typeof FARZLAR)[number]['key'];
 export const GUNLUK_VAKITLER: FarzKey[] = ['sabah', 'ogle', 'ikindi', 'aksam', 'yatsi'];
 
-type State = { days: Record<string, Partial<Record<FarzKey, boolean>>>; kaza: Record<FarzKey, number> };
+type State = {
+  days: Record<string, Partial<Record<FarzKey, boolean>>>;
+  kaza: Record<FarzKey, number>;
+  /** Toplam kılınan kaza namazı (ilerlemeyi göstermek için) */
+  kilinan: number;
+};
 const KEY = 'kurandan.namaz.v1';
-const initial: State = { days: {}, kaza: { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 } };
+const initial: State = { days: {}, kaza: { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 }, kilinan: 0 };
 let state: State = initial;
 let loaded = false;
 const listeners = new Set<() => void>();
@@ -35,7 +40,7 @@ function subscribe(cb: () => void) {
   if (!loaded) {
     loaded = true;
     load<State>(KEY, initial).then((s) => {
-      state = { days: s.days ?? {}, kaza: { ...initial.kaza, ...s.kaza } };
+      state = { days: s.days ?? {}, kaza: { ...initial.kaza, ...s.kaza }, kilinan: s.kilinan ?? 0 };
       listeners.forEach((l) => l());
     });
   }
@@ -55,7 +60,28 @@ export function toggleVakit(day: string, key: FarzKey) {
 }
 
 export function changeKaza(key: FarzKey, delta: number) {
-  emit({ ...state, kaza: { ...state.kaza, [key]: Math.max(0, (state.kaza[key] ?? 0) + delta) } });
+  const cur = state.kaza[key] ?? 0;
+  const next = Math.max(0, cur + delta);
+  emit({ ...state, kaza: { ...state.kaza, [key]: next } });
+}
+
+/** Bir kaza namazı kılındı: borçtan düşer, kılınan sayısı artar */
+export function kazaKildim(key: FarzKey) {
+  const cur = state.kaza[key] ?? 0;
+  if (cur <= 0) return;
+  emit({ ...state, kaza: { ...state.kaza, [key]: cur - 1 }, kilinan: (state.kilinan ?? 0) + 1 });
+}
+
+/** Kılınmamış gün sayısına göre her vakte (vitir dahil) borç ekler */
+export function kazaGunEkle(gun: number) {
+  if (gun <= 0) return;
+  const kaza = { ...state.kaza };
+  for (const f of FARZLAR) kaza[f.key] = (kaza[f.key] ?? 0) + gun;
+  emit({ ...state, kaza });
+}
+
+export function kazaSifirla() {
+  emit({ ...state, kaza: { ...initial.kaza }, kilinan: 0 });
 }
 
 export function countDay(s: State, day: string) {
