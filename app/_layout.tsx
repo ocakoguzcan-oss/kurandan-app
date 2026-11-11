@@ -15,7 +15,8 @@ import {
   PlusJakartaSans_600SemiBold,
   PlusJakartaSans_700Bold,
 } from '@expo-google-fonts/plus-jakarta-sans';
-import { AppProvider } from '../src/context/AppContext';
+import { AppProvider, useApp, useNow } from '../src/context/AppContext';
+import { getPrayerTimes } from '../src/lib/prayerTimes';
 import { TourProvider } from '../src/tour/Tour';
 import { colors } from '../src/theme';
 import { yanitiIsle } from '../src/lib/bildirimEylem';
@@ -40,6 +41,30 @@ function useNotificationRouting() {
     const sub = Notifications.addNotificationResponseReceivedListener((r) => go(r));
     return () => sub.remove();
   }, []);
+}
+
+/**
+ * Gece modu: renkler (src/theme.ts) açık/koyu çiftidir; burada hangisinin kullanılacağı seçilir.
+ * Otomatik: akşam ezanından güneş doğana kadar koyu, gündüz açık (seçili şehrin vakitlerine göre).
+ */
+function GeceModu() {
+  const { place, calc } = useApp();
+  const tema = usePrefs().tema ?? 'auto';
+  const now = useNow(60000);
+  let koyu = tema === 'dark';
+  if (tema === 'auto') {
+    const v = getPrayerTimes(now, place.lat, place.lng, calc);
+    koyu = now.getTime() >= v.aksam.getTime() || now.getTime() < v.gunes.getTime();
+  }
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+    try {
+      Appearance.setColorScheme((koyu ? 'dark' : 'light') as Parameters<typeof Appearance.setColorScheme>[0]);
+    } catch {
+      // eski sürüm
+    }
+  }, [koyu]);
+  return null;
 }
 
 export default function RootLayout() {
@@ -78,15 +103,6 @@ export default function RootLayout() {
   const prefs = usePrefs();
   const lang = prefs.lang ?? deviceLang();
 
-  // Gece modu: renkler (src/theme.ts) sistemin açık/koyu görünümüne göre çözülür
-  useEffect(() => {
-    if (Platform.OS === 'web') return;
-    try {
-      Appearance.setColorScheme((prefs.tema === 'dark' ? 'dark' : prefs.tema === 'light' ? 'light' : 'unspecified') as Parameters<typeof Appearance.setColorScheme>[0]);
-    } catch {
-      // eski sürüm
-    }
-  }, [prefs.tema]);
 
   useEffect(() => {
     if ((loaded || error) && langReady) SplashScreen.hideAsync().catch(() => {});
@@ -102,6 +118,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <AppProvider key={lang}>
         <StatusBar style="auto" />
+        <GeceModu />
         <TourProvider>
         <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}>
           <Stack.Screen name="(tabs)" />
@@ -126,6 +143,8 @@ export default function RootLayout() {
           <Stack.Screen name="vakit-ayar" />
           <Stack.Screen name="kisisel" />
           <Stack.Screen name="kildin-mi" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="kart" />
+          <Stack.Screen name="kart-sandigi" />
           <Stack.Screen name="kilit-ekrani" options={{ presentation: 'modal' }} />
         </Stack>
         </TourProvider>

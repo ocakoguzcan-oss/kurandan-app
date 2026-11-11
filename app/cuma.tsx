@@ -18,6 +18,7 @@ import {
   DESENLER, Desen, ICERIKLER, ICERIK_TURLERI, IcerikTuru, KONULAR, Konu, PALETLER, YAZI_RENKLERI, YAZI_TIPLERI, YaziTipi,
 } from '../src/data/story';
 import { duaById, duaText, useDualar } from '../src/lib/dualar';
+import { kartById } from '../src/lib/kartlar';
 import { isRTL, t, tx } from '../src/i18n';
 
 const SCALES = [
@@ -39,9 +40,10 @@ function loadRNShare(): any | null {
 type Tab = 'icerik' | 'arka' | 'yazi';
 
 export default function StoryStudio() {
-  const params = useLocalSearchParams<{ dua?: string }>();
+  const params = useLocalSearchParams<{ dua?: string; kart?: string }>();
   useDualar(); // dua kütüphanesini yükle
   const dua = duaById(params.dua);
+  const kart = kartById(params.kart);
   const ref = useRef<View>(null);
 
   const [tab, setTab] = useState<Tab>('icerik');
@@ -51,8 +53,8 @@ export default function StoryStudio() {
   const [serbestBaslik, setSerbestBaslik] = useState(() => t('Hayırlı Cumalar'));
   const [serbestMetin, setSerbestMetin] = useState('');
   const [showTitle, setShowTitle] = useState(true);
-  const [paletIdx, setPaletIdx] = useState(dua ? 1 : 0);
-  const [desen, setDesen] = useState<Desen>(dua ? 'kemer' : 'yildiz');
+  const [paletIdx, setPaletIdx] = useState(dua || kart ? 1 : 0);
+  const [desen, setDesen] = useState<Desen>(dua || kart ? 'kemer' : 'yildiz');
   const [photo, setPhoto] = useState<string | null>(null);
   const [font, setFont] = useState<YaziTipi>('serif');
   const [scale, setScale] = useState(1);
@@ -65,6 +67,9 @@ export default function StoryStudio() {
   const palet = PALETLER[paletIdx];
 
   const card = useMemo(() => {
+    if (kart) {
+      return { arabicTitle: undefined, title: showTitle ? t('Günün Kartı') : undefined, arabicBody: kart.arabic, body: isRTL() && kart.arabic ? undefined : kart.metin, kaynak: kart.kaynak };
+    }
     if (dua) {
       const dt = duaText(dua);
       return { arabicTitle: undefined, title: showTitle ? t('Günün Duası') : undefined, arabicBody: dua.arabic, body: isRTL() ? undefined : dt.meal, kaynak: dt.kaynak };
@@ -73,7 +78,7 @@ export default function StoryStudio() {
       return { arabicTitle: konuBilgi.arabic, title: serbestBaslik.trim() || undefined, body: serbestMetin.trim() || t('Buraya kendi sözünüzü yazın.'), kaynak: undefined };
     }
     return { arabicTitle: konuBilgi.arabic, title: showTitle ? t(konuBilgi.baslik) : undefined, body: item ? t(item.metin) : '', kaynak: item?.kaynak ? t(item.kaynak) : undefined };
-  }, [dua, tur, konuBilgi, serbestBaslik, serbestMetin, item, showTitle]);
+  }, [dua, kart, tur, konuBilgi, serbestBaslik, serbestMetin, item, showTitle]);
 
   const render = () => captureRef(ref, { format: 'png', quality: 1, width: 1080, height: 1920, result: 'tmpfile' });
 
@@ -131,7 +136,7 @@ export default function StoryStudio() {
   };
 
   return (
-    <Screen title={dua ? t('Duayı Paylaş') : t('Story Hazırla')}>
+    <Screen title={dua ? t('Duayı Paylaş') : kart ? t('Kartı Paylaş') : t('Story Hazırla')}>
       <View style={st.previewWrap}>
         <StoryCard
           ref={ref}
@@ -159,7 +164,9 @@ export default function StoryStudio() {
 
       {tab === 'icerik' && (
         <View style={{ gap: 12 }}>
-          {dua ? (
+          {kart ? (
+            <Text style={st.hint}>{t('Bu görselde günün kartı ({kaynak}) paylaşılacak. Arka planı ve yazıyı diğer sekmelerden değiştirebilirsiniz.', { kaynak: kart.kaynak })}</Text>
+          ) : dua ? (
             <Text style={st.hint}>{t('Bu görselde “{kaynak}” duası paylaşılacak. Arka planı ve yazıyı diğer sekmelerden değiştirebilirsiniz.', { kaynak: duaText(dua).kaynak })}</Text>
           ) : (
             <>
@@ -202,7 +209,7 @@ export default function StoryStudio() {
           {tur !== 'serbest' && (
             <Pressable accessibilityRole="switch" accessibilityState={{ checked: showTitle }} onPress={() => setShowTitle(!showTitle)} style={st.check}>
               <View style={[st.box, showTitle && st.boxOn]} />
-              <Text style={st.checkText}>{t('“{baslik}” başlığını göster', { baslik: dua ? t('Günün Duası') : t(konuBilgi.baslik) })}</Text>
+              <Text style={st.checkText}>{t('“{baslik}” başlığını göster', { baslik: dua ? t('Günün Duası') : kart ? t('Günün Kartı') : t(konuBilgi.baslik) })}</Text>
             </Pressable>
           )}
         </View>

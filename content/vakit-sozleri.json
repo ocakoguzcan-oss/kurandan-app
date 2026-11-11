@@ -23,6 +23,14 @@
     "fr": "Al-Baqarah 2:45",
     "ru": "Al-Baqarah 2:45",
     "ar": "البقرة: ٤٥"
+   },
+   "not": {
+    "tr": "Zorlandığında önce iki şeye sarıl: sabra ve namaza. Biri yükü taşıtır, öteki yükü Rabbine bırakmayı öğretir.",
+    "en": "When things get hard, hold on to two things first: patience and prayer. One helps you carry the load; the other teaches you to hand it to your Lord.",
+    "de": "Wenn es schwer wird, halte dich zuerst an zwei Dinge: Geduld und Gebet. Das eine hilft tragen, das andere lehrt, die Last deinem Herrn zu überlassen.",
+    "ar": "إذا اشتدّ الأمر فتمسّك أولًا بأمرين: الصبر والصلاة؛ الأول يعينك على الحمل، والثاني يعلّمك أن تكِل الأمر إلى ربك.",
+    "fr": "Quand tout devient difficile, accroche-toi d'abord à deux choses : la patience et la prière. L'une aide à porter, l'autre apprend à confier le fardeau à ton Seigneur.",
+    "ru": "Когда трудно, держись прежде всего двух вещей: терпения и молитвы. Одно помогает нести ношу, другое учит вверить её Господу."
    }
   },
   {
@@ -46,6 +54,14 @@
     "fr": "An-Nisa 4:103",
     "ru": "An-Nisa 4:103",
     "ar": "النساء: ١٠٣"
+   },
+   "not": {
+    "tr": "Namaz günü beş parçaya böler; her parçada bir kez durup kime ait olduğunu hatırlarsın.",
+    "en": "Prayer divides the day into five parts; in each you pause once and remember to Whom you belong.",
+    "de": "Das Gebet teilt den Tag in fünf Abschnitte; in jedem hältst du inne und erinnerst dich, wem du gehörst.",
+    "ar": "تقسم الصلاة اليوم خمسة أقسام، تقف في كل منها وتتذكّر لمن أنت.",
+    "fr": "La prière divise la journée en cinq parts ; dans chacune tu t'arrêtes et te rappelles à Qui tu appartiens.",
+    "ru": "Намаз делит день на пять частей; в каждой ты останавливаешься и вспоминаешь, Кому принадлежишь."
    }
   },
   {
@@ -69,6 +85,14 @@
     "fr": "Al-Ankabut 29:45",
     "ru": "Al-Ankabut 29:45",
     "ar": "العنكبوت: ٤٥"
+   },
+   "not": {
+    "tr": "Gerçekten kılınan namaz insanı değiştirir; bugün namazdan sonra bir kötü alışkanlığını gözden geçir.",
+    "en": "A prayer truly prayed changes a person; after today's prayer, look honestly at one bad habit.",
+    "de": "Ein wahrhaft verrichtetes Gebet verändert den Menschen; prüfe nach dem heutigen Gebet eine schlechte Gewohnheit.",
+    "ar": "الصلاة الحقّة تغيّر صاحبها؛ راجع بعد صلاة اليوم عادةً سيئة واحدة.",
+    "fr": "Une prière vraiment accomplie transforme ; après la prière d'aujourd'hui, regarde en face une mauvaise habitude.",
+    "ru": "Настоящий намаз меняет человека; после сегодняшней молитвы честно взгляни на одну дурную привычку."
    }
   },
   {
@@ -92,6 +116,14 @@
     "fr": "Al-Baqarah 2:152",
     "ru": "Al-Baqarah 2:152",
     "ar": "البقرة: ١٥٢"
+   },
+   "not": {
+    "tr": "Sen O'nu andıkça O da seni anar. Gün içinde kısa bir zikir, bu karşılıklı hatırlayışın kapısıdır.",
+    "en": "As you remember Him, He remembers you. A short dhikr during the day opens the door to this mutual remembrance.",
+    "de": "Wenn du Seiner gedenkst, gedenkt Er deiner. Ein kurzes Dhikr am Tag öffnet die Tür zu diesem Gedenken.",
+    "ar": "كلما ذكرته ذكرك؛ وذِكرٌ قصير في يومك بابُ هذا الذِّكر المتبادل.",
+    "fr": "Quand tu te souviens de Lui, Il se souvient de toi. Un court dhikr dans la journée ouvre cette porte.",
+    "ru": "Поминая Его, ты поминаем Им. Короткий зикр в течение дня открывает эту дверь."
    }
   },
   {
@@ -115,6 +147,14 @@
     "fr": "Ash-Sharh 94:6",
     "ru": "Ash-Sharh 94:6",
     "ar": "الشرح: ٦"
+   },
+   "not": {
+    "tr": "Ayet kolaylığın güçlükten sonra değil, onunla beraber olduğunu söyler. Bugünkü zorluğun içinde saklı kolaylığı ara.",
+    "en": "The verse says ease comes with hardship, not after it. Look for the ease hidden inside today's difficulty.",
+    "de": "Der Vers sagt: Erleichterung kommt mit der Schwierigkeit, nicht danach. Suche die verborgene Erleichterung in der heutigen Mühe.",
+    "ar": "تقول الآية إن اليسر مع العسر لا بعده؛ فابحث عن اليسر المخبوء في عسر يومك.",
+    "fr": "Le verset dit que la facilité vient avec la difficulté, pas après. Cherche la facilité cachée dans la difficulté du jour.",
+    "ru": "Аят говорит: облегчение приходит вместе с трудностью, а не после. Ищи облегчение, скрытое в сегодняшней трудности."
    }
   },
   {
@@ -138,6 +178,14 @@
     "fr": "Muslim 482",
     "ru": "Muslim 482",
     "ar": "رواه مسلم"
+   },
+   "not": {
+    "tr": "Secde, başın en aşağıda olduğu an ama kalbin en yükseğe çıktığı andır. Bugün secdede bir dileğini söyle.",
+    "en": "Sujood is when your head is lowest and your heart rises highest. In sujood today, say one wish of yours.",
+    "de": "In der Niederwerfung ist der Kopf am tiefsten und das Herz am höchsten. Sprich heute in der Niederwerfung einen Wunsch aus.",
+    "ar": "السجود موضعٌ يكون فيه رأسك أدنى ما يكون وقلبك أعلى ما يكون؛ ادعُ اليوم في سجودك بحاجة لك.",
+    "fr": "Dans la prosternation, la tête est au plus bas et le cœur au plus haut. Aujourd'hui, confie un vœu dans ta prosternation.",
+    "ru": "В земном поклоне голова ниже всего, а сердце выше всего. Сегодня в суджуде попроси о чём-то своём."
    }
   },
   {
@@ -161,6 +209,14 @@
     "fr": "Muslim 668",
     "ru": "Muslim 668",
     "ar": "رواه مسلم"
+   },
+   "not": {
+    "tr": "Her namaz, gün içinde üzerine sinen yorgunluğu ve hataları yıkayan bir nehir gibi. Bugün kaç kez yıkandın?",
+    "en": "Each prayer is like a river washing off the day's tiredness and mistakes. How many times did you wash today?",
+    "de": "Jedes Gebet ist wie ein Fluss, der Müdigkeit und Fehler des Tages abwäscht. Wie oft hast du dich heute gewaschen?",
+    "ar": "كل صلاة كنهرٍ يغسل ما علق بك من تعب اليوم وأخطائه؛ كم مرة اغتسلت اليوم؟",
+    "fr": "Chaque prière est comme une rivière qui lave la fatigue et les fautes du jour. Combien de fois t'es-tu lavé aujourd'hui ?",
+    "ru": "Каждый намаз — как река, смывающая усталость и ошибки дня. Сколько раз ты омылся сегодня?"
    }
   },
   {
@@ -184,6 +240,14 @@
     "fr": "Muslim 657",
     "ru": "Muslim 657",
     "ar": "رواه مسلم"
+   },
+   "not": {
+    "tr": "Güne sabah namazıyla başlayan, günü emanet ettiği bir Koruyucu ile başlar.",
+    "en": "Whoever starts the day with Fajr starts it in the care of the One they entrusted it to.",
+    "de": "Wer den Tag mit dem Morgengebet beginnt, beginnt ihn in der Obhut dessen, dem er ihn anvertraut hat.",
+    "ar": "من بدأ يومه بالفجر بدأه في كنف من استودعه إياه.",
+    "fr": "Qui commence la journée par le Fajr la commence sous la protection de Celui à qui il l'a confiée.",
+    "ru": "Кто начинает день с утреннего намаза, начинает его под защитой Того, Кому его вверил."
    }
   },
   {
@@ -207,6 +271,14 @@
     "fr": "At-Tirmidhi 1212",
     "ru": "At-Tirmidhi 1212",
     "ar": "رواه الترمذي"
+   },
+   "not": {
+    "tr": "Bereket çoğu zaman günün ilk saatlerinde saklıdır; bugün önemli bir işine sabah erkenden başla.",
+    "en": "Blessing often hides in the first hours of the day; start one important task early today.",
+    "de": "Segen verbirgt sich oft in den ersten Stunden des Tages; beginne heute eine wichtige Aufgabe früh.",
+    "ar": "البركة كثيرًا ما تختبئ في أول النهار؛ فابدأ اليوم عملًا مهمًا في الصباح الباكر.",
+    "fr": "La bénédiction se cache souvent dans les premières heures ; commence tôt une tâche importante aujourd'hui.",
+    "ru": "Благодать часто скрыта в первых часах дня; начни сегодня важное дело пораньше."
    }
   },
   {
@@ -230,6 +302,14 @@
     "fr": "Ibn Majah 925",
     "ru": "Ibn Majah 925",
     "ar": "رواه ابن ماجه"
+   },
+   "not": {
+    "tr": "Bu dua, bir günün üç güzel hedefini sayar: öğrenmek, helal kazanmak ve işi Allah rızası için yapmak.",
+    "en": "This dua names three good goals for a day: to learn, to earn what is lawful, and to work for Allah's pleasure.",
+    "de": "Dieses Bittgebet nennt drei gute Ziele für einen Tag: lernen, Erlaubtes verdienen und für Allahs Wohlgefallen handeln.",
+    "ar": "يجمع هذا الدعاء ثلاثة أهداف ليومك: علمًا نافعًا ورزقًا حلالًا وعملًا يبتغي وجه الله.",
+    "fr": "Cette invocation nomme trois beaux buts pour une journée : apprendre, gagner licitement et agir pour l'agrément d'Allah.",
+    "ru": "Эта мольба называет три благие цели дня: учиться, зарабатывать дозволенное и трудиться ради довольства Аллаха."
    }
   },
   {
@@ -253,6 +333,14 @@
     "fr": "Al-Baqarah 2:238",
     "ru": "Al-Baqarah 2:238",
     "ar": "البقرة: ٢٣٨"
+   },
+   "not": {
+    "tr": "Günün ortasındaki namaz, işin en yoğun anında durmayı öğretir. Meşgul olduğunda da vaktini koru.",
+    "en": "The prayer in the middle of the day teaches you to stop at the busiest moment. Guard it even when you're busy.",
+    "de": "Das Gebet mitten am Tag lehrt, im geschäftigsten Moment innezuhalten. Bewahre es auch, wenn du beschäftigt bist.",
+    "ar": "الصلاة في وسط النهار تعلّمك التوقف في ذروة الانشغال؛ فحافظ عليها وإن كنت مشغولًا.",
+    "fr": "La prière au milieu de la journée apprend à s'arrêter au moment le plus chargé. Préserve-la même occupé.",
+    "ru": "Намаз посреди дня учит остановиться в самый занятой момент. Береги его, даже когда занят."
    }
   },
   {
@@ -276,6 +364,14 @@
     "fr": "Ar-Ra‘d 13:28",
     "ru": "Ar-Ra‘d 13:28",
     "ar": "الرعد: ٢٨"
+   },
+   "not": {
+    "tr": "Kalbin huzuru dışarıda değil, anmakta. Bugün içinden birkaç kez “Allah” de ve bekle.",
+    "en": "The heart's peace is not outside but in remembrance. Say “Allah” within yourself a few times today, and wait.",
+    "de": "Der Frieden des Herzens liegt nicht draußen, sondern im Gedenken. Sprich heute einige Male innerlich „Allah“ und warte.",
+    "ar": "سكينة القلب ليست في الخارج بل في الذكر؛ قل في نفسك «الله» مرات اليوم وانتظر.",
+    "fr": "La paix du cœur n'est pas au-dehors mais dans le rappel. Dis intérieurement « Allah » quelques fois aujourd'hui, et attends.",
+    "ru": "Покой сердца не снаружи, а в поминании. Произнеси сегодня про себя несколько раз «Аллах» и подожди."
    }
   },
   {
@@ -299,6 +395,14 @@
     "fr": "At-Talaq 65:3",
     "ru": "At-Talaq 65:3",
     "ar": "الطلاق: ٣"
+   },
+   "not": {
+    "tr": "Tevekkül, elinden geleni yapıp sonucu O'na bırakmaktır. Bugün seni düşündüren bir işi O'na emanet et.",
+    "en": "Trust means doing your part and leaving the outcome to Him. Entrust one worry to Him today.",
+    "de": "Gottvertrauen heißt, das Seine zu tun und das Ergebnis Ihm zu überlassen. Vertraue Ihm heute eine Sorge an.",
+    "ar": "التوكل أن تبذل وسعك ثم تَكِل النتيجة إليه؛ فاستودِعه اليوم همًّا يشغلك.",
+    "fr": "La confiance, c'est faire sa part et Lui laisser le résultat. Confie-Lui aujourd'hui un souci.",
+    "ru": "Упование — сделать своё и оставить итог Ему. Вверь Ему сегодня одну заботу."
    }
   },
   {
@@ -322,6 +426,14 @@
     "fr": "At-Talaq 65:2-3",
     "ru": "At-Talaq 65:2-3",
     "ar": "الطلاق: ٢-٣"
+   },
+   "not": {
+    "tr": "Takva bazen kapanmış görünen bir kapının önünde dürüst kalmaktır; çıkış yolu çoğu zaman beklemediğin yerden gelir.",
+    "en": "Taqwa sometimes means staying honest before a door that seems shut; the way out often comes from where you least expect.",
+    "de": "Gottesfurcht heißt manchmal, vor einer scheinbar verschlossenen Tür ehrlich zu bleiben; der Ausweg kommt oft von unerwarteter Seite.",
+    "ar": "التقوى أحيانًا أن تثبت على الصدق أمام باب يبدو مغلقًا؛ والمخرج كثيرًا ما يأتي من حيث لا تحتسب.",
+    "fr": "La piété, c'est parfois rester honnête devant une porte qui semble fermée ; l'issue vient souvent d'où on ne l'attend pas.",
+    "ru": "Богобоязненность — порой оставаться честным перед закрытой дверью; выход часто приходит оттуда, откуда не ждёшь."
    }
   },
   {
@@ -345,6 +457,14 @@
     "fr": "Ibrahim 14:7",
     "ru": "Ibrahim 14:7",
     "ar": "إبراهيم: ٧"
+   },
+   "not": {
+    "tr": "Şükür nimeti çoğaltır. Bugün sahip olduğun üç şeyi say ve her biri için “Elhamdülillah” de.",
+    "en": "Gratitude increases blessings. Count three things you have today and say “Alhamdulillah” for each.",
+    "de": "Dankbarkeit mehrt die Gaben. Zähle heute drei Dinge, die du hast, und sag für jedes „Alhamdulillah“.",
+    "ar": "الشكر يزيد النعم؛ عُدَّ اليوم ثلاث نعم وقل لكل واحدة «الحمد لله».",
+    "fr": "La gratitude multiplie les bienfaits. Compte trois choses que tu as aujourd'hui et dis « Alhamdoulillah » pour chacune.",
+    "ru": "Благодарность умножает блага. Перечисли сегодня три блага и скажи за каждое «Альхамдулиллях»."
    }
   },
   {
@@ -368,6 +488,14 @@
     "fr": "Ash-Shu‘ara 26:80",
     "ru": "Ash-Shu‘ara 26:80",
     "ar": "الشعراء: ٨٠"
+   },
+   "not": {
+    "tr": "İlaç sebep, şifa O'ndandır. Hasta birini hatırla ve bugün onun için dua et.",
+    "en": "Medicine is the means; healing is from Him. Remember someone who is ill and pray for them today.",
+    "de": "Die Arznei ist das Mittel, die Heilung kommt von Ihm. Denke an einen Kranken und bitte heute für ihn.",
+    "ar": "الدواء سبب، والشفاء من عنده؛ تذكّر مريضًا وادعُ له اليوم.",
+    "fr": "Le remède est le moyen, la guérison vient de Lui. Pense à un malade et prie pour lui aujourd'hui.",
+    "ru": "Лекарство — лишь средство, исцеление — от Него. Вспомни больного и помолись за него сегодня."
    }
   },
   {
@@ -414,6 +542,14 @@
     "fr": "Al-Qasas 28:24",
     "ru": "Al-Qasas 28:24",
     "ar": "القصص: ٢٤"
+   },
+   "not": {
+    "tr": "Hz. Musa bu duayı bir ağacın gölgesinde, her şeyini kaybetmişken etti. İhtiyacını O'na söylemek de bir ibadettir.",
+    "en": "Musa (as) made this dua in the shade of a tree, having lost everything. Telling Him your need is itself worship.",
+    "de": "Musa (a.s.) sprach dieses Bittgebet im Schatten eines Baumes, als er alles verloren hatte. Ihm seine Not zu sagen, ist selbst Anbetung.",
+    "ar": "دعا موسى عليه السلام بهذا تحت ظل شجرة وقد فقد كل شيء؛ وأن تبثّ إليه حاجتك عبادةٌ أيضًا.",
+    "fr": "Moïse (as) fit cette invocation à l'ombre d'un arbre, ayant tout perdu. Lui dire ton besoin est déjà une adoration.",
+    "ru": "Муса (мир ему) сделал эту мольбу в тени дерева, потеряв всё. Сказать Ему о своей нужде — тоже поклонение."
    }
   },
   {
@@ -437,6 +573,14 @@
     "fr": "Al-Furqan 25:74",
     "ru": "Al-Furqan 25:74",
     "ar": "الفرقان: ٧٤"
+   },
+   "not": {
+    "tr": "Ailen için dua etmek, onlara verebileceğin en sessiz hediyedir. Bugün her birinin adını anarak dua et.",
+    "en": "Praying for your family is the quietest gift you can give them. Pray for each of them by name today.",
+    "de": "Für die Familie zu bitten ist das leiseste Geschenk an sie. Bitte heute für jeden beim Namen.",
+    "ar": "الدعاء لأهلك أهدأ هدية تقدّمها لهم؛ فادعُ اليوم لكل واحد منهم باسمه.",
+    "fr": "Prier pour ta famille est le cadeau le plus discret. Prie aujourd'hui pour chacun, en le nommant.",
+    "ru": "Молитва за семью — самый тихий подарок им. Помолись сегодня за каждого, называя по имени."
    }
   },
   {
@@ -460,6 +604,14 @@
     "fr": "Abu Dawud 5090",
     "ru": "Abu Dawud 5090",
     "ar": "رواه أبو داود"
+   },
+   "not": {
+    "tr": "Afiyet, sadece hastalığın olmaması değil, nimetin huzurla yaşanmasıdır. Bugün sağlığın için şükret.",
+    "en": "Wellbeing is not just the absence of illness but living the blessing in peace. Give thanks for your health today.",
+    "de": "Wohlbefinden ist nicht nur das Fehlen von Krankheit, sondern das Leben der Gabe in Frieden. Danke heute für deine Gesundheit.",
+    "ar": "العافية ليست غياب المرض فحسب، بل أن تعيش النعمة في سكينة؛ فاشكر اليوم على صحتك.",
+    "fr": "Le bien-être n'est pas seulement l'absence de maladie, c'est vivre le bienfait en paix. Rends grâce pour ta santé.",
+    "ru": "Благополучие — не только отсутствие болезни, но и жизнь в покое с этим благом. Поблагодари сегодня за здоровье."
    }
   },
   {
@@ -483,6 +635,14 @@
     "fr": "Al-Bukhari 6412",
     "ru": "Al-Bukhari 6412",
     "ar": "رواه البخاري"
+   },
+   "not": {
+    "tr": "Sağlık ve boş vakit, kaybedilince değeri anlaşılan iki hazine. Bugün bir saatini bilerek güzel bir işe ayır.",
+    "en": "Health and free time are two treasures valued only once lost. Give one hour today, deliberately, to something good.",
+    "de": "Gesundheit und freie Zeit sind zwei Schätze, deren Wert man erst nach dem Verlust erkennt. Widme heute bewusst eine Stunde etwas Gutem.",
+    "ar": "الصحة والفراغ كنزان لا يُعرف قدرهما إلا بعد فقدهما؛ اجعل اليوم ساعة منك لعمل صالح عن قصد.",
+    "fr": "La santé et le temps libre sont deux trésors qu'on apprécie une fois perdus. Consacre aujourd'hui une heure, sciemment, à un bien.",
+    "ru": "Здоровье и свободное время — два сокровища, ценность которых понимаешь, потеряв их. Отдай сегодня час доброму делу."
    }
   },
   {
@@ -506,6 +666,14 @@
     "fr": "Muslim 656",
     "ru": "Muslim 656",
     "ar": "رواه مسلم"
+   },
+   "not": {
+    "tr": "Günün son namazı, günü güzel kapatmanın yoludur. Bu akşam yatsıyı cemaatle ya da huzurla kılmaya niyet et.",
+    "en": "The last prayer of the day is how to close it well. Intend to pray Isha tonight in congregation or with calm.",
+    "de": "Das letzte Gebet des Tages schließt ihn gut ab. Nimm dir vor, das Nachtgebet heute in Gemeinschaft oder in Ruhe zu verrichten.",
+    "ar": "آخر صلاة في اليوم خيرُ ختامٍ له؛ انوِ أن تصلي العشاء الليلة في جماعة أو بخشوع.",
+    "fr": "La dernière prière du jour est la belle façon de le clore. Fais l'intention de prier l'Isha ce soir en assemblée ou dans le calme.",
+    "ru": "Последний намаз дня — лучший способ его завершить. Намерься совершить сегодня иша в общине или спокойно."
    }
   },
   {
@@ -529,6 +697,14 @@
     "fr": "Al-Bukhari 6312",
     "ru": "Al-Bukhari 6312",
     "ar": "رواه البخاري"
+   },
+   "not": {
+    "tr": "Uyku küçük bir ölüm, uyanış küçük bir diriliştir. Yatmadan önce bu duayla günü O'na teslim et.",
+    "en": "Sleep is a small death and waking a small resurrection. Before bed, hand the day to Him with this dua.",
+    "de": "Schlaf ist ein kleiner Tod, Erwachen eine kleine Auferstehung. Übergib Ihm vor dem Schlafen den Tag mit diesem Bittgebet.",
+    "ar": "النوم موتة صغرى واليقظة بعثٌ صغير؛ سلِّم يومك إليه بهذا الدعاء قبل نومك.",
+    "fr": "Le sommeil est une petite mort et le réveil une petite résurrection. Avant de dormir, remets-Lui la journée avec cette invocation.",
+    "ru": "Сон — малая смерть, пробуждение — малое воскрешение. Перед сном вверь Ему день этой мольбой."
    }
   }
  ]

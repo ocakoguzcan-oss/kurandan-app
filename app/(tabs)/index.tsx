@@ -7,6 +7,7 @@ import { Screen, Card, Eyebrow, RoundButton } from '../../src/components/ui';
 import { IconBell, IconGlobe, IconKaaba, IconBook, IconCalendar, IconCheck, IconCoins, IconCompass, IconHatim, IconHijri, IconMoon, IconMosque, IconPin, IconStory, IconTasbih } from '../../src/components/Icons';
 import { colors, fonts, lightColors, radius } from '../../src/theme';
 import { usePrefs } from '../../src/lib/prefs';
+import { GununKartlari } from '../../src/components/GununKartlari';
 import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
@@ -69,6 +70,11 @@ export default function Home() {
     [namaz, namazGun]
   );
   // "Kıldınız mı?" açıksa: önceki günlerde hiç işaretlenmemiş vakitler (en fazla 5 satır gösterilir)
+  // Günün kartları imsakta yenilenir
+  const yenilenme = useMemo(
+    () => (now.getTime() < times.imsak.getTime() ? times.imsak : getPrayerTimes(ymdIn(new Date(times.imsak.getTime() + 86400000), calc.tz), place.lat, place.lng, calc).imsak),
+    [namazGun, times.imsak, calc, place.lat, place.lng] // eslint-disable-line react-hooks/exhaustive-deps
+  );
   const isaretsiz = useMemo(() => isaretsizler(namaz, namazGun), [namaz, namazGun]);
   const isaretsizSatir = isaretsiz.flatMap((g) => g.keys.map((k) => ({ ...g, key: k }))).slice(0, 5);
   const isaretsizToplam = isaretsiz.reduce((n, g) => n + g.keys.length, 0);
@@ -176,6 +182,8 @@ export default function Home() {
           <Text style={st.iftarSaat}>{formatTime(iftar.hedef, calc.tz)}</Text>
         </View>
       )}
+
+      <GununKartlari gun={namazGun} yenilenme={yenilenme} now={now} />
 
       <View ref={tDua} collapsable={false}>
       <Link href="/dua" asChild>

@@ -108,7 +108,7 @@ export default function Ayarlar() {
               <Chip key={v} label={l} selected={(prefs.tema ?? 'auto') === v} onPress={() => setPrefs({ tema: v })} style={{ flex: 1 }} />
             ))}
           </View>
-          <Text style={st.sub}>{t('Otomatik: telefonun açık/koyu görünümüne uyar')}</Text>
+          <Text style={st.sub}>{t('Otomatik: akşam ezanından güneş doğana kadar gece modu')}</Text>
         </View>
       </Card>
 

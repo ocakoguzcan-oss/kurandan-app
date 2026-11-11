@@ -195,3 +195,8 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
 - **Kişisel ayarlar** (`app/kisisel.tsx`): hicri gün düzeltmesi (`setHicriDuzelt`), 12 saat biçimi (`setSaat12`),
   ana ekranda iftar sayacı, otomatik şehir bulma (konum kaynağı `gps`).
 - **Vakit Manzarası widget'ı** (`targets/widget/ManzaraWidget.swift`, orta ve büyük): sıradaki vakte geri sayım, günün altı vakti; gökyüzü vakte göre değişir, gece ışıklar yanar. Mekân (Kâbe, Mescid-i Nebevi, Mescid-i Aksa, Kuba) widget düzenlenirken seçilir. Çizimler `scripts/widget-cami.py` ile SVG→PNG üretilir (`assets/widget/`).
+- **Günün Kartları** (`src/components/GununKartlari.tsx`, `app/kart.tsx`, `app/kart-sandigi.tsx`, `src/lib/kartlar.ts`):
+  "İyi Niyet Et ve Kart Seç", 3 kapalı kart, imsakta yenilenir. Günde 1 kart ücretsiz açılır (dönerek açılma animasyonu);
+  diğerleri sallanır ve "Fe sabrun cemîl" penceresi çıkar. İleride ödüllü video ile açılacak (`KILIT_VIDEO`: 2. kart 1, 3. kart 2 video).
+  İçerik: `content/dualar.json` + `content/vakit-sozleri.json` (tefekkür notları `not` alanında). Kaydedilenler Kart Sandığı'nda.
+- **Gece modu "Otomatik"**: akşam ezanından güneş doğana kadar koyu (seçili şehrin vakitleri), `app/_layout.tsx` → `GeceModu`.
