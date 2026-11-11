@@ -1,9 +1,10 @@
-// Bildirim düğmeleri: "Sonra hatırlat" (erteleme) ve "Kıldım" (Namaz Takibi'ne işler).
+// Bildirim düğmeleri: "Sonra hatırlat" (erteleme), "Evet, kıldım" (Namaz Takibi'ne işler) ve
+// "Hayır, kılmadım" (o vakti kaza borcuna ekler; sonradan "kıldım" denirse geri alınır).
 // Düğmeler uygulamayı açmadan çalışır; iOS uygulamayı arka planda kısa süre uyandırır.
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { isaretle, namazYukle, FarzKey } from './namazTakip';
+import { isaretle, kilmadim, namazYukle, FarzKey } from './namazTakip';
 import { t } from '../i18n';
 
 export const BILDIRIM_KATEGORI = { vakit: 'kurandan-vakit', kildin: 'kurandan-kildin' } as const;
@@ -11,6 +12,7 @@ export const BILDIRIM_KATEGORI = { vakit: 'kurandan-vakit', kildin: 'kurandan-ki
 export const ERTELE_ONEK = 'ertele:';
 const ERTELE = 'ertele';
 const KILDIM = 'kildim';
+const KILMADIM = 'kilmadim';
 const ERTELE_KEY = 'kurandan.erteleDk';
 const ISLENEN_KEY = 'kurandan.sonYanit';
 
@@ -23,7 +25,8 @@ export async function kategorileriKur(erteleDk: number) {
     : [];
   await Notifications.setNotificationCategoryAsync(BILDIRIM_KATEGORI.vakit, ertele).catch(() => {});
   await Notifications.setNotificationCategoryAsync(BILDIRIM_KATEGORI.kildin, [
-    { identifier: KILDIM, buttonTitle: t('Kıldım ✓'), options: { opensAppToForeground: false } },
+    { identifier: KILDIM, buttonTitle: t('Evet, kıldım ✓'), options: { opensAppToForeground: false } },
+    { identifier: KILMADIM, buttonTitle: t('Hayır, kılmadım (kazaya ekle)'), options: { opensAppToForeground: false } },
     ...ertele,
   ]).catch(() => {});
 }
@@ -34,7 +37,7 @@ export async function kategorileriKur(erteleDk: number) {
  */
 export async function yanitiIsle(r: Notifications.NotificationResponse): Promise<boolean> {
   const eylem = r.actionIdentifier;
-  if (eylem !== ERTELE && eylem !== KILDIM) return false;
+  if (eylem !== ERTELE && eylem !== KILDIM && eylem !== KILMADIM) return false;
   const anahtar = `${r.notification.request.identifier}|${eylem}|${r.notification.date}`;
   const son = await AsyncStorage.getItem(ISLENEN_KEY).catch(() => null);
   if (son === anahtar) return true;
@@ -45,6 +48,11 @@ export async function yanitiIsle(r: Notifications.NotificationResponse): Promise
   if (eylem === KILDIM && data.gun && data.farz) {
     await namazYukle().catch(() => {});
     isaretle(data.gun, data.farz, true);
+    return true;
+  }
+  if (eylem === KILMADIM && data.gun && data.farz) {
+    await namazYukle().catch(() => {});
+    kilmadim(data.gun, data.farz);
     return true;
   }
   if (eylem === ERTELE) {

@@ -6,7 +6,7 @@ import { Text } from '../src/components/Text';
 import { Screen, Card, Chip, Eyebrow, Toggle } from '../src/components/ui';
 import { colors, fonts } from '../src/theme';
 import { useApp } from '../src/context/AppContext';
-import { ERTELE_SECENEK, KILDIN_SECENEK, kurulanGun, ReminderSettings, TEHECCUD_SECENEK } from '../src/lib/notifications';
+import { ERTELE_SECENEK, KILDIN_SECENEK, KILDIN_VARSAYILAN, kurulanGun, ReminderSettings, TEHECCUD_SECENEK } from '../src/lib/notifications';
 import { t } from '../src/i18n';
 
 export default function Hatirlaticilar() {
@@ -33,13 +33,30 @@ export default function Hatirlaticilar() {
       <Card style={st.card}>
         <Satir
           ad={t('Namazını kıldın mı?')}
-          alt={t('Namaz Takibi’nde işaretlemediyseniz vaktin içinde bir kez hatırlatır; bildirimdeki ‘Kıldım’ ile işaretlenir.')}
+          alt={t('Vakit girdikten sonra sorar. Bildirimi basılı tutup ‘Evet, kıldım’ ya da ‘Hayır, kılmadım’ seçin; kılmadım derseniz o vakit kaza borcuna eklenir. Cevap vermezseniz hiçbir şey kendiliğinden işaretlenmez.')}
           deger={!!r.kildinMi}
           degistir={(v) => set({ kildinMi: v })}
         >
           {KILDIN_SECENEK.map((n) => (
-            <Chip key={n} label={t('{n} dk sonra', { n })} selected={(r.kildinMiDk ?? 45) === n} onPress={() => set({ kildinMiDk: n })} />
+            <Chip key={n} label={t('{n} dk sonra', { n })} selected={(r.kildinMiDk ?? KILDIN_VARSAYILAN) === n} onPress={() => set({ kildinMiDk: n })} />
           ))}
+          <View style={st.alt}>
+            <View style={st.row}>
+              <View style={{ flexShrink: 1 }}>
+                <Text style={st.name}>{t('Vakit çıkmadan son uyarı')}</Text>
+                <Text style={st.sub}>{t('Cevap vermediyseniz vaktin çıkmasına 15 dakika kala bir kez daha sorar')}</Text>
+              </View>
+              <Toggle label={t('Vakit çıkmadan son uyarı')} value={r.sonUyari !== false} onChange={(v) => set({ sonUyari: v })} />
+            </View>
+            <View style={st.row}>
+              <View style={{ flexShrink: 1 }}>
+                <Text style={st.name}>{t('Haftalık özet')}</Text>
+                <Text style={st.sub}>{t('Cuma akşamı bu hafta kaç vakit kıldığınızı hatırlatır')}</Text>
+              </View>
+              <Toggle label={t('Haftalık özet')} value={!!r.haftalikOzet} onChange={(v) => set({ haftalikOzet: v })} />
+            </View>
+            <Text style={st.sub}>{t('İşaretlenmemiş vakitler ertesi gün ana ekranda sorulur; kılmadıklarınızı tek dokunuşla kaza borcuna ekleyebilirsiniz.')}</Text>
+          </View>
         </Satir>
         <Satir
           ad={t('Teheccüd için uyandır')}
@@ -111,6 +128,7 @@ const st = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, minHeight: 44 },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  alt: { width: '100%', gap: 8, paddingTop: 4 },
   name: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17, color: colors.muted, marginTop: 1 },
   note: { fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: colors.muted, textAlign: 'center' },

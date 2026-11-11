@@ -11,12 +11,12 @@ import { useApp, useNow } from '../../src/context/AppContext';
 import { formatCountdown, formatTime, getNextPrayer, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES } from '../../src/lib/prayerTimes';
 import { formatHijriAr, ramazanDay, toHijri } from '../../src/lib/hijri';
 import { getLang, LANGS, t, tx } from '../../src/i18n';
-import { formatDay } from '../../src/i18n/format';
+import { formatDay, formatWeekday } from '../../src/i18n/format';
 import { ymdIn, ymdToLocalDate } from '../../src/lib/tz';
 import { duaForDate, duaText, useDualar } from '../../src/lib/dualar';
 import { upcomingDiniGunler } from '../../src/data/diniGunler';
 import { useHatim } from '../../src/lib/hatim';
-import { countDay, dayKey as namazDayKey, useNamaz } from '../../src/lib/namazTakip';
+import { countDay, dayKey as namazDayKey, FARZLAR, gunKontrolEdildi, isaretle, isaretsizler, kilmadim, useNamaz } from '../../src/lib/namazTakip';
 import { useTour, useTourTarget } from '../../src/tour/Tour';
 import { TOTAL_PAGES } from '../../src/lib/quran';
 
@@ -62,6 +62,10 @@ export default function Home() {
   const hatim = useHatim();
   const namaz = useNamaz();
   const kildim = countDay(namaz, namazDayKey(localDay));
+  // "Kıldınız mı?" açıksa: önceki günlerde hiç işaretlenmemiş vakitler (en fazla 5 satır gösterilir)
+  const isaretsiz = useMemo(() => isaretsizler(namaz, localDay), [namaz, localDay]);
+  const isaretsizSatir = isaretsiz.flatMap((g) => g.keys.map((k) => ({ ...g, key: k }))).slice(0, 5);
+  const isaretsizToplam = isaretsiz.reduce((n, g) => n + g.keys.length, 0);
   const nextGun = useMemo(() => upcomingDiniGunler(localDay)[0], [localDay]);
 
   const tour = useTour();
@@ -135,6 +139,29 @@ export default function Home() {
           })}
         </View>
       </View>
+
+      {isaretsizSatir.length > 0 && (
+        <Card style={{ gap: 4, paddingVertical: 12 }}>
+          <Text style={st.sorTitle}>{t('İşaretlenmemiş namazlar ({n})', { n: isaretsizToplam })}</Text>
+          <Text style={st.sorSub}>{t('Kıldıysanız işaretleyin, kılmadıysanız kaza borcuna ekleyin.')}</Text>
+          {isaretsizSatir.map((x) => (
+            <View key={`${x.day}-${x.key}`} style={st.sorRow}>
+              <Text style={st.sorName} numberOfLines={1}>
+                {`${t(FARZLAR.find((f) => f.key === x.key)!.name)} · ${formatWeekday(x.date, true)}`}
+              </Text>
+              <Pressable accessibilityRole="button" onPress={() => isaretle(x.day, x.key, true)} style={[st.sorBtn, st.sorBtnOn]}>
+                <Text style={[st.sorBtnText, { color: colors.onGreen }]}>{t('Kıldım')}</Text>
+              </Pressable>
+              <Pressable accessibilityRole="button" onPress={() => kilmadim(x.day, x.key)} style={st.sorBtn}>
+                <Text style={st.sorBtnText}>{t('Kazaya ekle')}</Text>
+              </Pressable>
+            </View>
+          ))}
+          <Pressable accessibilityRole="button" onPress={() => isaretsiz.forEach((g) => gunKontrolEdildi(g.day))} style={{ alignSelf: 'center', paddingVertical: 8 }}>
+            <Text style={st.sorSub}>{t('Bunları sorma')}</Text>
+          </Pressable>
+        </Card>
+      )}
 
       {iftar && (
         <View style={st.iftar}>
@@ -258,6 +285,13 @@ const st = StyleSheet.create({
   timesRow: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.18)', borderRadius: 14, padding: 6, gap: 4 },
   timeCell: { flex: 1, alignItems: 'center', gap: 3, paddingVertical: 4, borderRadius: 8 },
   timeCellOn: { backgroundColor: colors.goldLight },
+  sorTitle: { fontFamily: fonts.bodyBold, fontSize: 15, color: colors.ink },
+  sorSub: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17, color: colors.muted },
+  sorRow: { flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 48, borderTopWidth: 1, borderTopColor: colors.divider },
+  sorName: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 14, color: colors.ink },
+  sorBtn: { minHeight: 36, paddingHorizontal: 12, borderRadius: 18, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
+  sorBtnOn: { backgroundColor: colors.green, borderColor: colors.green },
+  sorBtnText: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
   iftar: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: radius.lg, paddingVertical: 12, paddingHorizontal: 16 },
   iftarAd: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 14, color: colors.ink },
   iftarSure: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.greenText, fontVariant: ['tabular-nums'] },

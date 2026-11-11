@@ -7,7 +7,7 @@ import { upcomingDiniGunler } from '../data/diniGunler';
 import { EZANLAR, ezanById, ezanDosya, ezanFor, EzanId, EzanSeviye } from './ezanSesleri';
 import { gecerliSes, SESLER, sesById, SesId } from './bildirimSesleri';
 import { vakitSozu } from './vakitSozleri';
-import { FarzKey, isaretliMi, namazYukle } from './namazTakip';
+import { FarzKey, isaretliMi, kazayaEklendi, namazYukle, namazDurum, takipBaslat } from './namazTakip';
 import type { Ymd } from './tz';
 import { BILDIRIM_KATEGORI, ERTELE_ONEK } from './bildirimEylem';
 
@@ -39,6 +39,10 @@ export type ReminderSettings = {
   /** "Namazını kıldın mı?": vakit girdikten `kildinMiDk` dakika sonra, Namaz Takibi'nde işaretlenmediyse */
   kildinMi?: boolean;
   kildinMiDk?: number;
+  /** Hâlâ işaretlenmediyse vakit çıkmadan 15 dakika önce son kez sor (varsayılan açık) */
+  sonUyari?: boolean;
+  /** Cuma günü haftalık namaz özeti */
+  haftalikOzet?: boolean;
   /** Bildirimdeki "sonra hatırlat" süresi (dakika); 0 = düğme yok */
   erteleDk?: number;
   /** Kilit ekranı ve Dinamik Ada'da sıradaki vakte geri sayım (Canlı Etkinlik) */
@@ -49,7 +53,8 @@ export type VakitAyar = { once?: number[]; gunler?: number[] };
 
 export const ONCE_SECENEK = [5, 10, 15, 20, 30, 45, 60];
 export const TEHECCUD_SECENEK = [30, 60, 90, 120];
-export const KILDIN_SECENEK = [30, 45, 60, 90];
+export const KILDIN_SECENEK = [15, 30, 45, 60];
+export const KILDIN_VARSAYILAN = 30;
 export const ERTELE_SECENEK = [0, 5, 10, 15];
 export const TUM_GUNLER = [1, 2, 3, 4, 5, 6, 0];
 
@@ -96,7 +101,7 @@ export function kurulanGun(settings: ReminderSettings): number {
   for (const k of VAKIT_KEYS) {
     if (!settings.enabled[k]) continue;
     const oran = (settings.vakitAyar?.[k]?.gunler?.length ?? 7) / 7;
-    gunluk += oran * (1 + onceListesi(settings, k).length + (settings.kildinMi && TAKIP_KEY[k] ? 1 : 0));
+    gunluk += oran * (1 + onceListesi(settings, k).length + (settings.kildinMi && TAKIP_KEY[k] ? (settings.sonUyari === false ? 1 : 2) : 0));
   }
   if (settings.teheccud) gunluk += 1;
   if (settings.oruc) gunluk += 4 / 7;
@@ -208,7 +213,10 @@ export async function rescheduleAll(
   }
   const kategori = (settings.erteleDk ?? 10) > 0 ? BILDIRIM_KATEGORI.vakit : undefined;
 
-  if (settings.kildinMi) await namazYukle().catch(() => {});
+  if (settings.kildinMi) {
+    await namazYukle().catch(() => {});
+    takipBaslat(ymdStr(ymdIn(new Date(), calc.tz)));
+  }
   const now = Date.now();
   let count = 0;
   const tz = calc.tz;
@@ -289,8 +297,25 @@ export async function rescheduleAll(
 
       // 3) "Namazını kıldın mı?": Namaz Takibi'nde işaretlenmediyse vaktin içinde bir kez
       const farz = TAKIP_KEY[key];
-      if (settings.kildinMi && farz && !isaretliMi(gun, farz)) {
-        const at = Math.min(vakitMs + (settings.kildinMiDk ?? 45) * 60000, sonraki(key) - 20 * 60000);
+      if (settings.kildinMi && farz && !isaretliMi(gun, farz) && !kazayaEklendi(namazDurum(), gun, farz)) {
+        const bitis = sonraki(key);
+        const at = Math.min(vakitMs + (settings.kildinMiDk ?? KILDIN_VARSAYILAN) * 60000, bitis - 20 * 60000);
+        // Son uyarı: hâlâ cevap verilmediyse vakit çıkmadan 15 dakika önce
+        const son = bitis - 15 * 60000;
+        if (settings.sonUyari !== false && son > at + 10 * 60000 && son > now + 30000) {
+          await zamanla(
+            {
+              title: t('{vakit} vakti çıkmak üzere', { vakit: t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]) }),
+              body: t('Henüz işaretlemediniz; vaktin çıkmasına 15 dakika kaldı.'),
+              sound: 'default',
+              data: { url: '/namaz-takip', kanal: CHANNEL, gun, farz },
+              categoryIdentifier: BILDIRIM_KATEGORI.kildin,
+            },
+            son,
+            `sonuyari:${gun}:${farz}`
+          );
+          count++;
+        }
         if (at > vakitMs && at > now + 30000) {
           await zamanla(
             {
@@ -358,6 +383,21 @@ export async function rescheduleAll(
         trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: fri, channelId: CHANNEL },
       });
       count++;
+    }
+  }
+
+  if (settings.haftalikOzet) {
+    // Şehrin saatiyle Cuma 20:30: haftanın namaz özeti (sayılar Namaz Takibi ekranında)
+    const dow = new Date(Date.UTC(today.y, today.m - 1, today.d)).getUTCDay();
+    for (let w = 0; w < 2; w++) {
+      const at = fromWall(addDays(today, (5 - dow + 7) % 7 + 7 * w), 20, 30, tz);
+      if (at.getTime() <= now) continue;
+      await Notifications.scheduleNotificationAsync({
+        content: { title: t('Haftalık namaz özetiniz'), body: t('Bu hafta kaç vakit kıldığınızı görmek için dokunun.'), data: { url: '/namaz-takip' } },
+        trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: at, channelId: CHANNEL },
+      });
+      count++;
+      break;
     }
   }
 
