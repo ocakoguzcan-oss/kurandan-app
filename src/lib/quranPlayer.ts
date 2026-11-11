@@ -92,7 +92,7 @@ class QuranPlayer {
       if (!this.flip) this.flip = createAudioPlayer(require('../../assets/sounds/sayfa.wav'));
       await this.flip.seekTo(0);
       this.flip.play();
-      await sleep(650);
+      await sleep(750);
     } catch {
       await sleep(300);
     }
