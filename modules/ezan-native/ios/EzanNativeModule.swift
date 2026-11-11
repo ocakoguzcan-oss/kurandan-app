@@ -9,6 +9,7 @@ import SwiftUI
 import WidgetKit
 import ActivityKit
 import AlarmKit
+import MapKit
 
 struct EzanAlarmItem: Record {
   /// Alarm zamanı (Unix ms)
@@ -71,6 +72,28 @@ public class EzanNativeModule: Module {
       if #available(iOS 26.0, *) {
         EzanAlarms.cancelAll()
       }
+    }
+
+    // Yakın camiler: Apple Haritalar'da arama (her sorgu ayrı yapılır, sonuçlar birleştirilir)
+    AsyncFunction("searchPlaces") { (lat: Double, lng: Double, radius: Double, queries: [String]) async -> [[String: Any]] in
+      var out: [[String: Any]] = []
+      var seen = Set<String>()
+      let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+      for q in queries {
+        let req = MKLocalSearch.Request()
+        req.naturalLanguageQuery = q
+        req.region = MKCoordinateRegion(center: center, latitudinalMeters: radius * 2, longitudinalMeters: radius * 2)
+        req.resultTypes = .pointOfInterest
+        guard let res = try? await MKLocalSearch(request: req).start() else { continue }
+        for item in res.mapItems {
+          let c = item.placemark.coordinate
+          let key = String(format: "%.4f,%.4f", c.latitude, c.longitude)
+          if seen.contains(key) { continue }
+          seen.insert(key)
+          out.append(["name": item.name ?? "", "lat": c.latitude, "lng": c.longitude])
+        }
+      }
+      return out
     }
 
     // Canlı Etkinlik: kilit ekranı ve Dinamik Ada'da sıradaki vakte geri sayım

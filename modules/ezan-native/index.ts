@@ -17,6 +17,8 @@ type EzanNativeModule = {
   liveSupported?(): boolean;
   liveStart(city: string, vakit: string, saat: string, startMs: number, endMs: number): Promise<boolean>;
   liveStop(): Promise<void>;
+  /** Apple Haritalar'da çevredeki yerleri arar (yakın camiler) */
+  searchPlaces?(lat: number, lng: number, radius: number, queries: string[]): Promise<{ name: string; lat: number; lng: number }[]>;
 };
 
 export const EzanNative: EzanNativeModule | null =

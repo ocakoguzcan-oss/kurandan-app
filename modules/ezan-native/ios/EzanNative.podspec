@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   }
   # AlarmKit yalnız iOS 26+'da var; eski sürümlerde çökmemesi için zayıf bağlanır
   s.weak_frameworks = 'AlarmKit', 'ActivityKit', 'WidgetKit'
+  s.frameworks = 'MapKit'
 
   s.source_files = '**/*.{h,m,swift}'
 end

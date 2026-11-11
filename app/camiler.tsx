@@ -1,6 +1,6 @@
-// Yakın camiler: OpenStreetMap verisinden (Overpass API) çevredeki camiler ve mescitler.
-// Konum izni varsa telefonun konumu, yoksa seçili şehrin merkezi kullanılır.
-// Harita verisi © OpenStreetMap katkıda bulunanlar (ODbL) — atıf ekranda gösterilir.
+// Yakın camiler: iOS'ta önce Apple Haritalar araması (modules/ezan-native), sonuç yoksa ya da
+// Android'de OpenStreetMap (Overpass API). Konum izni varsa telefonun konumu, yoksa seçili şehrin merkezi.
+// Hangi kaynak kullanıldıysa atfı ekranda gösterilir (OSM verisi ODbL).
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
@@ -10,11 +10,17 @@ import { Button, Screen, Card } from '../src/components/ui';
 import { colors, fonts, radius } from '../src/theme';
 import { useApp } from '../src/context/AppContext';
 import { getLang, t } from '../src/i18n';
+import { EzanNative } from '../modules/ezan-native';
 import { formatNumber } from '../src/i18n/format';
 
 type Cami = { id: string; ad: string; lat: number; lng: number; m: number };
 
-const UCLAR = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+const UCLAR = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
+  'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+];
+type Kaynak = 'apple' | 'osm';
 
 function mesafe(aLat: number, aLng: number, bLat: number, bLng: number) {
   const R = 6371000;
@@ -25,16 +31,32 @@ function mesafe(aLat: number, aLng: number, bLat: number, bLng: number) {
   return 2 * R * Math.asin(Math.sqrt(x));
 }
 
+/** Apple Haritalar: "cami", "mescit" ve "mosque" aramaları birleştirilir */
+async function appleAra(lat: number, lng: number, yaricap: number): Promise<Cami[]> {
+  if (!EzanNative?.searchPlaces) return [];
+  try {
+    const l = await EzanNative.searchPlaces(lat, lng, yaricap, ['cami', 'mescit', 'mosque', 'مسجد']);
+    return l
+      .map((x, i) => ({ id: `a${i}`, ad: x.name, lat: x.lat, lng: x.lng, m: mesafe(lat, lng, x.lat, x.lng) }))
+      .filter((x) => x.m <= yaricap * 1.5)
+      .sort((a, b) => a.m - b.m);
+  } catch {
+    return [];
+  }
+}
+
 async function camileriGetir(lat: number, lng: number, yaricap: number, lang: string): Promise<Cami[]> {
   const q = `[out:json][timeout:20];(nwr["amenity"="place_of_worship"]["religion"="muslim"](around:${yaricap},${lat},${lng}););out center 80;`;
   let son: unknown;
   for (const url of UCLAR) {
+    const iptal = new AbortController();
+    const zaman = setTimeout(() => iptal.abort(), 15000);
     try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'Kurandan.ai/1.0 (iOS app)' },
-        body: `data=${encodeURIComponent(q)}`,
+      const res = await fetch(`${url}?data=${encodeURIComponent(q)}`, {
+        headers: { Accept: 'application/json', 'User-Agent': 'Kurandan.ai/1.0 (iOS; https://kurandan.ai)' },
+        signal: iptal.signal,
       });
+      clearTimeout(zaman);
       if (!res.ok) throw new Error(String(res.status));
       const json = (await res.json()) as { elements: { type: string; id: number; lat?: number; lon?: number; center?: { lat: number; lon: number }; tags?: Record<string, string> }[] };
       return json.elements
@@ -49,6 +71,7 @@ async function camileriGetir(lat: number, lng: number, yaricap: number, lang: st
         .filter((x): x is Cami => !!x)
         .sort((a, b) => a.m - b.m);
     } catch (e) {
+      clearTimeout(zaman);
       son = e;
     }
   }
@@ -63,6 +86,7 @@ export default function Camiler() {
   const [konum, setKonum] = useState<{ lat: number; lng: number; gps: boolean } | null>(null);
   const [liste, setListe] = useState<Cami[] | null>(null);
   const [hata, setHata] = useState(false);
+  const [kaynak, setKaynak] = useState<Kaynak>('osm');
   const [secili, setSecili] = useState<string | null>(null);
   const mapRef = useRef<MapView>(null);
 
@@ -81,9 +105,18 @@ export default function Camiler() {
       // konum alınamazsa şehir merkezi
     }
     setKonum(k);
+    // Önce Apple Haritalar (iOS), az sonuç çıkarsa daha geniş alan, yine yoksa OpenStreetMap
+    let a = await appleAra(k.lat, k.lng, 3000);
+    if (a.length < 5) a = await appleAra(k.lat, k.lng, 8000);
+    if (a.length) {
+      setKaynak('apple');
+      setListe(a.slice(0, 40));
+      return;
+    }
     try {
       let l = await camileriGetir(k.lat, k.lng, 2500, lang);
       if (l.length < 5) l = await camileriGetir(k.lat, k.lng, 8000, lang);
+      setKaynak('osm');
       setListe(l.slice(0, 40));
     } catch {
       setHata(true);
@@ -173,7 +206,7 @@ export default function Camiler() {
           ))}
         </Card>
       )}
-      <Text style={st.attr}>{t('Cami verisi © OpenStreetMap katkıda bulunanlar')}</Text>
+      <Text style={st.attr}>{kaynak === 'apple' ? t('Cami verisi: Apple Haritalar') : t('Cami verisi © OpenStreetMap katkıda bulunanlar')}</Text>
     </Screen>
   );
 }
