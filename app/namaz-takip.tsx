@@ -6,14 +6,20 @@ import { Text } from '../src/components/Text';
 import { Screen, Card, Eyebrow } from '../src/components/ui';
 import { IconCheck } from '../src/components/Icons';
 import { colors, fonts } from '../src/theme';
-import { countDay, dayKey, FARZLAR, GUNLUK_VAKITLER, toggleVakit, useNamaz } from '../src/lib/namazTakip';
+import { countDay, dayKey, FARZLAR, GUNLUK_VAKITLER, namazGunu, toggleVakit, useNamaz } from '../src/lib/namazTakip';
+import { useApp } from '../src/context/AppContext';
+import { getPrayerTimes } from '../src/lib/prayerTimes';
 import { t } from '../src/i18n';
 import { formatWeekday } from '../src/i18n/format';
 
 
 export default function NamazTakip() {
   const s = useNamaz();
-  const today = new Date();
+  const { place, calc } = useApp();
+  const simdi = new Date();
+  // İmsaktan önce (gece yarısından sonra kılınan yatsı/vitir) hâlâ dünün namazlarıdır
+  const today = namazGunu(simdi, getPrayerTimes(simdi, place.lat, place.lng, calc).imsak);
+  const gece = dayKey(today) !== dayKey(simdi);
   const todayKey = dayKey(today);
   const done = s.days[todayKey] ?? {};
   const week = Array.from({ length: 7 }, (_, i) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6 + i));
@@ -22,7 +28,7 @@ export default function NamazTakip() {
 
   return (
     <Screen title={t('Namaz Takibi')}>
-      <Eyebrow>{t('Bugün kıldıklarım')}</Eyebrow>
+      <Eyebrow>{gece ? t('Dünün namazları (imsaka kadar)') : t('Bugün kıldıklarım')}</Eyebrow>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {FARZLAR.map((f, i) => {
           const on = !!done[f.key];

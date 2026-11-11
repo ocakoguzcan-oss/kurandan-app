@@ -39,10 +39,10 @@ export type ReminderSettings = {
   /** "Namazını kıldın mı?": vakit girdikten `kildinMiDk` dakika sonra, Namaz Takibi'nde işaretlenmediyse */
   kildinMi?: boolean;
   kildinMiDk?: number;
-  /** Hâlâ işaretlenmediyse vakit çıkmadan 15 dakika önce son kez sor (varsayılan açık) */
+  /** Hâlâ işaretlenmediyse vakit çıkmadan 15 dakika önce son kez sor; "kazaya ekle" burada sorulur (varsayılan kapalı) */
   sonUyari?: boolean;
-  /** Cuma günü haftalık namaz özeti */
-  haftalikOzet?: boolean;
+  /** Sabah namazı için de sor (uyuyanı uyandırmasın diye varsayılan kapalı) */
+  kildinSabah?: boolean;
   /** Bildirimdeki "sonra hatırlat" süresi (dakika); 0 = düğme yok */
   erteleDk?: number;
   /** Kilit ekranı ve Dinamik Ada'da sıradaki vakte geri sayım (Canlı Etkinlik) */
@@ -101,7 +101,7 @@ export function kurulanGun(settings: ReminderSettings): number {
   for (const k of VAKIT_KEYS) {
     if (!settings.enabled[k]) continue;
     const oran = (settings.vakitAyar?.[k]?.gunler?.length ?? 7) / 7;
-    gunluk += oran * (1 + onceListesi(settings, k).length + (settings.kildinMi && TAKIP_KEY[k] ? (settings.sonUyari === false ? 1 : 2) : 0));
+    gunluk += oran * (1 + onceListesi(settings, k).length + (settings.kildinMi && TAKIP_KEY[k] && (k !== 'imsak' || settings.kildinSabah) ? (settings.sonUyari ? 2 : 1) : 0));
   }
   if (settings.teheccud) gunluk += 1;
   if (settings.oruc) gunluk += 4 / 7;
@@ -297,19 +297,20 @@ export async function rescheduleAll(
 
       // 3) "Namazını kıldın mı?": Namaz Takibi'nde işaretlenmediyse vaktin içinde bir kez
       const farz = TAKIP_KEY[key];
-      if (settings.kildinMi && farz && !isaretliMi(gun, farz) && !kazayaEklendi(namazDurum(), gun, farz)) {
+      const sor = settings.kildinMi && farz && (key !== 'imsak' || settings.kildinSabah);
+      if (sor && farz && !isaretliMi(gun, farz) && !kazayaEklendi(namazDurum(), gun, farz)) {
         const bitis = sonraki(key);
         const at = Math.min(vakitMs + (settings.kildinMiDk ?? KILDIN_VARSAYILAN) * 60000, bitis - 20 * 60000);
         // Son uyarı: hâlâ cevap verilmediyse vakit çıkmadan 15 dakika önce
         const son = bitis - 15 * 60000;
-        if (settings.sonUyari !== false && son > at + 10 * 60000 && son > now + 30000) {
+        if (settings.sonUyari && son > at + 10 * 60000 && son > now + 30000) {
           await zamanla(
             {
               title: t('{vakit} vakti çıkmak üzere', { vakit: t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]) }),
-              body: t('Henüz işaretlemediniz; vaktin çıkmasına 15 dakika kaldı.'),
+              body: t('Henüz işaretlemediniz; vaktin çıkmasına 15 dakika kaldı. Kılamadıysanız kazaya ekleyebilirsiniz.'),
               sound: 'default',
-              data: { url: '/namaz-takip', kanal: CHANNEL, gun, farz },
-              categoryIdentifier: BILDIRIM_KATEGORI.kildin,
+              data: { url: `/kildin-mi?gun=${gun}&farz=${farz}&son=1`, kanal: CHANNEL, gun, farz },
+              categoryIdentifier: BILDIRIM_KATEGORI.kildinSon,
             },
             son,
             `sonuyari:${gun}:${farz}`
@@ -322,7 +323,7 @@ export async function rescheduleAll(
               title: t('{vakit} namazını kıldınız mı?', { vakit: t(key === 'imsak' ? 'Sabah' : VAKIT_NAMES[key]) }),
               body: t('Kıldıysanız işaretleyin; vaktin çıkmasına {saat} kaldı.', { saat: kalanYaz(sonraki(key) - at) }),
               sound: 'default',
-              data: { url: '/namaz-takip', kanal: CHANNEL, gun, farz },
+              data: { url: `/kildin-mi?gun=${gun}&farz=${farz}`, kanal: CHANNEL, gun, farz },
               categoryIdentifier: BILDIRIM_KATEGORI.kildin,
             },
             at,
@@ -383,21 +384,6 @@ export async function rescheduleAll(
         trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: fri, channelId: CHANNEL },
       });
       count++;
-    }
-  }
-
-  if (settings.haftalikOzet) {
-    // Şehrin saatiyle Cuma 20:30: haftanın namaz özeti (sayılar Namaz Takibi ekranında)
-    const dow = new Date(Date.UTC(today.y, today.m - 1, today.d)).getUTCDay();
-    for (let w = 0; w < 2; w++) {
-      const at = fromWall(addDays(today, (5 - dow + 7) % 7 + 7 * w), 20, 30, tz);
-      if (at.getTime() <= now) continue;
-      await Notifications.scheduleNotificationAsync({
-        content: { title: t('Haftalık namaz özetiniz'), body: t('Bu hafta kaç vakit kıldığınızı görmek için dokunun.'), data: { url: '/namaz-takip' } },
-        trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: at, channelId: CHANNEL },
-      });
-      count++;
-      break;
     }
   }
 

@@ -37,6 +37,16 @@ const listeners = new Set<() => void>();
 export const dayKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
+/**
+ * Namaz günü: imsaktan önceki saatler (gece yarısından sonra kılınan yatsı ve vitir) bir önceki güne sayılır.
+ * `imsak`, o takvim gününün imsak vaktidir.
+ */
+export function namazGunu(now: Date, imsak: Date): Date {
+  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (now.getTime() < imsak.getTime()) d.setDate(d.getDate() - 1);
+  return d;
+}
+
 function emit(next: State) {
   state = next;
   save(KEY, state);
@@ -124,7 +134,10 @@ export function takipBaslat(day: string) {
   if (!state.baslangic || state.baslangic > day) emit({ ...state, baslangic: day });
 }
 
-/** Önceki günlerde hiç işaretlenmemiş vakitler (en fazla son 7 gün, takip başladıktan sonra) */
+/**
+ * Önceki günlerde hiç işaretlenmemiş vakitler (en fazla son 7 gün, takip başladıktan sonra).
+ * `today` namaz günüdür (namazGunu): imsaktan önce dünün vakitleri henüz sorulmaz.
+ */
 export function isaretsizler(s: State, today: Date): { day: string; date: Date; keys: FarzKey[] }[] {
   if (!s.baslangic) return [];
   const out: { day: string; date: Date; keys: FarzKey[] }[] = [];

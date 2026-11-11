@@ -182,7 +182,7 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
 
 - **Vakte özel ayar** (`app/vakit-ayar.tsx`): her vakit için birden çok "önce" hatırlatması ve gün seçimi
   (`ReminderSettings.vakitAyar`). Ayarlar'daki genel "Ne zaman hatırlatılsın?" seçimi bunların "önce" kısmını sıfırlar.
-- **Hatırlatıcılar** (`app/hatirlaticilar.tsx`): "Namazını kıldın mı?" (varsayılan 30 dk sonra; "Evet, kıldım" / "Hayır, kılmadım" → kaza; cevapsızsa vakit çıkmadan 15 dk önce son uyarı ve ertesi gün ana ekranda sorulur, hiçbir şey kendiliğinden işaretlenmez; Namaz Takibi'nde işaretlenmediyse vaktin
+- **Hatırlatıcılar** (`app/hatirlaticilar.tsx`): "Namazını kıldın mı?" (varsayılan 30 dk sonra; "Kıldım" / "Henüz kılmadım", vakit sürerken kazaya eklenmez; isteğe bağlı son uyarıda "Kılamadım, kazaya ekle"; cevapsızsa ertesi gün ana ekranda sorulur, hiçbir şey kendiliğinden işaretlenmez; sabah varsayılan sorulmaz; bildirime dokununca `app/kildin-mi.tsx` açılır; imsaktan önceki işaretler bir önceki namaz gününe sayılır; Namaz Takibi'nde işaretlenmediyse vaktin
   içinde bir kez; işaretlenince bildirim iptal edilir), teheccüd, Pazartesi/Perşembe orucu, Cuma namazı, kandil, Cuma story.
 - **Bildirim düğmeleri** (`src/lib/bildirimEylem.ts`): "x dk sonra hatırlat" ve "Kıldım ✓". Ertelenen bildirimler
   `ertele:` önekiyle kurulur ve yeniden kurulumda silinmez.

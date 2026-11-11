@@ -1,5 +1,5 @@
-// Bildirim düğmeleri: "Sonra hatırlat" (erteleme), "Evet, kıldım" (Namaz Takibi'ne işler) ve
-// "Hayır, kılmadım" (o vakti kaza borcuna ekler; sonradan "kıldım" denirse geri alınır).
+// Bildirim düğmeleri: "Sonra hatırlat" (erteleme), "Kıldım" (Namaz Takibi'ne işler), "Henüz kılmadım"
+// (hiçbir şey yapmaz) ve vakit çıkarken "Kılamadım, kazaya ekle" (sonradan "kıldım" denirse geri alınır).
 // Düğmeler uygulamayı açmadan çalışır; iOS uygulamayı arka planda kısa süre uyandırır.
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
@@ -7,12 +7,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isaretle, kilmadim, namazYukle, FarzKey } from './namazTakip';
 import { t } from '../i18n';
 
-export const BILDIRIM_KATEGORI = { vakit: 'kurandan-vakit', kildin: 'kurandan-kildin' } as const;
+export const BILDIRIM_KATEGORI = { vakit: 'kurandan-vakit', kildin: 'kurandan-kildin', kildinSon: 'kurandan-kildin-son' } as const;
 /** Ertelenen bildirimlerin kimlik öneki (yeniden kurulumda silinmez) */
 export const ERTELE_ONEK = 'ertele:';
 const ERTELE = 'ertele';
 const KILDIM = 'kildim';
 const KILMADIM = 'kilmadim';
+const HENUZ = 'henuz';
 const ERTELE_KEY = 'kurandan.erteleDk';
 const ISLENEN_KEY = 'kurandan.sonYanit';
 
@@ -24,10 +25,15 @@ export async function kategorileriKur(erteleDk: number) {
     ? [{ identifier: ERTELE, buttonTitle: t('{n} dk sonra hatırlat', { n: erteleDk }), options: { opensAppToForeground: false } }]
     : [];
   await Notifications.setNotificationCategoryAsync(BILDIRIM_KATEGORI.vakit, ertele).catch(() => {});
+  // İlk soru: vakit sürerken kazaya eklenmez ("henüz kılmadım" yalnızca bildirimi kapatır)
   await Notifications.setNotificationCategoryAsync(BILDIRIM_KATEGORI.kildin, [
-    { identifier: KILDIM, buttonTitle: t('Evet, kıldım ✓'), options: { opensAppToForeground: false } },
-    { identifier: KILMADIM, buttonTitle: t('Hayır, kılmadım (kazaya ekle)'), options: { opensAppToForeground: false } },
-    ...ertele,
+    { identifier: KILDIM, buttonTitle: t('Kıldım ✓'), options: { opensAppToForeground: false } },
+    { identifier: HENUZ, buttonTitle: t('Henüz kılmadım'), options: { opensAppToForeground: false } },
+  ]).catch(() => {});
+  // Vakit çıkarken: kılamadıysa kazaya eklenir
+  await Notifications.setNotificationCategoryAsync(BILDIRIM_KATEGORI.kildinSon, [
+    { identifier: KILDIM, buttonTitle: t('Kıldım ✓'), options: { opensAppToForeground: false } },
+    { identifier: KILMADIM, buttonTitle: t('Kılamadım, kazaya ekle'), options: { opensAppToForeground: false } },
   ]).catch(() => {});
 }
 
@@ -37,6 +43,7 @@ export async function kategorileriKur(erteleDk: number) {
  */
 export async function yanitiIsle(r: Notifications.NotificationResponse): Promise<boolean> {
   const eylem = r.actionIdentifier;
+  if (eylem === HENUZ) return true;
   if (eylem !== ERTELE && eylem !== KILDIM && eylem !== KILMADIM) return false;
   const anahtar = `${r.notification.request.identifier}|${eylem}|${r.notification.date}`;
   const son = await AsyncStorage.getItem(ISLENEN_KEY).catch(() => null);

@@ -125,6 +125,7 @@ export default function RootLayout() {
           <Stack.Screen name="hatirlaticilar" />
           <Stack.Screen name="vakit-ayar" />
           <Stack.Screen name="kisisel" />
+          <Stack.Screen name="kildin-mi" options={{ presentation: 'modal' }} />
           <Stack.Screen name="kilit-ekrani" options={{ presentation: 'modal' }} />
         </Stack>
         </TourProvider>

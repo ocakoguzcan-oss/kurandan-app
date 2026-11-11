@@ -16,7 +16,7 @@ import { ymdIn, ymdToLocalDate } from '../../src/lib/tz';
 import { duaForDate, duaText, useDualar } from '../../src/lib/dualar';
 import { upcomingDiniGunler } from '../../src/data/diniGunler';
 import { useHatim } from '../../src/lib/hatim';
-import { countDay, dayKey as namazDayKey, FARZLAR, gunKontrolEdildi, isaretle, isaretsizler, kilmadim, useNamaz } from '../../src/lib/namazTakip';
+import { countDay, dayKey as namazDayKey, FARZLAR, gunKontrolEdildi, isaretle, isaretsizler, kilmadim, namazGunu, useNamaz } from '../../src/lib/namazTakip';
 import { useTour, useTourTarget } from '../../src/tour/Tour';
 import { TOTAL_PAGES } from '../../src/lib/quran';
 
@@ -61,9 +61,15 @@ export default function Home() {
   const rDay = ramazanDay(localDay);
   const hatim = useHatim();
   const namaz = useNamaz();
-  const kildim = countDay(namaz, namazDayKey(localDay));
+  // Namaz günü: imsaktan önce dünün namazları sayılır (gece yarısından sonra kılınan yatsı)
+  const namazGun = useMemo(() => namazGunu(now, times.imsak), [Math.floor(now.getTime() / 60000), times.imsak]); // eslint-disable-line react-hooks/exhaustive-deps
+  const kildim = countDay(namaz, namazDayKey(namazGun));
+  const haftaKildim = useMemo(
+    () => Array.from({ length: 7 }, (_, i) => new Date(namazGun.getFullYear(), namazGun.getMonth(), namazGun.getDate() - i)).reduce((n, d) => n + countDay(namaz, namazDayKey(d)), 0),
+    [namaz, namazGun]
+  );
   // "Kıldınız mı?" açıksa: önceki günlerde hiç işaretlenmemiş vakitler (en fazla 5 satır gösterilir)
-  const isaretsiz = useMemo(() => isaretsizler(namaz, localDay), [namaz, localDay]);
+  const isaretsiz = useMemo(() => isaretsizler(namaz, namazGun), [namaz, namazGun]);
   const isaretsizSatir = isaretsiz.flatMap((g) => g.keys.map((k) => ({ ...g, key: k }))).slice(0, 5);
   const isaretsizToplam = isaretsiz.reduce((n, g) => n + g.keys.length, 0);
   const nextGun = useMemo(() => upcomingDiniGunler(localDay)[0], [localDay]);
@@ -204,7 +210,7 @@ export default function Home() {
         <Pressable accessibilityRole="link" onPress={() => router.push('/namaz-takip')} style={[st.mini, { flex: 1 }]}>
           <Eyebrow>{t('Bugün kıldım')}</Eyebrow>
           <Text style={st.miniBig}>{`${kildim} / 5`}</Text>
-          <Text style={st.muted}>{t('Vakitleri işaretle')}</Text>
+          <Text style={st.muted}>{t('Son 7 gün: {n}/35', { n: haftaKildim })}</Text>
         </Pressable>
       </View>
 

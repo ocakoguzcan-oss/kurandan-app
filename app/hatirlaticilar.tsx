@@ -33,7 +33,7 @@ export default function Hatirlaticilar() {
       <Card style={st.card}>
         <Satir
           ad={t('Namazını kıldın mı?')}
-          alt={t('Vakit girdikten sonra sorar. Bildirimi basılı tutup ‘Evet, kıldım’ ya da ‘Hayır, kılmadım’ seçin; kılmadım derseniz o vakit kaza borcuna eklenir. Cevap vermezseniz hiçbir şey kendiliğinden işaretlenmez.')}
+          alt={t('Vakit girdikten sonra sorar: ‘Kıldım’ ya da ‘Henüz kılmadım’. Vakit sürerken hiçbir şey kaza borcuna eklenmez; cevap vermezseniz hiçbir şey kendiliğinden işaretlenmez.')}
           deger={!!r.kildinMi}
           degistir={(v) => set({ kildinMi: v })}
         >
@@ -43,17 +43,17 @@ export default function Hatirlaticilar() {
           <View style={st.alt}>
             <View style={st.row}>
               <View style={{ flexShrink: 1 }}>
-                <Text style={st.name}>{t('Vakit çıkmadan son uyarı')}</Text>
-                <Text style={st.sub}>{t('Cevap vermediyseniz vaktin çıkmasına 15 dakika kala bir kez daha sorar')}</Text>
+                <Text style={st.name}>{t('Sabah namazını da sor')}</Text>
+                <Text style={st.sub}>{t('Kapalıyken sabah sorulmaz; erken saatte uyandırmasın diye')}</Text>
               </View>
-              <Toggle label={t('Vakit çıkmadan son uyarı')} value={r.sonUyari !== false} onChange={(v) => set({ sonUyari: v })} />
+              <Toggle label={t('Sabah namazını da sor')} value={!!r.kildinSabah} onChange={(v) => set({ kildinSabah: v })} />
             </View>
             <View style={st.row}>
               <View style={{ flexShrink: 1 }}>
-                <Text style={st.name}>{t('Haftalık özet')}</Text>
-                <Text style={st.sub}>{t('Cuma akşamı bu hafta kaç vakit kıldığınızı hatırlatır')}</Text>
+                <Text style={st.name}>{t('Vakit çıkmadan son uyarı')}</Text>
+                <Text style={st.sub}>{t('Cevap vermediyseniz vaktin çıkmasına 15 dakika kala bir kez daha sorar; kılamadıysanız buradan kazaya eklersiniz')}</Text>
               </View>
-              <Toggle label={t('Haftalık özet')} value={!!r.haftalikOzet} onChange={(v) => set({ haftalikOzet: v })} />
+              <Toggle label={t('Vakit çıkmadan son uyarı')} value={!!r.sonUyari} onChange={(v) => set({ sonUyari: v })} />
             </View>
             <Text style={st.sub}>{t('İşaretlenmemiş vakitler ertesi gün ana ekranda sorulur; kılmadıklarınızı tek dokunuşla kaza borcuna ekleyebilirsiniz.')}</Text>
           </View>
