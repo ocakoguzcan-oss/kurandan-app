@@ -1,0 +1,55 @@
+# Son iOS derlemesini dış test grubuna ("Test Ekibi", herkese açık bağlantı) ekler ve beta incelemesine gönderir.
+# Elle başlatılır: GitHub → Actions → "TestFlight dış teste gönder" → Run workflow.
+name: TestFlight dış teste gönder
+
+on:
+  workflow_dispatch:
+    inputs:
+      surum:
+        description: "Derleme numarası (boşsa en son)"
+        required: false
+        default: ""
+      notlar:
+        description: "Test edilecekler (Türkçe)"
+        required: false
+        default: "Gece modu, Canlı Etkinlik, hatırlatıcılar (kıldın mı, teheccüd, oruç), vakte özel hatırlatma, kişisel ayarlar, yakın camiler."
+
+jobs:
+  gonder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Dış teste ekle
+        env:
+          ASC_API_KEY: ${{ secrets.ASC_API_KEY }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          SURUM: ${{ inputs.surum }}
+          NOTLAR: ${{ inputs.notlar }}
+        run: |
+          pip install -q pyjwt cryptography requests
+          python3 - <<'PY'
+          import os, time, jwt, requests
+          tok = jwt.encode({"iss": os.environ["ASC_ISSUER_ID"], "iat": int(time.time()), "exp": int(time.time()) + 600, "aud": "appstoreconnect-v1"},
+                           os.environ["ASC_API_KEY"], algorithm="ES256", headers={"kid": "6QNDBXCP8X", "typ": "JWT"})
+          H = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json"}
+          API = "https://api.appstoreconnect.apple.com/v1"
+          p = {"filter[app]": "6831235877", "sort": "-uploadedDate", "limit": 1}
+          if os.environ.get("SURUM"): p["filter[version]"] = os.environ["SURUM"]
+          b = requests.get(f"{API}/builds", params=p, headers=H, timeout=30).json()["data"][0]
+          print("DERLEME", b["attributes"]["version"])
+          g = [x for x in requests.get(f"{API}/betaGroups", params={"filter[app]": "6831235877"}, headers=H, timeout=30).json()["data"] if not x["attributes"]["isInternalGroup"]][0]
+          r = requests.post(f"{API}/betaGroups/{g['id']}/relationships/builds", json={"data": [{"type": "builds", "id": b["id"]}]}, headers=H, timeout=30)
+          print("GRUBA EKLE", r.status_code, r.text[:300])
+          # Test notu (Türkçe)
+          locs = requests.get(f"{API}/builds/{b['id']}/betaBuildLocalizations", headers=H, timeout=30).json().get("data", [])
+          tr = [l for l in locs if l["attributes"]["locale"].startswith("tr")]
+          if tr:
+              r = requests.patch(f"{API}/betaBuildLocalizations/{tr[0]['id']}", json={"data": {"type": "betaBuildLocalizations", "id": tr[0]["id"], "attributes": {"whatsNew": os.environ["NOTLAR"]}}}, headers=H, timeout=30)
+          else:
+              r = requests.post(f"{API}/betaBuildLocalizations", json={"data": {"type": "betaBuildLocalizations", "attributes": {"locale": "tr", "whatsNew": os.environ["NOTLAR"]}, "relationships": {"build": {"data": {"type": "builds", "id": b["id"]}}}}}, headers=H, timeout=30)
+          print("NOT", r.status_code, r.text[:200])
+          r = requests.post(f"{API}/betaAppReviewSubmissions", json={"data": {"type": "betaAppReviewSubmissions", "relationships": {"build": {"data": {"type": "builds", "id": b["id"]}}}}}, headers=H, timeout=30)
+          print("INCELEME", r.status_code, r.text[:400])
+          d = requests.get(f"{API}/buildBetaDetails", params={"filter[build]": b["id"]}, headers=H, timeout=30).json()["data"][0]
+          print("DURUM", d["attributes"].get("externalBuildState"))
+          PY
