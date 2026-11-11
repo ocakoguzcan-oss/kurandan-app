@@ -1,5 +1,6 @@
 // Bildirim sesi seçimi: tüm vakitler için tek ses. Zil seslerinin yanındaki ▶ ile önizleme.
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import Svg, { Path, Rect } from 'react-native-svg';
@@ -21,23 +22,38 @@ export default function BildirimSesi() {
   const sel = sesOf(reminders);
   const player = useRef<AudioPlayer | null>(null);
   const [playing, setPlaying] = useState<SesId | null>(null);
+  // Her yeni önizleme bir sıra numarası alır; araya başka dokunuş girdiyse eski önizleme hiç başlamaz
+  const sira = useRef(0);
 
-  useEffect(() => () => player.current?.remove(), []);
-
-  const stop = () => {
-    player.current?.remove();
+  const stop = useCallback(() => {
+    sira.current++;
+    const p = player.current;
     player.current = null;
+    if (p) {
+      try {
+        p.pause();
+      } catch {
+        // zaten durmuş
+      }
+      p.remove();
+    }
     setPlaying(null);
-  };
+  }, []);
+
+  // Ekrandan çıkınca (geri, sekme değişimi) ses susar
+  useEffect(() => stop, [stop]);
+  useFocusEffect(useCallback(() => stop, [stop]));
 
   const preview = async (id: SesId, asset: number) => {
     if (playing === id) return stop();
     stop();
+    const benim = sira.current;
     await setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
+    if (benim !== sira.current) return;
     const p = createAudioPlayer(asset);
     player.current = p;
     p.addListener('playbackStatusUpdate', (s) => {
-      if (s.didJustFinish) setPlaying(null);
+      if (s.didJustFinish && player.current === p) stop();
     });
     p.play();
     setPlaying(id);
@@ -48,7 +64,9 @@ export default function BildirimSesi() {
   // Seviye önizlemesi: öğle ezanının ilk saniyeleri, seçilen seviyenin yüksekliğinde
   const previewEzan = async (i: number) => {
     stop();
+    const benim = sira.current;
     await setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
+    if (benim !== sira.current) return;
     const p = createAudioPlayer(EZAN_ONIZLEME);
     player.current = p;
     p.volume = seviyeKazanc(SEVIYELER[i].id);
