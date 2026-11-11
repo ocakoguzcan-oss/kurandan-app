@@ -1,0 +1,31 @@
+# App Store Connect'teki son iOS derlemelerinin durumunu yazar (TestFlight'a düştü mü?).
+# Elle başlatılır: GitHub → Actions → "TestFlight durumu" → Run workflow.
+name: TestFlight durumu
+
+on:
+  workflow_dispatch:
+
+jobs:
+  durum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Son derlemeler
+        env:
+          ASC_API_KEY: ${{ secrets.ASC_API_KEY }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          pip install -q pyjwt cryptography requests
+          python3 - <<'PY'
+          import os, time, jwt, requests
+          tok = jwt.encode({"iss": os.environ["ASC_ISSUER_ID"], "iat": int(time.time()), "exp": int(time.time()) + 600, "aud": "appstoreconnect-v1"},
+                           os.environ["ASC_API_KEY"], algorithm="ES256", headers={"kid": "6QNDBXCP8X", "typ": "JWT"})
+          r = requests.get("https://api.appstoreconnect.apple.com/v1/builds",
+                           params={"filter[app]": "6831235877", "sort": "-uploadedDate", "limit": 5,
+                                   "fields[builds]": "version,uploadedDate,processingState,expired"},
+                           headers={"Authorization": f"Bearer {tok}"}, timeout=30)
+          r.raise_for_status()
+          for b in r.json()["data"]:
+              a = b["attributes"]
+              print(f"DERLEME {a['version']} | {a['processingState']} | {a['uploadedDate']}")
+          PY
