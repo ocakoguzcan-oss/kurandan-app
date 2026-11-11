@@ -92,7 +92,7 @@
         "expo-audio",
         {
           "microphonePermission": false,
-          "enableBackgroundPlayback": false
+          "enableBackgroundPlayback": true
         }
       ],
       "expo-font",

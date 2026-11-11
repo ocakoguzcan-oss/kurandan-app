@@ -6,7 +6,10 @@ import { AppState } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { buildChunks, chapterName, Chunk, getChapterAudio, getChapters, getPage, prefetchPages, QWord, TOTAL_PAGES } from './quran';
-import { isPremium } from './premium';
+import { isPremium, SATIN_ALMA_ACIK } from './premium';
+
+/** Kilit ekranında / arka planda okuma: satın alma kapalıyken herkese açık */
+const kilitEkrani = () => !SATIN_ALMA_ACIK || isPremium();
 import { t } from '../i18n';
 
 export type PlayerMode = 'idle' | 'line' | 'word' | 'page';
@@ -43,7 +46,7 @@ class QuranPlayer {
 
   constructor() {
     AppState.addEventListener('change', (s) => {
-      if (s === 'background' && this.state.mode !== 'idle' && !isPremium()) {
+      if (s === 'background' && this.state.mode !== 'idle' && !kilitEkrani()) {
         this.stoppedByLock = this.state.mode === 'page';
         this.stop();
       }
@@ -74,7 +77,7 @@ class QuranPlayer {
 
   private async ensurePlayer(url: string) {
     // Kilit ekranı kontrolleri için başka uygulamaların sesiyle karışmamalı
-    await setAudioModeAsync({ playsInSilentMode: true, shouldPlayInBackground: isPremium(), interruptionMode: 'doNotMix' }).catch(() => {});
+    await setAudioModeAsync({ playsInSilentMode: true, shouldPlayInBackground: kilitEkrani(), interruptionMode: 'doNotMix' }).catch(() => {});
     if (!this.player) {
       this.player = createAudioPlayer({ uri: url });
       this.currentUrl = url;
@@ -229,9 +232,9 @@ class QuranPlayer {
     this.finish();
   }
 
-  /** Satın alındıysa kilit ekranında sure adı, sayfa ve okuyan görünür. */
+  /** Kilit ekranında sure adı, sayfa ve okuyan görünür. */
   private async showOnLockScreen(chapter: number, page: number) {
-    if (!isPremium() || !this.player) return;
+    if (!kilitEkrani() || !this.player) return;
     let title = t('Sayfa {n}', { n: page });
     try {
       const ch = (await getChapters()).find((c) => c.id === chapter);
