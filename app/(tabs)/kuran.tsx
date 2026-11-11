@@ -11,7 +11,9 @@ import { attribution, Chapter, chapterName, getChapters, hasMeal, JUZ_START_PAGE
 import { quranPlayer, PlayerState } from '../../src/lib/quranPlayer';
 import { loadHatim, markPageRead, resetHatim, setGoal, setLastPage, useHatim } from '../../src/lib/hatim';
 import { MushafSize, setPrefs, usePrefs } from '../../src/lib/prefs';
-import { normalizeTr } from '../../src/data/sureler';
+import { IconSearch } from '../../src/components/Icons';
+import { normalizeTr, SURE_ADLARI } from '../../src/data/sureler';
+import { AYET_SAYISI, ayetSayfasi } from '../../src/data/sayfalar';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
 import { t, tx } from '../../src/i18n';
 
@@ -135,6 +137,9 @@ export default function Kuran() {
           <Pressable accessibilityRole="button" accessibilityLabel={t('Sure ve cüz seç')} onPress={() => setPicker(true)} style={st.titleBtn}>
             <Text style={st.title} numberOfLines={1}>{chapter ? t('{sure} Suresi', { sure: chapterName(chapter) }) : t("Kur'an-ı Kerim")}</Text>
             <Text style={st.sub}>{`${t('Cüz {n}', { n: juzOfPage(page) })} · ${t('Sayfa {n}', { n: page })} ▾`}</Text>
+          </Pressable>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('Sure ya da ayet ara')} onPress={() => setPicker(true)} style={st.araBtn}>
+            <IconSearch size={20} />
           </Pressable>
           <SizeButton size={mushafSize} onPress={() => setPrefs({ mushafSize: ((mushafSize % 3) + 1) as MushafSize })} />
           <Pressable accessibilityRole="button" accessibilityLabel={t('Hatim takibi')} onPress={() => setHatimOpen(true)} style={st.hatimBtn}>
@@ -332,13 +337,41 @@ function SizeButton({ size, onPress }: { size: MushafSize; onPress: () => void }
   );
 }
 
+/** "2:255", "2 255", "Bakara 255" gibi yazımdan sure ve ayeti bulur; sure adı bulunamazsa null */
+function ayetAra(q: string, chapters: Chapter[]): { sure: number; ayet: number; ad: string; sayfa: number | null } | null {
+  const n = normalizeTr(q.trim());
+  let sure = 0;
+  let ayet = 0;
+  const sayi = n.match(/^(\d{1,3})\s*[:.,/\s-]\s*(\d{1,3})$/);
+  if (sayi) {
+    sure = Number(sayi[1]);
+    ayet = Number(sayi[2]);
+  } else {
+    const ad = n.match(/^(\D+?)\s*[:.,/\s-]?\s*(\d{1,3})$/);
+    if (!ad) return null;
+    const isim = ad[1].trim().replace(/\s*suresi$/, '');
+    if (!isim) return null;
+    const i = SURE_ADLARI.findIndex((x) => normalizeTr(x) === isim);
+    const j = i >= 0 ? i : SURE_ADLARI.findIndex((x) => normalizeTr(x).startsWith(isim));
+    const k = j >= 0 ? j + 1 : chapters.find((c) => normalizeTr(c.nameSimple ?? '').includes(isim))?.id ?? 0;
+    sure = k;
+    ayet = Number(ad[2]);
+  }
+  if (!(sure >= 1 && sure <= 114)) return null;
+  const c = chapters.find((x) => x.id === sure);
+  return { sure, ayet, ad: c ? chapterName(c) : SURE_ADLARI[sure - 1], sayfa: ayetSayfasi(sure, ayet) };
+}
+
 function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean; chapters: Chapter[]; onClose: () => void; onPick: (page: number) => void }) {
   const insets = useSafeAreaInsets();
   const [q, setQ] = useState('');
   const list = useMemo(() => {
     const n = normalizeTr(q.trim());
+    if (/\d+\D+\d+$|\D+\s\d+$/.test(n)) return []; // ayet araması: aşağıda tek sonuç gösterilir
     return n ? chapters.filter((c) => (normalizeTr(c.nameTr).includes(n) || normalizeTr(c.nameSimple ?? '').includes(n) || c.nameAr.includes(q.trim())) || String(c.id) === n) : chapters;
   }, [q, chapters]);
+  // Ayet bulma: "2:255", "2 255", "Bakara 255", "yasin 12"
+  const ayet = useMemo(() => ayetAra(q, chapters), [q, chapters]);
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
       <View style={{ flex: 1, backgroundColor: colors.paper, paddingTop: insets.top + 12 }}>
@@ -350,7 +383,7 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
           ListHeaderComponent={
             <View style={{ gap: 12, marginBottom: 8 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={st.title}>{t('Sure ve cüz')}</Text>
+                <Text style={st.title}>{t('Sure, ayet ve cüz')}</Text>
                 <Button variant="text" label={t('Kapat')} onPress={onClose} />
               </View>
               <Eyebrow>{t('Cüz')}</Eyebrow>
@@ -362,12 +395,27 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
               <TextInput
                 value={q}
                 onChangeText={setQ}
-                placeholder={t('Sure ara (ör. Yasin ya da 36)')}
+                placeholder={t('Sure ya da ayet ara (ör. Yasin, Bakara 255)')}
                 placeholderTextColor={colors.muted}
                 accessibilityLabel={t('Sure ara')}
                 style={st.search}
               />
-              {chapters.length === 0 && <ActivityIndicator color={colors.greenText} />}
+              {ayet ? (
+                ayet.sayfa ? (
+                  <Pressable accessibilityRole="button" onPress={() => onPick(ayet.sayfa!)} style={st.ayetSonuc}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={st.surahName}>{t('{sure} Suresi, {n}. ayet', { sure: ayet.ad, n: ayet.ayet })}</Text>
+                      <Text style={st.muted}>{`${t('Sayfa {n}', { n: ayet.sayfa })} · ${t('Cüz {n}', { n: juzOfPage(ayet.sayfa) })}`}</Text>
+                    </View>
+                    <Text style={st.ayetGit}>{t('Git ›')}</Text>
+                  </Pressable>
+                ) : (
+                  <Text style={st.muted}>{t('{sure} Suresi {n} ayettir.', { sure: ayet.ad, n: AYET_SAYISI[ayet.sure - 1] })}</Text>
+                )
+              ) : (
+                <Text style={st.muted}>{t('Ayet bulmak için sure ve ayet numarasını yazın: Bakara 255 ya da 2:255')}</Text>
+              )}
+              {chapters.length === 0 && !ayet && <ActivityIndicator color={colors.greenText} />}
             </View>
           }
           renderItem={({ item }) => (
@@ -426,6 +474,9 @@ const st = StyleSheet.create({
   muted: { fontFamily: fonts.body, fontSize: 13, color: colors.muted, lineHeight: 19 },
   attrib: { fontFamily: fonts.body, fontSize: 11, color: colors.muted, lineHeight: 16 },
   search: { minHeight: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, paddingHorizontal: 14, fontFamily: fonts.body, fontSize: 15, color: colors.ink },
+  araBtn: { width: 48, height: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
+  ayetSonuc: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 14, borderWidth: 1.5, borderColor: colors.gold, backgroundColor: colors.card },
+  ayetGit: { fontFamily: fonts.bodyBold, fontSize: 15, color: colors.greenText },
   surahRow: { flexDirection: 'row', alignItems: 'center', gap: 14, minHeight: 60, borderBottomWidth: 1, borderBottomColor: colors.divider },
   surahNo: { width: 30, fontFamily: fonts.bodyBold, fontSize: 14, color: colors.goldText, textAlign: 'center' },
   surahName: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.ink },

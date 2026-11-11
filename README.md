@@ -199,4 +199,5 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
   "İyi Niyet Et ve Kart Seç", 3 kapalı kart, imsakta yenilenir. Günde 1 kart ücretsiz açılır (dönerek açılma animasyonu);
   diğerleri sallanır ve "Fe sabrun cemîl" penceresi çıkar. İleride ödüllü video ile açılacak (`KILIT_VIDEO`: 2. kart 1, 3. kart 2 video).
   İçerik: `content/dualar.json` + `content/vakit-sozleri.json` (tefekkür notları `not` alanında). Kaydedilenler Kart Sandığı'nda.
+- **Ayet bulma** (Kur'an sekmesi, büyüteç): "Bakara 255", "2:255", "yasin 12" → doğru sayfa. Sayfa başlangıçları `src/data/sayfalar.ts` (Tanzil metadata, CC BY 3.0).
 - **Gece modu "Otomatik"**: akşam ezanından güneş doğana kadar koyu (seçili şehrin vakitleri), `app/_layout.tsx` → `GeceModu`.
