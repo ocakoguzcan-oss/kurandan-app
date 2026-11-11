@@ -194,3 +194,4 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
   Story görselleri (StoryCard) hep açık renkte kalır.
 - **Kişisel ayarlar** (`app/kisisel.tsx`): hicri gün düzeltmesi (`setHicriDuzelt`), 12 saat biçimi (`setSaat12`),
   ana ekranda iftar sayacı, otomatik şehir bulma (konum kaynağı `gps`).
+- **Vakit Manzarası widget'ı** (`targets/widget/ManzaraWidget.swift`, orta ve büyük): sıradaki vakte geri sayım, günün altı vakti; gökyüzü vakte göre değişir, gece ışıklar yanar. Mekân (Kâbe, Mescid-i Nebevi, Mescid-i Aksa, Kuba) widget düzenlenirken seçilir. Çizimler `scripts/widget-cami.py` ile SVG→PNG üretilir (`assets/widget/`).

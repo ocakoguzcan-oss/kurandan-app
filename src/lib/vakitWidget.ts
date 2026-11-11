@@ -7,7 +7,7 @@ import { EzanNative, AlarmPermission } from '../../modules/ezan-native';
 import { CalcOptions, getPrayerTimes, VAKIT_KEYS, VAKIT_NAMES, formatTime } from './prayerTimes';
 import { addDays, ymdIn } from './tz';
 import { ezanDosya, EzanSeviye } from './ezanSesleri';
-import { t } from '../i18n';
+import { getLang, t } from '../i18n';
 
 const APP_GROUP = 'group.ai.kurandan.app';
 const ALARM_DAYS = 7;
@@ -15,15 +15,20 @@ const ALARM_DAYS = 7;
 export function updateWidget(lat: number, lng: number, place: string, calc: CalcOptions = {}) {
   if (!EzanNative) return;
   const today = ymdIn(new Date(), calc.tz);
-  const items: { n: string; t: number; h: string }[] = [];
-  for (let i = 0; i < 3; i++) {
+  // Dünden başlanır: imsaktan önce "yatsı" döneminin gökyüzü için önceki vakit de gerekir
+  const items: { n: string; t: number; h: string; k: string }[] = [];
+  for (let i = -1; i < 3; i++) {
     const times = getPrayerTimes(addDays(today, i), lat, lng, calc);
     for (const k of VAKIT_KEYS) {
-      items.push({ n: t(VAKIT_NAMES[k]), t: Math.round(times[k].getTime() / 1000), h: formatTime(times[k], calc.tz) });
+      items.push({ n: t(VAKIT_NAMES[k]), t: Math.round(times[k].getTime() / 1000), h: formatTime(times[k], calc.tz), k });
     }
   }
   try {
-    EzanNative.setWidgetData(APP_GROUP, 'vakitler', JSON.stringify({ place, items, empty: t('Vakitler için uygulamayı açın') }));
+    EzanNative.setWidgetData(
+      APP_GROUP,
+      'vakitler',
+      JSON.stringify({ place, items, empty: t('Vakitler için uygulamayı açın'), lang: getLang(), kalan: t('{vakit} vaktine kalan'), tz: calc.tz })
+    );
   } catch {
     // eski derleme: yok say
   }

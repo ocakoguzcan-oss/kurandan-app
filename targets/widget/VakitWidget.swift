@@ -14,6 +14,8 @@ struct Vakit: Codable {
   let t: Double
   /// Şehrin saatiyle "05:42"
   let h: String
+  /// Vakit kimliği (imsak, gunes, ogle, ikindi, aksam, yatsi); eski verilerde yok
+  let k: String?
 }
 
 struct VakitVerisi: Codable {
@@ -21,6 +23,11 @@ struct VakitVerisi: Codable {
   let items: [Vakit]
   /// Veri yokken gösterilecek yazı ("Uygulamayı açın")
   let empty: String?
+  /// Uygulamanın dili (tarih biçimi için) ve "{vakit} vaktine kalan" kalıbı
+  let lang: String?
+  let kalan: String?
+  /// Şehrin saat dilimi (tarih satırı için)
+  let tz: String?
 }
 
 func vakitVerisi() -> VakitVerisi? {
@@ -41,8 +48,8 @@ struct VakitProvider: TimelineProvider {
   func placeholder(in context: Context) -> VakitEntry {
     VakitEntry(
       date: Date(),
-      next: Vakit(n: "Öğle", t: Date().addingTimeInterval(4500).timeIntervalSince1970, h: "12:45"),
-      after: Vakit(n: "İkindi", t: Date().addingTimeInterval(16000).timeIntervalSince1970, h: "15:52"),
+      next: Vakit(n: "Öğle", t: Date().addingTimeInterval(4500).timeIntervalSince1970, h: "12:45", k: "ogle"),
+      after: Vakit(n: "İkindi", t: Date().addingTimeInterval(16000).timeIntervalSince1970, h: "15:52", k: "ikindi"),
       place: "İstanbul",
       empty: ""
     )
@@ -196,6 +203,28 @@ enum WidgetMetin {
     case "fr": return "Heure de prière"
     case "ru": return "Время намаза"
     default: return "Prayer Time"
+    }
+  }
+
+  static var manzaraAd: String {
+    switch dil {
+    case "tr": return "Vakit Manzarası"
+    case "de": return "Gebetszeit-Panorama"
+    case "ar": return "مشهد وقت الصلاة"
+    case "fr": return "Panorama des prières"
+    case "ru": return "Панорама намаза"
+    default: return "Prayer Panorama"
+    }
+  }
+
+  static var manzaraAciklama: String {
+    switch dil {
+    case "tr": return "Sıradaki vakte geri sayım ve günün vakitleri; gökyüzü vakte göre değişir"
+    case "de": return "Countdown zum nächsten Gebet und alle Zeiten; der Himmel ändert sich mit der Tageszeit"
+    case "ar": return "عدّ تنازلي للصلاة القادمة ومواقيت اليوم؛ تتغير السماء حسب الوقت"
+    case "fr": return "Compte à rebours et horaires du jour ; le ciel change selon l'heure"
+    case "ru": return "Отсчёт до следующего намаза и время на день; небо меняется по времени суток"
+    default: return "Countdown to the next prayer and today's times; the sky changes with the time of day"
     }
   }
 
