@@ -35,4 +35,14 @@ jobs:
           for x in g.json()["data"]:
               a = x["attributes"]
               print(f"GRUP {a['name']} | ic={a['isInternalGroup']} | link={a.get('publicLink') if a.get('publicLinkEnabled') else 'kapali'}")
+              bb = requests.get(f"https://api.appstoreconnect.apple.com/v1/betaGroups/{x['id']}/builds",
+                                params={"fields[builds]": "version", "limit": 5}, headers={"Authorization": f"Bearer {tok}"}, timeout=30)
+              if bb.ok:
+                  print(f"GRUP {a['name']} derlemeleri: " + ", ".join(sorted((y['attributes']['version'] for y in bb.json()['data']), key=int, reverse=True)))
+          rs = requests.get("https://api.appstoreconnect.apple.com/v1/buildBetaDetails",
+                            params={"filter[build]": ",".join(b["id"] for b in r.json()["data"][:3])},
+                            headers={"Authorization": f"Bearer {tok}"}, timeout=30)
+          if rs.ok:
+              for d in rs.json()["data"]:
+                  print(f"DIS TEST {d['relationships'] if False else ''}{d['attributes'].get('externalBuildState')}")
           PY
