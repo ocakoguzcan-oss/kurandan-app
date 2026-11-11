@@ -28,4 +28,11 @@ jobs:
           for b in r.json()["data"]:
               a = b["attributes"]
               print(f"DERLEME {a['version']} | {a['processingState']} | {a['uploadedDate']}")
+          g = requests.get("https://api.appstoreconnect.apple.com/v1/betaGroups",
+                           params={"filter[app]": "6831235877", "fields[betaGroups]": "name,publicLinkEnabled,publicLink,isInternalGroup"},
+                           headers={"Authorization": f"Bearer {tok}"}, timeout=30)
+          g.raise_for_status()
+          for x in g.json()["data"]:
+              a = x["attributes"]
+              print(f"GRUP {a['name']} | ic={a['isInternalGroup']} | link={a.get('publicLink') if a.get('publicLinkEnabled') else 'kapali'}")
           PY
