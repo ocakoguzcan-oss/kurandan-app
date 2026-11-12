@@ -1,7 +1,7 @@
 // Bildirim sesi seçimi: tüm vakitler için tek ses. Zil seslerinin yanındaki ▶ ile önizleme.
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync, AudioPlayer } from 'expo-audio';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { Text } from '../src/components/Text';
@@ -88,7 +88,12 @@ export default function BildirimSesi() {
       <Text style={st.lead}>{t('Vakit girdiğinde bildirimle birlikte çalacak sesi seçin. Seçim bütün vakitler için geçerlidir.')}</Text>
       <View style={st.warn}>
         <Text style={st.warnIcon}>🔔</Text>
-        <Text style={st.warnText}>{t('Ezanı duyabilmek için telefonunuz sessiz modda olmamalı. Telefon sessizdeyken hiçbir uygulamanın bildirim sesi çalmaz.')}</Text>
+        <View style={{ flex: 1, gap: 6 }}>
+          <Text style={st.warnText}>{t('Ezanı duyabilmek için telefonunuz sessiz modda olmamalı. Telefon sessizdeyken hiçbir uygulamanın bildirim sesi çalmaz.')}</Text>
+          {Platform.OS === 'ios' && (
+            <Text style={st.warnSub}>{t('Sessizdeyken vakit girince titreşsin: Ayarlar → Sesler ve Dokunuş → Dokunuş → Her Zaman Çal')}</Text>
+          )}
+        </View>
       </View>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
         {SESLER.map((z, i) => {
@@ -183,6 +188,7 @@ const st = StyleSheet.create({
   play: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.buttonBorder, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' },
   warn: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', borderRadius: 14, borderWidth: 1, borderColor: colors.cardBorder, backgroundColor: colors.card, padding: 12 },
   warnIcon: { fontSize: 18, lineHeight: 22 },
-  warnText: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 14, lineHeight: 20, color: colors.ink },
+  warnText: { fontFamily: fonts.bodySemi, fontSize: 14, lineHeight: 20, color: colors.ink },
+  warnSub: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18, color: colors.inkSoft },
   note: { fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: colors.muted, textAlign: 'center' },
 });
