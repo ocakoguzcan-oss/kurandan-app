@@ -72,7 +72,8 @@
         "POST_NOTIFICATIONS",
         "SCHEDULE_EXACT_ALARM",
         "VIBRATE"
-      ]
+      ],
+      "userInterfaceStyle": "light"
     },
     "web": {
       "favicon": "./assets/favicon.png"

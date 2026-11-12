@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
+import Constants from 'expo-constants';
 import { Text } from '../src/components/Text';
 import { Button, Screen, Card } from '../src/components/ui';
 import { colors, fonts, radius } from '../src/theme';
@@ -21,6 +22,12 @@ const UCLAR = [
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
 ];
 type Kaynak = 'apple' | 'osm';
+
+/** Android'de harita için Google Maps anahtarı gerekir; yoksa çökmemek için yalnız liste gösterilir. */
+const HARITA_VAR =
+  Platform.OS === 'ios' ||
+  Constants.executionEnvironment === 'storeClient' ||
+  !!(Constants.expoConfig?.android as { config?: { googleMaps?: { apiKey?: string } } } | undefined)?.config?.googleMaps?.apiKey;
 
 function mesafe(aLat: number, aLng: number, bLat: number, bLng: number) {
   const R = 6371000;
@@ -143,7 +150,7 @@ export default function Camiler() {
 
   return (
     <Screen title={t('Yakın Camiler')}>
-      {konum && (
+      {konum && HARITA_VAR && (
         <View style={st.mapWrap}>
           <MapView
             ref={mapRef}

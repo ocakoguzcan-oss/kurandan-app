@@ -31,6 +31,11 @@
         "ascApiKeyPath": "$EXPO_ASC_API_KEY_PATH",
         "ascApiKeyIssuerId": "$EXPO_ASC_ISSUER_ID",
         "ascApiKeyId": "$EXPO_ASC_KEY_ID"
+      },
+      "android": {
+        "serviceAccountKeyPath": "$GOOGLE_SERVICE_ACCOUNT_KEY_PATH",
+        "track": "internal",
+        "releaseStatus": "draft"
       }
     }
   }

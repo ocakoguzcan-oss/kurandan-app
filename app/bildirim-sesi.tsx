@@ -11,11 +11,11 @@ import { colors, fonts } from '../src/theme';
 import { useApp } from '../src/context/AppContext';
 import { sesOf } from '../src/lib/notifications';
 import { SESLER, SesId } from '../src/lib/bildirimSesleri';
+import { SES_VARLIK } from '../src/lib/sesVarliklari';
 import { SEVIYELER, seviyeKazanc } from '../src/lib/ezanSesleri';
 import { t } from '../src/i18n';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const EZAN_ONIZLEME = require('../assets/sounds/ezan_ogle.caf');
+const EZAN_ONIZLEME = SES_VARLIK.ezan_ogle;
 
 export default function BildirimSesi() {
   const { reminders, setReminders } = useApp();

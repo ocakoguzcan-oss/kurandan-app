@@ -5,7 +5,7 @@ import { addDays, fromWall, ymdIn } from './tz';
 import { t } from '../i18n';
 import { upcomingDiniGunler } from '../data/diniGunler';
 import { EZANLAR, ezanById, ezanDosya, ezanFor, EzanId, EzanSeviye } from './ezanSesleri';
-import { gecerliSes, SESLER, sesById, SesId } from './bildirimSesleri';
+import { bildirimDosyasi, gecerliSes, SESLER, sesById, SesId } from './bildirimSesleri';
 import { vakitSozu } from './vakitSozleri';
 import { FarzKey, isaretliMi, kazayaEklendi, namazYukle, namazDurum, takipBaslat } from './namazTakip';
 import type { Ymd } from './tz';
@@ -143,7 +143,7 @@ async function ensureChannels(sev: EzanSeviye = 'yuksek') {
     await Notifications.setNotificationChannelAsync(sesChannel(z.id), {
       name: `${t('Vakit hatırlatmaları')} · ${t(z.ad)}`,
       importance: Notifications.AndroidImportance.HIGH,
-      sound: z.dosya ?? null,
+      sound: z.dosya ? bildirimDosyasi(z.dosya) : null,
       vibrationPattern: [0, 300, 200, 300],
       enableVibrate: true,
       lightColor: '#18583C',
@@ -358,7 +358,7 @@ export async function rescheduleAll(
         {
           title,
           body,
-          sound: ezan ? ezanDosya(ezan, sev) : zil?.dosya ? zil.dosya : zil?.id === 'sessiz' ? false : 'default',
+          sound: ezan ? ezanDosya(ezan, sev) : zil?.dosya ? bildirimDosyasi(zil.dosya) : zil?.id === 'sessiz' ? false : 'default',
           data: { url: ezan ? `/ezan?vakit=${encodeURIComponent(key)}${ezan === 'cuma' ? '&cuma=1' : ''}` : '/', kanal },
           categoryIdentifier: kategori,
         },
@@ -437,7 +437,7 @@ export async function testEzanBildirimi(id: EzanId, ses: SesId = 'ezan', sev: Ez
         id === 'cuma' ? 'ogle' : id,
         ymdIn(new Date())
       )}`,
-      sound: isEzan ? ezanDosya(id, sev) : z.dosya ? z.dosya : ses === 'sessiz' ? false : 'default',
+      sound: isEzan ? ezanDosya(id, sev) : z.dosya ? bildirimDosyasi(z.dosya) : ses === 'sessiz' ? false : 'default',
       data: { url: isEzan ? `/ezan?vakit=${id === 'cuma' ? 'ogle&cuma=1' : id}` : '/' },
     },
     trigger: {

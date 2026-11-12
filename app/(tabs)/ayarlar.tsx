@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Alert, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { router, useFocusEffect } from 'expo-router';
 import { Screen, Card, Chip, Eyebrow, Toggle } from '../../src/components/ui';
@@ -88,29 +88,38 @@ export default function Ayarlar() {
       )}
 
       <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
-        <View style={[st.row, st.divider]}>
+        <View style={[st.row, Platform.OS === 'ios' && st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Büyük yazı')}</Text>
             <Text style={st.sub}>{t('Uygulamadaki tüm yazıları büyütür')}</Text>
           </View>
           <Toggle label={t('Büyük yazı')} value={prefs.largeText} onChange={(v) => setPrefs({ largeText: v })} />
         </View>
-        <View style={{ paddingVertical: 10, gap: 8 }}>
-          <Text style={st.name}>{t('Gece modu')}</Text>
-          <View style={{ flexDirection: 'row', gap: 8 }}>
-            {(
-              [
-                ['auto', t('Otomatik')],
-                ['dark', t('Açık')],
-                ['light', t('Kapalı')],
-              ] as const
-            ).map(([v, l]) => (
-              <Chip key={v} label={l} selected={(prefs.tema ?? 'auto') === v} onPress={() => setPrefs({ tema: v })} style={{ flex: 1 }} />
-            ))}
+        {Platform.OS === 'ios' && (
+          <View style={{ paddingVertical: 10, gap: 8 }}>
+            <Text style={st.name}>{t('Gece modu')}</Text>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              {(
+                [
+                  ['auto', t('Otomatik')],
+                  ['dark', t('Açık')],
+                  ['light', t('Kapalı')],
+                ] as const
+              ).map(([v, l]) => (
+                <Chip key={v} label={l} selected={(prefs.tema ?? 'auto') === v} onPress={() => setPrefs({ tema: v })} style={{ flex: 1 }} />
+              ))}
+            </View>
+            <Text style={st.sub}>{t('Otomatik: akşam ezanından güneş doğana kadar gece modu')}</Text>
           </View>
-          <Text style={st.sub}>{t('Otomatik: akşam ezanından güneş doğana kadar gece modu')}</Text>
-        </View>
+        )}
       </Card>
+
+      {Platform.OS === 'android' && (
+        <Pressable accessibilityRole="button" onPress={() => Linking.openSettings().catch(() => {})} style={st.androidBanner}>
+          <Text style={st.permTitle}>{t('Ezan tam vaktinde gelsin')}</Text>
+          <Text style={st.permBody}>{t('Android’de uygulama ayarlarından “Alarmlar ve hatırlatıcılar” iznini açın; yoksa bildirim birkaç dakika gecikebilir. Açmak için dokunun.')}</Text>
+        </Pressable>
+      )}
 
       <Eyebrow>{t('Vakit hatırlatmaları')}</Eyebrow>
       <Card style={{ padding: 0, paddingHorizontal: 14 }}>
@@ -263,6 +272,7 @@ export default function Ayarlar() {
 
 const st = StyleSheet.create({
   permBanner: { backgroundColor: colors.warnBg, borderWidth: 1, borderColor: colors.gold, borderRadius: 16, padding: 14, gap: 4 },
+  androidBanner: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: 16, padding: 14, gap: 4 },
   permTitle: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.goldText },
   permBody: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, color: colors.ink },
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 56, paddingVertical: 8, gap: 12 },

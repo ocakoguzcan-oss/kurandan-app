@@ -1,0 +1,39 @@
+# Android derlemesi (EAS): Google Play'e yüklenecek .aab dosyası.
+# İlk yüklemeyi Google Play kuralı gereği Play Console'dan elle yaparsınız (indirme bağlantısı derleme sayfasında).
+# Sonraki sürümler için Play hizmet hesabı anahtarı eklenince "Play'e gönder" adımı açılır.
+# Elle başlatılır: GitHub → Actions → "Android derle" → Run workflow.
+# Gerekli GitHub secret'ı: EXPO_TOKEN. İsteğe bağlı: GOOGLE_PLAY_KEY (hizmet hesabı JSON içeriği).
+name: Android derle
+
+on:
+  workflow_dispatch:
+    inputs:
+      gonder:
+        description: "Bittikten sonra Google Play'e (dahili test kanalı) gönder"
+        type: boolean
+        default: false
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Paketleri kur
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Derle (EAS, bitene kadar bekler)
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx --yes eas-cli@latest build -p android --profile production --non-interactive --wait
+      - name: Google Play'e gönder
+        if: ${{ inputs.gonder }}
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          GOOGLE_PLAY_KEY: ${{ secrets.GOOGLE_PLAY_KEY }}
+        run: |
+          printf '%s' "$GOOGLE_PLAY_KEY" > "$RUNNER_TEMP/play.json"
+          grep -q '"private_key"' "$RUNNER_TEMP/play.json" || { echo "GOOGLE_PLAY_KEY secret'ı eksik"; exit 1; }
+          GOOGLE_SERVICE_ACCOUNT_KEY_PATH="$RUNNER_TEMP/play.json" npx --yes eas-cli@latest submit -p android --profile production --latest --non-interactive --no-wait

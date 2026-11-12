@@ -4,6 +4,7 @@
 // Bildirim sesleri uygulamayla birlikte yüklenir: değiştirince yeni mağaza sürümü gerekir.
 import type { VakitKey } from './prayerTimes';
 import { tx } from '../i18n';
+import { bildirimDosyasi } from './bildirimSesleri';
 
 export type EzanId = 'imsak' | 'ogle' | 'ikindi' | 'aksam' | 'yatsi' | 'cuma';
 
@@ -47,5 +48,5 @@ export const seviyeKazanc = (id: EzanSeviye) => Math.pow(10, (SEVIYELER.find((x)
 /** Seviyeye göre çalınacak dosya adı */
 export function ezanDosya(id: EzanId, seviye: EzanSeviye = 'yuksek'): string {
   const d = ezanById(id).dosya;
-  return seviye === 'yuksek' ? d : d.replace('.caf', `_${seviye}.caf`);
+  return bildirimDosyasi(seviye === 'yuksek' ? d : d.replace('.caf', `_${seviye}.caf`));
 }

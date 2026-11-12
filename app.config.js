@@ -1,10 +1,16 @@
-// app.json'daki ayarları kullanır; yalnızca güncelleme uyumluluğunu (runtimeVersion) sürüme göre seçer.
-//
-// - Expo Go denemeleri (main dalı): runtimeVersion = Expo SDK sürümü, çünkü Expo Go yalnızca bunu tanır.
-// - App Store sürümü (APP_VARIANT=production): runtimeVersion = uygulama sürümü (app.json → version).
-//   Yeni yerel paket, izin ya da ikon gibi bir değişiklikte app.json'daki "version" artırılır
-//   (ör. 1.0.0 → 1.1.0) ve yeni derleme alınır; eski sürüme uyumsuz güncelleme gitmez.
-module.exports = ({ config }) => ({
-  ...config,
-  runtimeVersion: process.env.APP_VARIANT === 'production' ? { policy: 'appVersion' } : config.runtimeVersion,
-});
+// app.json'un üstüne platforma göre küçük ayarlar.
+// Bildirim sesleri: iOS CAF ister, Android'de CAF çalmaz; ayrıca iki platformun dosyaları aynı adla
+// res/raw'a girerse Android derlemesi bozulur. Bu yüzden Android derlemesinde (EAS_BUILD_PLATFORM=android)
+// assets/sounds-android/*.ogg kullanılır.
+module.exports = ({ config }) => {
+  if (process.env.EAS_BUILD_PLATFORM !== 'android') return config;
+  const plugins = config.plugins.map((p) => {
+    if (!Array.isArray(p) || p[0] !== 'expo-notifications') return p;
+    const [name, opts] = p;
+    return [
+      name,
+      { ...opts, sounds: (opts.sounds || []).map((s) => s.replace('./assets/sounds/', './assets/sounds-android/').replace(/\.caf$/, '.ogg')) },
+    ];
+  });
+  return { ...config, plugins };
+};

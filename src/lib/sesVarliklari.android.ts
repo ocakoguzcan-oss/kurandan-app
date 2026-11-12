@@ -1,0 +1,28 @@
+// Uygulama içi önizleme için ses dosyaları (Android: OGG; CAF Android'de çalmaz).
+/* eslint-disable @typescript-eslint/no-require-imports */
+export const SES_VARLIK: Record<string, number> = {
+  ses_ney1: require('../../assets/sounds-android/ses_ney1.ogg'),
+  ses_k2: require('../../assets/sounds-android/ses_k2.ogg'),
+  ses_k3: require('../../assets/sounds-android/ses_k3.ogg'),
+  ses_k6: require('../../assets/sounds-android/ses_k6.ogg'),
+  ses_k7: require('../../assets/sounds-android/ses_k7.ogg'),
+  ses_k4: require('../../assets/sounds-android/ses_k4.ogg'),
+  ses_k5: require('../../assets/sounds-android/ses_k5.ogg'),
+  ses_k8: require('../../assets/sounds-android/ses_k8.ogg'),
+  ses_k9: require('../../assets/sounds-android/ses_k9.ogg'),
+  ses_kisa1: require('../../assets/sounds-android/ses_kisa1.ogg'),
+  ses_kisa2: require('../../assets/sounds-android/ses_kisa2.ogg'),
+  ses_kisa3: require('../../assets/sounds-android/ses_kisa3.ogg'),
+  ses_kanun: require('../../assets/sounds-android/ses_kanun.ogg'),
+  ses_ruzgar: require('../../assets/sounds-android/ses_ruzgar.ogg'),
+  ses_melodi1: require('../../assets/sounds-android/ses_melodi1.ogg'),
+  ses_melodi2: require('../../assets/sounds-android/ses_melodi2.ogg'),
+  ses_melodi3: require('../../assets/sounds-android/ses_melodi3.ogg'),
+  ses_saat: require('../../assets/sounds-android/ses_saat.ogg'),
+  ses_dingdong: require('../../assets/sounds-android/ses_dingdong.ogg'),
+  ses_uyan: require('../../assets/sounds-android/ses_uyan.ogg'),
+  ses_yuksek: require('../../assets/sounds-android/ses_yuksek.ogg'),
+  ses_kus: require('../../assets/sounds-android/ses_kus.ogg'),
+  ses_bip: require('../../assets/sounds-android/ses_bip.ogg'),
+  ezan_ogle: require('../../assets/sounds-android/ezan_ogle.ogg'),
+};

@@ -57,7 +57,8 @@ function GeceModu() {
     koyu = now.getTime() >= v.aksam.getTime() || now.getTime() < v.gunes.getTime();
   }
   useEffect(() => {
-    if (Platform.OS === 'web') return;
+    // Koyu renkler yalnız iOS'ta (DynamicColorIOS); Android'de görünüm açık kalır
+    if (Platform.OS !== 'ios') return;
     try {
       Appearance.setColorScheme((koyu ? 'dark' : 'light') as Parameters<typeof Appearance.setColorScheme>[0]);
     } catch {
