@@ -21,6 +21,11 @@ function KartYuzu({ konum, acik, tur, onPress, sallaRef }: { konum: number; acik
   const salla = useRef(new Animated.Value(0)).current;
   const parilti = useRef(new Animated.Value(0)).current;
 
+  // Kayıt sonradan yüklenince (ya da gün değişince) kartın yüzü doğru tarafa gelsin
+  useEffect(() => {
+    don.setValue(acik ? 1 : 0);
+  }, [acik, don]);
+
   // Kapalı kartlar hafifçe "nefes alır"
   useEffect(() => {
     if (acik) return;
@@ -162,7 +167,8 @@ const st = StyleSheet.create({
   niyet: { fontFamily: fonts.display, fontSize: 19, color: colors.ink, marginTop: 2 },
   sandik: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
   sira: { flexDirection: 'row', gap: 10 },
-  kart: { aspectRatio: 0.68, borderRadius: radius.md },
+  // Sabit yükseklik: aspectRatio + mutlak konumlu yüzler bazı cihazlarda kartı basık çiziyordu
+  kart: { height: 170, borderRadius: radius.md },
   yuz: { ...StyleSheet.absoluteFillObject, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', backfaceVisibility: 'hidden', overflow: 'hidden' },
   arka: { backgroundColor: lightColors.green, borderWidth: 2, borderColor: lightColors.gold, gap: 8 },
   isik: { position: 'absolute', width: '140%', height: '40%', backgroundColor: lightColors.goldLight, top: '30%', transform: [{ rotate: '-30deg' }], opacity: 0.3 },
