@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Text } from './Text';
 import { Eyebrow } from './ui';
-import { StarOrnament } from './Icons';
+import { IconLock, StarOrnament } from './Icons';
 import { colors, fonts, lightColors, radius } from '../theme';
 import { acabilir, acilanlar, gununKartlari, kartAc, KartTur, useKartlar } from '../lib/kartlar';
 import { formatCountdown } from '../lib/prayerTimes';
@@ -15,7 +15,7 @@ import { t } from '../i18n';
 
 const TUR_AD: Record<KartTur, string> = { ayet: 'Ayet', hadis: 'Hadis', dua: 'Dua' };
 
-function KartYuzu({ konum, acik, tur, onPress, sallaRef }: { konum: number; acik: boolean; tur: KartTur; onPress: (konum: number, cevir: (sonra: () => void) => void) => void; sallaRef: (f: () => void) => void }) {
+function KartYuzu({ konum, acik, kilitli, tur, onPress, sallaRef }: { konum: number; acik: boolean; kilitli: boolean; tur: KartTur; onPress: (konum: number, cevir: (sonra: () => void) => void) => void; sallaRef: (f: () => void) => void }) {
   const don = useRef(new Animated.Value(acik ? 1 : 0)).current;
   const buyu = useRef(new Animated.Value(1)).current;
   const salla = useRef(new Animated.Value(0)).current;
@@ -71,10 +71,19 @@ function KartYuzu({ konum, acik, tur, onPress, sallaRef }: { konum: number; acik
     >
       <Animated.View style={[st.kart, { transform: [{ translateX: salla }, { scale: buyu }] }]}>
         {/* Arka yüz (kapalı) */}
-        <Animated.View style={[st.yuz, st.arka, { opacity: arkaOp, transform: [{ perspective: 800 }, { rotateY: arka }] }]}>
-          <Animated.View style={[st.isik, { opacity: isik }]} />
-          <StarOrnament size={34} color={lightColors.goldLight} fill={lightColors.green} />
-          <Text style={st.arkaYazi}>Kurandan.ai</Text>
+        <Animated.View style={[st.yuz, st.arka, kilitli && st.kilitli, { opacity: arkaOp, transform: [{ perspective: 800 }, { rotateY: arka }] }]}>
+          {!kilitli && <Animated.View style={[st.isik, { opacity: isik }]} />}
+          {kilitli ? (
+            <>
+              <IconLock size={30} color={lightColors.goldLight} />
+              <Text style={st.arkaYazi}>{t('Yarın')}</Text>
+            </>
+          ) : (
+            <>
+              <StarOrnament size={34} color={lightColors.goldLight} fill={lightColors.green} />
+              <Text style={st.arkaYazi}>Kurandan.ai</Text>
+            </>
+          )}
         </Animated.View>
         {/* Ön yüz (açık) */}
         <Animated.View style={[st.yuz, st.on, { opacity: onOp, transform: [{ perspective: 800 }, { rotateY: on }] }]}>
@@ -131,6 +140,7 @@ export function GununKartlari({ gun, yenilenme, now }: { gun: Date; yenilenme: D
             key={`${k.id}-${i}`}
             konum={i}
             acik={acik.includes(i)}
+            kilitli={!acik.includes(i) && !acabilir(s, gun)}
             tur={k.tur}
             onPress={sec}
             sallaRef={(f) => {
@@ -168,11 +178,13 @@ const st = StyleSheet.create({
   sandik: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.greenText },
   sira: { flexDirection: 'row', gap: 10 },
   // Sabit yükseklik: aspectRatio + mutlak konumlu yüzler bazı cihazlarda kartı basık çiziyordu
-  kart: { height: 170, borderRadius: radius.md },
+  kart: { height: 190, borderRadius: radius.md },
   // Yüzler üst üste: StyleSheet.absoluteFillObject bu React Native sürümünde yok, konum elle verilir
   yuz: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', backfaceVisibility: 'hidden', overflow: 'hidden' },
   arka: { backgroundColor: lightColors.green, borderWidth: 2, borderColor: lightColors.gold, gap: 8 },
   isik: { position: 'absolute', width: '140%', height: '40%', backgroundColor: lightColors.goldLight, top: '30%', transform: [{ rotate: '-30deg' }], opacity: 0.3 },
+  // Bugünün hakkı bitince kalan kartlar soluk ve kesik çerçeveli, kilitli görünür
+  kilitli: { backgroundColor: '#1F3A2D', borderStyle: 'dashed', borderColor: lightColors.goldLight },
   arkaYazi: { fontFamily: fonts.bodySemi, fontSize: 10, letterSpacing: 1, color: lightColors.goldLight },
   on: { backgroundColor: colors.card, borderWidth: 2, borderColor: colors.gold, gap: 6, padding: 8 },
   onTur: { fontFamily: fonts.display, fontSize: 18, color: colors.greenText },

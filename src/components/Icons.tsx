@@ -84,6 +84,9 @@ export const IconInstagram = ({ size = 20, color = colors.onGreen, strokeWidth =
 export const IconPin = ({ size = 18, color = colors.greenText, strokeWidth = 1.8 }: P) => (
   <Svg {...base(size, color, strokeWidth)}><Path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><Circle cx={12} cy={9.5} r={2.5} /></Svg>
 );
+export const IconLock = ({ size = 22, color = colors.greenText, strokeWidth = 1.8 }: P) => (
+  <Svg {...base(size, color, strokeWidth)}><Rect x={5} y={11} width={14} height={10} rx={2} /><Path d="M8 11V8a4 4 0 0 1 8 0v3" /></Svg>
+);
 export const IconSearch = ({ size = 20, color = colors.greenText, strokeWidth = 2 }: P) => (
   <Svg {...base(size, color, strokeWidth)}><Circle cx={11} cy={11} r={6.5} /><Path d="M16 16l4.5 4.5" /></Svg>
 );
