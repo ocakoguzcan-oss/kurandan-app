@@ -169,7 +169,8 @@ const st = StyleSheet.create({
   sira: { flexDirection: 'row', gap: 10 },
   // Sabit yükseklik: aspectRatio + mutlak konumlu yüzler bazı cihazlarda kartı basık çiziyordu
   kart: { height: 170, borderRadius: radius.md },
-  yuz: { ...StyleSheet.absoluteFillObject, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', backfaceVisibility: 'hidden', overflow: 'hidden' },
+  // Yüzler üst üste: StyleSheet.absoluteFillObject bu React Native sürümünde yok, konum elle verilir
+  yuz: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', backfaceVisibility: 'hidden', overflow: 'hidden' },
   arka: { backgroundColor: lightColors.green, borderWidth: 2, borderColor: lightColors.gold, gap: 8 },
   isik: { position: 'absolute', width: '140%', height: '40%', backgroundColor: lightColors.goldLight, top: '30%', transform: [{ rotate: '-30deg' }], opacity: 0.3 },
   arkaYazi: { fontFamily: fonts.bodySemi, fontSize: 10, letterSpacing: 1, color: lightColors.goldLight },
