@@ -219,12 +219,12 @@ enum WidgetMetin {
 
   static var ayetAciklama: String {
     switch dil {
-    case "tr": return "Mealiyle bir ayet; 15 dakikada bir yenilenir"
-    case "de": return "Ein Vers mit Übersetzung; alle 15 Minuten neu"
-    case "ar": return "آية مع معناها؛ تتجدد كل 15 دقيقة"
-    case "fr": return "Un verset et sa traduction ; renouvelé toutes les 15 minutes"
-    case "ru": return "Аят с переводом; обновляется каждые 15 минут"
-    default: return "A verse with its meaning; refreshed every 15 minutes"
+    case "tr": return "Mealiyle bir ayet; her dakika yenilenir"
+    case "de": return "Ein Vers mit Übersetzung; jede Minute neu"
+    case "ar": return "آية مع معناها؛ تتجدد كل دقيقة"
+    case "fr": return "Un verset et sa traduction ; renouvelé chaque minute"
+    case "ru": return "Аят с переводом; обновляется каждую минуту"
+    default: return "A verse with its meaning; refreshed every minute"
     }
   }
 

@@ -1,6 +1,7 @@
 // "Günün Ayeti" widget'ı: kilit ekranı (dikdörtgen, satır) ve ana ekran (küçük, orta, büyük).
 // Ayetler ve mealleri uygulama tarafından App Group'a yazılır (src/lib/ayetWidget.ts). iOS widget'ları
-// kilit açılışında yenilenemez; bu yüzden zaman çizelgesi her 15 dakikada bir sıradaki ayete geçer.
+// kilit açılışında yenilenemez; bu yüzden zaman çizelgesi her dakika sıradaki ayete geçer
+// (telefona her bakışta büyük ihtimalle yeni bir ayet).
 // Ana ekranda "Yeni ayet" düğmesi (iOS 17, etkileşimli widget) hemen bir sonrakini gösterir.
 import WidgetKit
 import SwiftUI
@@ -9,7 +10,8 @@ import AppIntents
 private let ayetGrup = "group.ai.kurandan.app"
 private let ayetKey = "ayetler"
 private let kaydirmaKey = "ayetKaydirma"
-private let aralik: TimeInterval = 15 * 60
+/// Her dakika yeni ayet: iOS kilit açılışında widget yenilemeye izin vermediği için en yakın çözüm
+private let aralik: TimeInterval = 60
 
 struct Ayet: Codable {
   /// Arapça metin
@@ -69,10 +71,11 @@ struct AyetProvider: TimelineProvider {
       return [AyetEntry(date: now, ayet: ornek, baslik: "Günün Ayeti")]
     }
     let kaydirma = UserDefaults(suiteName: ayetGrup)?.integer(forKey: kaydirmaKey) ?? 0
-    // 15 dakikalık dilimler: her dilimde başka bir ayet (aynı dilimde hep aynısı)
+    // Dakikalık dilimler: her dilimde başka bir ayet (aynı dilimde hep aynısı)
     let dilim = Int(now.timeIntervalSince1970 / aralik)
     let bas = Date(timeIntervalSince1970: Double(dilim) * aralik)
-    return (0..<48).map { i in
+    // 3 saatlik (180 dakikalık) çizelge; bitince iOS yenisini ister
+    return (0..<180).map { i in
       let idx = ((dilim + i) &* 7 &+ kaydirma) % v.list.count
       return AyetEntry(date: i == 0 ? now : bas.addingTimeInterval(Double(i) * aralik), ayet: v.list[abs(idx)], baslik: v.baslik ?? "Günün Ayeti")
     }
