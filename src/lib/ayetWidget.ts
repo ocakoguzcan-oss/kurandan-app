@@ -1,5 +1,5 @@
 // Ayet widget'ı (iOS kilit ekranı ve ana ekran): seçilmiş kısa ayetler meâliyle App Group'a yazılır;
-// widget her dakika sıradakini gösterir (iOS widget'ları kilit açılışında yenilenemez).
+// widget 40 saniyede bir sıradakini gösterir (iOS widget'ları kilit açılışında yenilenemez).
 // Metinler Quran Foundation'dan (api.quran.com) seçili dilin mealiyle indirilir ve cihazda saklanır;
 // her açılışta en fazla birkaç ayet indirilir, liste zamanla tamamlanır.
 import { EzanNative } from '../../modules/ezan-native';

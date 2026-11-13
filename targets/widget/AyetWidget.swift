@@ -1,17 +1,14 @@
 // "Günün Ayeti" widget'ı: kilit ekranı (dikdörtgen, satır) ve ana ekran (küçük, orta, büyük).
 // Ayetler ve mealleri uygulama tarafından App Group'a yazılır (src/lib/ayetWidget.ts). iOS widget'ları
-// kilit açılışında yenilenemez; bu yüzden zaman çizelgesi her dakika sıradaki ayete geçer
+// kilit açılışında yenilenemez; bu yüzden zaman çizelgesi 40 saniyede bir sıradaki ayete geçer
 // (telefona her bakışta büyük ihtimalle yeni bir ayet).
-// Ana ekranda "Yeni ayet" düğmesi (iOS 17, etkileşimli widget) hemen bir sonrakini gösterir.
 import WidgetKit
 import SwiftUI
-import AppIntents
 
 private let ayetGrup = "group.ai.kurandan.app"
 private let ayetKey = "ayetler"
-private let kaydirmaKey = "ayetKaydirma"
-/// Her dakika yeni ayet: iOS kilit açılışında widget yenilemeye izin vermediği için en yakın çözüm
-private let aralik: TimeInterval = 60
+/// 40 saniyede bir yeni ayet: iOS kilit açılışında widget yenilemeye izin vermediği için en yakın çözüm
+private let aralik: TimeInterval = 40
 
 struct Ayet: Codable {
   /// Arapça metin
@@ -31,18 +28,6 @@ func ayetVerisi() -> AyetVerisi? {
   guard let s = UserDefaults(suiteName: ayetGrup)?.string(forKey: ayetKey),
         let d = s.data(using: .utf8) else { return nil }
   return try? JSONDecoder().decode(AyetVerisi.self, from: d)
-}
-
-/// "Yeni ayet" düğmesi: sırayı bir ileri kaydırır ve widget'ı yeniler
-struct SonrakiAyet: AppIntent {
-  static let title: LocalizedStringResource = "Yeni ayet"
-
-  func perform() async throws -> some IntentResult {
-    let d = UserDefaults(suiteName: ayetGrup)
-    d?.set((d?.integer(forKey: kaydirmaKey) ?? 0) + 1, forKey: kaydirmaKey)
-    WidgetCenter.shared.reloadTimelines(ofKind: "AyetWidget")
-    return .result()
-  }
 }
 
 struct AyetEntry: TimelineEntry {
@@ -70,13 +55,12 @@ struct AyetProvider: TimelineProvider {
     guard let v = ayetVerisi(), !v.list.isEmpty else {
       return [AyetEntry(date: now, ayet: ornek, baslik: "Günün Ayeti")]
     }
-    let kaydirma = UserDefaults(suiteName: ayetGrup)?.integer(forKey: kaydirmaKey) ?? 0
-    // Dakikalık dilimler: her dilimde başka bir ayet (aynı dilimde hep aynısı)
+    // 40 saniyelik dilimler: her dilimde başka bir ayet (aynı dilimde hep aynısı)
     let dilim = Int(now.timeIntervalSince1970 / aralik)
     let bas = Date(timeIntervalSince1970: Double(dilim) * aralik)
-    // 3 saatlik (180 dakikalık) çizelge; bitince iOS yenisini ister
-    return (0..<180).map { i in
-      let idx = ((dilim + i) &* 7 &+ kaydirma) % v.list.count
+    // 3 saatlik çizelge (270 × 40 sn); bitince iOS yenisini ister
+    return (0..<270).map { i in
+      let idx = ((dilim + i) &* 7 ) % v.list.count
       return AyetEntry(date: i == 0 ? now : bas.addingTimeInterval(Double(i) * aralik), ayet: v.list[abs(idx)], baslik: v.baslik ?? "Günün Ayeti")
     }
   }
@@ -126,14 +110,6 @@ struct AyetWidgetView: View {
               .tracking(0.8)
               .foregroundStyle(Color("altin"))
             Spacer(minLength: 4)
-            if family != .systemSmall {
-              Button(intent: SonrakiAyet()) {
-                Image(systemName: "arrow.clockwise")
-                  .font(.system(size: 13, weight: .semibold))
-                  .foregroundStyle(Color("yesil"))
-              }
-              .buttonStyle(.plain)
-            }
           }
           if family != .systemSmall && !a.a.isEmpty && !a.m.isEmpty {
             Text(a.a)

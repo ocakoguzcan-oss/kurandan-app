@@ -203,4 +203,4 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
 - **Gece modu "Otomatik"**: akşam ezanından güneş doğana kadar koyu (seçili şehrin vakitleri), `app/_layout.tsx` → `GeceModu`.
 - **Günün Ayeti widget'ı** (`targets/widget/AyetWidget.swift`, `src/lib/ayetWidget.ts`): kilit ekranı (dikdörtgen, satır) ve
   ana ekran (küçük/orta/büyük). Seçilmiş ~85 kısa ayet (`AYET_ANAHTARLARI`) Quran Foundation'dan seçili dilin mealiyle indirilir,
-  App Group'a yazılır; widget her dakika sıradakine geçer (iOS kilit açılışında yenilemeye izin vermez), ana ekranda ↻ düğmesi (iOS 17 etkileşimli widget) hemen değiştirir.
+  App Group'a yazılır; widget 40 saniyede bir sıradakine geçer (iOS kilit açılışında yenilemeye izin vermez).
