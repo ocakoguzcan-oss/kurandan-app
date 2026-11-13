@@ -268,3 +268,26 @@ export async function buildChunks(words: QWord[], includeBismillah: boolean): Pr
 export async function chapterAudioUrl(chapter: number) {
   return (await getChapterAudio(chapter)).url;
 }
+
+/** Tek ayet: Arapça (Osmanlı hattı) ve seçili dilin meali (ayet widget'ı için) */
+export function getAyet(key: string): Promise<{ k: string; ar: string; meal: string }> {
+  const tid = translationId();
+  return cached(`quran.ayet.v1.${tid}.${key}`, async () => {
+    const json = await getJson(`${API}/verses/by_key/${key}?translations=${tid}&fields=text_uthmani`);
+    const v = json.verse;
+    const tr = (v.translations as any[] | undefined)?.find((x) => x.resource_id === tid) ?? v.translations?.[0];
+    return { k: key, ar: String(v.text_uthmani ?? ''), meal: tr?.text ? cleanMeal(tr.text) : '' };
+  });
+}
+
+/** Ayet yalnızca cihazda varsa (ağa gitmez) */
+export async function ayetOnbellekte(key: string): Promise<{ k: string; ar: string; meal: string } | null> {
+  const k = `quran.ayet.v1.${translationId()}.${key}`;
+  if (mem.has(k)) return mem.get(k) as { k: string; ar: string; meal: string };
+  try {
+    const raw = await AsyncStorage.getItem(k);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}

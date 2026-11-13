@@ -201,3 +201,6 @@ Bildirimler önümüzdeki 7 gün için kurulur ve uygulama her açıldığında 
   İçerik: `content/dualar.json` + `content/vakit-sozleri.json` (tefekkür notları `not` alanında). Kaydedilenler Kart Sandığı'nda.
 - **Ayet bulma** (Kur'an sekmesi, büyüteç): "Bakara 255", "2:255", "yasin 12" → doğru sayfa. Sayfa başlangıçları `src/data/sayfalar.ts` (Tanzil metadata, CC BY 3.0).
 - **Gece modu "Otomatik"**: akşam ezanından güneş doğana kadar koyu (seçili şehrin vakitleri), `app/_layout.tsx` → `GeceModu`.
+- **Günün Ayeti widget'ı** (`targets/widget/AyetWidget.swift`, `src/lib/ayetWidget.ts`): kilit ekranı (dikdörtgen, satır) ve
+  ana ekran (küçük/orta/büyük). Seçilmiş ~85 kısa ayet (`AYET_ANAHTARLARI`) Quran Foundation'dan seçili dilin mealiyle indirilir,
+  App Group'a yazılır; widget 15 dakikada bir sıradakine geçer, ana ekranda ↻ düğmesi (iOS 17 etkileşimli widget) hemen değiştirir.

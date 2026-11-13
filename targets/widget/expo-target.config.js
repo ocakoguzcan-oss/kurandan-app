@@ -24,8 +24,10 @@ module.exports = (config) => ({
   // AlarmKit (iOS 26+) listeye eklenmez: kullanıldığı yerler @available ile korunur ve otomatik zayıf bağlanır
   colors: {
     $accent: '#18583C',
-    $widgetBackground: '#F3ECDC',
+    $widgetBackground: { color: '#F3ECDC', darkColor: '#141B17' },
     yesil: { color: '#18583C', darkColor: '#7FC29B' },
+    altin: { color: '#7E5718', darkColor: '#E2C27A' },
+    murekkep: { color: '#1F2A24', darkColor: '#EDE7D8' },
   },
   entitlements: {
     'com.apple.security.application-groups': config.ios.entitlements['com.apple.security.application-groups'],

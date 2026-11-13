@@ -7,6 +7,7 @@ import { load, save, KEYS } from '../lib/storage';
 import { DEFAULT_REMINDERS, ReminderSettings, rescheduleAll } from '../lib/notifications';
 import { syncCanli, syncSabahAlarm, updateWidget } from '../lib/vakitWidget';
 import { kategorileriKur } from '../lib/bildirimEylem';
+import { ayetWidgetGuncelle } from '../lib/ayetWidget';
 import { CalcOptions, defaultAsr, defaultMethod } from '../lib/prayerTimes';
 import { deviceTimeZone, hasTz } from '../lib/tz';
 import { usePrefs } from '../lib/prefs';
@@ -112,6 +113,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     let iptal = false;
     (async () => {
       updateWidget(place.lat, place.lng, place.label, calc);
+      ayetWidgetGuncelle().catch(() => {});
       syncCanli(!!reminders.canli, place.lat, place.lng, place.label, calc);
       await kategorileriKur(reminders.erteleDk ?? 10);
       const alarm = await syncSabahAlarm(
