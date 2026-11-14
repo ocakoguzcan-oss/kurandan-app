@@ -5,7 +5,7 @@
   <string name="kw_manzara_ad">مشهد وقت الصلاة</string>
   <string name="kw_manzara_aciklama">عدّ تنازلي ومواقيت اليوم؛ تتغير السماء حسب الوقت</string>
   <string name="kw_ayet_ad">آية اليوم</string>
-  <string name="kw_ayet_aciklama">آية مع معناها، تتجدد كل نصف ساعة</string>
+  <string name="kw_ayet_aciklama">آية مع معناها، تتغير كل 40 ثانية</string>
   <string name="kw_ayet_bos">افتح التطبيق مرة لتحميل الآيات.</string>
   <string name="kw_canli_kanal">العدّ التنازلي للصلاة القادمة</string>
   <string name="kw_kalan">متبقٍ</string>

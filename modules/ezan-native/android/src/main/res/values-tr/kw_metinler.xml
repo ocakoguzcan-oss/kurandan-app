@@ -5,7 +5,7 @@
   <string name="kw_manzara_ad">Vakit Manzarası</string>
   <string name="kw_manzara_aciklama">Geri sayım ve günün vakitleri; gökyüzü vakte göre değişir</string>
   <string name="kw_ayet_ad">Günün Ayeti</string>
-  <string name="kw_ayet_aciklama">Mealiyle bir ayet, yarım saatte bir değişir</string>
+  <string name="kw_ayet_aciklama">Mealiyle bir ayet, 40 saniyede bir değişir</string>
   <string name="kw_ayet_bos">Ayetlerin gelmesi için uygulamayı bir kez açın.</string>
   <string name="kw_canli_kanal">Sıradaki vakte geri sayım</string>
   <string name="kw_kalan">kaldı</string>

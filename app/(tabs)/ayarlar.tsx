@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { Alert, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Alert, AppState, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { router, useFocusEffect } from 'expo-router';
 import { Screen, Card, Chip, Eyebrow, Toggle } from '../../src/components/ui';
@@ -14,7 +14,7 @@ import { EZANLAR, EzanId } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
-import { alarmPermission, alarmSupported, canliDestek, testSabahAlarm, widgetMekan } from '../../src/lib/vakitWidget';
+import { alarmPermission, alarmSupported, androidAyarAc, androidDurum, canliDestek, testSabahAlarm, widgetEkle, widgetEklenebilir, widgetMekan } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -83,11 +83,21 @@ export default function Ayarlar() {
     setReminders({ ...reminders, sabahAlarm: v });
   };
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
-  useFocusEffect(
-    useCallback(() => {
-      getPermissionStatus().then((p) => setPerm(p.status));
-    }, [])
-  );
+  const [android, setAndroid] = useState(androidDurum);
+  const pinVar = useMemo(() => widgetEklenebilir(), []);
+  const durumYenile = useCallback(() => {
+    getPermissionStatus().then((p) => setPerm(p.status));
+    setAndroid(androidDurum());
+  }, []);
+  useFocusEffect(durumYenile);
+  // Telefonun ayarlarından geri dönünce uyarılar güncellensin
+  useEffect(() => {
+    const abone = AppState.addEventListener('change', (s) => s === 'active' && durumYenile());
+    return () => abone.remove();
+  }, [durumYenile]);
+  const widgetEkleBas = (tur: 'vakit' | 'manzara' | 'ayet') => {
+    if (!widgetEkle(tur)) Alert.alert(t('Widget ekle'), t('Ana ekranda boş bir yere basılı tutun, Widget’lar’a dokunun ve Kurandan.ai’yi seçin.'));
+  };
 
   return (
     <Screen title={t('Ayarlar')} back={false}>
@@ -125,7 +135,21 @@ export default function Ayarlar() {
         )}
       </Card>
 
-      {Platform.OS === 'android' && (
+      {Platform.OS === 'android' && android.tamVakit === false && (
+        <Pressable accessibilityRole="button" onPress={() => androidAyarAc('tamVakit')} style={st.permBanner}>
+          <Text style={st.permTitle}>{t('Ezan tam vaktinde gelsin')}</Text>
+          <Text style={st.permBody}>{t('“Alarmlar ve hatırlatıcılar” izni kapalı; bildirimler birkaç dakika gecikebilir. Açmak için dokunun.')}</Text>
+        </Pressable>
+      )}
+      {Platform.OS === 'android' && android.pil === false && (
+        <Pressable accessibilityRole="button" onPress={() => androidAyarAc('uygulama')} style={st.androidBanner}>
+          <Text style={st.permTitle}>{t('Bildirimler kaçmasın')}</Text>
+          <Text style={st.permBody}>
+            {t('Pil tasarrufu bildirimleri geciktirebilir. Açılan sayfada Pil → “Kısıtlama yok” seçin; bazı telefonlarda “Otomatik başlatma”yı da açın. Açmak için dokunun.')}
+          </Text>
+        </Pressable>
+      )}
+      {Platform.OS === 'android' && android.tamVakit === null && (
         <Pressable accessibilityRole="button" onPress={() => Linking.openSettings().catch(() => {})} style={st.androidBanner}>
           <Text style={st.permTitle}>{t('Ezan tam vaktinde gelsin')}</Text>
           <Text style={st.permBody}>{t('Android’de uygulama ayarlarından “Alarmlar ve hatırlatıcılar” iznini açın; yoksa bildirim birkaç dakika gecikebilir. Açmak için dokunun.')}</Text>
@@ -216,13 +240,15 @@ export default function Ayarlar() {
             <Text style={st.name}>{t('Hatırlatıcılar')}</Text>
             <Text style={st.sub} numberOfLines={2}>{t('Kıldınız mı?, teheccüd, oruç, Cuma, kandil, erteleme')}</Text>
           </View>
-          <Text style={st.link}>{`${ekSayisi ? t('{n} açık', { n: ekSayisi }) : t('Kapalı')} ›`}</Text>
+          <Text style={[st.link, { flexShrink: 0 }]} numberOfLines={1}>{`${ekSayisi ? t('{n} açık', { n: ekSayisi }) : t('Kapalı')} ›`}</Text>
         </Pressable>
         {canliVar && (
           <View style={[st.row, st.divider]}>
             <View style={{ flexShrink: 1 }}>
               <Text style={st.name}>{t('Canlı Etkinlik')}</Text>
-              <Text style={st.sub}>{t('Kilit ekranında ve Dinamik Ada’da sıradaki vakte geri sayım')}</Text>
+              <Text style={st.sub}>
+                {Platform.OS === 'android' ? t('Bildirim alanında ve kilit ekranında sıradaki vakte geri sayım') : t('Kilit ekranında ve Dinamik Ada’da sıradaki vakte geri sayım')}
+              </Text>
             </View>
             <Toggle label={t('Canlı Etkinlik')} value={!!reminders.canli} onChange={(v) => setReminders({ ...reminders, canli: v })} />
           </View>
@@ -252,6 +278,27 @@ export default function Ayarlar() {
           </View>
           <Text style={st.link}>{t('Değiştir ›')}</Text>
         </Pressable>
+        {Platform.OS === 'android' && (
+          <View style={[st.divider, { paddingVertical: 10, gap: 8 }]}>
+            <Text style={st.name}>{t('Ana ekrana widget ekle')}</Text>
+            <Text style={st.sub}>
+              {pinVar ? t('Seçtiğiniz widget için telefon ekleme penceresi açılır') : t('Ana ekranda boş bir yere basılı tutun, Widget’lar’a dokunun ve Kurandan.ai’yi seçin.')}
+            </Text>
+            {pinVar && (
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                {(
+                  [
+                    ['vakit', t('Vakit')],
+                    ['manzara', t('Vakit Manzarası')],
+                    ['ayet', t('Günün Ayeti')],
+                  ] as const
+                ).map(([id, ad]) => (
+                  <Chip key={id} label={`+ ${ad}`} selected={false} onPress={() => widgetEkleBas(id)} />
+                ))}
+              </View>
+            )}
+          </View>
+        )}
         {Platform.OS === 'android' && (
           <View style={[st.divider, { paddingVertical: 10, gap: 8 }]}>
             <Text style={st.name}>{t('Vakit Manzarası widget’ı')}</Text>

@@ -18,6 +18,13 @@ type EzanNativeModule = {
   liveStart(city: string, vakit: string, saat: string, startMs: number, endMs: number): Promise<boolean>;
   liveStop(): Promise<void>;
   /** Apple Haritalar'da çevredeki yerleri arar (yakın camiler) */
+  /** Android: tam vaktinde alarm izni, pil kısıtlaması, ana ekrana widget ekleme */
+  exactAlarmOk?(): boolean;
+  openExactAlarm?(): boolean;
+  batteryOk?(): boolean;
+  openAppSettings?(): boolean;
+  pinSupported?(): boolean;
+  pinWidget?(tur: 'vakit' | 'manzara' | 'ayet'): boolean;
   searchPlaces?(lat: number, lng: number, radius: number, queries: string[]): Promise<{ name: string; lat: number; lng: number }[]>;
 };
 

@@ -5,7 +5,7 @@
   <string name="kw_manzara_ad">Панорама намаза</string>
   <string name="kw_manzara_aciklama">Отсчёт и время на день; небо меняется по времени суток</string>
   <string name="kw_ayet_ad">Аят дня</string>
-  <string name="kw_ayet_aciklama">Аят с переводом, меняется каждые 30 минут</string>
+  <string name="kw_ayet_aciklama">Аят с переводом, меняется каждые 40 секунд</string>
   <string name="kw_ayet_bos">Откройте приложение один раз, чтобы загрузить аяты.</string>
   <string name="kw_canli_kanal">Отсчёт до следующего намаза</string>
   <string name="kw_kalan">осталось</string>

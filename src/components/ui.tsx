@@ -58,10 +58,14 @@ export function Screen({
     );
   }
   return (
-    <ScrollView ref={scrollRef} onScroll={onScroll} scrollEventThrottle={32} style={s.root} contentContainerStyle={[pad, s.scrollContent, contentStyle]}>
-      {header}
-      {children}
-    </ScrollView>
+    <View style={s.root}>
+      <ScrollView ref={scrollRef} onScroll={onScroll} scrollEventThrottle={32} style={s.root} contentContainerStyle={[pad, s.scrollContent, contentStyle]}>
+        {header}
+        {children}
+      </ScrollView>
+      {/* Durum çubuğunun arkası: kaydırılan yazılar saat ve pil simgelerinin altına girmesin */}
+      <View pointerEvents="none" style={[s.durumCubugu, { height: insets.top }]} />
+    </View>
   );
 }
 
@@ -141,6 +145,7 @@ export function Button({
 
 export const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.paper },
+  durumCubugu: { position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: colors.paper },
   scrollContent: { paddingHorizontal: 20, gap: 16 },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 0 },
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12, flexShrink: 1 },

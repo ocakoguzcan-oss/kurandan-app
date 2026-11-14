@@ -153,3 +153,44 @@ export async function syncCanli(on: boolean, lat: number, lng: number, place: st
     // eski derleme ya da Canlı Etkinlikler kapalı
   }
 }
+
+/** Android ayar durumları: tam vaktinde alarm izni ve pil kısıtlaması (eski derlemede ya da iOS'ta null) */
+export function androidDurum(): { tamVakit: boolean | null; pil: boolean | null } {
+  if (Platform.OS !== 'android' || !EzanNative) return { tamVakit: null, pil: null };
+  const oku = (f?: () => boolean) => {
+    try {
+      return f ? f() : null;
+    } catch {
+      return null;
+    }
+  };
+  return { tamVakit: oku(EzanNative.exactAlarmOk), pil: oku(EzanNative.batteryOk) };
+}
+
+export function androidAyarAc(ne: 'tamVakit' | 'uygulama'): boolean {
+  try {
+    if (ne === 'tamVakit' && EzanNative?.openExactAlarm) return EzanNative.openExactAlarm();
+    if (EzanNative?.openAppSettings) return EzanNative.openAppSettings();
+  } catch {
+    // eski derleme
+  }
+  return false;
+}
+
+export function widgetEklenebilir(): boolean {
+  if (Platform.OS !== 'android' || !EzanNative?.pinSupported) return false;
+  try {
+    return EzanNative.pinSupported();
+  } catch {
+    return false;
+  }
+}
+
+/** Android: başlatıcının "ana ekrana ekle" penceresini açar */
+export function widgetEkle(tur: 'vakit' | 'manzara' | 'ayet'): boolean {
+  try {
+    return !!EzanNative?.pinWidget?.(tur);
+  } catch {
+    return false;
+  }
+}

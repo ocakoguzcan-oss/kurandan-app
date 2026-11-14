@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+  <TextView android:id="@+id/kw_baslik" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:letterSpacing="0.08" android:textColor="@color/kw_altin" android:textSize="10sp" android:textStyle="bold" />
+  <TextView android:id="@+id/kw_arapca" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginTop="6dp" android:gravity="end" android:maxLines="2" android:ellipsize="end"
+    android:textColor="@color/kw_yesil" android:textSize="18sp" android:textDirection="rtl" />
+  <TextView android:id="@+id/kw_meal" android:layout_width="match_parent" android:layout_height="0dp"
+    android:layout_marginTop="6dp" android:layout_weight="1" android:ellipsize="end" android:maxLines="6"
+    android:fontFamily="serif" android:textColor="@color/kw_murekkep" android:textSize="15sp" />
+  <TextView android:id="@+id/kw_kaynak" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:maxLines="1" android:textColor="@color/kw_altin" android:textSize="11sp" android:textStyle="bold" />
+</LinearLayout>

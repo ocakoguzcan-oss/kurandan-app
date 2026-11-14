@@ -1,7 +1,7 @@
 // Android ana ekran widget'ları (iOS'takilerin karşılığı):
 // - Vakit: şehir, sıradaki vakit ve geri sayım (küçük)
 // - Vakit Manzarası: vakte göre değişen gökyüzü, mübarek mekân çizimi, geri sayım ve günün altı vakti
-// - Günün Ayeti: mealiyle bir ayet, yarım saatte bir değişir
+// - Günün Ayeti: mealiyle bir ayet, 40 saniyede bir değişir (ViewFlipper)
 // Geri sayımı Android'in kronometresi işletir; vakit girince ve yarım saatte bir AlarmManager widget'ları yeniler.
 package ai.kurandan.ezannative
 
@@ -176,23 +176,36 @@ object Widgetlar {
   }
 
   // ----- Günün Ayeti -----
+  // Yarım saatlik dilimde 45 sayfa (45 × 40 sn): ViewFlipper bunları kendiliğinden çevirir, telefon uyandırılmaz
+  private const val AYET_SAYFA = 45
+
   private fun ayetGorunumu(ctx: Context, simdi: Long): RemoteViews {
     val v = RemoteViews(ctx.packageName, R.layout.kw_ayet)
     acmaNiyeti(ctx)?.let { v.setOnClickPendingIntent(R.id.kw_kok, it) }
+    v.removeAllViews(R.id.kw_cevirici)
     val (list, baslik) = Veri.ayetler(ctx)
-    v.setTextViewText(R.id.kw_baslik, (if (baslik.isEmpty()) ctx.getString(R.string.kw_ayet_ad) else baslik).uppercase())
+    val ust = (if (baslik.isEmpty()) ctx.getString(R.string.kw_ayet_ad) else baslik).uppercase()
     if (list.isEmpty()) {
-      v.setTextViewText(R.id.kw_arapca, "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ")
-      v.setTextViewText(R.id.kw_meal, ctx.getString(R.string.kw_ayet_bos))
-      v.setTextViewText(R.id.kw_kaynak, "")
+      val p = RemoteViews(ctx.packageName, R.layout.kw_ayet_sayfa)
+      p.setTextViewText(R.id.kw_baslik, ust)
+      p.setTextViewText(R.id.kw_arapca, "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ")
+      p.setTextViewText(R.id.kw_meal, ctx.getString(R.string.kw_ayet_bos))
+      p.setTextViewText(R.id.kw_kaynak, "")
+      v.addView(R.id.kw_cevirici, p)
       return v
     }
-    val dilim = (simdi / AYET_ARALIK).toInt()
-    val a = list[Math.floorMod(dilim * 7, list.size)]
-    v.setTextViewText(R.id.kw_arapca, a.arapca)
-    v.setViewVisibility(R.id.kw_arapca, if (a.arapca.isEmpty() || a.meal.isEmpty()) View.GONE else View.VISIBLE)
-    v.setTextViewText(R.id.kw_meal, "“${if (a.meal.isEmpty()) a.arapca else a.meal}”")
-    v.setTextViewText(R.id.kw_kaynak, a.kaynak)
+    // Dilim başına sıradaki ayetler; her yenilemede kaldığı yerden devam eder
+    val bas = (simdi / AYET_ARALIK).toInt() * AYET_SAYFA
+    for (i in 0 until minOf(AYET_SAYFA, list.size)) {
+      val a = list[Math.floorMod(bas + i, list.size)]
+      val p = RemoteViews(ctx.packageName, R.layout.kw_ayet_sayfa)
+      p.setTextViewText(R.id.kw_baslik, ust)
+      p.setTextViewText(R.id.kw_arapca, a.arapca)
+      p.setViewVisibility(R.id.kw_arapca, if (a.arapca.isEmpty() || a.meal.isEmpty()) View.GONE else View.VISIBLE)
+      p.setTextViewText(R.id.kw_meal, "\u201C${if (a.meal.isEmpty()) a.arapca else a.meal}\u201D")
+      p.setTextViewText(R.id.kw_kaynak, a.kaynak)
+      v.addView(R.id.kw_cevirici, p)
+    }
     return v
   }
 }
