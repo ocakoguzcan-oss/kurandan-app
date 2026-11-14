@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="kw_vakit_ad">Heure de prière</string>
+  <string name="kw_vakit_aciklama">Prochaine prière et temps restant</string>
+  <string name="kw_manzara_ad">Panorama des prières</string>
+  <string name="kw_manzara_aciklama">Compte à rebours et horaires du jour ; le ciel change selon l\'heure</string>
+  <string name="kw_ayet_ad">Verset du jour</string>
+  <string name="kw_ayet_aciklama">Un verset et sa traduction, renouvelé toutes les 30 minutes</string>
+  <string name="kw_ayet_bos">Ouvrez l\'app une fois pour charger les versets.</string>
+  <string name="kw_canli_kanal">Compte à rebours de la prochaine prière</string>
+  <string name="kw_kalan">restant</string>
+</resources>

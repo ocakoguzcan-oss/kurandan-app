@@ -30,6 +30,8 @@ export type Prefs = {
   saat12?: boolean;
   /** Ana ekranda iftar sayacı (Ramazan dışında da, nafile oruç için) */
   iftarSayaci?: boolean;
+  /** Android: Vakit Manzarası widget'ındaki mekân */
+  widgetMekan?: 'kabe' | 'nebevi' | 'aksa' | 'kuba';
 };
 
 const KEY = 'kurandan.prefs.v1';

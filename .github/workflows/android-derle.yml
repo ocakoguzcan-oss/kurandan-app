@@ -8,6 +8,11 @@ name: Android derle
 on:
   workflow_dispatch:
     inputs:
+      profil:
+        description: "preview = telefona doğrudan kurulan test APK'sı, production = Google Play için .aab"
+        type: choice
+        options: [preview, production]
+        default: preview
       gonder:
         description: "Bittikten sonra Google Play'e (dahili test kanalı) gönder"
         type: boolean
@@ -27,9 +32,9 @@ jobs:
       - name: Derle (EAS, bitene kadar bekler)
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx --yes eas-cli@latest build -p android --profile production --non-interactive --wait
+        run: npx --yes eas-cli@latest build -p android --profile ${{ inputs.profil }} --non-interactive --wait
       - name: Google Play'e gönder
-        if: ${{ inputs.gonder }}
+        if: ${{ inputs.gonder && inputs.profil == 'production' }}
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           GOOGLE_PLAY_KEY: ${{ secrets.GOOGLE_PLAY_KEY }}

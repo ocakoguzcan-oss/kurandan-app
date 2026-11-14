@@ -14,7 +14,7 @@ import { EZANLAR } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
-import { alarmPermission, alarmSupported, canliDestek, tanilama, testSabahAlarm } from '../../src/lib/vakitWidget';
+import { alarmPermission, alarmSupported, canliDestek, tanilama, testSabahAlarm, widgetMekan } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -62,7 +62,7 @@ export default function Ayarlar() {
     return parca.join(' · ');
   };
   const sabahAlarm = async (v: boolean) => {
-    if (v) {
+    if (v && Platform.OS === 'ios') {
       const p = await alarmPermission(true);
       if (p !== 'granted') {
         Alert.alert(t('Alarm izni verilmedi'), t('Ayarlar → Kurandan.ai → Alarmlar’dan izin verebilirsiniz.'));
@@ -182,11 +182,13 @@ export default function Ayarlar() {
           </View>
           <Text style={st.link}>{`${t(sesById(sesOf(reminders)).ad)} ›`}</Text>
         </Pressable>
-        {alarmVar && (
+        {(alarmVar || Platform.OS === 'android') && (
           <View style={[st.row, st.divider]}>
             <View style={{ flexShrink: 1 }}>
               <Text style={st.name}>{t('Sabah ezanı alarm olarak')}</Text>
-              <Text style={st.sub}>{t('Sessiz modda da çalar · kaydırarak ya da Durdur ile kapatılır')}</Text>
+              <Text style={st.sub}>
+                {Platform.OS === 'android' ? t('Sessiz modda ve Rahatsız Etmeyin açıkken de alarm sesiyle çalar') : t('Sessiz modda da çalar · kaydırarak ya da Durdur ile kapatılır')}
+              </Text>
             </View>
             <Toggle label={t('Sabah ezanı alarm olarak')} value={!!reminders.sabahAlarm} onChange={sabahAlarm} />
           </View>
@@ -242,6 +244,32 @@ export default function Ayarlar() {
           </View>
           <Text style={st.link}>{t('Değiştir ›')}</Text>
         </Pressable>
+        {Platform.OS === 'android' && (
+          <View style={[st.divider, { paddingVertical: 10, gap: 8 }]}>
+            <Text style={st.name}>{t('Vakit Manzarası widget’ı')}</Text>
+            <Text style={st.sub}>{t('Ana ekran widget’ında görünecek mekân')}</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+              {(
+                [
+                  ['kabe', t('Kâbe')],
+                  ['nebevi', t('Mescid-i Nebevi')],
+                  ['aksa', t('Mescid-i Aksa')],
+                  ['kuba', t('Kuba Mescidi')],
+                ] as const
+              ).map(([id, ad]) => (
+                <Chip
+                  key={id}
+                  label={ad}
+                  selected={(prefs.widgetMekan ?? 'kabe') === id}
+                  onPress={() => {
+                    setPrefs({ widgetMekan: id });
+                    widgetMekan(id);
+                  }}
+                />
+              ))}
+            </View>
+          </View>
+        )}
         <Pressable accessibilityRole="button" onPress={() => router.push('/kisisel')} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Kişisel ayarlar')}</Text>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/kw_kok"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/kw_kart"
+  android:orientation="vertical"
+  android:padding="14dp">
+  <TextView android:id="@+id/kw_yer" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:maxLines="1" android:ellipsize="end" android:textColor="@color/kw_soluk" android:textSize="12sp" />
+  <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+  <TextView android:id="@+id/kw_ad" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:maxLines="1" android:textColor="@color/kw_yesil" android:textSize="15sp" android:textStyle="bold" />
+  <TextView android:id="@+id/kw_saat" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:maxLines="1" android:textColor="@color/kw_murekkep" android:textSize="32sp" android:textStyle="bold" />
+  <Chronometer android:id="@+id/kw_sayac" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:textColor="@color/kw_soluk" android:textSize="14sp" />
+</LinearLayout>

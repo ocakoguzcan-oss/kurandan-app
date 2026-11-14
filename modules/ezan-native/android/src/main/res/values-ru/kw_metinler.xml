@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="kw_vakit_ad">Время намаза</string>
+  <string name="kw_vakit_aciklama">Следующий намаз и оставшееся время</string>
+  <string name="kw_manzara_ad">Панорама намаза</string>
+  <string name="kw_manzara_aciklama">Отсчёт и время на день; небо меняется по времени суток</string>
+  <string name="kw_ayet_ad">Аят дня</string>
+  <string name="kw_ayet_aciklama">Аят с переводом, меняется каждые 30 минут</string>
+  <string name="kw_ayet_bos">Откройте приложение один раз, чтобы загрузить аяты.</string>
+  <string name="kw_canli_kanal">Отсчёт до следующего намаза</string>
+  <string name="kw_kalan">осталось</string>
+</resources>

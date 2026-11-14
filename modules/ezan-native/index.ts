@@ -1,4 +1,4 @@
-// Kurandan yerel modülü (yalnız iOS). Eski derlemelerde ve Android'de modül yoktur: null döner.
+// Kurandan yerel modülü (iOS ve Android). Eski derlemelerde modül yoktur: null döner.
 import { Platform } from 'react-native';
 import { requireOptionalNativeModule } from 'expo';
 
@@ -22,4 +22,4 @@ type EzanNativeModule = {
 };
 
 export const EzanNative: EzanNativeModule | null =
-  Platform.OS === 'ios' ? requireOptionalNativeModule<EzanNativeModule>('EzanNative') : null;
+  Platform.OS === 'ios' || Platform.OS === 'android' ? requireOptionalNativeModule<EzanNativeModule>('EzanNative') : null;

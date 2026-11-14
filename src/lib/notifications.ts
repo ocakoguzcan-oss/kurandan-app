@@ -91,6 +91,8 @@ const CHANNEL = 'vakit';
 // Android'de bildirim sesi kanala bağlıdır: her kayıt için ayrı kanal
 const ezanChannel = (id: EzanId, sev: EzanSeviye = 'yuksek') => (sev === 'yuksek' ? `ezan-${id}` : `ezan-${id}-${sev}`);
 const sesChannel = (id: SesId) => `ses-${id}`;
+/** Android sabah alarmı kanalı (ezan ya da seçili zil sesi, alarm ses akışında) */
+const alarmChannel = (ezan: EzanId | null, zil: SesId | undefined, sev: EzanSeviye) => (ezan ? `alarm-ezan-${sev}` : `alarm-${zil ?? 'varsayilan'}`);
 const DAYS_AHEAD = 7;
 /** iOS en fazla 64 bekleyen bildirime izin verir; Cuma ve dini günler için pay bırakılır */
 const VAKIT_BUTCESI = 54;
@@ -147,6 +149,27 @@ async function ensureChannels(sev: EzanSeviye = 'yuksek') {
       vibrationPattern: [0, 300, 200, 300],
       enableVibrate: true,
       lightColor: '#18583C',
+    });
+  }
+  // Sabah alarmı kanalları: alarm ses akışı (sessiz modda da çalar), Rahatsız Etmeyin'i deler
+  const alarmOzellik = {
+    importance: Notifications.AndroidImportance.MAX,
+    bypassDnd: true,
+    vibrationPattern: [0, 600, 300, 600, 300, 600],
+    lightColor: '#18583C',
+    audioAttributes: { usage: Notifications.AndroidAudioUsage.ALARM, contentType: Notifications.AndroidAudioContentType.SONIFICATION },
+  };
+  await Notifications.setNotificationChannelAsync(alarmChannel('imsak', undefined, sev), {
+    ...alarmOzellik,
+    name: `${t('Sabah ezanı alarm olarak')}`,
+    sound: ezanDosya('imsak', sev),
+  });
+  for (const z of SESLER) {
+    if (!z.dosya) continue;
+    await Notifications.setNotificationChannelAsync(alarmChannel(null, z.id, sev), {
+      ...alarmOzellik,
+      name: `${t('Sabah ezanı alarm olarak')} · ${t(z.ad)}`,
+      sound: bildirimDosyasi(z.dosya),
     });
   }
   // Eski sürümün tek ezan kanalı
@@ -353,7 +376,11 @@ export async function rescheduleAll(
         title = cumaOgle ? t('Cuma Namazı Vakti 🤲🏻📿') : t('{vakit} Namazı Vakti 🤲🏻📿', { vakit: ezanAdi });
         body = `${placeName} · ${formatTime(times[key], tz)}\n${vakitSozu(key, day)}`;
       }
-      const kanal = ezan ? ezanChannel(ezan, sev) : zil && (zil.dosya || zil.id === 'sessiz') ? sesChannel(zil.id) : CHANNEL;
+      // Android'de sabah alarmı: imsak bildirimi alarm ses akışından çalar (sessiz modda ve Rahatsız Etmeyin'de de)
+      const androidAlarm = Platform.OS === 'android' && !!settings.sabahAlarm && key === 'imsak';
+      const kanal = androidAlarm
+        ? alarmChannel(ses === 'ezan' || !zil?.dosya ? 'imsak' : null, zil?.id, sev)
+        : ezan ? ezanChannel(ezan, sev) : zil && (zil.dosya || zil.id === 'sessiz') ? sesChannel(zil.id) : CHANNEL;
       await zamanla(
         {
           title,

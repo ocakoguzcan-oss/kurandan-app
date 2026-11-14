@@ -1,6 +1,9 @@
 {
-  "platforms": ["apple"],
+  "platforms": ["apple", "android"],
   "apple": {
     "modules": ["EzanNativeModule"]
+  },
+  "android": {
+    "modules": ["ai.kurandan.ezannative.EzanNativeModule"]
   }
 }

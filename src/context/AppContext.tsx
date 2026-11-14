@@ -5,7 +5,7 @@ import { DEFAULT_IL, ILLER, Il } from '../data/iller';
 import { City, nearestCity } from '../data/world';
 import { load, save, KEYS } from '../lib/storage';
 import { DEFAULT_REMINDERS, ReminderSettings, rescheduleAll } from '../lib/notifications';
-import { syncCanli, syncSabahAlarm, updateWidget } from '../lib/vakitWidget';
+import { syncCanli, syncSabahAlarm, updateWidget, widgetMekan } from '../lib/vakitWidget';
 import { kategorileriKur } from '../lib/bildirimEylem';
 import { ayetWidgetGuncelle } from '../lib/ayetWidget';
 import { CalcOptions, defaultAsr, defaultMethod } from '../lib/prayerTimes';
@@ -114,6 +114,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     (async () => {
       updateWidget(place.lat, place.lng, place.label, calc);
       ayetWidgetGuncelle().catch(() => {});
+      widgetMekan(prefs.widgetMekan ?? 'kabe');
       syncCanli(!!reminders.canli, place.lat, place.lng, place.label, calc);
       await kategorileriKur(reminders.erteleDk ?? 10);
       const alarm = await syncSabahAlarm(
@@ -128,7 +129,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return () => {
       iptal = true;
     };
-  }, [ready, reminders, place.lat, place.lng, place.label, calc, tick]);
+  }, [ready, reminders, place.lat, place.lng, place.label, calc, tick, prefs.widgetMekan]);
 
   const updatePlace = useCallback((p: Place) => {
     setPlace(p);

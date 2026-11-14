@@ -1,0 +1,23 @@
+// Kurandan yerel modülü (Android): ana ekran widget'ları ve sıradaki vakte geri sayım bildirimi.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'ai.kurandan.ezannative'
+version = '1.0.0'
+
+android {
+  namespace "ai.kurandan.ezannative"
+  defaultConfig {
+    versionCode 1
+    versionName "1.0.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation 'androidx.core:core-ktx:1.13.1'
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="kw_vakit_ad">Gebetszeit</string>
+  <string name="kw_vakit_aciklama">Nächstes Gebet und verbleibende Zeit</string>
+  <string name="kw_manzara_ad">Gebetszeit-Panorama</string>
+  <string name="kw_manzara_aciklama">Countdown und Zeiten des Tages; der Himmel ändert sich mit der Tageszeit</string>
+  <string name="kw_ayet_ad">Vers des Tages</string>
+  <string name="kw_ayet_aciklama">Ein Vers mit Übersetzung, alle 30 Minuten neu</string>
+  <string name="kw_ayet_bos">Öffnen Sie die App einmal, um die Verse zu laden.</string>
+  <string name="kw_canli_kanal">Countdown zum nächsten Gebet</string>
+  <string name="kw_kalan">verbleibend</string>
+</resources>

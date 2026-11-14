@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="kw_vakit_ad">Prayer Time</string>
+  <string name="kw_vakit_aciklama">Next prayer and time left</string>
+  <string name="kw_manzara_ad">Prayer Panorama</string>
+  <string name="kw_manzara_aciklama">Countdown and today\'s times; the sky changes with the time of day</string>
+  <string name="kw_ayet_ad">Verse of the Day</string>
+  <string name="kw_ayet_aciklama">A verse with its meaning, changes every 30 minutes</string>
+  <string name="kw_ayet_bos">Open the app once to load the verses.</string>
+  <string name="kw_canli_kanal">Next prayer countdown</string>
+  <string name="kw_kalan">left</string>
+</resources>

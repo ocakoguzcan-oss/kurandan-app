@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application>
+    <!-- Ana ekran widget'ları (veri: uygulamanın yazdığı SharedPreferences) -->
+    <receiver android:name="ai.kurandan.ezannative.VakitWidgetProvider" android:exported="false" android:label="@string/kw_vakit_ad">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/kw_vakit_info" />
+    </receiver>
+    <receiver android:name="ai.kurandan.ezannative.ManzaraWidgetProvider" android:exported="false" android:label="@string/kw_manzara_ad">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/kw_manzara_info" />
+    </receiver>
+    <receiver android:name="ai.kurandan.ezannative.AyetWidgetProvider" android:exported="false" android:label="@string/kw_ayet_ad">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/kw_ayet_info" />
+    </receiver>
+    <!-- Vakit girince ve yarım saatte bir widget'ları yeniler -->
+    <receiver android:name="ai.kurandan.ezannative.WidgetGuncelleyici" android:exported="false" />
+  </application>
+</manifest>

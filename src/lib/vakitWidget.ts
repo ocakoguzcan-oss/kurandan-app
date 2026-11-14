@@ -106,9 +106,19 @@ export function tanilama(): string {
   }
 }
 
-/** Canlı Etkinlik (iOS 16.2+, yeni derleme) destekleniyor ve kullanıcı kapatmamış mı */
+/** Android: Vakit Manzarası widget'ında görünecek mekân (iOS'ta widget düzenlenirken seçilir) */
+export function widgetMekan(id: string) {
+  if (Platform.OS !== 'android' || !EzanNative) return;
+  try {
+    EzanNative.setWidgetData(APP_GROUP, 'mekan', id);
+  } catch {
+    // eski derleme
+  }
+}
+
+/** Canlı Etkinlik (iOS 16.2+ / Android bildirimi, yeni derleme) destekleniyor ve kullanıcı kapatmamış mı */
 export function canliDestek(): boolean {
-  if (Platform.OS !== 'ios' || !EzanNative?.liveSupported) return false;
+  if ((Platform.OS !== 'ios' && Platform.OS !== 'android') || !EzanNative?.liveSupported) return false;
   try {
     return EzanNative.liveSupported();
   } catch {
