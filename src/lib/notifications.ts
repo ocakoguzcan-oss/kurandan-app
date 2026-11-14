@@ -447,7 +447,7 @@ export async function rescheduleAll(
  * GEÇİCİ TEST: seçili bildirim sesiyle 10 saniye sonra bir bildirim gönderir (yalnız iOS, Ayarlar'da).
  * Ezan seçiliyse hangi vaktin ezanı çalınacağı `id` ile verilir. Denedikten sonra silinecek.
  */
-export async function testEzanBildirimi(id: EzanId, ses: SesId = 'ezan', sev: EzanSeviye = 'yuksek', saniye = 10) {
+export async function testEzanBildirimi(id: EzanId, ses: SesId = 'ezan', sev: EzanSeviye = 'yuksek', saniye = 10, androidAlarm = false) {
   if (Platform.OS === 'web') return false;
   const { status } = await getPermissionStatus();
   if (status !== 'granted') return false;
@@ -470,7 +470,9 @@ export async function testEzanBildirimi(id: EzanId, ses: SesId = 'ezan', sev: Ez
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
       seconds: saniye,
-      channelId: isEzan ? ezanChannel(id, sev) : z.dosya || ses === 'sessiz' ? sesChannel(ses) : CHANNEL,
+      channelId: androidAlarm
+        ? alarmChannel(isEzan || !z.dosya ? 'imsak' : null, z.id, sev)
+        : isEzan ? ezanChannel(id, sev) : z.dosya || ses === 'sessiz' ? sesChannel(ses) : CHANNEL,
     },
   });
   return true;

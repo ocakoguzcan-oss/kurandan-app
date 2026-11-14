@@ -5,16 +5,16 @@ import { router, useFocusEffect } from 'expo-router';
 import { Screen, Card, Chip, Eyebrow, Toggle } from '../../src/components/ui';
 import { colors, fonts } from '../../src/theme';
 import { useApp } from '../../src/context/AppContext';
-import { formatTime, getPrayerTimes, METHODS, VAKIT_KEYS, VAKIT_NAMES, VakitKey } from '../../src/lib/prayerTimes';
+import { formatTime, getNextPrayer, getPrayerTimes, METHODS, VAKIT_KEYS, VAKIT_NAMES, VakitKey } from '../../src/lib/prayerTimes';
 import { utcLabel } from '../../src/lib/tz';
 import { countryName } from '../../src/data/world';
 import { getPermissionStatus, gunAcik, kurulanGun, LEAD_OPTIONS, onceListesi, PermissionStatus, sesOf, testEzanBildirimi, VakitAyar } from '../../src/lib/notifications';
 import { sesById } from '../../src/lib/bildirimSesleri';
-import { EZANLAR } from '../../src/lib/ezanSesleri';
+import { EZANLAR, EzanId } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
-import { alarmPermission, alarmSupported, canliDestek, tanilama, testSabahAlarm, widgetMekan } from '../../src/lib/vakitWidget';
+import { alarmPermission, alarmSupported, canliDestek, testSabahAlarm, widgetMekan } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -25,30 +25,41 @@ export default function Ayarlar() {
   const tour = useTour();
   const premium = usePremium();
 
-  // GEÇİCİ TEST (yalnız iOS)
-  const testEzan = () =>
-    Alert.alert('Hangi ezan?', 'Bildirim 10 saniye sonra gelir. Sesi duymak için telefonu kilitleyin ya da ana ekrana dönün.', [
-      ...EZANLAR.map((e) => ({
-        text: e.ad,
-        onPress: async () => {
-          const ok = await testEzanBildirimi(e.id, sesOf(reminders), reminders.sesSeviyesi);
-          if (!ok) Alert.alert('Bildirim izni kapalı', 'Önce Ayarlar → İzinler’den bildirim izni verin.');
-        },
-      })),
+  // Bildirimi dene: seçili sesle 10 saniye sonra bir deneme bildirimi (sesi kontrol etmek için)
+  const izinYok = () => Alert.alert(t('Bildirim izni kapalı'), t('Önce Ayarlar → İzinler’den bildirim izni verin.'));
+  const dene = async (id: EzanId, alarm = false) => {
+    const ok = await testEzanBildirimi(id, sesOf(reminders), reminders.sesSeviyesi, 10, alarm);
+    if (!ok) izinYok();
+  };
+  const testEzan = () => {
+    const sonraki = getNextPrayer(new Date(), place.lat, place.lng, calc).key;
+    const siradaki: EzanId = sonraki === 'gunes' ? 'ogle' : sonraki;
+    const aciklama = t('Bildirim 10 saniye sonra gelir. Sesi duymak için telefonu kilitleyin ya da ana ekrana dönün.');
+    // Android'de uyarı penceresi en fazla üç düğme gösterir
+    if (Platform.OS === 'android') {
+      Alert.alert(t('Bildirimi dene'), aciklama, [
+        { text: t('Vazgeç'), style: 'cancel' },
+        ...(reminders.sabahAlarm ? [{ text: t('Sabah alarmı'), onPress: () => dene('imsak', true) }] : []),
+        { text: t('Sıradaki vaktin sesi'), onPress: () => dene(siradaki) },
+      ]);
+      return;
+    }
+    Alert.alert(t('Bildirimi dene'), aciklama, [
+      ...EZANLAR.map((e) => ({ text: t(e.ad), onPress: () => dene(e.id) })),
       ...(alarmSupported()
         ? [
             {
-              text: 'Sabah alarmı (10 sn)',
+              text: t('Sabah alarmı'),
               onPress: async () => {
                 const ok = await testSabahAlarm(10, reminders.sesSeviyesi);
-                if (!ok) Alert.alert('Alarm kurulamadı', 'Alarm izni verilmedi ya da iOS 26 gerekli.');
+                if (!ok) Alert.alert(t('Alarm kurulamadı'), t('Alarm izni verilmedi.'));
               },
             },
           ]
         : []),
-      { text: 'Tanılama', onPress: () => Alert.alert('Tanılama', tanilama()) },
-      { text: 'Vazgeç', style: 'cancel' as const },
+      { text: t('Vazgeç'), style: 'cancel' as const },
     ]);
+  };
   const alarmVar = useMemo(() => alarmSupported(), []);
   const canliVar = useMemo(() => canliDestek(), []);
   const ekSayisi = [reminders.kildinMi, reminders.teheccud, reminders.cumaNamaz, reminders.oruc, reminders.diniGunler, reminders.cuma].filter(Boolean).length;
@@ -193,16 +204,13 @@ export default function Ayarlar() {
             <Toggle label={t('Sabah ezanı alarm olarak')} value={!!reminders.sabahAlarm} onChange={sabahAlarm} />
           </View>
         )}
-        {/* GEÇİCİ TEST (yalnız iOS): denendikten sonra silinecek */}
-        {Platform.OS === 'ios' && (
-          <Pressable accessibilityRole="button" onPress={testEzan} style={[st.row, st.divider]}>
-            <View style={{ flexShrink: 1 }}>
-              <Text style={st.name}>Ezan bildirimini dene (test)</Text>
-              <Text style={st.sub}>10 saniye sonra seçili sesle bildirim gelir</Text>
-            </View>
-            <Text style={st.link}>Dene ›</Text>
-          </Pressable>
-        )}
+        <Pressable accessibilityRole="button" onPress={testEzan} style={[st.row, st.divider]}>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={st.name}>{t('Bildirimi dene')}</Text>
+            <Text style={st.sub}>{t('10 saniye sonra seçili sesle bir deneme bildirimi gelir')}</Text>
+          </View>
+          <Text style={st.link}>{t('Dene ›')}</Text>
+        </Pressable>
         <Pressable accessibilityRole="button" onPress={() => router.push('/hatirlaticilar')} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Hatırlatıcılar')}</Text>
