@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Appearance, Platform } from 'react-native';
+import { Appearance, Platform, useColorScheme } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -57,8 +57,7 @@ function GeceModu() {
     koyu = now.getTime() >= v.aksam.getTime() || now.getTime() < v.gunes.getTime();
   }
   useEffect(() => {
-    // Koyu renkler yalnız iOS'ta (DynamicColorIOS); Android'de görünüm açık kalır
-    if (Platform.OS !== 'ios') return;
+    if (Platform.OS === 'web') return;
     try {
       Appearance.setColorScheme((koyu ? 'dark' : 'light') as Parameters<typeof Appearance.setColorScheme>[0]);
     } catch {
@@ -103,6 +102,9 @@ export default function RootLayout() {
   }, []);
   const prefs = usePrefs();
   const lang = prefs.lang ?? deviceLang();
+  // Android'de renkler kaynak dosyasından okunur ve geçişte kendiliğinden yenilenmez: görünüm değişince ağaç yeniden kurulur
+  const sema = useColorScheme();
+  const agacAnahtari = Platform.OS === 'android' ? `${lang}-${sema ?? 'light'}` : lang;
 
 
   useEffect(() => {
@@ -117,7 +119,7 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <AppProvider key={lang}>
+      <AppProvider key={agacAnahtari}>
         <StatusBar style="auto" />
         <GeceModu />
         <TourProvider>

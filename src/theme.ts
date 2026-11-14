@@ -1,7 +1,9 @@
 // Kurandan.ai marka renkleri (logodaki yeşil ve altın, videolardaki krem kâğıt).
 // Gece modu: iOS'ta her renk açık ve koyu değeriyle tanımlanır (DynamicColorIOS); sistem görünümü
 // ya da Ayarlar → Görünüm'deki seçim (Appearance.setColorScheme) değişince ekran kendiliğinden güncellenir.
-import { DynamicColorIOS, Platform } from 'react-native';
+// Android'de renkler kaynak dosyalarından (PlatformColor, values-night); geçişte ekran yeniden çizilir (_layout).
+// Renk değeri değişirse modules/ezan-native/android/src/main/res/values*/kurandan_tema.xml de güncellenmeli.
+import { DynamicColorIOS, Platform, PlatformColor } from 'react-native';
 
 /** Açık görünüm (story görselleri gibi görüntüye dönüşen kartlar hep bunu kullanır) */
 export const lightColors = {
@@ -66,7 +68,15 @@ export const darkColors: Record<ColorKey, string> = {
   tableHead: '#24302A',
 };
 
+const yilan = (k: string) => k.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+
 function build(): typeof lightColors {
+  // Android: renkler uygulama kaynaklarından (modules/ezan-native/.../values ve values-night/kurandan_tema.xml)
+  if (Platform.OS === 'android') {
+    const out = {} as Record<ColorKey, string>;
+    for (const k of Object.keys(lightColors) as ColorKey[]) out[k] = PlatformColor(`@color/kt_${yilan(k)}`) as unknown as string;
+    return out;
+  }
   if (Platform.OS !== 'ios') return lightColors;
   const out = {} as Record<ColorKey, string>;
   for (const k of Object.keys(lightColors) as ColorKey[]) {

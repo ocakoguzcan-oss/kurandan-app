@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Uygulama renkleri (src/theme.ts ile aynı); Android gece modu values-night'tan okunur -->
+<resources>
+  <color name="kt_paper">#111814</color>
+  <color name="kt_card">#1A231E</color>
+  <color name="kt_card_border">#2D3A32</color>
+  <color name="kt_button_border">#3C4A41</color>
+  <color name="kt_divider">#25302A</color>
+  <color name="kt_green">#185A3E</color>
+  <color name="kt_green_text">#86CBA4</color>
+  <color name="kt_green_dark">#A6D9BB</color>
+  <color name="kt_green_tint">#1E3328</color>
+  <color name="kt_gold">#C9973F</color>
+  <color name="kt_gold_text">#E2C27A</color>
+  <color name="kt_gold_light">#E2C27A</color>
+  <color name="kt_ink">#EDE7D8</color>
+  <color name="kt_ink_soft">#D5CEBD</color>
+  <color name="kt_muted">#A9A592</color>
+  <color name="kt_muted_on_green">#CFE0D4</color>
+  <color name="kt_on_green">#F6F0E2</color>
+  <color name="kt_toggle_off">#4A564E</color>
+  <color name="kt_white">#FFFFFF</color>
+  <color name="kt_warn_bg">#3A2F1A</color>
+  <color name="kt_cream_box">#2A2619</color>
+  <color name="kt_mushaf">#161E1A</color>
+  <color name="kt_table_head">#24302A</color>
+</resources>

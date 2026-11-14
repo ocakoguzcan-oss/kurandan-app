@@ -99,14 +99,14 @@ export default function Ayarlar() {
       )}
 
       <Card style={{ paddingVertical: 4, paddingHorizontal: 14 }}>
-        <View style={[st.row, Platform.OS === 'ios' && st.divider]}>
+        <View style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Büyük yazı')}</Text>
             <Text style={st.sub}>{t('Uygulamadaki tüm yazıları büyütür')}</Text>
           </View>
           <Toggle label={t('Büyük yazı')} value={prefs.largeText} onChange={(v) => setPrefs({ largeText: v })} />
         </View>
-        {Platform.OS === 'ios' && (
+        {Platform.OS !== 'web' && (
           <View style={{ paddingVertical: 10, gap: 8 }}>
             <Text style={st.name}>{t('Gece modu')}</Text>
             <View style={{ flexDirection: 'row', gap: 8 }}>
