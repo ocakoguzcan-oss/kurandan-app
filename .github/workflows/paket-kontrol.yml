@@ -1,0 +1,26 @@
+# Derleme hakkı harcamadan JavaScript paketinin iOS ve Android için kurulup kurulamadığını dener (expo export).
+# Elle başlatılır: GitHub → Actions → "Paket kontrolü" → Run workflow.
+name: Paket kontrolü
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  paket:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Paketleri kur
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Tip kontrolü
+        run: npx tsc --noEmit -p . || echo "TIP HATASI VAR"
+      - name: Android paketi
+        env:
+          EAS_BUILD_PLATFORM: android
+        run: npx expo export --platform android --output-dir dist-android
+      - name: iOS paketi
+        run: npx expo export --platform ios --output-dir dist-ios
