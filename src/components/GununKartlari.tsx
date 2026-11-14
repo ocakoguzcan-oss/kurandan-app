@@ -2,7 +2,7 @@
 // kart ekranına geçilir. Günlük hak bittiyse kart sallanır ve "Fe sabrun cemîl" penceresi çıkar
 // (yeni kartlar imsakta açılır; ileride ödüllü video ile de açılacak).
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Animated, Easing, Modal, Pressable, StyleSheet, Text as RNText, View } from 'react-native';
 import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Text } from './Text';
@@ -14,6 +14,8 @@ import { formatCountdown } from '../lib/prayerTimes';
 import { t } from '../i18n';
 
 const TUR_AD: Record<KartTur, string> = { ayet: 'Ayet', hadis: 'Hadis', dua: 'Dua' };
+/** Kartların arka yüzü: dua eden eller, hilal, nur */
+const KART_EMOJI = ['🤲', '🌙', '✨'];
 
 function KartYuzu({ konum, acik, kilitli, tur, onPress, sallaRef }: { konum: number; acik: boolean; kilitli: boolean; tur: KartTur; onPress: (konum: number, cevir: (sonra: () => void) => void) => void; sallaRef: (f: () => void) => void }) {
   const don = useRef(new Animated.Value(acik ? 1 : 0)).current;
@@ -73,17 +75,10 @@ function KartYuzu({ konum, acik, kilitli, tur, onPress, sallaRef }: { konum: num
         {/* Arka yüz (kapalı) */}
         <Animated.View style={[st.yuz, st.arka, kilitli && st.kilitli, { opacity: arkaOp, transform: [{ perspective: 800 }, { rotateY: arka }] }]}>
           {!kilitli && <Animated.View style={[st.isik, { opacity: isik }]} />}
-          {kilitli ? (
-            <>
-              <IconLock size={30} color={lightColors.goldLight} />
-              <Text style={st.arkaYazi}>{t('Yarın')}</Text>
-            </>
-          ) : (
-            <>
-              <StarOrnament size={34} color={lightColors.goldLight} fill={lightColors.green} />
-              <Text style={st.arkaYazi}>Kurandan.ai</Text>
-            </>
-          )}
+          <View style={[st.halka, kilitli && { opacity: 0.8 }]}>
+            {kilitli ? <IconLock size={28} color={lightColors.goldLight} /> : <RNText style={st.emoji}>{KART_EMOJI[konum % KART_EMOJI.length]}</RNText>}
+          </View>
+          <Text style={st.arkaYazi}>{kilitli ? t('Yarın') : 'Kurandan.ai'}</Text>
         </Animated.View>
         {/* Ön yüz (açık) */}
         <Animated.View style={[st.yuz, st.on, { opacity: onOp, transform: [{ perspective: 800 }, { rotateY: on }] }]}>
@@ -181,7 +176,9 @@ const st = StyleSheet.create({
   kart: { height: 190, borderRadius: radius.md },
   // Yüzler üst üste: StyleSheet.absoluteFillObject bu React Native sürümünde yok, konum elle verilir
   yuz: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', backfaceVisibility: 'hidden', overflow: 'hidden' },
-  arka: { backgroundColor: lightColors.green, borderWidth: 2, borderColor: lightColors.gold, gap: 8 },
+  arka: { backgroundColor: lightColors.green, borderWidth: 2, borderColor: lightColors.gold, gap: 12 },
+  halka: { width: 62, height: 62, borderRadius: 31, borderWidth: 1.5, borderColor: lightColors.goldLight, backgroundColor: 'rgba(0,0,0,0.12)', alignItems: 'center', justifyContent: 'center' },
+  emoji: { fontSize: 32, lineHeight: 40, textAlign: 'center' },
   isik: { position: 'absolute', width: '140%', height: '40%', backgroundColor: lightColors.goldLight, top: '30%', transform: [{ rotate: '-30deg' }], opacity: 0.3 },
   // Bugünün hakkı bitince kalan kartlar soluk ve kesik çerçeveli, kilitli görünür
   kilitli: { backgroundColor: '#1F3A2D', borderStyle: 'dashed', borderColor: lightColors.goldLight },
