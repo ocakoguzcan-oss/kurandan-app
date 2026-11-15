@@ -9,6 +9,7 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
@@ -65,6 +66,28 @@ class EzanNativeModule : Module() {
     }
 
     Function("openAppSettings") { ac(uygulamaAyari()) }
+
+    // Ses düzeyleri (0–1): sabah alarmı alarm sesinden, diğer ezanlar bildirim sesinden çalar.
+    // Telefonun zil sesi açık olsa bile alarm sesi ayrı bir ayardır ve kısık kalabilir.
+    Function("sesDurumu") {
+      val am = ctx.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+      fun oran(akis: Int): Double {
+        val enCok = am.getStreamMaxVolume(akis)
+        return if (enCok <= 0) 1.0 else am.getStreamVolume(akis).toDouble() / enCok
+      }
+      mapOf("alarm" to oran(AudioManager.STREAM_ALARM), "bildirim" to oran(AudioManager.STREAM_NOTIFICATION))
+    }
+
+    Function("sesiYukselt") { akis: String ->
+      val am = ctx.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+      val a = if (akis == "alarm") AudioManager.STREAM_ALARM else AudioManager.STREAM_NOTIFICATION
+      try {
+        am.setStreamVolume(a, am.getStreamMaxVolume(a), AudioManager.FLAG_SHOW_UI)
+        true
+      } catch (e: SecurityException) {
+        false
+      }
+    }
 
     // Ana ekrana widget ekleme penceresi (Android 8+, başlatıcı destekliyorsa)
     Function("pinSupported") {

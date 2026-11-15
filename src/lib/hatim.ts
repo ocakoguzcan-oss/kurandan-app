@@ -37,7 +37,9 @@ export function loadHatim(): Promise<HatimState> {
       listeners.forEach((l) => l());
       return state;
     });
-  return loading;
+  // Her zaman güncel durumu döndür: ekran yeniden kurulunca (gece modu geçişi, dil değişimi)
+  // ilk yüklemedeki eski sayfa geri gelip kaldığınız yeri ezmesin
+  return loading.then(() => state);
 }
 
 function subscribe(cb: () => void) {

@@ -70,6 +70,18 @@ export default function Kuran() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Android'de ters çevrilmiş yatay listede ilk sayfaya kaydırma bazen tutmuyor: liste kurulunca bir kez daha kaydır
+  const ilkKaydirma = useRef(false);
+  useEffect(() => {
+    if (!ready || pageH === 0 || ilkKaydirma.current) return;
+    const z = setTimeout(() => {
+      ilkKaydirma.current = true;
+      listRef.current?.scrollToIndex({ index: page - 1, animated: false });
+    }, 80);
+    return () => clearTimeout(z);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, pageH]);
+
   // Ana sayfadaki "Kaldığınız yer" kartından gelinirse
   useEffect(() => {
     const p = Number(params.sayfa);

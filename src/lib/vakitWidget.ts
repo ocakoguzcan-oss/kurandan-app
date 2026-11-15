@@ -194,3 +194,21 @@ export function widgetEkle(tur: 'vakit' | 'manzara' | 'ayet'): boolean {
     return false;
   }
 }
+
+/** Android: alarm ve bildirim ses düzeyi (0–1); bilinmiyorsa null */
+export function sesDurumu(): { alarm: number; bildirim: number } | null {
+  if (Platform.OS !== 'android' || !EzanNative?.sesDurumu) return null;
+  try {
+    return EzanNative.sesDurumu();
+  } catch {
+    return null;
+  }
+}
+
+export function sesiYukselt(akis: 'alarm' | 'bildirim'): boolean {
+  try {
+    return !!EzanNative?.sesiYukselt?.(akis);
+  } catch {
+    return false;
+  }
+}

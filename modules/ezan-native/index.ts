@@ -24,6 +24,8 @@ type EzanNativeModule = {
   batteryOk?(): boolean;
   openAppSettings?(): boolean;
   pinSupported?(): boolean;
+  sesDurumu?(): { alarm: number; bildirim: number };
+  sesiYukselt?(akis: 'alarm' | 'bildirim'): boolean;
   pinWidget?(tur: 'vakit' | 'manzara' | 'ayet'): boolean;
   searchPlaces?(lat: number, lng: number, radius: number, queries: string[]): Promise<{ name: string; lat: number; lng: number }[]>;
 };

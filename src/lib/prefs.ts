@@ -49,7 +49,7 @@ export function loadPrefs(): Promise<Prefs> {
       listeners.forEach((l) => l());
       return state;
     });
-  return loading;
+  return loading.then(() => state as Prefs);
 }
 let pending: Partial<Prefs> = {};
 

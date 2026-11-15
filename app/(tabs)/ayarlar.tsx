@@ -14,7 +14,7 @@ import { EZANLAR, EzanId } from '../../src/lib/ezanSesleri';
 import { setPrefs, usePrefs } from '../../src/lib/prefs';
 import { useTour } from '../../src/tour/Tour';
 import { SATIN_ALMA_ACIK, usePremium } from '../../src/lib/premium';
-import { alarmPermission, alarmSupported, androidAyarAc, androidDurum, canliDestek, testSabahAlarm, widgetEkle, widgetEklenebilir, widgetMekan } from '../../src/lib/vakitWidget';
+import { alarmPermission, alarmSupported, androidAyarAc, androidDurum, canliDestek, sesDurumu, sesiYukselt, testSabahAlarm, widgetEkle, widgetEklenebilir, widgetMekan } from '../../src/lib/vakitWidget';
 import { getLang, LANGS, t } from '../../src/i18n';
 
 export default function Ayarlar() {
@@ -84,10 +84,12 @@ export default function Ayarlar() {
   };
   const [perm, setPerm] = useState<PermissionStatus | null>(null);
   const [android, setAndroid] = useState(androidDurum);
+  const [ses, setSes] = useState(sesDurumu);
   const pinVar = useMemo(() => widgetEklenebilir(), []);
   const durumYenile = useCallback(() => {
     getPermissionStatus().then((p) => setPerm(p.status));
     setAndroid(androidDurum());
+    setSes(sesDurumu());
   }, []);
   useFocusEffect(durumYenile);
   // Telefonun ayarlarından geri dönünce uyarılar güncellensin
@@ -228,6 +230,32 @@ export default function Ayarlar() {
             <Toggle label={t('Sabah ezanı alarm olarak')} value={!!reminders.sabahAlarm} onChange={sabahAlarm} />
           </View>
         )}
+        {ses && (() => {
+          // Sabah alarmı alarm sesiyle, diğer ezanlar bildirim sesiyle çalar; kısıksa uyar
+          const akis: 'alarm' | 'bildirim' | null = reminders.sabahAlarm && ses.alarm < 0.6 ? 'alarm' : ses.bildirim < 0.6 ? 'bildirim' : null;
+          if (!akis) return null;
+          const yuzde = Math.round((akis === 'alarm' ? ses.alarm : ses.bildirim) * 100);
+          return (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => {
+                if (!sesiYukselt(akis)) Alert.alert(t('Ses yükseltilemedi'), t('Rahatsız Etmeyin açıkken ses değiştirilemiyor. Telefonun ses düğmelerini kullanın.'));
+                setSes(sesDurumu());
+              }}
+              style={[st.row, st.divider]}
+            >
+              <View style={{ flexShrink: 1 }}>
+                <Text style={[st.name, { color: colors.goldText }]}>{akis === 'alarm' ? t('Alarm sesi kısık (%{n})', { n: yuzde }) : t('Bildirim sesi kısık (%{n})', { n: yuzde })}</Text>
+                <Text style={st.sub}>
+                  {akis === 'alarm'
+                    ? t('Sabah ezanı telefonun alarm sesiyle çalar; zil sesinden ayrıdır.')
+                    : t('Ezanlar telefonun bildirim sesiyle çalar; medya sesinden ayrıdır.')}
+                </Text>
+              </View>
+              <Text style={[st.link, { flexShrink: 0 }]}>{t('Yükselt ›')}</Text>
+            </Pressable>
+          );
+        })()}
         <Pressable accessibilityRole="button" onPress={testEzan} style={[st.row, st.divider]}>
           <View style={{ flexShrink: 1 }}>
             <Text style={st.name}>{t('Bildirimi dene')}</Text>
