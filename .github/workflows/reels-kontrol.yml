@@ -1,0 +1,19 @@
+# Reels sunucusunun durumunu gösterir (hata mesajı, video sayısı, en yeni videoların tarihi)
+name: reels-kontrol
+on: workflow_dispatch
+jobs:
+  kontrol:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -sS -m 30 -o r.json -w "HTTP %{http_code}\n" https://kurandan-app-server.vercel.app/api/reels
+          python3 - <<'PY'
+          import json
+          d = json.load(open('r.json'))
+          if 'reels' not in d:
+              print('HATA:', d)
+          else:
+              print('updatedAt:', d.get('updatedAt'), '| video:', len(d['reels']))
+              for x in d['reels'][:5]:
+                  print(x['timestamp'], (x['caption'] or '')[:50].replace('\n', ' '))
+          PY
