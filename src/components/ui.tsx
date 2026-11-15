@@ -16,6 +16,7 @@ export function Screen({
   contentStyle,
   scrollRef,
   onScroll,
+  scrollEnabled = true,
 }: {
   title?: string;
   back?: boolean;
@@ -25,6 +26,7 @@ export function Screen({
   contentStyle?: StyleProp<ViewStyle>;
   scrollRef?: React.Ref<ScrollView>;
   onScroll?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  scrollEnabled?: boolean;
 }) {
   const insets = useSafeAreaInsets();
   const header = title ? (
@@ -59,7 +61,7 @@ export function Screen({
   }
   return (
     <View style={s.root}>
-      <ScrollView ref={scrollRef} onScroll={onScroll} scrollEventThrottle={32} style={s.root} contentContainerStyle={[pad, s.scrollContent, contentStyle]}>
+      <ScrollView ref={scrollRef} onScroll={onScroll} scrollEnabled={scrollEnabled} scrollEventThrottle={32} style={s.root} contentContainerStyle={[pad, s.scrollContent, contentStyle]}>
         {header}
         {children}
       </ScrollView>

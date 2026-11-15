@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
+import { TileMap } from '../src/components/TileMap';
 import Constants from 'expo-constants';
 import { Text } from '../src/components/Text';
 import { Button, Screen, Card } from '../src/components/ui';
@@ -23,7 +24,7 @@ const UCLAR = [
 ];
 type Kaynak = 'apple' | 'osm';
 
-/** Android'de harita için Google Maps anahtarı gerekir; yoksa çökmemek için yalnız liste gösterilir. */
+/** Android'de Google haritası için anahtar gerekir; yoksa kendi OpenStreetMap haritamız (TileMap) gösterilir. */
 const HARITA_VAR =
   Platform.OS === 'ios' ||
   Constants.executionEnvironment === 'storeClient' ||
@@ -143,13 +144,28 @@ export default function Camiler() {
     Linking.openURL(url).catch(() => {});
   };
 
+  const [odak, setOdak] = useState<{ lat: number; lng: number } | null>(null);
+  const [haritada, setHaritada] = useState(false);
   const odakla = (c: Cami) => {
     setSecili(c.id);
+    setOdak({ lat: c.lat, lng: c.lng });
     mapRef.current?.animateToRegion({ latitude: c.lat, longitude: c.lng, latitudeDelta: 0.008, longitudeDelta: 0.008 }, 400);
   };
 
   return (
-    <Screen title={t('Yakın Camiler')}>
+    <Screen title={t('Yakın Camiler')} scrollEnabled={!haritada}>
+      {konum && !HARITA_VAR && Platform.OS === 'android' && (
+        <View style={st.mapWrap}>
+          <TileMap
+            merkez={{ lat: konum.lat, lng: konum.lng }}
+            odak={odak}
+            ben={konum.gps ? { lat: konum.lat, lng: konum.lng } : null}
+            noktalar={(liste ?? []).map((c) => ({ id: c.id, lat: c.lat, lng: c.lng, secili: c.id === secili }))}
+            onNokta={setSecili}
+            onEtkilesim={setHaritada}
+          />
+        </View>
+      )}
       {konum && HARITA_VAR && (
         <View style={st.mapWrap}>
           <MapView
