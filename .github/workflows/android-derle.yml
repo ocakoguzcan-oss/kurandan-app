@@ -2,7 +2,8 @@
 # İlk yüklemeyi Google Play kuralı gereği Play Console'dan elle yaparsınız (indirme bağlantısı derleme sayfasında).
 # Sonraki sürümler için Play hizmet hesabı anahtarı eklenince "Play'e gönder" adımı açılır.
 # Elle başlatılır: GitHub → Actions → "Android derle" → Run workflow.
-# Gerekli GitHub secret'ı: EXPO_TOKEN. İsteğe bağlı: GOOGLE_PLAY_KEY (hizmet hesabı JSON içeriği).
+# Gerekli GitHub secret'ı: EXPO_TOKEN. İsteğe bağlı: GOOGLE_PLAY_KEY (hizmet hesabı JSON içeriği),
+# GOOGLE_MAPS_API_KEY (Android haritası; yoksa Yakın Camiler yalnız liste gösterir).
 name: Android derle
 
 on:
@@ -29,9 +30,21 @@ jobs:
           node-version: 22
       - name: Paketleri kur
         run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Google Maps anahtarını EAS'a aktar
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: |
+          if [ -z "$GOOGLE_MAPS_API_KEY" ]; then echo "GOOGLE_MAPS_API_KEY yok: Android'de harita kapalı kalır"; exit 0; fi
+          for ortam in preview production; do
+            npx --yes eas-cli@latest env:create --name GOOGLE_MAPS_API_KEY --value "$GOOGLE_MAPS_API_KEY" \
+              --environment $ortam --visibility sensitive --force --non-interactive
+          done
+          echo "Google Maps anahtarı hazır"
       - name: Derle (EAS, bitene kadar bekler)
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: npx --yes eas-cli@latest build -p android --profile ${{ inputs.profil }} --non-interactive --wait
       - name: Google Play'e gönder
         if: ${{ inputs.gonder && inputs.profil == 'production' }}

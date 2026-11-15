@@ -7,21 +7,24 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development"
+      "channel": "development",
+      "environment": "development"
     },
     "preview": {
       "distribution": "internal",
       "channel": "main",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "environment": "preview"
     },
     "production": {
       "channel": "production",
       "autoIncrement": true,
       "env": {
         "APP_VARIANT": "production"
-      }
+      },
+      "environment": "production"
     }
   },
   "submit": {
