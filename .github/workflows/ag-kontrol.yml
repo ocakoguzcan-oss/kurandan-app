@@ -1,0 +1,20 @@
+# Dış servislerin durumunu dener (Overpass cami araması, harita karoları). Yalnızca okuma yapar.
+name: ag-kontrol
+on: workflow_dispatch
+jobs:
+  kontrol:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          Q='[out:json][timeout:20];(nwr["amenity"="place_of_worship"]["religion"="muslim"](around:2500,39.9055,41.2658););out center 80;'
+          E=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$Q")
+          for u in https://overpass-api.de/api/interpreter https://overpass.private.coffee/api/interpreter https://maps.mail.ru/osm/tools/overpass/api/interpreter https://overpass.kumi.systems/api/interpreter; do
+            for ua in "okhttp/4.12.0" "Kurandan.ai/1.0 (iOS; https://kurandan.ai)"; do
+              r=$(curl -s -m 25 -o out.txt -w "%{http_code} %{time_total}s" -A "$ua" -H "Accept: application/json" "$u?data=$E")
+              echo "$u | $ua | $r | $(head -c 120 out.txt | tr '\n' ' ')"
+            done
+          done
+          echo "--- karo"
+          curl -s -o /dev/null -w "OSM karo (UA yok): %{http_code}\n" https://tile.openstreetmap.org/15/19442/12268.png
+          curl -s -o /dev/null -w "OSM karo (bizim UA): %{http_code}\n" -A "Kurandan.ai/1.0 (Android; +https://kurandan.ai)" https://tile.openstreetmap.org/15/19442/12268.png
+          curl -s -o /dev/null -w "OSM karo (okhttp): %{http_code}\n" -A "okhttp/4.12.0" https://tile.openstreetmap.org/15/19442/12268.png
