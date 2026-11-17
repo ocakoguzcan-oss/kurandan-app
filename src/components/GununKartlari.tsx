@@ -76,7 +76,7 @@ function KartYuzu({ konum, acik, kilitli, tur, onPress, sallaRef }: { konum: num
         <Animated.View style={[st.yuz, st.arka, kilitli && st.kilitli, { opacity: arkaOp, transform: [{ perspective: 800 }, { rotateY: arka }] }]}>
           {!kilitli && <Animated.View style={[st.isik, { opacity: isik }]} />}
           <View style={[st.halka, kilitli && { opacity: 0.8 }]}>
-            {kilitli ? <IconLock size={28} color={lightColors.goldLight} /> : <RNText style={st.emoji}>{KART_EMOJI[konum % KART_EMOJI.length]}</RNText>}
+            {kilitli ? <IconLock size={28} color={lightColors.goldLight} /> : <RNText maxFontSizeMultiplier={1.1} style={st.emoji}>{KART_EMOJI[konum % KART_EMOJI.length]}</RNText>}
           </View>
           <Text style={st.arkaYazi}>{kilitli ? t('Yarın') : 'Kurandan.ai'}</Text>
         </Animated.View>

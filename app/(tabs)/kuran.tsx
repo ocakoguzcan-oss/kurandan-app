@@ -404,7 +404,7 @@ function SurahPicker({ visible, chapters, onClose, onPick }: { visible: boolean;
                   <Chip key={p} label={t('{n}. cüz', { n: i + 1 })} selected={false} onPress={() => onPick(p)} />
                 ))}
               </ScrollView>
-              <TextInput
+              <TextInput maxFontSizeMultiplier={1.1}
                 value={q}
                 onChangeText={setQ}
                 placeholder={t('Sure ya da ayet ara (ör. Yasin, Bakara 255)')}

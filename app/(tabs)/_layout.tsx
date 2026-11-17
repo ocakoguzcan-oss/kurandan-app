@@ -30,6 +30,7 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: colors.muted,
         tabBarStyle: { backgroundColor: colors.card, borderTopColor: colors.cardBorder },
         tabBarLabelStyle: { fontFamily: fonts.bodySemi, fontSize: 10 },
+        tabBarAllowFontScaling: false,
         sceneStyle: { backgroundColor: colors.paper },
       }}
     >

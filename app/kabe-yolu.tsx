@@ -212,7 +212,7 @@ export default function KabeYolu() {
           })}
           {head && drawn < line.length && (
             <Marker coordinate={head} anchor={{ x: 0.5, y: 0.5 }} tracksViewChanges>
-              <RNText style={{ fontSize: 20 }}>{mod === 'ucak' ? '✈️' : mod === 'otobus' ? '🚌' : '🚗'}</RNText>
+              <RNText maxFontSizeMultiplier={1.1} style={{ fontSize: 20 }}>{mod === 'ucak' ? '✈️' : mod === 'otobus' ? '🚌' : '🚗'}</RNText>
             </Marker>
           )}
         </MapView>

@@ -18,6 +18,8 @@ const R = 128;
 const CIRC = 2 * Math.PI * R;
 
 export default function Zikirmatik() {
+  const [alan, setAlan] = React.useState(280);
+  const boy = Math.max(150, Math.min(280, alan - 8));
   const [st, setSt] = useState<ZikirState>(initial);
 
   useEffect(() => {
@@ -75,9 +77,15 @@ export default function Zikirmatik() {
         <Text style={s.meaning}>{t(zikir.meaning)}</Text>
       </View>
 
-      <View style={[s.center, { flex: 1, justifyContent: 'center' }]}>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('{zikir} say. Şu an {n}', { zikir: t(zikir.name), n: count })} onPress={tap} style={s.counter}>
-          <Svg width={280} height={280} viewBox="0 0 280 280" style={StyleSheet.absoluteFill}>
+      {/* Sayaç boşluğa göre küçülür: küçük ekranlarda ve büyük yazıda üstteki ve alttaki yazıların üstüne binmesin */}
+      <View style={[s.center, { flex: 1, justifyContent: 'center', minHeight: 150 }]} onLayout={(e) => setAlan(Math.floor(e.nativeEvent.layout.height))}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('{zikir} say. Şu an {n}', { zikir: t(zikir.name), n: count })}
+          onPress={tap}
+          style={[s.counter, { width: boy, height: boy }]}
+        >
+          <Svg width={boy} height={boy} viewBox="0 0 280 280" style={StyleSheet.absoluteFill}>
             <Circle cx={140} cy={140} r={R} fill={colors.card} stroke={colors.cardBorder} strokeWidth={10} />
             <Circle
               cx={140}
@@ -93,8 +101,8 @@ export default function Zikirmatik() {
             />
             <Circle cx={140} cy={140} r={100} fill={colors.green} />
           </Svg>
-          <Text style={s.count}>{count}</Text>
-          <Text style={s.target}>/ {zikir.target}</Text>
+          <Text style={[s.count, { fontSize: Math.round(64 * (boy / 280)) }]} maxFontSizeMultiplier={1}>{count}</Text>
+          <Text style={s.target} maxFontSizeMultiplier={1}>/ {zikir.target}</Text>
         </Pressable>
       </View>
 

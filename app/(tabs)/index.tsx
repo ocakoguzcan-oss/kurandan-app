@@ -144,8 +144,8 @@ export default function Home() {
             const active = k === next.key && times[k].getTime() === next.time.getTime();
             return (
               <View key={k} style={[st.timeCell, active && st.timeCellOn]}>
-                <Text style={[st.timeLabel, active && { color: lightColors.green, fontFamily: fonts.bodySemi }]}>{t(VAKIT_NAMES[k])}</Text>
-                <Text style={[st.timeVal, active && { color: lightColors.green, fontFamily: fonts.bodyBold }]}>{formatTime(times[k], calc.tz)}</Text>
+                <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={[st.timeLabel, active && { color: lightColors.green, fontFamily: fonts.bodySemi }]}>{t(VAKIT_NAMES[k])}</Text>
+                <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={[st.timeVal, active && { color: lightColors.green, fontFamily: fonts.bodyBold }]}>{formatTime(times[k], calc.tz)}</Text>
               </View>
             );
           })}
