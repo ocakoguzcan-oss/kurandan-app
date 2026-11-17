@@ -37,7 +37,11 @@ jobs:
           if os.environ.get("SURUM"): p["filter[version]"] = os.environ["SURUM"]
           b = requests.get(f"{API}/builds", params=p, headers=H, timeout=30).json()["data"][0]
           print("DERLEME", b["attributes"]["version"])
-          g = [x for x in requests.get(f"{API}/betaGroups", params={"filter[app]": "6831235877"}, headers=H, timeout=30).json()["data"] if not x["attributes"]["isInternalGroup"]][0]
+          gr = requests.get(f"{API}/betaGroups", params={"filter[app]": "6831235877", "limit": 200}, headers=H, timeout=30).json()
+          for x in gr.get("data", []):
+              print("GRUP", x["attributes"]["name"], "dahili" if x["attributes"]["isInternalGroup"] else "dis", x["attributes"].get("publicLinkEnabled"))
+          if "errors" in gr: print("GRUP HATA", gr["errors"])
+          g = [x for x in gr.get("data", []) if not x["attributes"]["isInternalGroup"]][0]
           r = requests.post(f"{API}/betaGroups/{g['id']}/relationships/builds", json={"data": [{"type": "builds", "id": b["id"]}]}, headers=H, timeout=30)
           print("GRUBA EKLE", r.status_code, r.text[:300])
           # Test notu (Türkçe)
