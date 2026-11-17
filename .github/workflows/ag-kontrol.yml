@@ -5,7 +5,8 @@ jobs:
   kontrol:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - shell: bash {0}
+        run: |
           Q='[out:json][timeout:20];(nwr["amenity"="place_of_worship"]["religion"="muslim"](around:2500,39.9055,41.2658););out center 80;'
           E=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$Q")
           for u in https://overpass-api.de/api/interpreter https://overpass.private.coffee/api/interpreter https://maps.mail.ru/osm/tools/overpass/api/interpreter https://overpass.kumi.systems/api/interpreter; do
@@ -14,6 +15,16 @@ jobs:
               echo "$u | $ua | $r | $(head -c 120 out.txt | tr '\n' ' ')"
             done
           done
+          echo "--- photon"
+          curl -s -m 20 -o p.json -w "photon: %{http_code} %{time_total}s\n" -A "Kurandan.ai/1.0" "https://photon.komoot.io/api/?q=cami&lat=39.9055&lon=41.2658&limit=50&osm_tag=amenity:place_of_worship"
+          python3 -c "import json;d=json.load(open('p.json'));f=d['features'];print('photon sonuc',len(f));[print(x['properties'].get('name'),x['geometry']['coordinates']) for x in f[:5]]"
+          curl -s -m 20 -o p2.json -w "photon mosque: %{http_code}\n" -A "Kurandan.ai/1.0" "https://photon.komoot.io/api/?q=mosque&lat=39.9055&lon=41.2658&limit=50&osm_tag=amenity:place_of_worship"
+          python3 -c "import json;d=json.load(open('p2.json'));print('photon mosque sonuc',len(d['features']))"
+          echo "--- nominatim"
+          curl -s -m 20 -o n.json -w "nominatim: %{http_code}\n" -A "Kurandan.ai/1.0 (+https://kurandan.ai)" "https://nominatim.openstreetmap.org/search?amenity=mosque&format=jsonv2&limit=50&viewbox=41.20,39.95,41.33,39.86&bounded=1"
+          python3 -c "import json;d=json.load(open('n.json'));print('nominatim sonuc',len(d))"
+          curl -s -m 20 -o n2.json -w "nominatim q: %{http_code}\n" -A "Kurandan.ai/1.0 (+https://kurandan.ai)" "https://nominatim.openstreetmap.org/search?q=cami&format=jsonv2&limit=50&viewbox=41.20,39.95,41.33,39.86&bounded=1"
+          python3 -c "import json;d=json.load(open('n2.json'));print('nominatim q sonuc',len(d))"
           echo "--- karo"
           curl -s -o /dev/null -w "OSM karo (UA yok): %{http_code}\n" https://tile.openstreetmap.org/15/19442/12268.png
           curl -s -o /dev/null -w "OSM karo (bizim UA): %{http_code}\n" -A "Kurandan.ai/1.0 (Android; +https://kurandan.ai)" https://tile.openstreetmap.org/15/19442/12268.png
