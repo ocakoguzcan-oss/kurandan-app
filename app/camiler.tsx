@@ -53,15 +53,49 @@ async function appleAra(lat: number, lng: number, yaricap: number): Promise<Cami
   }
 }
 
+/** Nominatim (OpenStreetMap arama): Overpass dolu olduğunda da hızlı yanıt verir. Bölge kutusu içinde arar. */
+async function nominatimAra(lat: number, lng: number, yaricap: number, lang: string): Promise<Cami[]> {
+  const dLat = yaricap / 111000;
+  const dLng = yaricap / (111000 * Math.cos((lat * Math.PI) / 180));
+  const kutu = `${lng - dLng},${lat + dLat},${lng + dLng},${lat - dLat}`;
+  const sonuc = new Map<string, Cami>();
+  for (const q of ['cami', 'mosque']) {
+    const iptal = new AbortController();
+    const zaman = setTimeout(() => iptal.abort(), 10000);
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=50&bounded=1&viewbox=${kutu}&accept-language=${lang}`,
+        { headers: { Accept: 'application/json', 'User-Agent': 'Kurandan.ai/1.0 (+https://kurandan.ai)', Referer: 'https://kurandan.ai' }, signal: iptal.signal }
+      );
+      clearTimeout(zaman);
+      if (!res.ok) continue;
+      const l = (await res.json()) as { osm_type: string; osm_id: number; lat: string; lon: string; name?: string; category?: string; type?: string }[];
+      for (const x of l) {
+        if (x.category && x.category !== 'amenity' && x.category !== 'building') continue;
+        const la = Number(x.lat);
+        const lo = Number(x.lon);
+        const id = `${x.osm_type}${x.osm_id}`;
+        if (!sonuc.has(id)) sonuc.set(id, { id, ad: x.name || '', lat: la, lng: lo, m: mesafe(lat, lng, la, lo) });
+      }
+    } catch {
+      clearTimeout(zaman);
+    }
+    if (sonuc.size >= 15) break;
+    // Nominatim kuralı: saniyede en fazla bir istek
+    await new Promise((r) => setTimeout(r, 1100));
+  }
+  return [...sonuc.values()].filter((c) => c.m <= yaricap * 1.5).sort((a, b) => a.m - b.m);
+}
+
 async function camileriGetir(lat: number, lng: number, yaricap: number, lang: string): Promise<Cami[]> {
   const q = `[out:json][timeout:20];(nwr["amenity"="place_of_worship"]["religion"="muslim"](around:${yaricap},${lat},${lng}););out center 80;`;
   let son: unknown;
   for (const url of UCLAR) {
     const iptal = new AbortController();
-    const zaman = setTimeout(() => iptal.abort(), 15000);
+    const zaman = setTimeout(() => iptal.abort(), 8000);
     try {
       const res = await fetch(`${url}?data=${encodeURIComponent(q)}`, {
-        headers: { Accept: 'application/json', 'User-Agent': 'Kurandan.ai/1.0 (iOS; https://kurandan.ai)' },
+        headers: { Accept: 'application/json', 'User-Agent': 'Kurandan.ai/1.0 (+https://kurandan.ai)' },
         signal: iptal.signal,
       });
       clearTimeout(zaman);
@@ -121,13 +155,24 @@ export default function Camiler() {
       setListe(a.slice(0, 40));
       return;
     }
+    // OpenStreetMap: önce Nominatim (hızlı), az sonuç çıkarsa Overpass (daha eksiksiz ama sık sık dolu)
+    let n = await nominatimAra(k.lat, k.lng, 4000, lang);
+    if (n.length < 5) n = await nominatimAra(k.lat, k.lng, 10000, lang);
+    if (n.length >= 5) {
+      setKaynak('osm');
+      setListe(n.slice(0, 40));
+      return;
+    }
     try {
       let l = await camileriGetir(k.lat, k.lng, 2500, lang);
       if (l.length < 5) l = await camileriGetir(k.lat, k.lng, 8000, lang);
       setKaynak('osm');
-      setListe(l.slice(0, 40));
+      setListe((l.length >= n.length ? l : n).slice(0, 40));
     } catch {
-      setHata(true);
+      if (n.length) {
+        setKaynak('osm');
+        setListe(n);
+      } else setHata(true);
     }
   }, [place.lat, place.lng, lang]);
 
