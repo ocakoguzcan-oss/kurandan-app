@@ -57,7 +57,7 @@ export function CityPicker({
               <Text style={st.change}>{t('Değiştir ›')}</Text>
             </Pressable>
           )}
-          <TextInput maxFontSizeMultiplier={1.1}
+          <TextInput allowFontScaling={false}
             value={q}
             onChangeText={setQ}
             placeholder={country === 'TR' ? t('İl ara (ör. Konya ya da 42)') : t('Şehir ara')}
@@ -116,7 +116,7 @@ export function CountryList({ selected, onSelect, header }: { selected?: string;
       ListHeaderComponent={
         <View style={{ gap: 14, marginBottom: 10 }}>
           {header}
-          <TextInput maxFontSizeMultiplier={1.1}
+          <TextInput allowFontScaling={false}
             value={q}
             onChangeText={setQ}
             placeholder={t('Ülke ara')}

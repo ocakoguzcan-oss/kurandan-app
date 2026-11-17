@@ -5,15 +5,12 @@ import { StyleSheet, Text as RNText, TextProps } from 'react-native';
 import { LARGE_TEXT_SCALE, usePrefs } from '../lib/prefs';
 
 /**
- * Telefonun genel yazı boyutu: en fazla %10 büyütülür. Daha büyük ayarlarda (yaşlı kullanıcılarda sık)
- * vakit tablosu, sekme yazıları ve kartlar birbirine giriyordu. Daha büyük yazı isteyen uygulamadaki
- * "Büyük yazı" seçeneğini kullanır.
+ * Telefonun genel yazı boyutu ayarı uygulamayı etkilemez (büyük ayarda vakit tablosu, sekmeler ve kartlar
+ * birbirine giriyordu). Daha büyük yazı isteyen uygulamadaki "Büyük yazı" seçeneğini kullanır.
  */
-export const EN_FAZLA_OLCEK = 1.1;
-
 export function Text(props: TextProps) {
   const { largeText } = usePrefs();
-  const p = { maxFontSizeMultiplier: EN_FAZLA_OLCEK, ...props };
+  const p = { allowFontScaling: false, ...props };
   if (!largeText) return <RNText {...p} />;
   const flat = StyleSheet.flatten(props.style) || {};
   const scaled = {

@@ -69,7 +69,7 @@ export default function Zekat() {
         {a.ipucu && <Text style={st.hint}>{t(a.ipucu)}</Text>}
       </View>
       <View style={st.inputWrap}>
-        <TextInput maxFontSizeMultiplier={1.1}
+        <TextInput allowFontScaling={false}
           value={v[a.id] ?? ''}
           onChangeText={(x) => setV((cur) => ({ ...cur, [a.id]: x.replace(/[^\d.,]/g, '') }))}
           keyboardType="decimal-pad"

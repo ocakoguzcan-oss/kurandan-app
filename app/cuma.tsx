@@ -184,8 +184,8 @@ export default function StoryStudio() {
               </Row>
               {tur === 'serbest' ? (
                 <View style={{ gap: 8 }}>
-                  <TextInput maxFontSizeMultiplier={1.1} value={serbestBaslik} onChangeText={setSerbestBaslik} maxLength={40} placeholder={t('Başlık')} placeholderTextColor={colors.muted} style={st.input} accessibilityLabel={t('Başlık')} />
-                  <TextInput maxFontSizeMultiplier={1.1}
+                  <TextInput allowFontScaling={false} value={serbestBaslik} onChangeText={setSerbestBaslik} maxLength={40} placeholder={t('Başlık')} placeholderTextColor={colors.muted} style={st.input} accessibilityLabel={t('Başlık')} />
+                  <TextInput allowFontScaling={false}
                     value={serbestMetin}
                     onChangeText={setSerbestMetin}
                     maxLength={220}

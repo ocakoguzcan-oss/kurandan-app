@@ -101,7 +101,7 @@ export default function Kaza() {
           ).map(([val, set, label]) => (
             <View key={label} style={{ flex: 1, gap: 4 }}>
               <Text style={st.inLabel}>{label}</Text>
-              <TextInput maxFontSizeMultiplier={1.1}
+              <TextInput allowFontScaling={false}
                 value={val}
                 onChangeText={(x) => set(x.replace(/\D/g, ''))}
                 keyboardType="number-pad"
