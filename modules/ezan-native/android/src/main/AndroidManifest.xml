@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <application>
     <!-- Ana ekran widget'ları (veri: uygulamanın yazdığı SharedPreferences) -->
     <receiver android:name="ai.kurandan.ezannative.VakitWidgetProvider" android:exported="false" android:label="@string/kw_vakit_ad">
@@ -21,5 +22,12 @@
     </receiver>
     <!-- Vakit girince ve yarım saatte bir widget'ları yeniler -->
     <receiver android:name="ai.kurandan.ezannative.WidgetGuncelleyici" android:exported="false" />
+    <!-- Bildirimdeki vakit sayacı: dakika/vakit yenilemesi, silinince geri gelme, açılışta ve güncellemede yeniden kurulma -->
+    <receiver android:name="ai.kurandan.ezannative.CanliAlici" android:exported="false">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+      </intent-filter>
+    </receiver>
   </application>
 </manifest>

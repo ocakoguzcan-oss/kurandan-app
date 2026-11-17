@@ -30,6 +30,7 @@ class EzanNativeModule : Module() {
     Function("setWidgetData") { _: String, key: String, json: String ->
       Veri.yaz(ctx, key, json)
       Widgetlar.hepsiniGuncelle(ctx)
+      if (key == "vakitler") CanliBildirim.yenile(ctx)
     }
 
     Function("diagnose") { _: String, key: String ->
