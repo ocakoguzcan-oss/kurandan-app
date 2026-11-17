@@ -25,6 +25,10 @@ type EzanNativeModule = {
   openAppSettings?(): boolean;
   pinSupported?(): boolean;
   altBosluk?(): number;
+  /** Android kıble pusulası: olaylar "pusula" adıyla gelir */
+  pusulaBasla?(lat: number, lng: number): boolean;
+  pusulaDur?(): void;
+  addListener?(ad: 'pusula', cb: (e: { yon: number; hassas: number }) => void): { remove(): void };
   sistemCubugu?(koyu: boolean): void;
   sesDurumu?(): { alarm: number; bildirim: number };
   sesiYukselt?(akis: 'alarm' | 'bildirim'): boolean;

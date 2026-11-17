@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { Linking, Platform, StyleSheet, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import * as Location from 'expo-location';
@@ -11,6 +12,7 @@ import { useApp } from '../../src/context/AppContext';
 import { distanceToKaaba, qiblaDirection } from '../../src/lib/prayerTimes';
 import { t, tx } from '../../src/i18n';
 import { formatNumber } from '../../src/i18n/format';
+import { EzanNative } from '../../modules/ezan-native';
 
 const YONLER = [tx('Kuzey'), tx('Kuzeydoğu'), tx('Doğu'), tx('Güneydoğu'), tx('Güney'), tx('Güneybatı'), tx('Batı'), tx('Kuzeybatı')];
 const yon = (deg: number) => t(YONLER[Math.round(deg / 45) % 8]);
@@ -24,22 +26,49 @@ export default function Kible() {
   const [denied, setDenied] = useState(false);
   const wasAligned = useRef(false);
 
-  useEffect(() => {
-    if (Platform.OS === 'web') return;
-    let sub: Location.LocationSubscription | null = null;
-    (async () => {
-      const perm = await Location.requestForegroundPermissionsAsync();
-      if (!perm.granted) {
-        setDenied(true);
-        return;
+  // Yalnız bu sekme açıkken çalışır (arka planda algılayıcı pil harcamasın)
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS === 'web') return;
+      let bitti = false;
+      let sub: { remove(): void } | null = null;
+      // Android: jiroskoplu yerel pusula (Expo'nunki yalnız manyetometreye bakar, titrek ve geç gelir)
+      if (Platform.OS === 'android' && EzanNative?.pusulaBasla && EzanNative.addListener) {
+        try {
+          const dinle = EzanNative.addListener('pusula', (e) => {
+            setHeading(e.yon);
+            setAccuracy(e.hassas);
+          });
+          if (EzanNative.pusulaBasla(place.lat, place.lng)) {
+            return () => {
+              dinle.remove();
+              EzanNative?.pusulaDur?.();
+            };
+          }
+          dinle.remove();
+        } catch {
+          // eski derleme: Expo'nun pusulası
+        }
       }
-      sub = await Location.watchHeadingAsync((h) => {
-        setHeading(h.trueHeading >= 0 ? h.trueHeading : h.magHeading);
-        setAccuracy(h.accuracy);
-      });
-    })();
-    return () => sub?.remove();
-  }, []);
+      (async () => {
+        const perm = await Location.requestForegroundPermissionsAsync();
+        if (!perm.granted) {
+          setDenied(true);
+          return;
+        }
+        const s = await Location.watchHeadingAsync((h) => {
+          setHeading(h.trueHeading >= 0 ? h.trueHeading : h.magHeading);
+          setAccuracy(h.accuracy);
+        });
+        if (bitti) s.remove();
+        else sub = s;
+      })();
+      return () => {
+        bitti = true;
+        sub?.remove();
+      };
+    }, [place.lat, place.lng])
+  );
 
   const diff = heading == null ? null : ((qibla - heading + 540) % 360) - 180;
   const aligned = diff != null && Math.abs(diff) <= 4;

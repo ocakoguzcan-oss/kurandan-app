@@ -24,8 +24,32 @@ class EzanNativeModule : Module() {
   private val ctx: Context
     get() = appContext.reactContext?.applicationContext ?: throw IllegalStateException("context yok")
 
+  private var pusula: Pusula? = null
+
   override fun definition() = ModuleDefinition {
     Name("EzanNative")
+
+    // Kıble pusulası (jiroskoplu birleşik algılayıcı): { yon: gerçek kuzeye göre derece, hassas: 0–3 }
+    Events("pusula")
+
+    Function("pusulaBasla") { lat: Double, lng: Double ->
+      pusula?.dur()
+      val p = Pusula(appContext.currentActivity ?: ctx) { yon, hassas ->
+        sendEvent("pusula", mapOf("yon" to yon, "hassas" to hassas))
+      }
+      pusula = p
+      p.basla(lat, lng)
+    }
+
+    Function("pusulaDur") {
+      pusula?.dur()
+      pusula = null
+    }
+
+    OnDestroy {
+      pusula?.dur()
+      pusula = null
+    }
 
     Function("setWidgetData") { _: String, key: String, json: String ->
       Veri.yaz(ctx, key, json)
