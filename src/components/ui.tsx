@@ -95,7 +95,9 @@ export function Chip({ label, selected, onPress, style }: { label: string; selec
       onPress={onPress}
       style={[s.chip, selected ? s.chipOn : s.chipOff, style]}
     >
-      <Text style={[s.chipText, { color: selected ? colors.onGreen : colors.greenText }]}>{label}</Text>
+      <Text style={[s.chipText, { color: selected ? colors.onGreen : colors.greenText }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
+        {label}
+      </Text>
     </Pressable>
   );
 }

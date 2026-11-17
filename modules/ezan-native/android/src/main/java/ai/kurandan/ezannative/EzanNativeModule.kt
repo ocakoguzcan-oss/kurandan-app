@@ -14,6 +14,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
@@ -87,6 +90,33 @@ class EzanNativeModule : Module() {
       } catch (e: SecurityException) {
         false
       }
+    }
+
+    // Alttaki sistem çubuğunun (üç tuş ya da çizgi) yüksekliği, dp. Bazı telefonlarda güvenli alan
+    // kütüphanesi üç tuşlu çubuğu eksik ölçüyor; sekme çubuğu tuşların altında kalıyordu.
+    Function("altBosluk") {
+      val akt = appContext.currentActivity ?: return@Function 0.0
+      val ins = ViewCompat.getRootWindowInsets(akt.window.decorView) ?: return@Function 0.0
+      val px = ins.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+      px / akt.resources.displayMetrics.density.toDouble()
+    }
+
+    // Sistem çubuklarının simge rengi gece moduna uysun; alttaki çubuğa beyaz perde çekilmesin
+    Function("sistemCubugu") { koyu: Boolean ->
+      val akt = appContext.currentActivity ?: return@Function null
+      akt.runOnUiThread {
+        val w = akt.window
+        if (Build.VERSION.SDK_INT >= 29) {
+          w.isNavigationBarContrastEnforced = false
+          w.isStatusBarContrastEnforced = false
+        }
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT < 35) w.navigationBarColor = android.graphics.Color.TRANSPARENT
+        val c = WindowCompat.getInsetsController(w, w.decorView)
+        c.isAppearanceLightNavigationBars = !koyu
+        c.isAppearanceLightStatusBars = !koyu
+      }
+      null
     }
 
     // Ana ekrana widget ekleme penceresi (Android 8+, başlatıcı destekliyorsa)

@@ -1,3 +1,4 @@
+import { EzanNative } from '../modules/ezan-native';
 import React, { useEffect, useState } from 'react';
 import { Appearance, Platform, useColorScheme } from 'react-native';
 import { Stack, router } from 'expo-router';
@@ -64,6 +65,7 @@ function GeceModu() {
     if (tema === 'auto' && !ready) return;
     try {
       Appearance.setColorScheme((koyu ? 'dark' : 'light') as Parameters<typeof Appearance.setColorScheme>[0]);
+      if (Platform.OS === 'android') EzanNative?.sistemCubugu?.(koyu);
     } catch {
       // eski sürüm
     }

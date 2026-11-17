@@ -24,6 +24,8 @@ type EzanNativeModule = {
   batteryOk?(): boolean;
   openAppSettings?(): boolean;
   pinSupported?(): boolean;
+  altBosluk?(): number;
+  sistemCubugu?(koyu: boolean): void;
   sesDurumu?(): { alarm: number; bildirim: number };
   sesiYukselt?(akis: 'alarm' | 'bildirim'): boolean;
   pinWidget?(tur: 'vakit' | 'manzara' | 'ayet'): boolean;
