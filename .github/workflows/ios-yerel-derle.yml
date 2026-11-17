@@ -11,10 +11,19 @@ on:
         description: "Bitince TestFlight'a gönder"
         type: boolean
         default: true
+      makine:
+        description: "GitHub macOS makinesi"
+        type: choice
+        options: [macos-26, macos-15]
+        default: macos-26
+      xcode:
+        description: "Xcode sürümü (boş = makinedeki en yeni)"
+        type: string
+        default: ""
 
 jobs:
   ios:
-    runs-on: macos-15
+    runs-on: ${{ inputs.makine }}
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +33,7 @@ jobs:
       - name: Xcode seç (en yeni)
         run: |
           ls -d /Applications/Xcode*.app
-          X=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+          if [ -n "${{ inputs.xcode }}" ]; then X=/Applications/Xcode_${{ inputs.xcode }}.app; else X=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1); fi
           sudo xcode-select -s "$X/Contents/Developer"
           xcodebuild -version
       - name: Araçlar
