@@ -1,0 +1,61 @@
+# iOS derlemesi GitHub'ın macOS makinesinde (eas build --local): EAS derleme hakkı HARCAMAZ.
+# Depo herkese açık olduğu için GitHub macOS dakikaları ücretsizdir; ayda 15 iOS sınırına takılmayız.
+# İmza bilgileri (sertifika, profil) EAS'tan indirilir. İsteğe bağlı olarak TestFlight'a gönderir.
+# Gerekli GitHub secret'ları: EXPO_TOKEN, ASC_API_KEY (.p8 içeriği), ASC_ISSUER_ID.
+name: iOS derle (yerel, ücretsiz)
+
+on:
+  workflow_dispatch:
+    inputs:
+      gonder:
+        description: "Bitince TestFlight'a gönder"
+        type: boolean
+        default: true
+
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Xcode seç (en yeni)
+        run: |
+          ls -d /Applications/Xcode*.app
+          X=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+          sudo xcode-select -s "$X/Contents/Developer"
+          xcodebuild -version
+      - name: Araçlar
+        run: |
+          npm install -g eas-cli@latest
+          which fastlane || brew install fastlane
+          which pod || sudo gem install cocoapods
+          pod --version
+      - name: Paketleri kur
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: App Store Connect anahtarını yaz
+        env:
+          ASC_API_KEY: ${{ secrets.ASC_API_KEY }}
+        run: |
+          printf '%s\n' "$ASC_API_KEY" > "$RUNNER_TEMP/asc.p8"
+          grep -q "BEGIN PRIVATE KEY" "$RUNNER_TEMP/asc.p8" || { echo "ASC_API_KEY secret'ı eksik ya da hatalı"; exit 1; }
+      - name: Derle (bu makinede)
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: 6QNDBXCP8X
+          EXPO_APPLE_TEAM_ID: 34J4Q96FX6
+          EXPO_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          LANG: en_US.UTF-8
+        run: eas build -p ios --profile production --local --non-interactive --output "$RUNNER_TEMP/kurandan.ipa"
+      - name: TestFlight'a gönder
+        if: ${{ inputs.gonder }}
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: 6QNDBXCP8X
+          EXPO_APPLE_TEAM_ID: 34J4Q96FX6
+          EXPO_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: eas submit -p ios --profile production --path "$RUNNER_TEMP/kurandan.ipa" --non-interactive --no-wait
