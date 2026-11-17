@@ -1,0 +1,37 @@
+# Derlemesiz güncelleme (EAS Update): yalnızca JavaScript değişiklikleri telefonlara gönderilir.
+# Uygulama açılışta güncellemeyi indirir, bir sonraki açılışta uygular. Derleme hakkı harcamaz.
+# Kanallar: main = test APK'ları (preview), production = App Store / Google Play sürümleri.
+# Yeni yerel modül (Swift/Kotlin) ya da paket gerektiren değişiklikler için derleme gerekir.
+name: Derlemesiz güncelleme
+
+on:
+  workflow_dispatch:
+    inputs:
+      kanal:
+        description: "main = test sürümleri, production = mağaza sürümleri"
+        type: choice
+        options: [main, production]
+        default: main
+      platform:
+        type: choice
+        options: [android, ios, all]
+        default: android
+      mesaj:
+        description: "Güncellemenin kısa açıklaması"
+        type: string
+        default: "Düzeltme"
+
+jobs:
+  guncelle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Güncellemeyi yayınla
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BUILD_PLATFORM: ${{ inputs.platform == 'android' && 'android' || '' }}
+        run: npx --yes eas-cli@latest update --channel ${{ inputs.kanal }} --platform ${{ inputs.platform }} --message "${{ inputs.mesaj }}" --non-interactive

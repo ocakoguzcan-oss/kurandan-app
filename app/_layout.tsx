@@ -48,7 +48,7 @@ function useNotificationRouting() {
  * Otomatik: akşam ezanından güneş doğana kadar koyu, gündüz açık (seçili şehrin vakitlerine göre).
  */
 function GeceModu() {
-  const { place, calc } = useApp();
+  const { place, calc, ready } = useApp();
   const tema = usePrefs().tema ?? 'auto';
   const now = useNow(60000);
   let koyu = tema === 'dark';
@@ -58,12 +58,16 @@ function GeceModu() {
   }
   useEffect(() => {
     if (Platform.OS === 'web') return;
+    // Kayıtlı şehir yüklenmeden karar verme: yüklenene kadar varsayılan şehir (İstanbul) kullanılıyor.
+    // Android'de tema değişince ağaç yeniden kurulur ve şehir yine varsayılana döner; erken karar verilirse
+    // akşamı İstanbul'dan önce giren şehirlerde (Erzurum vb.) ekran açık ↔ koyu arasında durmadan gidip gelir.
+    if (tema === 'auto' && !ready) return;
     try {
       Appearance.setColorScheme((koyu ? 'dark' : 'light') as Parameters<typeof Appearance.setColorScheme>[0]);
     } catch {
       // eski sürüm
     }
-  }, [koyu]);
+  }, [koyu, ready, tema]);
   return null;
 }
 
