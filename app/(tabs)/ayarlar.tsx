@@ -137,25 +137,21 @@ export default function Ayarlar() {
         )}
       </Card>
 
-      {Platform.OS === 'android' && android.tamVakit === false && (
-        <Pressable accessibilityRole="button" onPress={() => androidAyarAc('tamVakit')} style={st.permBanner}>
+      {/* Android: ezanın tam vaktinde gelmesi için iki ayar tek kartta, sırayla; ikisi de tamamsa kart görünmez */}
+      {Platform.OS === 'android' && (android.tamVakit !== true || android.pil === false) && (
+        <View style={st.permBanner}>
           <Text style={st.permTitle}>{t('Ezan tam vaktinde gelsin')}</Text>
-          <Text style={st.permBody}>{t('“Alarmlar ve hatırlatıcılar” izni kapalı; bildirimler birkaç dakika gecikebilir. Açmak için dokunun.')}</Text>
-        </Pressable>
-      )}
-      {Platform.OS === 'android' && android.pil === false && (
-        <Pressable accessibilityRole="button" onPress={() => androidAyarAc('uygulama')} style={st.androidBanner}>
-          <Text style={st.permTitle}>{t('Bildirimler kaçmasın')}</Text>
-          <Text style={st.permBody}>
-            {t('Pil tasarrufu bildirimleri geciktirebilir. Açılan sayfada Pil → “Kısıtlama yok” seçin; bazı telefonlarda “Otomatik başlatma”yı da açın. Açmak için dokunun.')}
-          </Text>
-        </Pressable>
-      )}
-      {Platform.OS === 'android' && android.tamVakit === null && (
-        <Pressable accessibilityRole="button" onPress={() => Linking.openSettings().catch(() => {})} style={st.androidBanner}>
-          <Text style={st.permTitle}>{t('Ezan tam vaktinde gelsin')}</Text>
-          <Text style={st.permBody}>{t('Android’de uygulama ayarlarından “Alarmlar ve hatırlatıcılar” iznini açın; yoksa bildirim birkaç dakika gecikebilir. Açmak için dokunun.')}</Text>
-        </Pressable>
+          <Text style={st.permBody}>{t('Telefonun ezanı geciktirmemesi için iki izin gerekiyor. Sırayla dokunup izin verin.')}</Text>
+          {[
+            { ok: android.tamVakit === true, ad: t('1. Alarmlar ve hatırlatıcılar'), ac: () => (android.tamVakit === null ? Linking.openSettings().catch(() => {}) : androidAyarAc('tamVakit')) },
+            { ok: android.pil !== false, ad: t('2. Pil kısıtlaması olmasın'), ac: () => androidAyarAc('pil') },
+          ].map((a) => (
+            <Pressable key={a.ad} accessibilityRole="button" disabled={a.ok} onPress={a.ac} style={st.adim}>
+              <Text style={[st.permBody, { flexShrink: 1 }]}>{a.ad}</Text>
+              <Text style={[st.adimDurum, a.ok && { color: colors.greenText }]}>{a.ok ? `✓ ${t('Tamam')}` : `${t('İzin ver')} ›`}</Text>
+            </Pressable>
+          ))}
+        </View>
       )}
 
       <Eyebrow>{t('Vakit hatırlatmaları')}</Eyebrow>
@@ -382,6 +378,8 @@ export default function Ayarlar() {
 }
 
 const st = StyleSheet.create({
+  adim: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 10, paddingVertical: 10, paddingHorizontal: 12, borderRadius: 10, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder },
+  adimDurum: { fontFamily: fonts.bodyBold, fontSize: 14, color: colors.goldText, flexShrink: 0 },
   permBanner: { backgroundColor: colors.warnBg, borderWidth: 1, borderColor: colors.gold, borderRadius: 16, padding: 14, gap: 4 },
   androidBanner: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.cardBorder, borderRadius: 16, padding: 14, gap: 4 },
   permTitle: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.goldText },

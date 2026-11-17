@@ -95,6 +95,11 @@ class EzanNativeModule : Module() {
 
     Function("openAppSettings") { ac(uygulamaAyari()) }
 
+    // Tek dokunuşluk sistem penceresi: "Pil kısıtlaması kaldırılsın mı? İzin ver / Reddet"
+    Function("pilIzniIste") {
+      ac(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:${ctx.packageName}")))
+    }
+
     // Ses düzeyleri (0–1): sabah alarmı alarm sesinden, diğer ezanlar bildirim sesinden çalar.
     // Telefonun zil sesi açık olsa bile alarm sesi ayrı bir ayardır ve kısık kalabilir.
     Function("sesDurumu") {

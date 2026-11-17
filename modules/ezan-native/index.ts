@@ -23,6 +23,8 @@ type EzanNativeModule = {
   openExactAlarm?(): boolean;
   batteryOk?(): boolean;
   openAppSettings?(): boolean;
+  /** Android: pil kısıtlamasını kaldırmak için sistemin İzin ver penceresi */
+  pilIzniIste?(): boolean;
   pinSupported?(): boolean;
   altBosluk?(): number;
   /** Android kıble pusulası: olaylar "pusula" adıyla gelir */

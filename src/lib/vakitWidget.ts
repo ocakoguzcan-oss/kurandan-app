@@ -167,8 +167,10 @@ export function androidDurum(): { tamVakit: boolean | null; pil: boolean | null 
   return { tamVakit: oku(EzanNative.exactAlarmOk), pil: oku(EzanNative.batteryOk) };
 }
 
-export function androidAyarAc(ne: 'tamVakit' | 'uygulama'): boolean {
+export function androidAyarAc(ne: 'tamVakit' | 'pil' | 'uygulama'): boolean {
   try {
+    // Pil: sistemin tek dokunuşluk "İzin ver" penceresi (eski derlemede uygulama ayarları)
+    if (ne === 'pil' && EzanNative?.pilIzniIste) return EzanNative.pilIzniIste();
     if (ne === 'tamVakit' && EzanNative?.openExactAlarm) return EzanNative.openExactAlarm();
     if (EzanNative?.openAppSettings) return EzanNative.openAppSettings();
   } catch {

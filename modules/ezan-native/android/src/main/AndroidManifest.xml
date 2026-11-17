@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
   <application>
     <!-- Ana ekran widget'ları (veri: uygulamanın yazdığı SharedPreferences) -->
     <receiver android:name="ai.kurandan.ezannative.VakitWidgetProvider" android:exported="false" android:label="@string/kw_vakit_ad">
