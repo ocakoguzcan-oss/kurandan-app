@@ -4,6 +4,9 @@ name: Ekran görüntüsü
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   cek:
     runs-on: ubuntu-latest
@@ -27,3 +30,8 @@ jobs:
         with:
           name: ekran
           path: ekran
+      - name: Ayrı dala koy (incelemek için; main'e dokunmaz)
+        run: |
+          mkdir -p /tmp/e && cp -r ekran /tmp/e/
+          git config user.name "ocakoguzcan-oss"; git config user.email "ocakoguzcan-oss@users.noreply.github.com"
+          git checkout --orphan magaza-ekran && git rm -rfq . && cp -r /tmp/e/ekran . && git add ekran && git commit -qm "Mağaza ekran görüntüleri (ham)" && git push -f origin magaza-ekran
