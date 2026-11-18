@@ -1,0 +1,28 @@
+# App Store mağaza kaydı: durum, metinler, ekran görüntüleri, ayarlar, incelemeye gönderme (scripts/asc.py).
+# Elle başlatılır: GitHub → Actions → "App Store" → Run workflow.
+name: App Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      islem:
+        description: "durum | metin | gorsel | ayar | gonder"
+        type: choice
+        options: [durum, metin, gorsel, ayar, gonder]
+        default: durum
+
+jobs:
+  asc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Çalıştır
+        env:
+          ASC_API_KEY: ${{ secrets.ASC_API_KEY }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ILETISIM_EPOSTA: ${{ secrets.ILETISIM_EPOSTA }}
+          ILETISIM_TEL: ${{ secrets.ILETISIM_TEL }}
+        run: |
+          pip install -q pyjwt cryptography requests
+          python3 scripts/asc.py ${{ inputs.islem }}
