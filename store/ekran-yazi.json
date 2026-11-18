@@ -1,0 +1,195 @@
+{
+ "sira": [
+  "1-vakitler",
+  "2-kuran",
+  "6-namaz-takip",
+  "7-dini-gunler",
+  "5-imsakiye",
+  "8-hatim",
+  "4-zikir"
+ ],
+ "yazi": {
+  "1-vakitler": {
+   "tr": [
+    "Ezan vakti hiç kaçmasın",
+    "Sıradaki vakte canlı geri sayım"
+   ],
+   "en": [
+    "Never miss the adhan",
+    "Live countdown to the next prayer"
+   ],
+   "de": [
+    "Kein Gebet mehr verpassen",
+    "Live-Countdown zum nächsten Gebet"
+   ],
+   "ar": [
+    "لا يفوتك الأذان",
+    "عدّ تنازلي مباشر للصلاة التالية"
+   ],
+   "fr": [
+    "Ne manquez plus l’adhan",
+    "Compte à rebours vers la prochaine prière"
+   ],
+   "ru": [
+    "Не пропустите азан",
+    "Обратный отсчёт до следующей молитвы"
+   ]
+  },
+  "2-kuran": {
+   "tr": [
+    "Kur’an-ı Kerim",
+    "Satır altında meal, dokun ve dinle"
+   ],
+   "en": [
+    "The Holy Quran",
+    "Translation under each line, tap to listen"
+   ],
+   "de": [
+    "Der Heilige Koran",
+    "Übersetzung unter jeder Zeile, antippen und hören"
+   ],
+   "ar": [
+    "القرآن الكريم",
+    "الترجمة تحت كل سطر، المس واستمع"
+   ],
+   "fr": [
+    "Le Saint Coran",
+    "Traduction sous chaque ligne, touchez pour écouter"
+   ],
+   "ru": [
+    "Священный Коран",
+    "Перевод под каждой строкой, нажмите и слушайте"
+   ]
+  },
+  "6-namaz-takip": {
+   "tr": [
+    "Namaz takibi",
+    "Kıldığın vakitleri işaretle"
+   ],
+   "en": [
+    "Prayer tracker",
+    "Mark the prayers you have offered"
+   ],
+   "de": [
+    "Gebetsübersicht",
+    "Markiere deine verrichteten Gebete"
+   ],
+   "ar": [
+    "متابعة الصلوات",
+    "سجّل الصلوات التي أدّيتها"
+   ],
+   "fr": [
+    "Suivi des prières",
+    "Cochez les prières accomplies"
+   ],
+   "ru": [
+    "Учёт намазов",
+    "Отмечайте совершённые молитвы"
+   ]
+  },
+  "7-dini-gunler": {
+   "tr": [
+    "Kandiller ve mübarek günler",
+    "Kaç gün kaldığını gör"
+   ],
+   "en": [
+    "Islamic days and holy nights",
+    "See how many days are left"
+   ],
+   "de": [
+    "Islamische Feiertage",
+    "Sieh, wie viele Tage noch bleiben"
+   ],
+   "ar": [
+    "المناسبات والليالي المباركة",
+    "اعرف كم يومًا بقي"
+   ],
+   "fr": [
+    "Jours et nuits bénis",
+    "Voyez combien de jours il reste"
+   ],
+   "ru": [
+    "Священные дни и ночи",
+    "Сколько дней осталось"
+   ]
+  },
+  "5-imsakiye": {
+   "tr": [
+    "Ramazan imsakiyesi",
+    "Sahur ve iftar vakitleri"
+   ],
+   "en": [
+    "Ramadan timetable",
+    "Suhoor and iftar times"
+   ],
+   "de": [
+    "Ramadan-Kalender",
+    "Sahur- und Iftar-Zeiten"
+   ],
+   "ar": [
+    "إمساكية رمضان",
+    "مواعيد السحور والإفطار"
+   ],
+   "fr": [
+    "Calendrier du Ramadan",
+    "Horaires du suhoor et de l’iftar"
+   ],
+   "ru": [
+    "Расписание Рамадана",
+    "Время сухура и ифтара"
+   ]
+  },
+  "8-hatim": {
+   "tr": [
+    "Hatim takibi",
+    "Kaldığın yerden devam et"
+   ],
+   "en": [
+    "Khatm tracker",
+    "Continue where you left off"
+   ],
+   "de": [
+    "Khatm-Übersicht",
+    "Lies dort weiter, wo du aufgehört hast"
+   ],
+   "ar": [
+    "متابعة الختمة",
+    "تابع من حيث توقفت"
+   ],
+   "fr": [
+    "Suivi du khatm",
+    "Reprenez là où vous vous êtes arrêté"
+   ],
+   "ru": [
+    "Учёт хатма",
+    "Продолжайте с того места, где остановились"
+   ]
+  },
+  "4-zikir": {
+   "tr": [
+    "Zikirmatik",
+    "Hedefe ulaşınca titreşir"
+   ],
+   "en": [
+    "Tasbih counter",
+    "Vibrates when you reach your goal"
+   ],
+   "de": [
+    "Tasbih-Zähler",
+    "Vibriert, wenn du dein Ziel erreichst"
+   ],
+   "ar": [
+    "المسبحة الإلكترونية",
+    "تهتز عند بلوغ الهدف"
+   ],
+   "fr": [
+    "Compteur de tasbih",
+    "Vibre quand vous atteignez l’objectif"
+   ],
+   "ru": [
+    "Тасбих-счётчик",
+    "Вибрирует при достижении цели"
+   ]
+  }
+ }
+}

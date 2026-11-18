@@ -26,12 +26,18 @@ jobs:
           npx --yes serve@14.2.4 -s dist-web -l 8081 > /dev/null 2>&1 &
           sleep 5
           node scripts/ekran-cek.js
+      - name: Çerçevele
+        run: |
+          sudo apt-get install -y -q fonts-noto-core > /dev/null
+          node scripts/ekran-cerceve.js
       - uses: actions/upload-artifact@v4
         with:
           name: ekran
-          path: ekran
+          path: |
+            ekran
+            magaza
       - name: Ayrı dala koy (incelemek için; main'e dokunmaz)
         run: |
-          mkdir -p /tmp/e && cp -r ekran /tmp/e/
+          mkdir -p /tmp/e && cp -r ekran magaza /tmp/e/
           git config user.name "ocakoguzcan-oss"; git config user.email "ocakoguzcan-oss@users.noreply.github.com"
-          git checkout --orphan magaza-ekran && git rm -rfq . && cp -r /tmp/e/ekran . && git add ekran && git commit -qm "Mağaza ekran görüntüleri (ham)" && git push -f origin magaza-ekran
+          git checkout --orphan magaza-ekran && git rm -rfq . && cp -r /tmp/e/ekran /tmp/e/magaza . && git add ekran magaza && git commit -qm "Mağaza ekran görüntüleri (ham)" && git push -f origin magaza-ekran
