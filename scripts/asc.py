@@ -133,7 +133,7 @@ def metin():
 
 def gorsel():
     tur = "APP_IPHONE_67"  # 6.7/6.9 inç (1290x2796 / 1320x2868)
-    kok = os.path.join(KOK, "store", "ekran")
+    kok = os.environ.get("EKRAN_KOK") or os.path.join(KOK, "store", "ekran")
     v = surum()
     yer = {l["attributes"]["locale"]: l for l in al(f"/v1/appStoreVersions/{v['id']}/appStoreVersionLocalizations")["data"]}
     for dil in sorted(os.listdir(kok)):
