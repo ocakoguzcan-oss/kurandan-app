@@ -24,7 +24,9 @@
   "healthOrWellnessTopics": false,
   "messagingAndChat": false,
   "userGeneratedContent": false,
-  "advertising": false
+  "advertising": false,
+  "socialMedia": false,
+  "gunsOrOtherWeapons": "NONE"
  },
  "inceleme": {
   "ad": "Oğuz Can",
