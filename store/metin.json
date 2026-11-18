@@ -17,7 +17,14 @@
   "violenceRealistic": "NONE",
   "violenceRealisticProlongedGraphicOrSadistic": "NONE",
   "gambling": false,
-  "unrestrictedWebAccess": false
+  "unrestrictedWebAccess": false,
+  "lootBox": false,
+  "ageAssurance": false,
+  "parentalControls": false,
+  "healthOrWellnessTopics": false,
+  "messagingAndChat": false,
+  "userGeneratedContent": false,
+  "advertising": false
  },
  "inceleme": {
   "ad": "Oğuz Can",
