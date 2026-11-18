@@ -1,0 +1,29 @@
+# Mağaza ekran görüntüleri: uygulamanın web derlemesi açılır, her dilde ekranlar çekilir (çıktı: "ekran" eki).
+name: Ekran görüntüsü
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Web derlemesi
+        run: npx expo export --platform web --output-dir dist-web
+      - name: Tarayıcı
+        run: npm install --no-save --no-audit --no-fund playwright@1.49.1 && npx playwright install --with-deps chromium
+      - name: Çek
+        run: |
+          npx --yes serve@14.2.4 -s dist-web -l 8081 > /dev/null 2>&1 &
+          sleep 5
+          node scripts/ekran-cek.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ekran
+          path: ekran

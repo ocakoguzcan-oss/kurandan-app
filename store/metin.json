@@ -1,0 +1,77 @@
+{
+ "telif": "2026 Oğuz Can Ocak",
+ "kategori": "LIFESTYLE",
+ "ikinciKategori": "REFERENCE",
+ "derleme": "22",
+ "yas": {
+  "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+  "contests": "NONE",
+  "gamblingSimulated": "NONE",
+  "horrorOrFearThemes": "NONE",
+  "matureOrSuggestiveThemes": "NONE",
+  "medicalOrTreatmentInformation": "NONE",
+  "profanityOrCrudeHumor": "NONE",
+  "sexualContentGraphicAndNudity": "NONE",
+  "sexualContentOrNudity": "NONE",
+  "violenceCartoonOrFantasy": "NONE",
+  "violenceRealistic": "NONE",
+  "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+  "gambling": false,
+  "unrestrictedWebAccess": false
+ },
+ "inceleme": {
+  "ad": "Oğuz Can",
+  "soyad": "Ocak",
+  "not": "No account or login is required; all features are available right after launch. On first launch the app asks for language, city (or location permission) and notification permission. Location is used only on the device to calculate prayer times and the Qibla direction. The Reels tab shows public videos from our own Instagram account (kurandan.ai). The morning adhan alarm uses AlarmKit (iOS 26+). Quran audio and text come from Quran Foundation (quran.com). Hesap gerekmez."
+ },
+ "diller": {
+  "tr": {
+   "subtitle": "Namaz vakti, Kur'an ve kıble",
+   "keywords": "ezan,namaz,vakti,imsakiye,kuran,meal,hatim,zikirmatik,kıble,cami,dua,hicri,ramazan,iftar,cuma,kaza",
+   "promotionalText": "Ezan vakitleri, Kur'an-ı Kerim, kıble pusulası ve günlük ibadet takibi tek uygulamada. Hesap açmadan, sade ve huzurlu bir tasarımla.",
+   "description": "Kurandan.ai; namaz vakitlerini, Kur'an-ı Kerim'i ve günlük ibadetlerinizi tek yerde toplayan sade bir uygulamadır. Hesap açmanız gerekmez, ayarlarınız yalnızca telefonunuzda kalır.\n\nNAMAZ VAKİTLERİ VE EZAN\n• Bulunduğunuz yere göre imsak, güneş, öğle, ikindi, akşam ve yatsı vakitleri\n• Her vakit için ezan bildirimi; dilerseniz vakitten önce hatırlatma\n• Sabah ezanı alarm olarak: telefon sessizdeyken de duyulur\n• Kilit ekranında ve Dinamik Ada'da sıradaki vakte canlı geri sayım\n• Ana ekran ve kilit ekranı widget'ları\n• Aylık imsakiye, hicri takvim ve dini günler\n• Farklı hesaplama yöntemleri ve vakitlere dakika düzeltmesi\n\nKUR'AN-I KERİM\n• Mushaf sayfaları, satır altında meal\n• Satıra ya da kelimeye dokunarak dinleme\n• Kaldığınız yeri hatırlar; hatim takibi\n\nİBADET TAKİBİ\n• Namaz takibi ve \"Kıldınız mı?\" hatırlatıcısı\n• Kaza namazı sayacı\n• Zikirmatik\n• Teheccüd, oruç, Cuma ve kandil hatırlatmaları\n\nKIBLE VE CAMİLER\n• Kıble pusulası; yöne dönünce titreşimle haber verir\n• Yakınınızdaki camiler ve yol tarifi\n\nDAHA FAZLASI\n• Dualar ve günün kartı\n• Cuma mesajı görselleri\n• Zekât hesaplama\n• Hac ve umre için Kâbe yolu rehberi\n• Gece modu: akşamdan güneş doğana kadar koyu görünüm\n• Türkçe, İngilizce, Almanca, Arapça, Fransızca ve Rusça\n\nGizliliğiniz önemlidir: kişisel verilerinizi toplamayız ve sizi takip etmeyiz. Konumunuz yalnızca vakitleri hesaplamak için telefonunuzda kullanılır.",
+   "supportUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/destek.html",
+   "privacyPolicyUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html"
+  },
+  "en-US": {
+   "subtitle": "Prayer times, Quran & Qibla",
+   "keywords": "adhan,azan,prayer,times,salah,namaz,quran,koran,qibla,mosque,dua,hijri,ramadan,tasbih,muslim",
+   "promotionalText": "Prayer times with adhan, the Holy Quran, a Qibla compass and daily worship tracking in one calm app. No account needed.",
+   "description": "Kurandan.ai brings prayer times, the Holy Quran and your daily worship together in one calm, simple app. No account is needed, and your settings stay on your phone.\n\nPRAYER TIMES AND ADHAN\n• Fajr, sunrise, Dhuhr, Asr, Maghrib and Isha for your location\n• Adhan notification for every prayer, with optional reminders before\n• Fajr adhan as an alarm, so you hear it even when the phone is on silent\n• Live countdown to the next prayer on the Lock Screen and in the Dynamic Island\n• Home Screen and Lock Screen widgets\n• Monthly timetable, Hijri calendar and Islamic days\n• Several calculation methods and per-prayer minute adjustments\n\nTHE HOLY QURAN\n• Mushaf pages with translation under each line\n• Tap a line or a word to listen\n• Remembers where you left off; khatm tracking\n\nWORSHIP TRACKING\n• Prayer tracker and \"Did you pray?\" reminder\n• Missed (qada) prayer counter\n• Tasbih counter\n• Tahajjud, fasting, Friday and holy night reminders\n\nQIBLA AND MOSQUES\n• Qibla compass that vibrates when you face the Kaaba\n• Nearby mosques with directions\n\nAND MORE\n• Duas and a daily card\n• Friday greeting images\n• Zakat calculator\n• Hajj and Umrah guide\n• Night mode: dark from Maghrib until sunrise\n• Turkish, English, German, Arabic, French and Russian\n\nYour privacy matters: we do not collect your personal data or track you. Your location is used on your phone only to calculate prayer times.",
+   "supportUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/destek.html",
+   "privacyPolicyUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html"
+  },
+  "de-DE": {
+   "subtitle": "Gebetszeiten, Koran & Qibla",
+   "keywords": "gebetszeiten,adhan,ezan,namaz,salah,koran,quran,qibla,moschee,dua,hidschri,ramadan,tasbih,islam",
+   "promotionalText": "Gebetszeiten mit Adhan, der Heilige Koran, ein Qibla-Kompass und tägliche Gebetsübersicht in einer ruhigen App. Ohne Konto.",
+   "description": "Kurandan.ai vereint Gebetszeiten, den Heiligen Koran und deine täglichen Gebete in einer ruhigen, einfachen App. Du brauchst kein Konto, und deine Einstellungen bleiben auf deinem Telefon.\n\nGEBETSZEITEN UND ADHAN\n• Fadschr, Sonnenaufgang, Dhuhr, Asr, Maghrib und Ischa für deinen Standort\n• Adhan-Benachrichtigung zu jedem Gebet, auf Wunsch mit Erinnerung vorher\n• Fadschr-Adhan als Wecker – auch hörbar, wenn das Telefon stumm ist\n• Live-Countdown zum nächsten Gebet auf dem Sperrbildschirm und in der Dynamic Island\n• Widgets für Home- und Sperrbildschirm\n• Monatlicher Gebetsplan, Hidschri-Kalender und islamische Feiertage\n• Verschiedene Berechnungsmethoden und Minutenkorrektur pro Gebet\n\nDER HEILIGE KORAN\n• Mushaf-Seiten mit Übersetzung unter jeder Zeile\n• Zeile oder Wort antippen und anhören\n• Merkt sich, wo du aufgehört hast; Khatm-Übersicht\n\nGEBETE IM BLICK\n• Gebetsübersicht und Erinnerung „Hast du gebetet?“\n• Zähler für nachzuholende Gebete\n• Tasbih-Zähler\n• Erinnerungen für Tahadschud, Fasten, Freitag und heilige Nächte\n\nQIBLA UND MOSCHEEN\n• Qibla-Kompass, der vibriert, wenn du zur Kaaba ausgerichtet bist\n• Moscheen in der Nähe mit Wegbeschreibung\n\nUND MEHR\n• Bittgebete und eine Tageskarte\n• Bilder für Freitagsgrüße\n• Zakat-Rechner\n• Leitfaden für Hadsch und Umra\n• Nachtmodus: dunkel von Maghrib bis Sonnenaufgang\n• Türkisch, Englisch, Deutsch, Arabisch, Französisch und Russisch\n\nDeine Privatsphäre zählt: Wir sammeln keine persönlichen Daten und verfolgen dich nicht. Dein Standort wird nur auf deinem Telefon zur Berechnung der Gebetszeiten verwendet.",
+   "supportUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/destek.html",
+   "privacyPolicyUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html"
+  },
+  "ar-SA": {
+   "subtitle": "مواقيت الصلاة والقرآن والقبلة",
+   "keywords": "أذان,مواقيت,الصلاة,قرآن,مصحف,قبلة,مسجد,دعاء,هجري,رمضان,تسبيح,ختمة,أذكار,مسلم",
+   "promotionalText": "مواقيت الصلاة مع الأذان، والقرآن الكريم، وبوصلة القبلة، ومتابعة العبادات اليومية في تطبيق واحد هادئ. دون الحاجة إلى حساب.",
+   "description": "يجمع Kurandan.ai مواقيت الصلاة والقرآن الكريم وعباداتك اليومية في تطبيق واحد بسيط وهادئ. لا حاجة إلى إنشاء حساب، وتبقى إعداداتك على هاتفك فقط.\n\nمواقيت الصلاة والأذان\n• الفجر والشروق والظهر والعصر والمغرب والعشاء حسب موقعك\n• إشعار بالأذان لكل صلاة، مع تذكير قبلها إن شئت\n• أذان الفجر كمنبّه، يُسمع حتى والهاتف صامت\n• عدّ تنازلي مباشر للصلاة التالية على شاشة القفل وفي Dynamic Island\n• أدوات للشاشة الرئيسية وشاشة القفل\n• إمساكية شهرية وتقويم هجري ومناسبات دينية\n• طرق حساب متعددة وتعديل دقائق كل صلاة\n\nالقرآن الكريم\n• صفحات المصحف مع الترجمة تحت كل سطر\n• استمع بلمس السطر أو الكلمة\n• يتذكّر موضع توقفك، مع متابعة الختمة\n\nمتابعة العبادات\n• متابعة الصلوات وتذكير «هل صلّيت؟»\n• عدّاد صلوات القضاء\n• مسبحة إلكترونية\n• تذكيرات للتهجد والصيام والجمعة والليالي المباركة\n\nالقبلة والمساجد\n• بوصلة القبلة تهتز عند التوجه نحو الكعبة\n• المساجد القريبة مع الاتجاهات\n\nوالمزيد\n• أدعية وبطاقة اليوم\n• صور تهنئة الجمعة\n• حاسبة الزكاة\n• دليل الحج والعمرة\n• الوضع الليلي: داكن من المغرب حتى الشروق\n• التركية والإنجليزية والألمانية والعربية والفرنسية والروسية\n\nخصوصيتك مهمة: لا نجمع بياناتك الشخصية ولا نتتبعك. يُستخدم موقعك على هاتفك فقط لحساب مواقيت الصلاة.",
+   "supportUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/destek.html",
+   "privacyPolicyUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html"
+  },
+  "fr-FR": {
+   "subtitle": "Heures de prière, Coran, Qibla",
+   "keywords": "adhan,azan,prière,horaires,salat,coran,quran,qibla,mosquée,dua,hijri,ramadan,tasbih,musulman",
+   "promotionalText": "Horaires de prière avec adhan, le Saint Coran, une boussole Qibla et le suivi des prières dans une app apaisante. Sans compte.",
+   "description": "Kurandan.ai réunit les horaires de prière, le Saint Coran et vos actes d’adoration quotidiens dans une application simple et apaisante. Aucun compte n’est nécessaire et vos réglages restent sur votre téléphone.\n\nHORAIRES DE PRIÈRE ET ADHAN\n• Fajr, lever du soleil, Dhuhr, Asr, Maghrib et Isha selon votre position\n• Notification d’adhan pour chaque prière, avec rappel avant si vous le souhaitez\n• Adhan du Fajr en alarme, audible même en mode silencieux\n• Compte à rebours en direct vers la prochaine prière sur l’écran verrouillé et dans la Dynamic Island\n• Widgets pour l’écran d’accueil et l’écran verrouillé\n• Calendrier mensuel, calendrier hégirien et jours religieux\n• Plusieurs méthodes de calcul et ajustement en minutes de chaque prière\n\nLE SAINT CORAN\n• Pages du Mushaf avec traduction sous chaque ligne\n• Touchez une ligne ou un mot pour l’écouter\n• Se souvient de l’endroit où vous vous êtes arrêté ; suivi du khatm\n\nSUIVI DES PRIÈRES\n• Suivi des prières et rappel « Avez-vous prié ? »\n• Compteur des prières à rattraper\n• Compteur de tasbih\n• Rappels pour le tahajjud, le jeûne, le vendredi et les nuits bénies\n\nQIBLA ET MOSQUÉES\n• Boussole Qibla qui vibre lorsque vous êtes face à la Kaaba\n• Mosquées à proximité avec itinéraire\n\nET AUSSI\n• Invocations et carte du jour\n• Images de vœux du vendredi\n• Calculateur de zakat\n• Guide du Hajj et de la Omra\n• Mode nuit : sombre du Maghrib jusqu’au lever du soleil\n• Turc, anglais, allemand, arabe, français et russe\n\nVotre vie privée compte : nous ne collectons pas vos données personnelles et ne vous suivons pas. Votre position est utilisée uniquement sur votre téléphone pour calculer les horaires de prière.",
+   "supportUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/destek.html",
+   "privacyPolicyUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html"
+  },
+  "ru": {
+   "subtitle": "Намаз, Коран и кибла",
+   "keywords": "азан,намаз,время,молитвы,коран,кибла,мечеть,дуа,хиджра,рамадан,тасбих,ифтар,мусульманин",
+   "promotionalText": "Время намаза с азаном, Священный Коран, компас киблы и учёт ежедневных молитв в одном спокойном приложении. Без регистрации.",
+   "description": "Kurandan.ai объединяет время намаза, Священный Коран и ваши ежедневные молитвы в одном простом и спокойном приложении. Регистрация не нужна, а настройки хранятся только на вашем телефоне.\n\nВРЕМЯ НАМАЗА И АЗАН\n• Фаджр, восход, зухр, аср, магриб и иша для вашего местоположения\n• Уведомление с азаном для каждой молитвы и напоминание заранее по желанию\n• Утренний азан как будильник — слышен, даже если телефон на беззвучном\n• Живой обратный отсчёт до следующей молитвы на экране блокировки и в Dynamic Island\n• Виджеты для экрана «Домой» и экрана блокировки\n• Месячное расписание, календарь хиджры и религиозные даты\n• Несколько методов расчёта и поправка в минутах для каждой молитвы\n\nСВЯЩЕННЫЙ КОРАН\n• Страницы мусхафа с переводом под каждой строкой\n• Нажмите на строку или слово, чтобы послушать\n• Запоминает, где вы остановились; учёт хатма\n\nУЧЁТ МОЛИТВ\n• Учёт намазов и напоминание «Вы помолились?»\n• Счётчик пропущенных (каза) намазов\n• Тасбих-счётчик\n• Напоминания о тахаджуде, посте, пятнице и благословенных ночах\n\nКИБЛА И МЕЧЕТИ\n• Компас киблы, который вибрирует, когда вы смотрите на Каабу\n• Ближайшие мечети с маршрутом\n\nА ТАКЖЕ\n• Дуа и карточка дня\n• Открытки к пятнице\n• Калькулятор закята\n• Путеводитель по хаджу и умре\n• Ночной режим: тёмная тема от магриба до восхода\n• Турецкий, английский, немецкий, арабский, французский и русский\n\nВаша конфиденциальность важна: мы не собираем личные данные и не отслеживаем вас. Местоположение используется только на телефоне для расчёта времени намаза.",
+   "supportUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/destek.html",
+   "privacyPolicyUrl": "https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html"
+  }
+ }
+}

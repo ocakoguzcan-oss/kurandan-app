@@ -364,9 +364,17 @@ export default function Ayarlar() {
           <Text style={st.name}>{t('İzinler')}</Text>
           <Text style={st.link}>{perm === 'granted' ? t('Açık ›') : t('Nasıl açılır ›')}</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={tour.restart} style={st.row}>
+        <Pressable accessibilityRole="button" onPress={tour.restart} style={[st.row, st.divider]}>
           <Text style={st.name}>{t('Tanıtımı tekrar izle')}</Text>
           <Text style={st.link}>{t('Başlat ›')}</Text>
+        </Pressable>
+        <Pressable accessibilityRole="link" onPress={() => Linking.openURL('https://ocakoguzcan-oss.github.io/kurandan-app/destek.html').catch(() => {})} style={[st.row, st.divider]}>
+          <Text style={st.name}>{t('Destek ve iletişim')}</Text>
+          <Text style={st.link}>{'›'}</Text>
+        </Pressable>
+        <Pressable accessibilityRole="link" onPress={() => Linking.openURL('https://ocakoguzcan-oss.github.io/kurandan-app/gizlilik.html').catch(() => {})} style={st.row}>
+          <Text style={st.name}>{t('Gizlilik politikası')}</Text>
+          <Text style={st.link}>{'›'}</Text>
         </Pressable>
       </Card>
 

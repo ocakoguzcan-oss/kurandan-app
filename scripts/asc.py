@@ -108,8 +108,8 @@ def metin():
     m = json.load(open(os.path.join(KOK, "store", "metin.json")))
     v = surum()
     vid = v["id"]
-    if m.get("telif"):
-        istek("PATCH", f"/v1/appStoreVersions/{vid}", json={"data": {"type": "appStoreVersions", "id": vid, "attributes": {"copyright": m["telif"]}}})
+    r = istek("PATCH", f"/v1/appStoreVersions/{vid}", json={"data": {"type": "appStoreVersions", "id": vid, "attributes": {"copyright": m["telif"], "versionString": SURUM}}})
+    print("SURUM", SURUM, r.status_code)
     var = {l["attributes"]["locale"]: l for l in al(f"/v1/appStoreVersions/{vid}/appStoreVersionLocalizations")["data"]}
     info = app_info()
     bvar = {l["attributes"]["locale"]: l for l in al(f"/v1/appInfos/{info['id']}/appInfoLocalizations")["data"]}
@@ -119,8 +119,7 @@ def metin():
             r = istek("POST", "/v1/appStoreVersionLocalizations", json={"data": {"type": "appStoreVersionLocalizations",
                       "attributes": {"locale": dil, **attrs}, "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
         else:
-            if dil == list(m["diller"])[0] or True:
-                r = istek("PATCH", f"/v1/appStoreVersionLocalizations/{var[dil]['id']}", json={"data": {"type": "appStoreVersionLocalizations", "id": var[dil]["id"], "attributes": attrs}})
+            r = istek("PATCH", f"/v1/appStoreVersionLocalizations/{var[dil]['id']}", json={"data": {"type": "appStoreVersionLocalizations", "id": var[dil]["id"], "attributes": attrs}})
         print("SURUM METNI", dil, r.status_code)
         battrs = {k: t[k] for k in ("name", "subtitle", "privacyPolicyUrl") if t.get(k)}
         if dil not in bvar:
