@@ -206,9 +206,6 @@ def ayar():
     # Derleme ve sürüm ayarları
     v = surum()
     vid = v["id"]
-    b = al("/v1/builds", **{"filter[app]": APP, "filter[version]": m["derleme"], "limit": 1})["data"][0]
-    r = istek("PATCH", f"/v1/appStoreVersions/{vid}/relationships/build", json={"data": {"type": "builds", "id": b["id"]}})
-    print("DERLEME", m["derleme"], r.status_code)
     r = istek("PATCH", f"/v1/appStoreVersions/{vid}", json={"data": {"type": "appStoreVersions", "id": vid, "attributes": {"releaseType": "AFTER_APPROVAL"}}})
     print("YAYIN TURU", r.status_code)
     # İnceleme bilgisi
@@ -223,6 +220,12 @@ def ayar():
         r = istek("POST", "/v1/appStoreReviewDetails", json={"data": {"type": "appStoreReviewDetails", "attributes": attrs,
                   "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
     print("INCELEME BILGISI", r.status_code)
+    bl = al("/v1/builds", **{"filter[app]": APP, "filter[version]": m["derleme"], "limit": 1})["data"]
+    if bl and bl[0]["attributes"].get("processingState") == "VALID":
+        r = istek("PATCH", f"/v1/appStoreVersions/{vid}/relationships/build", json={"data": {"type": "builds", "id": bl[0]["id"]}})
+        print("DERLEME", m["derleme"], r.status_code)
+    else:
+        print("DERLEME", m["derleme"], "henüz hazır değil")
 
 
 def gonder():
