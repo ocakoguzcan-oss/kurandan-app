@@ -123,8 +123,9 @@ def metin():
         print("SURUM METNI", dil, r.status_code)
         battrs = {k: t[k] for k in ("name", "subtitle", "privacyPolicyUrl") if t.get(k)}
         if dil not in bvar:
+            ad = next(iter(bvar.values()))["attributes"]["name"]
             r = istek("POST", "/v1/appInfoLocalizations", json={"data": {"type": "appInfoLocalizations",
-                      "attributes": {"locale": dil, **battrs}, "relationships": {"appInfo": {"data": {"type": "appInfos", "id": info["id"]}}}}})
+                      "attributes": {"locale": dil, "name": ad, **battrs}, "relationships": {"appInfo": {"data": {"type": "appInfos", "id": info["id"]}}}}})
         else:
             r = istek("PATCH", f"/v1/appInfoLocalizations/{bvar[dil]['id']}", json={"data": {"type": "appInfoLocalizations", "id": bvar[dil]["id"], "attributes": battrs}})
         print("BILGI METNI", dil, r.status_code)
