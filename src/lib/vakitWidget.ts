@@ -118,7 +118,9 @@ export function widgetMekan(id: string) {
 
 /** Canlı Etkinlik (iOS 16.2+ / Android bildirimi, yeni derleme) destekleniyor ve kullanıcı kapatmamış mı */
 export function canliDestek(): boolean {
-  if ((Platform.OS !== 'ios' && Platform.OS !== 'android') || !EzanNative?.liveSupported) return false;
+  // Android'de her zaman var (bildirim izni kapalıysa yalnız gösterilemez); ayar her durumda görünsün
+  if (Platform.OS === 'android') return !!EzanNative?.liveStart;
+  if (Platform.OS !== 'ios' || !EzanNative?.liveSupported) return false;
   try {
     return EzanNative.liveSupported();
   } catch {
