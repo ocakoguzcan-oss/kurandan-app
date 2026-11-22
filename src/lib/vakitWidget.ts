@@ -27,7 +27,7 @@ export function updateWidget(lat: number, lng: number, place: string, calc: Calc
     EzanNative.setWidgetData(
       APP_GROUP,
       'vakitler',
-      JSON.stringify({ place, items, empty: t('Vakitler için uygulamayı açın'), lang: getLang(), kalan: t('{vakit} vaktine kalan'), tz: calc.tz })
+      JSON.stringify({ place, items, empty: t('Vakitler için uygulamayı açın'), lang: getLang(), kalan: t('{vakit} vaktine kalan'), tz: calc.tz, kalanSaat: t('{s} saat {d} dk kaldı.'), kalanDk: t('{d} dk kaldı.') })
     );
   } catch {
     // eski derleme: yok say

@@ -81,6 +81,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setReady(true);
       // Konum GPS'ten seçildiyse açılışta sessizce yenile.
       if (p.source === 'gps') refreshGps(false).catch(() => {});
+      // Şehir listeden seçilmiş ama konum izni var ve kullanıcı o şehrin sınırları içindeyse: tam konuma (ilçe) geç.
+      // Vakitler ilçenin kendi koordinatıyla hesaplanır (ör. Erzurum yerine Tortum), bildirimde ilçe adı görünür.
+      else if (Platform.OS !== 'web') ilceyeGec(migrate(p)).catch(() => {});
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -135,6 +138,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setPlace(p);
     save(KEYS.location, p);
   }, []);
+
+  const ilceyeGec = async (p: Place) => {
+    const perm = await Location.getForegroundPermissionsAsync();
+    if (!perm.granted) return;
+    const pos = (await Location.getLastKnownPositionAsync({ maxAge: 6 * 3600000 })) ?? (await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }));
+    const near = nearestCity(pos.coords.latitude, pos.coords.longitude, p.country);
+    const ayni = p.country === 'TR' ? near.plaka != null && near.plaka === p.ilPlaka : near.id === p.cityId;
+    if (ayni) await refreshGps(false);
+  };
 
   const refreshGps = useCallback(
     async (ask: boolean): Promise<boolean> => {

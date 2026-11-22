@@ -51,4 +51,15 @@ object Veri {
   }
 
   fun mekan(ctx: Context): String = oku(ctx, "mekan") ?: "kabe"
+
+  /** Bildirimdeki kalan süre kalıpları: ("{s} saat {d} dk kaldı.", "{d} dk kaldı.") — uygulama dilinde */
+  fun kalanKaliplari(ctx: Context): Pair<String, String> {
+    val s = oku(ctx, "vakitler")
+    return try {
+      val o = JSONObject(s ?: "{}")
+      Pair(o.optString("kalanSaat", "{s} saat {d} dk kaldı."), o.optString("kalanDk", "{d} dk kaldı."))
+    } catch (e: Exception) {
+      Pair("{s} saat {d} dk kaldı.", "{d} dk kaldı.")
+    }
+  }
 }

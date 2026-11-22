@@ -98,10 +98,19 @@ object CanliBildirim {
       ctx, 7002, Intent(ctx, CanliAlici::class.java).setAction(SILINDI),
       PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
+    // Ezan uygulamalarındaki alışılmış düzen: başlıkta yer (ilçe), yanında "Akşam: 17:01", altında "1 saat 41 dk kaldı."
+    val yer = sehir.substringAfterLast(",").trim().ifEmpty { sehir }
+    val dkToplam = ((kalan + 59_999) / 60_000).toInt()
+    val kalip = Veri.kalanKaliplari(ctx)
+    val kalanYazi = if (dkToplam >= 60) {
+      kalip.first.replace("{s}", (dkToplam / 60).toString()).replace("{d}", (dkToplam % 60).toString())
+    } else {
+      kalip.second.replace("{d}", dkToplam.toString())
+    }
     val b = NotificationCompat.Builder(ctx, KANAL)
-      .setContentTitle("$vakit $saat")
-      .setContentText(sehir)
-      .setSubText(ctx.getString(R.string.kw_kalan))
+      .setContentTitle(yer.ifEmpty { "$vakit $saat" })
+      .setContentText(kalanYazi)
+      .setSubText("$vakit: $saat")
       .setWhen(bitis)
       .setShowWhen(true)
       .setUsesChronometer(true)
@@ -130,12 +139,9 @@ object CanliBildirim {
       false
     }
 
-    // Sonraki yenileme: son saatte bir sonraki dakika başı, değilse son saatin başı; en geç vakit girişi
-    val hedef = if (kalan <= SON_SAAT) {
-      minOf(bitis + 1500, simdi + (kalan % 60_000).let { if (it < 1000) 60_000 else it } + 300)
-    } else {
-      bitis - SON_SAAT + 500
-    }
+    // Sonraki yenileme: kalan dakika değişince (yazı ve simge güncellensin); en geç vakit girişi.
+    // Uyandırmayan alarm: ekran kapalıyken çalışmaz, pil harcamaz.
+    val hedef = minOf(bitis + 1500, simdi + (kalan % 60_000).let { if (it < 1000) 60_000 else it } + 300)
     alarmKur(ctx, hedef)
     return oldu
   }
