@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import * as Location from 'expo-location';
 import { DEFAULT_IL, ILLER, Il } from '../data/iller';
 import { City, nearestCity } from '../data/world';
@@ -96,7 +96,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [tick, setTick] = useState(0);
   const sonKurulum = useRef(Date.now());
   const canliRef = useRef<() => void>(() => {});
-  canliRef.current = () => syncCanli(!!reminders.canli, place.lat, place.lng, place.label, calc);
+  canliRef.current = () => syncCanli((reminders.canli ?? Platform.OS === 'android'), place.lat, place.lng, place.label, calc);
   useEffect(() => {
     const sub = AppState.addEventListener('change', (st) => {
       if (st !== 'active') return;
@@ -115,7 +115,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       updateWidget(place.lat, place.lng, place.label, calc);
       ayetWidgetGuncelle().catch(() => {});
       widgetMekan(prefs.widgetMekan ?? 'kabe');
-      syncCanli(!!reminders.canli, place.lat, place.lng, place.label, calc);
+      syncCanli((reminders.canli ?? Platform.OS === 'android'), place.lat, place.lng, place.label, calc);
       await kategorileriKur(reminders.erteleDk ?? 10);
       const alarm = await syncSabahAlarm(
         !!reminders.sabahAlarm && reminders.enabled.imsak,

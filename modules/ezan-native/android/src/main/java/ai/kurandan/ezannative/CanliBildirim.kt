@@ -209,23 +209,40 @@ object CanliBildirim {
     }
   }
 
-  /** Durum çubuğu simgesi: kalan dakika rakamla (sistem beyaza boyar, yalnız şekil kullanılır) */
+  /** Durum çubuğu simgesi: üstte kalan dakika, altta küçük cami (sistem beyaza boyar, yalnız şekil kullanılır) */
   private fun sayiSimgesi(ctx: Context, dk: Int): Bitmap {
     val boy = (24 * ctx.resources.displayMetrics.density).toInt().coerceAtLeast(24)
     val bmp = Bitmap.createBitmap(boy, boy, Bitmap.Config.ARGB_8888)
     val c = Canvas(bmp)
+    val f = boy.toFloat()
+    val boya = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
+
+    // Rakam: üst %58
     val yazi = dk.toString()
-    val boya = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-      color = Color.WHITE
-      typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-      textAlign = Paint.Align.CENTER
-      textSize = boy * 0.82f
-    }
-    // İki basamak simgeye sığsın
+    boya.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+    boya.textAlign = Paint.Align.CENTER
+    boya.textSize = f * 0.60f
     val gen = boya.measureText(yazi)
-    if (gen > boy * 0.98f) boya.textSize = boya.textSize * (boy * 0.98f) / gen
-    val y = boy / 2f - (boya.descent() + boya.ascent()) / 2f
-    c.drawText(yazi, boy / 2f, y, boya)
+    if (gen > f * 0.98f) boya.textSize *= (f * 0.98f) / gen
+    val ustYukseklik = f * 0.58f
+    c.drawText(yazi, f / 2f, ustYukseklik / 2f - (boya.descent() + boya.ascent()) / 2f, boya)
+
+    // Cami: alt %40 — kubbe, gövde ve iki minare
+    val taban = f * 0.99f
+    val govdeUst = f * 0.82f
+    c.drawRect(f * 0.30f, govdeUst, f * 0.70f, taban, boya)
+    c.drawArc(android.graphics.RectF(f * 0.32f, f * 0.66f, f * 0.68f, f * 0.98f), 180f, 180f, true, boya)
+    c.drawRect(f * 0.48f, f * 0.62f, f * 0.52f, f * 0.67f, boya)
+    for (x in floatArrayOf(f * 0.16f, f * 0.78f)) {
+      c.drawRect(x, f * 0.68f, x + f * 0.06f, taban, boya)
+      val uc = android.graphics.Path().apply {
+        moveTo(x - f * 0.005f, f * 0.68f)
+        lineTo(x + f * 0.03f, f * 0.61f)
+        lineTo(x + f * 0.065f, f * 0.68f)
+        close()
+      }
+      c.drawPath(uc, boya)
+    }
     return bmp
   }
 }

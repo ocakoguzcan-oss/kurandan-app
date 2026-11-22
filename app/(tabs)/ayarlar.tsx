@@ -274,7 +274,7 @@ export default function Ayarlar() {
                 {Platform.OS === 'android' ? t('Bildirim alanında ve kilit ekranında sıradaki vakte geri sayım') : t('Kilit ekranında ve Dinamik Ada’da sıradaki vakte geri sayım')}
               </Text>
             </View>
-            <Toggle label={t('Canlı Etkinlik')} value={!!reminders.canli} onChange={(v) => setReminders({ ...reminders, canli: v })} />
+            <Toggle label={t('Canlı Etkinlik')} value={(reminders.canli ?? Platform.OS === 'android')} onChange={(v) => setReminders({ ...reminders, canli: v })} />
           </View>
         )}
         {SATIN_ALMA_ACIK && (
