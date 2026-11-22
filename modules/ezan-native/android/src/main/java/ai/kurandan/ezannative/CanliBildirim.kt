@@ -126,7 +126,7 @@ object CanliBildirim {
     // Son bir saatte durum çubuğunda kalan dakika
     val dk = ((kalan + 59_999) / 60_000).toInt()
     if (kalan <= SON_SAAT && Build.VERSION.SDK_INT >= 23) {
-      b.setSmallIcon(IconCompat.createWithBitmap(sayiSimgesi(ctx, dk.coerceIn(1, 60))))
+      b.setSmallIcon(IconCompat.createWithBitmap(sayiSimgesi(ctx, dk.coerceIn(1, 59))))
     } else {
       b.setSmallIcon(R.drawable.kw_bildirim)
     }
