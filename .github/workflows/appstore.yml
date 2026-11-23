@@ -8,7 +8,7 @@ on:
       islem:
         description: "durum | metin | gorsel | ayar | gonder"
         type: choice
-        options: [durum, metin, gorsel, ayar, gonder]
+        options: [durum, metin, gorsel, ayar, cin, gonder]
         default: durum
 
 jobs:

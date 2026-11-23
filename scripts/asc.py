@@ -228,6 +228,25 @@ def ayar():
         print("DERLEME", m["derleme"], "henüz hazır değil")
 
 
+def cin_kapat():
+    """Çin anakarası: güvenlik değerlendirmesi ve AIGC beyanı istiyor; bu sürümde Çin'de yayınlamıyoruz."""
+    av = al(f"/v1/apps/{APP}/appAvailabilityV2")["data"]
+    url = f"/v2/appAvailabilities/{av['id']}/territoryAvailabilities"
+    j = al(url, limit=200, include="territory")
+    while True:
+        for t in j["data"]:
+            tid = t["relationships"]["territory"]["data"]["id"]
+            if tid == "CHN":
+                r = istek("PATCH", f"/v1/territoryAvailabilities/{t['id']}", json={"data": {"type": "territoryAvailabilities", "id": t["id"], "attributes": {"available": False}}})
+                print("CIN", r.status_code, r.text[:300])
+                return
+        nxt = j.get("links", {}).get("next")
+        if not nxt:
+            break
+        j = al(nxt.replace(API, ""))
+    print("CIN bulunamadı")
+
+
 def gonder():
     v = surum()
     rs = istek("POST", "/v1/reviewSubmissions", json={"data": {"type": "reviewSubmissions", "attributes": {"platform": "IOS"},
@@ -248,4 +267,4 @@ def gonder():
 
 
 if __name__ == "__main__":
-    {"durum": durum, "metin": metin, "gorsel": gorsel, "ayar": ayar, "gonder": gonder}[sys.argv[1]]()
+    {"cin": cin_kapat, "durum": durum, "metin": metin, "gorsel": gorsel, "ayar": ayar, "gonder": gonder}[sys.argv[1]]()
