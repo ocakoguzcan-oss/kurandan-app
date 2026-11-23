@@ -164,6 +164,9 @@ def gorsel():
 
 def ayar():
     m = json.load(open(os.path.join(KOK, "store", "metin.json")))
+    # İçerik hakları: Kur'an metni/sesi ve mealler üçüncü taraf (Quran Foundation); kullanım hakkımız var
+    r = istek("PATCH", f"/v1/apps/{APP}", json={"data": {"type": "apps", "id": APP, "attributes": {"contentRightsDeclaration": "USES_THIRD_PARTY_CONTENT"}}})
+    print("ICERIK HAKLARI", r.status_code)
     info = app_info()
     iid = info["id"]
     r = istek("PATCH", f"/v1/appInfos/{iid}", json={"data": {"type": "appInfos", "id": iid, "relationships": {
