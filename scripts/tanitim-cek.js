@@ -35,5 +35,11 @@ const PREFS = { largeText: false, permissionIntroShown: true, mushafSize: 1, onb
   await git('/camiler', 12000); await cek('camiler');
   await git('/dini-gunler'); await cek('dini-gunler');
   await git('/ayarlar'); await cek('ayarlar');
+  await git('/kabe-yolu'); await cek('kabe-yolu-1'); await kaydir(700); await cek('kabe-yolu-2');
+  await git('/kart'); await cek('kart');
+  await git('/dua'); await cek('dua');
+  await git('/hicri-takvim'); await cek('hicri-takvim');
+  await git('/kuran', 6000); await p.mouse.click(195, 330); await p.waitForTimeout(800); await p.mouse.click(258, 795); await p.waitForTimeout(2500); await cek('kuran-3');
+  await git('/'); await kaydir(900); await cek('ana-4');
   await b.close();
 })();
